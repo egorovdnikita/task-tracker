@@ -16,8 +16,8 @@
 
 | Слой | Технологии |
 | --- | --- |
-| Язык | TypeScript 6 (strict) |
-| Мобильный рантайм | React Native 0.86, React 19.2, Expo SDK 57 (managed workflow), Metro |
+| Язык | TypeScript 5.9 (strict) |
+| Мобильный рантайм | React Native 0.81, React 19.1, Expo SDK 54 (managed workflow), Metro |
 | Навигация | React Navigation 7 (`@react-navigation/native`, `native-stack`), `react-native-screens`, `react-native-safe-area-context` |
 | Состояние | Zustand 5 + middleware `persist` |
 | Хранилище | `@react-native-async-storage/async-storage` (локально на устройстве) |
@@ -25,6 +25,7 @@
 | Витрина компонентов | Storybook 10 (`@storybook/react-vite`), аддоны `addon-docs`, `addon-a11y` |
 | Сборка витрины | Vite 8 + `@vitejs/plugin-react`, алиас `react-native` → `react-native-web` 0.21 |
 | Веб-версия приложения | `react-native-web` + `react-dom` (`npm run web`) |
+| Запуск на устройстве | Expo Go (App Store поддерживает SDK 54), туннель ngrok для доступа вне локальной сети |
 | CI/CD | GitHub Actions → GitHub Pages (typecheck + сборка Storybook на каждый push в `main`) |
 
 ## Экраны
@@ -82,6 +83,19 @@ npm run android
 ```bash
 npm run web
 ```
+
+На физическом iPhone — через Expo Go. QR из `npm start` сканируется штатной Камерой
+(на iOS сканера внутри Expo Go нет). Если телефон не в одной сети с компьютером
+(например, на LTE), нужен туннель:
+
+```bash
+npx expo start --tunnel
+```
+
+Проект намеренно остаётся на **SDK 54**: с мая 2026 Expo не публикует в App Store
+версии Expo Go для более новых SDK, и на устройстве работает только 54-я.
+Обновление SDK потребует либо `eas go` с платным Apple Developer, либо dev-build
+через Xcode — см. [changelog Expo](https://expo.dev/changelog/expo-go-and-app-store-may-2026).
 
 Storybook локально:
 

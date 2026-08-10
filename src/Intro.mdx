@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Введение" />
+
+# Task Tracker Notes — дизайн-система
+
+Storybook собран **из того же исходного кода, что и мобильное приложение**: компоненты написаны
+на примитивах React Native (`View`, `Text`, `Pressable`, `TextInput`, `FlatList`) и рендерятся здесь
+через `react-native-web`. Меняете компонент — меняются и приложение, и эта витрина.
+
+## Экраны wireframe
+
+| Экран | Storybook | Состав |
+| --- | --- | --- |
+| **S1** Notes List | `Экраны/S1 Notes List` | AppHeader, SearchBar, ChipGroup, NoteList, EmptyState, Fab |
+| **S2** Note Editor | `Экраны/S2 Note Editor` | AppHeader, TextField ×2, Chip, ColorPicker, Button |
+| **S3** Search | `Экраны/S3 Search` | IconButton, SearchBar, NoteList с подсветкой, EmptyState |
+| **S4** Settings | `Экраны/S4 Settings` | AppHeader, SettingsSection, SettingsRow |
+| **S5** Confirm Sheet | `Компоненты/Прочее` | ConfirmSheet, Button |
+
+## Навигация между экранами
+
+```
+S1 ──tap карточки──▶ S2 ──back──▶ S1
+S1 ──tap поиска───▶ S3 ──tap результата──▶ S2
+S1 ──⚙────────────▶ S4
+S5 — оверлей поверх S1 и S2
+```
+
+## Как читать витрину
+
+- **Основы / Design tokens** — палитры, типографика, сетка 8pt, радиусы, иконки.
+- **Компоненты** — атомы и молекулы со всеми состояниями (пустое, выбранное, disabled, длинный текст).
+- **Экраны** — сборка компонентов в границах телефона 390×844.
+- Тумблер **Тема** в тулбаре переключает светлую/тёмную схему для любой истории.
+- Вкладка **Accessibility** проверяет контраст и роли.

@@ -51,8 +51,8 @@ export const SearchHighlight: Story = {
 export const AllColors: Story = {
   render: (args) => (
     <View style={{ gap: 12, width: 340 }}>
-      {(['default', 'yellow', 'green', 'blue', 'pink'] as const).map((color) => (
-        <NoteCard key={color} {...args} note={{ ...mockNotes[1], id: color, color }} />
+      {(['none', 'lime', 'aqua', 'violet', 'amber', 'rose'] as const).map((glow) => (
+        <NoteCard key={glow} {...args} note={{ ...mockNotes[1], id: glow, glow }} />
       ))}
     </View>
   ),

@@ -1,32 +1,40 @@
 import React from 'react';
 import { Pressable, type ViewStyle } from 'react-native';
+
 import { useTheme } from '../theme/ThemeProvider';
-import { Icon, type IconName } from './Icon';
+import { GlassSurface } from './GlassSurface';
+import { Icon, type IconName, type IconTone } from './Icon';
 
 export type IconButtonProps = {
   name: IconName;
   onPress?: () => void;
   accessibilityLabel: string;
+  /** Диаметр кнопки; иконка масштабируется от него. */
   size?: number;
-  tone?: 'default' | 'muted' | 'danger' | 'inverse';
+  tone?: IconTone;
+  /** `plain` — без поверхности, для плотных списков. */
+  variant?: 'glass' | 'plain';
   active?: boolean;
   disabled?: boolean;
   style?: ViewStyle;
   testID?: string;
 };
 
+/** Круглая кнопка 44pt из шапок референса: тёмное стекло + мягкая обводка. */
 export const IconButton = ({
   name,
   onPress,
   accessibilityLabel,
-  size = 22,
+  size,
   tone = 'default',
+  variant = 'glass',
   active = false,
   disabled = false,
   style,
   testID,
 }: IconButtonProps) => {
   const theme = useTheme();
+  const diameter = size ?? theme.sizes.iconButton;
 
   return (
     <Pressable
@@ -37,20 +45,27 @@ export const IconButton = ({
       disabled={disabled}
       hitSlop={8}
       onPress={onPress}
-      style={({ pressed }) => [
-        {
-          width: 40,
-          height: 40,
+      style={({ pressed }) => [{ opacity: disabled ? 0.4 : pressed ? 0.6 : 1 }, style]}
+    >
+      <GlassSurface
+        radius={diameter / 2}
+        tint={
+          variant === 'plain'
+            ? undefined
+            : active
+              ? 'rgba(255,255,255,0.16)'
+              : theme.tints.control
+        }
+        stroke={variant === 'plain' ? null : 'subtle'}
+        style={{
+          width: diameter,
+          height: diameter,
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: theme.radius.sm,
-          backgroundColor: active ? theme.colors.surfaceAlt : 'transparent',
-          opacity: disabled ? 0.4 : pressed ? 0.6 : 1,
-        },
-        style,
-      ]}
-    >
-      <Icon name={name} size={size} tone={tone} />
+        }}
+      >
+        <Icon name={name} size={Math.round(diameter * 0.46)} tone={tone} strokeWidth={1.8} />
+      </GlassSurface>
     </Pressable>
   );
 };

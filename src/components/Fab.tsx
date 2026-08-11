@@ -1,6 +1,8 @@
 import React from 'react';
 import { Pressable, StyleSheet, type ViewStyle } from 'react-native';
+
 import { useTheme } from '../theme/ThemeProvider';
+import { GlassSurface } from './GlassSurface';
 import { Icon, type IconName } from './Icon';
 
 export type FabProps = {
@@ -11,7 +13,7 @@ export type FabProps = {
   testID?: string;
 };
 
-/** Floating action button anchored bottom-right on S1. */
+/** Круг «+» из референса: сплошной меш лайм → аква, иконка тёмная. */
 export const Fab = ({
   onPress,
   icon = 'plus',
@@ -20,6 +22,7 @@ export const Fab = ({
   testID,
 }: FabProps) => {
   const theme = useTheme();
+  const size = theme.sizes.fab;
 
   return (
     <Pressable
@@ -29,15 +32,18 @@ export const Fab = ({
       onPress={onPress}
       style={({ pressed }) => [
         styles.root,
-        {
-          backgroundColor: theme.colors.accent,
-          shadowColor: '#000',
-          transform: [{ scale: pressed ? 0.94 : 1 }],
-        },
+        { width: size, height: size, transform: [{ scale: pressed ? 0.94 : 1 }] },
         style,
       ]}
     >
-      <Icon name={icon} size={24} tone="inverse" />
+      <GlassSurface
+        mesh="fab"
+        radius={size / 2}
+        tint={theme.colors.accentLime}
+        style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Icon name={icon} size={28} tone="inverse" strokeWidth={2.2} />
+      </GlassSurface>
     </Pressable>
   );
 };
@@ -46,15 +52,12 @@ const styles = StyleSheet.create({
   root: {
     position: 'absolute',
     right: 20,
-    bottom: 28,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowOpacity: 0.2,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 6,
+    bottom: 96,
+    borderRadius: 32,
+    shadowColor: '#DCFEAA',
+    shadowOpacity: 0.28,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
   },
 });

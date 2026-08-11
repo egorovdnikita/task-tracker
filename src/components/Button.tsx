@@ -1,7 +1,9 @@
 import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
+
 import { useTheme } from '../theme/ThemeProvider';
 import { AppText } from './AppText';
+import { GlassSurface } from './GlassSurface';
 import { Icon, type IconName } from './Icon';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
@@ -20,11 +22,16 @@ export type ButtonProps = {
   testID?: string;
 };
 
+/**
+ * `primary` — стеклянная пилюля с мешем: свет снизу, оливковый слева →
+ * бирюзовый справа. Геометрия меша выведена из профиля яркости референса.
+ * Остальные варианты — та же поверхность с другой подложкой и обводкой.
+ */
 export const Button = ({
   label,
   onPress,
   variant = 'primary',
-  size = 'md',
+  size = 'lg',
   icon,
   disabled = false,
   loading = false,
@@ -33,16 +40,17 @@ export const Button = ({
   testID,
 }: ButtonProps) => {
   const theme = useTheme();
+  const height = size === 'lg' ? theme.sizes.buttonLarge : theme.sizes.button;
 
-  const background = {
-    primary: theme.colors.accent,
-    secondary: theme.colors.surfaceAlt,
-    ghost: 'transparent',
-    danger: theme.colors.danger,
+  const surface = {
+    primary: { mesh: 'cta' as const, stroke: 'cta' as const, tint: theme.tints.cta },
+    // Разрушающее действие — такая же залитая пилюля, как основное: если
+    // «Удалить» выглядит ссылкой, а «Отмена» — кнопкой, глаз выбирает отмену
+    // не потому, что решил, а потому, что она заметнее.
+    danger: { mesh: 'danger' as const, stroke: 'danger' as const, tint: 'rgba(255,87,122,0.16)' },
+    secondary: { mesh: null, stroke: 'subtle' as const, tint: theme.tints.control },
+    ghost: { mesh: null, stroke: null, tint: undefined },
   }[variant];
-
-  const tone = variant === 'primary' || variant === 'danger' ? 'inverse' : 'default';
-  const height = size === 'lg' ? 52 : 44;
 
   return (
     <Pressable
@@ -53,35 +61,38 @@ export const Button = ({
       disabled={disabled || loading}
       onPress={onPress}
       style={({ pressed }) => [
-        styles.base,
         {
-          height,
-          backgroundColor: background,
-          borderRadius: theme.radius.md,
-          borderColor: variant === 'ghost' ? 'transparent' : theme.colors.border,
-          borderWidth: variant === 'secondary' ? StyleSheet.hairlineWidth : 0,
-          paddingHorizontal: theme.spacing.lg,
-          opacity: disabled ? 0.45 : pressed ? 0.8 : 1,
           alignSelf: fullWidth ? 'stretch' : 'flex-start',
+          opacity: disabled ? 0.4 : pressed ? 0.82 : 1,
         },
         style,
       ]}
     >
-      {loading ? (
-        <ActivityIndicator color={tone === 'inverse' ? theme.colors.accentText : theme.colors.text} />
-      ) : (
-        <View style={styles.content}>
-          {icon ? <Icon name={icon} size={16} tone={tone === 'inverse' ? 'inverse' : 'default'} /> : null}
-          <AppText variant="label" tone={variant === 'danger' ? 'inverse' : tone}>
-            {label}
-          </AppText>
-        </View>
-      )}
+      <GlassSurface
+        mesh={surface.mesh}
+        stroke={surface.stroke}
+        tint={surface.tint}
+        radius={theme.radius.pill}
+        style={{
+          height,
+          paddingHorizontal: theme.spacing.xxl,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {loading ? (
+          <ActivityIndicator color={theme.colors.text} />
+        ) : (
+          <View style={styles.content}>
+            {icon ? <Icon name={icon} size={18} /> : null}
+            <AppText variant={size === 'lg' ? 'heading' : 'body'}>{label}</AppText>
+          </View>
+        )}
+      </GlassSurface>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  base: { alignItems: 'center', justifyContent: 'center' },
-  content: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  content: { flexDirection: 'row', alignItems: 'center', gap: 10 },
 });

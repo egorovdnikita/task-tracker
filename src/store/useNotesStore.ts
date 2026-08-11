@@ -1,14 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import type { NoteColor } from '../theme/tokens';
+import type { NoteGlow } from '../theme/tokens';
 import { DEFAULT_TAGS, type Note, type Settings, type SortMode } from '../types';
 
 export type NoteInput = {
   title: string;
   body: string;
   tag: string | null;
-  color: NoteColor;
+  glow: NoteGlow;
   pinned: boolean;
 };
 
@@ -26,7 +26,7 @@ type NotesState = {
 
 const makeId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 
-export const defaultSettings: Settings = { scheme: 'light', compact: false, sort: 'updated' };
+export const defaultSettings: Settings = { compact: false, sort: 'updated' };
 
 export const useNotesStore = create<NotesState>()(
   persist(
@@ -60,7 +60,22 @@ export const useNotesStore = create<NotesState>()(
     }),
     {
       name: 'task-tracker-notes',
+      version: 2,
       storage: createJSONStorage(() => AsyncStorage),
+      // v1 хранил Note.color из светлой палитры и Settings.scheme — в dark-only
+      // системы их нет, поэтому переносим цвета в свечения и выбрасываем схему.
+      migrate: (persisted: any, from) => {
+        if (from >= 2 || !persisted) return persisted;
+        const map: Record<string, NoteGlow> = {
+          default: 'none', yellow: 'lime', green: 'aqua', blue: 'violet', pink: 'rose',
+        };
+        return {
+          notes: (persisted.notes ?? []).map((n: any) => ({
+            ...n, glow: map[n.color] ?? 'none', color: undefined,
+          })),
+          settings: { compact: !!persisted.settings?.compact, sort: persisted.settings?.sort ?? 'updated' },
+        };
+      },
       partialize: ({ notes, settings }) => ({ notes, settings }),
       onRehydrateStorage: () => (state) => state && useNotesStore.setState({ hydrated: true }),
     },

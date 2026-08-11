@@ -1,0 +1,24 @@
+<!--
+  Rubik подключается теми же .ttf, что грузит приложение через expo-font.
+  Имена семейств совпадают с токенами (src/theme/fonts.ts), поэтому
+  react-native-web находит их по fontFamily без дополнительной настройки.
+  Файлы отдаются из node_modules через staticDirs в main.ts.
+
+  Начертаний ровно два — Light и Regular, как в токенах.
+-->
+<style>
+  @font-face {
+    font-family: 'Rubik_300Light';
+    src: url('/fonts/300Light/Rubik_300Light.ttf') format('truetype');
+    font-display: block;
+  }
+  @font-face {
+    font-family: 'Rubik_400Regular';
+    src: url('/fonts/400Regular/Rubik_400Regular.ttf') format('truetype');
+    font-display: block;
+  }
+
+  body {
+    background: #000;
+  }
+</style>

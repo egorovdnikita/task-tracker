@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, type TextStyle, type ViewStyle } from 'react-native';
+
 import { useTheme } from '../theme/ThemeProvider';
 import { AppText } from './AppText';
+import { GlassSurface } from './GlassSurface';
 
 export type TextFieldProps = {
   value: string;
@@ -10,7 +12,8 @@ export type TextFieldProps = {
   label?: string;
   multiline?: boolean;
   autoFocus?: boolean;
-  variant?: 'boxed' | 'plain';
+  /** Без поверхности — для крупного заголовка заметки. */
+  variant?: 'glass' | 'plain';
   size?: 'title' | 'body';
   error?: string;
   style?: ViewStyle;
@@ -18,6 +21,10 @@ export type TextFieldProps = {
   testID?: string;
 };
 
+/**
+ * Поля референса — без рамки: стеклянная подложка и мягкая обводка.
+ * Однострочное поле — пилюля, многострочное — радиус 28.
+ */
 export const TextField = ({
   value,
   onChangeText,
@@ -25,7 +32,7 @@ export const TextField = ({
   label,
   multiline = false,
   autoFocus = false,
-  variant = 'boxed',
+  variant = 'glass',
   size = 'body',
   error,
   style,
@@ -34,44 +41,57 @@ export const TextField = ({
 }: TextFieldProps) => {
   const theme = useTheme();
 
+  const input = (
+    <TextInput
+      testID={testID}
+      accessibilityLabel={label ?? placeholder}
+      value={value}
+      onChangeText={onChangeText}
+      placeholder={placeholder}
+      placeholderTextColor={theme.colors.textTertiary}
+      multiline={multiline}
+      autoFocus={autoFocus}
+      textAlignVertical={multiline ? 'top' : 'center'}
+      style={[
+        // Кегль тот же, что у остальных контролов: заголовок заметки набирался
+        // на `title` (20pt) и висел на полторы ступени выше всего, что рядом.
+        size === 'title' ? theme.typography.inputTitle : theme.typography.input,
+        { color: theme.colors.text },
+        multiline && styles.grow,
+        inputStyle,
+      ]}
+    />
+  );
+
   return (
-    <View style={[{ gap: theme.spacing.xs }, style]}>
+    <View style={[{ gap: theme.spacing.sm }, style]}>
       {label ? (
-        <AppText variant="label" tone="muted">
-          {label}
+        <AppText variant="overline" tone="tertiary">
+          {label.toUpperCase()}
         </AppText>
       ) : null}
-      <View
-        style={[
-          variant === 'boxed' && {
-            backgroundColor: theme.colors.surface,
-            borderWidth: StyleSheet.hairlineWidth,
-            borderColor: error ? theme.colors.danger : theme.colors.border,
-            borderRadius: theme.radius.md,
-            paddingHorizontal: theme.spacing.md,
-            paddingVertical: theme.spacing.sm,
-          },
-          multiline && styles.grow,
-        ]}
-      >
-        <TextInput
-          testID={testID}
-          accessibilityLabel={label ?? placeholder}
-          value={value}
-          onChangeText={onChangeText}
-          placeholder={placeholder}
-          placeholderTextColor={theme.colors.textMuted}
-          multiline={multiline}
-          autoFocus={autoFocus}
-          textAlignVertical={multiline ? 'top' : 'center'}
-          style={[
-            size === 'title' ? theme.typography.title : theme.typography.body,
-            { color: theme.colors.text },
-            multiline && styles.grow,
-            inputStyle,
-          ]}
-        />
-      </View>
+
+      {variant === 'plain' ? (
+        input
+      ) : (
+        <GlassSurface
+          radius={multiline ? theme.radius.lg : theme.radius.pill}
+          tint={theme.tints.control}
+          // Обводка только на ошибке. В обычном состоянии поле держится
+          // подложкой — светлый контур вокруг каждого поля собирает экран
+          // в сетку рамок, которой в эталоне нет.
+          stroke={error ? { from: theme.colors.danger, to: theme.colors.danger } : null}
+          style={{
+            paddingHorizontal: theme.spacing.xl,
+            paddingVertical: multiline ? theme.spacing.lg : theme.spacing.md,
+            minHeight: multiline ? 160 : theme.sizes.buttonLarge,
+            justifyContent: 'center',
+          }}
+        >
+          {input}
+        </GlassSurface>
+      )}
+
       {error ? (
         <AppText variant="caption" tone="danger">
           {error}

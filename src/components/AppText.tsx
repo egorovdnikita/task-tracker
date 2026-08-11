@@ -3,13 +3,15 @@ import { StyleSheet, Text, type TextProps, type TextStyle } from 'react-native';
 import { useTheme } from '../theme/ThemeProvider';
 import type { TypographyVariant } from '../theme/tokens';
 
+export type TextTone = 'default' | 'secondary' | 'tertiary' | 'inverse' | 'accent' | 'danger';
+
 export type AppTextProps = TextProps & {
   variant?: TypographyVariant;
-  tone?: 'default' | 'muted' | 'inverse' | 'danger';
+  tone?: TextTone;
 };
 
 export const AppText = ({
-  variant = 'body',
+  variant = 'subtle',
   tone = 'default',
   style,
   ...rest
@@ -17,8 +19,10 @@ export const AppText = ({
   const theme = useTheme();
   const color = {
     default: theme.colors.text,
-    muted: theme.colors.textMuted,
+    secondary: theme.colors.textSecondary,
+    tertiary: theme.colors.textTertiary,
     inverse: theme.colors.textInverse,
+    accent: theme.colors.accentLime,
     danger: theme.colors.danger,
   }[tone];
 

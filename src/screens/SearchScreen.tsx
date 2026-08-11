@@ -6,6 +6,7 @@ import { AppText } from '../components/AppText';
 import { EmptyState } from '../components/EmptyState';
 import { IconButton } from '../components/IconButton';
 import { NoteList } from '../components/NoteList';
+import { ScreenBackdrop } from '../components/ScreenBackdrop';
 import { SearchBar } from '../components/SearchBar';
 
 export type SearchScreenProps = {
@@ -30,26 +31,30 @@ export const SearchScreen = ({
   const searching = query.trim().length > 0;
 
   return (
-    <View style={[styles.root, { backgroundColor: theme.colors.background }]}>
+    <ScreenBackdrop name="search">
+      {/*
+        Поля те же, что у остальных экранов (lg по краям), кнопка «назад» —
+        штатные 44pt. До этого панель шла с полем sm и кнопкой 28: строка
+        упиралась в края экрана, а кнопка не добирала до тач-таргета.
+      */}
       <View
         style={[
           styles.bar,
           {
-            backgroundColor: theme.colors.surface,
-            borderBottomColor: theme.colors.border,
-            paddingHorizontal: theme.spacing.sm,
-            paddingVertical: theme.spacing.md,
-            gap: theme.spacing.xs,
+            paddingHorizontal: theme.spacing.lg,
+            paddingTop: theme.spacing.md,
+            paddingBottom: theme.spacing.md,
+            gap: theme.spacing.md,
           },
         ]}
       >
-        <IconButton name="back" size={28} accessibilityLabel="Назад" onPress={onBack} />
+        <IconButton name="back" accessibilityLabel="Назад" onPress={onBack} />
         <SearchBar
           value={query}
           onChangeText={onChangeQuery}
           onClear={() => onChangeQuery?.('')}
           autoFocus
-          style={{ flex: 1, marginRight: theme.spacing.sm }}
+          style={{ flex: 1 }}
           testID="search-input"
         />
       </View>
@@ -57,8 +62,8 @@ export const SearchScreen = ({
       {searching ? (
         <AppText
           variant="caption"
-          tone="muted"
-          style={{ paddingHorizontal: theme.spacing.lg, paddingVertical: theme.spacing.md }}
+          tone="secondary"
+          style={{ paddingHorizontal: theme.spacing.lg, paddingBottom: theme.spacing.md }}
         >
           Найдено: {results.length}
         </AppText>
@@ -85,11 +90,12 @@ export const SearchScreen = ({
           )
         }
       />
-    </View>
+    </ScreenBackdrop>
   );
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
-  bar: { flexDirection: 'row', alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth },
+  // Без заливки и без разделителя: панель поиска пропускает свечение фона,
+  // иначе она стала бы единственным глухим прямоугольником на экране.
+  bar: { flexDirection: 'row', alignItems: 'center' },
 });

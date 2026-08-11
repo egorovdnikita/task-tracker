@@ -21,7 +21,9 @@
 | Навигация | React Navigation 7 (`@react-navigation/native`, `native-stack`), `react-native-screens`, `react-native-safe-area-context` |
 | Состояние | Zustand 5 + middleware `persist` |
 | Хранилище | `@react-native-async-storage/async-storage` (локально на устройстве) |
-| UI | Собственная дизайн-система на токенах: `StyleSheet`, `ThemeProvider` (светлая/тёмная схема), без UI-китов и иконочных библиотек |
+| UI | Собственная дизайн-система на токенах: `StyleSheet`, `ThemeProvider` (светлая/тёмная схема), без UI-китов |
+| Иконки | `expo-symbols` — системные SF Symbols на iPhone; в вебе и на Android тот же набор рисуется своими SVG-примитивами |
+| Графика и анимация | `@shopify/react-native-skia` 2.2 + `react-native-reanimated` 4 — оба входят в Expo Go SDK 54, dev-build не нужен |
 | Витрина компонентов | Storybook 10 (`@storybook/react-vite`), аддоны `addon-docs`, `addon-a11y` |
 | Сборка витрины | Vite 8 + `@vitejs/plugin-react`, алиас `react-native` → `react-native-web` 0.21 |
 | Веб-версия приложения | `react-native-web` + `react-dom` (`npm run web`) |
@@ -51,9 +53,22 @@ src/
   theme/          дизайн-токены и ThemeProvider
   mocks/          фикстуры для Storybook
   utils/          форматирование дат, склонения
+  vendor/         сторонние исходники под MIT — см. VENDORED.md в каждой папке
 .storybook/       конфигурация Storybook (vite + react-native-web)
 .github/workflows деплой Storybook на GitHub Pages
 ```
+
+## Сторонний код в `src/vendor`
+
+Обе библиотеки лежат исходниками, а не зависимостями: `border-beam-native`
+не опубликована в npm (подпапка чужого репозитория), а `thinking-orbs` — это
+React-DOM-пакет, который в React Native не работает без порта. У каждой рядом
+`VENDORED.md`: откуда взята, что изменено, как обновлять.
+
+| Папка | Что это | Где видно |
+| --- | --- | --- |
+| `vendor/thinking-orbs` | движок точечных 3D-орбов, отрисовка переписана с canvas на Skia | `ThinkingOrb` — в пустом состоянии и в Storybook |
+| `vendor/border-beam` | бегущий световой луч по контуру карточки (порт автора на Skia) | пока только витрина `Компоненты/BorderBeam`, в экраны не встроен |
 
 Экраны не знают про навигацию и стор — они получают данные и колбэки пропсами.
 Благодаря этому один и тот же экран рендерится и в приложении, и в Storybook.

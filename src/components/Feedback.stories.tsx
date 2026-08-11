@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { NoteGlow } from '../theme/tokens';
 
 import { Button } from './Button';
 import { ColorPicker } from './ColorPicker';
@@ -66,7 +67,7 @@ export const IconButtons: StoryObj = {
       <IconButton name="settings" accessibilityLabel="Настройки" />
       <IconButton name="pin" accessibilityLabel="Закрепить" active />
       <IconButton name="trash" accessibilityLabel="Удалить" tone="danger" />
-      <IconButton name="more" accessibilityLabel="Ещё" tone="muted" />
+      <IconButton name="more" accessibilityLabel="Ещё" tone="secondary" />
     </View>
   ),
 };
@@ -74,8 +75,8 @@ export const IconButtons: StoryObj = {
 export const NoteColorPicker: StoryObj = {
   name: 'ColorPicker',
   render: () => {
-    const [color, setColor] = useState<'default' | 'yellow' | 'green' | 'blue' | 'pink'>('yellow');
-    return <ColorPicker value={color} onChange={setColor} />;
+    const [glow, setGlow] = useState<NoteGlow>('lime');
+    return <ColorPicker value={glow} onChange={setGlow} />;
   },
 };
 

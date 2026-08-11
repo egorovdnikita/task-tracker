@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { Settings } from '../types';
 import { SettingsScreen } from './SettingsScreen';
 
-const base: Settings = { scheme: 'light', compact: false, sort: 'updated' };
+const base: Settings = { compact: false, sort: 'updated' };
 
 const meta = {
   title: 'Экраны/S4 Settings',
@@ -35,12 +35,5 @@ export const Interactive: Story = {
         onChange={(patch) => setSettings((s) => ({ ...s, ...patch }))}
       />
     );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Переключатель «Тёмная тема» здесь меняет только состояние экрана — глобальную тему Storybook переключайте в тулбаре.',
-      },
-    },
   },
 };

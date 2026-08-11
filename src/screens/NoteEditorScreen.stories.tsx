@@ -30,7 +30,16 @@ export const EditExisting: Story = {};
 
 export const CreateNew: Story = {
   args: { note: null },
-  parameters: { docs: { description: { story: 'Пустой черновик: нет корзины, «Сохранить» заблокирована.' } } },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Пустой черновик. В приложении этим путём больше не ходят: создание ' +
+          'идёт шитом `NoteComposerSheet`, а редактор открывается только на ' +
+          'существующей заметке. Состояние оставлено — экран его поддерживает.',
+      },
+    },
+  },
 };
 
 export const WithoutTag: Story = { args: { note: mockNotes[2] } };

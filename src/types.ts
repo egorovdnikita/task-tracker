@@ -1,11 +1,12 @@
-import type { NoteColor } from './theme/tokens';
+import type { NoteGlow } from './theme/tokens';
 
 export type Note = {
   id: string;
   title: string;
   body: string;
   tag: string | null;
-  color: NoteColor;
+  /** Цветовое свечение карточки; `none` — без акцента. */
+  glow: NoteGlow;
   pinned: boolean;
   createdAt: number;
   updatedAt: number;
@@ -13,8 +14,8 @@ export type Note = {
 
 export type SortMode = 'updated' | 'created' | 'title';
 
+/** Система dark-only, поэтому выбора цветовой схемы здесь нет. */
 export type Settings = {
-  scheme: 'light' | 'dark';
   compact: boolean;
   sort: SortMode;
 };

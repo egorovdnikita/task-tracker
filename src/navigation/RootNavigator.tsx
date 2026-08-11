@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { NoteComposerSheet } from '../components/NoteComposerSheet';
 import { NotesListScreen } from '../screens/NotesListScreen';
 import { NoteEditorScreen, type NoteDraft } from '../screens/NoteEditorScreen';
 import { SearchScreen } from '../screens/SearchScreen';
@@ -47,10 +48,12 @@ const confirm = (title: string, message: string, onConfirm: () => void) => {
 
 const NotesRoute = ({ navigation }: any) => {
   const { notes, settings } = useNotesStore();
+  const addNote = useNotesStore((s) => s.addNote);
   const deleteNote = useNotesStore((s) => s.deleteNote);
   const togglePinned = useNotesStore((s) => s.togglePinned);
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [menuId, setMenuId] = useState<string | null>(null);
+  const [composing, setComposing] = useState(false);
 
   const sorted = useMemo(() => sortNotes(notes, settings.sort), [notes, settings.sort]);
   const menuNote = notes.find((n) => n.id === menuId) ?? null;
@@ -65,9 +68,19 @@ const NotesRoute = ({ navigation }: any) => {
         onSelectTag={setActiveTag}
         onOpenNote={(noteId) => navigation.navigate('Editor', { noteId })}
         onNoteMenu={setMenuId}
-        onCreateNote={() => navigation.navigate('Editor')}
+        // Создание — шит поверх списка; экран редактора остаётся для правки.
+        onCreateNote={() => setComposing(true)}
         onOpenSearch={() => navigation.navigate('Search')}
         onOpenSettings={() => navigation.navigate('Settings')}
+      />
+      <NoteComposerSheet
+        visible={composing}
+        tags={collectTags(notes)}
+        onCancel={() => setComposing(false)}
+        onCreate={(draft) => {
+          addNote(draft);
+          setComposing(false);
+        }}
       />
       <ConfirmSheet
         visible={menuNote !== null}

@@ -1,23 +1,29 @@
 import React from 'react';
-import { Pressable, StyleSheet, Switch, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+
 import { useTheme } from '../theme/ThemeProvider';
 import { AppText } from './AppText';
-import { Icon } from './Icon';
+import { Switch } from './Switch';
+import { GlassSurface } from './GlassSurface';
+import { Icon, type IconName } from './Icon';
 
 export type SettingsRowProps = {
   title: string;
   description?: string;
-  /** switch — toggle; select — check mark; link — chevron; danger — destructive link */
+  /** switch — тумблер; select — галочка; link — шеврон; danger — деструктивный переход. */
   type?: 'switch' | 'select' | 'link' | 'danger';
+  icon?: IconName;
   value?: boolean;
   onPress?: () => void;
   onValueChange?: (value: boolean) => void;
 };
 
+/** Строка 72pt с ведущей иконкой — эталон взят с экрана «My Account». */
 export const SettingsRow = ({
   title,
   description,
   type = 'link',
+  icon,
   value = false,
   onPress,
   onValueChange,
@@ -33,39 +39,56 @@ export const SettingsRow = ({
       style={({ pressed }) => [
         styles.root,
         {
-          paddingHorizontal: theme.spacing.lg,
-          paddingVertical: theme.spacing.md,
-          backgroundColor: pressed ? theme.colors.surfaceAlt : theme.colors.surface,
+          minHeight: theme.sizes.row,
+          paddingHorizontal: theme.spacing.xl,
+          paddingVertical: theme.spacing.lg,
+          gap: theme.spacing.lg,
+          backgroundColor: pressed ? 'rgba(255,255,255,0.05)' : 'transparent',
         },
       ]}
     >
+      {icon ? (
+        <Icon
+          name={icon}
+          size={22}
+          tone={type === 'danger' ? 'danger' : 'secondary'}
+          strokeWidth={1.8}
+        />
+      ) : null}
+
       <View style={styles.texts}>
         <AppText variant="body" tone={type === 'danger' ? 'danger' : 'default'}>
           {title}
         </AppText>
         {description ? (
-          <AppText variant="caption" tone="muted">
+          <AppText variant="subtle" tone="secondary">
             {description}
           </AppText>
         ) : null}
       </View>
 
       {isSwitch ? (
-        <Switch
-          value={value}
-          onValueChange={onValueChange}
-          trackColor={{ true: theme.colors.accent, false: theme.colors.border }}
-          thumbColor={theme.colors.surface}
-        />
+        // Нажатие ловит вся строка, поэтому тумблеру своё имя не нужно —
+        // иначе VoiceOver прочитает заголовок дважды.
+        <Switch value={value} onValueChange={onValueChange} />
       ) : type === 'select' ? (
-        value ? <Icon name="check" size={18} /> : <View style={styles.spacer} />
+        value ? <Icon name="check" size={20} tone="accent" /> : <View style={styles.spacer} />
       ) : (
-        <Icon name="chevron" size={22} tone={type === 'danger' ? 'danger' : 'muted'} />
+        <Icon
+          name="chevron"
+          size={20}
+          tone={type === 'danger' ? 'danger' : 'tertiary'}
+          strokeWidth={1.8}
+        />
       )}
     </Pressable>
   );
 };
 
+/**
+ * Заголовок секции стоит НАД карточкой и набран крупно — в референсе это
+ * «Permissions», «Advanced», «Social», а не мелкий капс внутри группы.
+ */
 export const SettingsSection = ({
   title,
   children,
@@ -77,35 +100,37 @@ export const SettingsSection = ({
   const items = React.Children.toArray(children);
 
   return (
-    <View style={{ gap: theme.spacing.sm }}>
-      <AppText variant="label" tone="muted" style={{ paddingHorizontal: theme.spacing.lg }}>
-        {title.toUpperCase()}
+    <View style={{ gap: theme.spacing.md }}>
+      <AppText variant="heading" style={{ paddingHorizontal: theme.spacing.xl }}>
+        {title}
       </AppText>
-      <View
-        style={{
-          backgroundColor: theme.colors.surface,
-          borderRadius: theme.radius.md,
-          borderWidth: StyleSheet.hairlineWidth,
-          borderColor: theme.colors.border,
-          marginHorizontal: theme.spacing.lg,
-          overflow: 'hidden',
-        }}
+      <GlassSurface
+        stroke="card"
+        tint={theme.tints.card}
+        radius={theme.radius.lg}
+        style={{ marginHorizontal: theme.spacing.xl }}
       >
         {items.map((child, i) => (
           <View key={i}>
             {i > 0 ? (
-              <View style={{ height: StyleSheet.hairlineWidth, backgroundColor: theme.colors.border, marginLeft: theme.spacing.lg }} />
+              <View
+                style={{
+                  height: StyleSheet.hairlineWidth,
+                  backgroundColor: theme.colors.borderStrong,
+                  marginLeft: theme.spacing.xl,
+                }}
+              />
             ) : null}
             {child}
           </View>
         ))}
-      </View>
+      </GlassSurface>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  root: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 52 },
+  root: { flexDirection: 'row', alignItems: 'center' },
   texts: { flex: 1, gap: 2 },
-  spacer: { width: 18 },
+  spacer: { width: 20 },
 });

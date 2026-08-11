@@ -1,12 +1,14 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+
 import { useTheme } from '../theme/ThemeProvider';
-import { noteColors } from '../theme/tokens';
+import { NOTE_GLOW_OPACITY, noteGlows } from '../theme/tokens';
 import { formatRelativeDate } from '../utils/date';
 import type { Note } from '../types';
 import { AppText } from './AppText';
-import { IconButton } from './IconButton';
+import { GlassSurface } from './GlassSurface';
 import { Icon } from './Icon';
+import { IconButton } from './IconButton';
 
 export type NoteCardProps = {
   note: Note;
@@ -16,7 +18,7 @@ export type NoteCardProps = {
   onMenuPress?: (id: string) => void;
 };
 
-/** Splits `text` on `query` so matches can be emphasised in search results (S3). */
+/** Разбивает текст по совпадению, чтобы подсветить его в результатах поиска. */
 const splitHighlight = (text: string, query: string) => {
   if (!query.trim()) return [{ text, match: false }];
   const parts: { text: string; match: boolean }[] = [];
@@ -34,39 +36,49 @@ const splitHighlight = (text: string, query: string) => {
   return parts;
 };
 
-export const NoteCard = ({ note, compact = false, highlight = '', onPress, onMenuPress }: NoteCardProps) => {
+/**
+ * Карточка на стеклянной поверхности: меш даёт лёгкое свечение по углам,
+ * цвет заметки добавляется четвёртым эллипсом поверх пресета.
+ */
+export const NoteCard = ({
+  note,
+  compact = false,
+  highlight = '',
+  onPress,
+  onMenuPress,
+}: NoteCardProps) => {
   const theme = useTheme();
-  const accent = noteColors[note.color];
+  const glow = noteGlows[note.glow];
+
+  const mesh = [
+    ...theme.meshes.card,
+    ...(glow
+      ? [{ x: 0.95, y: -0.15, rx: 0.5, ry: 0.85, color: glow, opacity: NOTE_GLOW_OPACITY }]
+      : []),
+  ];
 
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={note.title || 'Без заголовка'}
       onPress={() => onPress?.(note.id)}
-      style={({ pressed }) => [
-        styles.root,
-        {
-          backgroundColor: theme.colors.surface,
-          borderColor: theme.colors.border,
-          borderRadius: theme.radius.md,
-          padding: compact ? theme.spacing.md : theme.spacing.lg,
-          opacity: pressed ? 0.85 : 1,
-        },
-      ]}
+      style={({ pressed }) => [{ opacity: pressed ? 0.85 : 1 }]}
     >
-      {accent !== 'transparent' ? (
-        <View style={[styles.accentBar, { backgroundColor: accent, borderTopLeftRadius: theme.radius.md, borderBottomLeftRadius: theme.radius.md }]} />
-      ) : null}
-
-      <View style={styles.body}>
+      <GlassSurface
+        mesh={mesh}
+        stroke="card"
+        tint={theme.tints.card}
+        radius={theme.radius.lg}
+        style={{ padding: compact ? theme.spacing.lg : theme.spacing.xl, gap: theme.spacing.sm }}
+      >
         <View style={styles.titleRow}>
-          {note.pinned ? <Icon name="pin" size={12} tone="muted" /> : null}
-          <AppText variant="subtitle" numberOfLines={1} style={styles.title}>
+          {note.pinned ? <Icon name="pin" size={14} tone="accent" /> : null}
+          <AppText variant="body" numberOfLines={1} style={styles.title}>
             {splitHighlight(note.title || 'Без заголовка', highlight).map((part, i) => (
               <AppText
                 key={i}
-                variant="subtitle"
-                style={part.match ? { backgroundColor: theme.colors.surfaceAlt } : undefined}
+                variant="body"
+                tone={part.match ? 'accent' : 'default'}
               >
                 {part.text}
               </AppText>
@@ -74,8 +86,9 @@ export const NoteCard = ({ note, compact = false, highlight = '', onPress, onMen
           </AppText>
           <IconButton
             name="more"
-            size={20}
-            tone="muted"
+            size={32}
+            tone="tertiary"
+            variant="plain"
             accessibilityLabel="Действия с заметкой"
             onPress={() => onMenuPress?.(note.id)}
             style={styles.menu}
@@ -83,30 +96,27 @@ export const NoteCard = ({ note, compact = false, highlight = '', onPress, onMen
         </View>
 
         {!compact && note.body ? (
-          <AppText variant="body" tone="muted" numberOfLines={2}>
+          <AppText variant="subtle" tone="secondary" numberOfLines={2}>
             {note.body}
           </AppText>
         ) : null}
 
         <View style={styles.metaRow}>
-          <AppText variant="caption" tone="muted">
+          <AppText variant="caption" tone="tertiary">
             {note.tag ? `#${note.tag.toLowerCase()}` : '—'}
           </AppText>
-          <AppText variant="caption" tone="muted">
+          <AppText variant="caption" tone="tertiary">
             {formatRelativeDate(note.updatedAt)}
           </AppText>
         </View>
-      </View>
+      </GlassSurface>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  root: { flexDirection: 'row', borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
-  accentBar: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 4 },
-  body: { flex: 1, gap: 6 },
-  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   title: { flex: 1 },
-  menu: { width: 28, height: 28, marginRight: -6 },
+  menu: { marginRight: -8, marginVertical: -8 },
   metaRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 },
 });

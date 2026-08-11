@@ -1,57 +1,79 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import { useTheme } from '../theme/ThemeProvider';
 import { AppText } from './AppText';
 import { IconButton } from './IconButton';
-import type { IconName } from './Icon';
+import type { IconName, IconTone } from './Icon';
 
 export type HeaderAction = {
   name: IconName;
   accessibilityLabel: string;
   onPress?: () => void;
-  tone?: 'default' | 'muted' | 'danger';
+  tone?: IconTone;
   active?: boolean;
 };
 
 export type AppHeaderProps = {
   title: string;
   subtitle?: string;
+  /** Заголовок по центру — как во всех внутренних экранах референса. */
+  align?: 'center' | 'left';
   onBack?: () => void;
+  onClose?: () => void;
   actions?: HeaderAction[];
 };
 
-/** Top bar shared by every screen (S1–S4 in the wireframe). */
-export const AppHeader = ({ title, subtitle, onBack, actions = [] }: AppHeaderProps) => {
+/**
+ * Шапка референса: прозрачный фон без разделителя, заголовок по центру,
+ * круглые стеклянные кнопки по краям. Боковые слоты равной ширины —
+ * иначе центр уезжает при разном числе действий слева и справа.
+ */
+export const AppHeader = ({
+  title,
+  subtitle,
+  align = 'center',
+  onBack,
+  onClose,
+  actions = [],
+}: AppHeaderProps) => {
   const theme = useTheme();
+  const slot = theme.sizes.iconButton + theme.spacing.sm;
+  const sideWidth = Math.max(actions.length, onBack || onClose ? 1 : 0) * slot;
 
   return (
     <View
       style={[
         styles.root,
         {
-          backgroundColor: theme.colors.surface,
-          borderBottomColor: theme.colors.border,
-          paddingHorizontal: onBack ? theme.spacing.sm : theme.spacing.lg,
+          minHeight: theme.sizes.header,
+          paddingHorizontal: theme.spacing.xl,
           paddingVertical: theme.spacing.md,
         },
       ]}
     >
-      {onBack ? (
-        <IconButton name="back" size={28} accessibilityLabel="Назад" onPress={onBack} />
-      ) : null}
+      <View style={[styles.side, align === 'center' && { width: sideWidth }]}>
+        {onBack ? (
+          <IconButton name="back" accessibilityLabel="Назад" onPress={onBack} />
+        ) : onClose ? (
+          <IconButton name="close" accessibilityLabel="Закрыть" onPress={onClose} />
+        ) : null}
+      </View>
 
-      <View style={styles.titles}>
-        <AppText variant={onBack ? 'subtitle' : 'title'} numberOfLines={1}>
+      <View style={[styles.titles, align === 'center' && styles.centered]}>
+        <AppText variant="heading" numberOfLines={1}>
           {title}
         </AppText>
         {subtitle ? (
-          <AppText variant="caption" tone="muted" numberOfLines={1}>
+          <AppText variant="caption" tone="secondary" numberOfLines={1}>
             {subtitle}
           </AppText>
         ) : null}
       </View>
 
-      <View style={styles.actions}>
+      <View
+        style={[styles.side, styles.trailing, align === 'center' && { width: sideWidth }]}
+      >
         {actions.map((action) => (
           <IconButton
             key={action.name + action.accessibilityLabel}
@@ -68,12 +90,9 @@ export const AppHeader = ({ title, subtitle, onBack, actions = [] }: AppHeaderPr
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
+  root: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  side: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  trailing: { justifyContent: 'flex-end' },
   titles: { flex: 1, justifyContent: 'center' },
-  actions: { flexDirection: 'row', alignItems: 'center' },
+  centered: { alignItems: 'center' },
 });

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, View, type ViewStyle } from 'react-native';
+
 import { useTheme } from '../theme/ThemeProvider';
 import { AppText } from './AppText';
+import { GlassSurface } from './GlassSurface';
 
 export type ChipProps = {
   label: string;
@@ -12,6 +14,7 @@ export type ChipProps = {
   style?: ViewStyle;
 };
 
+/** Выбранный чип в референсе — сплошная белая пилюля с тёмным текстом. */
 export const Chip = ({ label, selected = false, count, onPress, disabled, style }: ChipProps) => {
   const theme = useTheme();
 
@@ -22,26 +25,29 @@ export const Chip = ({ label, selected = false, count, onPress, disabled, style 
       accessibilityState={{ selected, disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.chip,
-        {
-          backgroundColor: selected ? theme.colors.accent : theme.colors.surface,
-          borderColor: selected ? theme.colors.accent : theme.colors.border,
-          borderRadius: theme.radius.pill,
-          paddingHorizontal: theme.spacing.md,
-          opacity: disabled ? 0.4 : pressed ? 0.75 : 1,
-        },
-        style,
-      ]}
+      style={({ pressed }) => [{ opacity: disabled ? 0.4 : pressed ? 0.75 : 1 }, style]}
     >
-      <AppText variant="label" tone={selected ? 'inverse' : 'default'}>
-        {label}
-      </AppText>
-      {typeof count === 'number' ? (
-        <AppText variant="caption" tone={selected ? 'inverse' : 'muted'}>
-          {count}
+      <GlassSurface
+        radius={theme.radius.pill}
+        tint={selected ? theme.colors.text : theme.tints.control}
+        stroke={selected ? null : 'subtle'}
+        style={{
+          height: theme.sizes.chip,
+          paddingHorizontal: theme.spacing.lg,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 6,
+        }}
+      >
+        <AppText variant="subtle" tone={selected ? 'inverse' : 'default'}>
+          {label}
         </AppText>
-      ) : null}
+        {typeof count === 'number' ? (
+          <AppText variant="subtle" tone={selected ? 'inverse' : 'tertiary'}>
+            {count}
+          </AppText>
+        ) : null}
+      </GlassSurface>
     </Pressable>
   );
 };
@@ -54,7 +60,6 @@ export type ChipGroupProps = {
   style?: ViewStyle;
 };
 
-/** Horizontal tag filter row — the "(Все)(Работа)(Идеи)" strip on S1. */
 export const ChipGroup = ({
   items,
   selectedKey = null,
@@ -82,7 +87,10 @@ export const ChipGroup = ({
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={[styles.row, { gap: theme.spacing.sm, paddingHorizontal: theme.spacing.lg }]}
+      contentContainerStyle={[
+        styles.row,
+        { gap: theme.spacing.sm, paddingHorizontal: theme.spacing.xl },
+      ]}
       style={style}
     >
       {content}
@@ -91,12 +99,5 @@ export const ChipGroup = ({
 };
 
 const styles = StyleSheet.create({
-  chip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    height: 34,
-    borderWidth: StyleSheet.hairlineWidth,
-  },
   row: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' },
 });

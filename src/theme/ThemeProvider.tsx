@@ -1,17 +1,15 @@
-import React, { createContext, useContext, useMemo } from 'react';
-import { buildTheme, type ColorScheme, type Theme } from './tokens';
+import React, { createContext, useContext } from 'react';
+import { theme, type Theme } from './tokens';
 
-const ThemeContext = createContext<Theme>(buildTheme('light'));
+const ThemeContext = createContext<Theme>(theme);
 
-export const ThemeProvider = ({
-  scheme = 'light',
-  children,
-}: {
-  scheme?: ColorScheme;
-  children: React.ReactNode;
-}) => {
-  const theme = useMemo(() => buildTheme(scheme), [scheme]);
-  return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
-};
+/**
+ * Система dark-only, поэтому провайдер отдаёт одну константу.
+ * Хук `useTheme()` сохранён намеренно: компоненты не зависят от того,
+ * появится ли позже вторая схема.
+ */
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => (
+  <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+);
 
 export const useTheme = () => useContext(ThemeContext);

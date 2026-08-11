@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useTheme } from '../theme/ThemeProvider';
 import { pluralNotes } from '../utils/date';
 import type { Note } from '../types';
@@ -8,6 +8,7 @@ import { ChipGroup } from '../components/Chip';
 import { EmptyState } from '../components/EmptyState';
 import { Fab } from '../components/Fab';
 import { NoteList } from '../components/NoteList';
+import { ScreenBackdrop } from '../components/ScreenBackdrop';
 import { SearchBar } from '../components/SearchBar';
 
 export type NotesListScreenProps = {
@@ -51,7 +52,7 @@ export const NotesListScreen = ({
   const sorted = [...visible].sort((a, b) => Number(b.pinned) - Number(a.pinned));
 
   return (
-    <View style={[styles.root, { backgroundColor: theme.colors.background }]}>
+    <ScreenBackdrop name="notes">
       <AppHeader
         title="Заметки"
         subtitle={pluralNotes(notes.length)}
@@ -89,8 +90,6 @@ export const NotesListScreen = ({
       />
 
       <Fab onPress={onCreateNote} testID="fab-create-note" />
-    </View>
+    </ScreenBackdrop>
   );
 };
-
-const styles = StyleSheet.create({ root: { flex: 1 } });

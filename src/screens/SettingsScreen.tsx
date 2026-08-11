@@ -35,7 +35,14 @@ export const SettingsScreen = ({
     <ScreenBackdrop name="settings">
       <AppHeader title="Настройки" onBack={onBack} />
 
-      <ScrollView contentContainerStyle={{ paddingVertical: theme.spacing.lg, gap: theme.spacing.xl }}>
+      <ScrollView
+        contentContainerStyle={{
+          paddingTop: theme.spacing.lg,
+          // Столько же, сколько у списка: под плавающей панелью вкладок.
+          paddingBottom: 112,
+          gap: theme.spacing.xl,
+        }}
+      >
         <SettingsSection title="Вид">
           <SettingsRow
             title="Компактный список"

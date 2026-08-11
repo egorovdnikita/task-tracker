@@ -1,34 +1,54 @@
 import React, { useMemo, useState } from 'react';
 import { Alert, Platform, StyleSheet, View } from 'react-native';
-import { NavigationContainer, type NavigatorScreenParams } from '@react-navigation/native';
+import {
+  DarkTheme,
+  NavigationContainer,
+  type NavigatorScreenParams,
+  type Theme as NavigationTheme,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createBottomTabNavigator,
+  type BottomTabBarProps,
+} from '@react-navigation/bottom-tabs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { NoteComposerSheet } from '../components/NoteComposerSheet';
+import { TabBar, type TabItem } from '../components/TabBar';
 import { NotesListScreen } from '../screens/NotesListScreen';
 import { NoteEditorScreen, type NoteDraft } from '../screens/NoteEditorScreen';
 import { SearchScreen } from '../screens/SearchScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { collectTags, searchNotes, sortNotes, useNotesStore } from '../store/useNotesStore';
 import { useTheme } from '../theme/ThemeProvider';
+import { colors } from '../theme/tokens';
 
-export type RootStackParamList = {
+export type TabParamList = {
   Notes: undefined;
-  Editor: { noteId?: string } | undefined;
   Search: undefined;
   Settings: undefined;
 };
 
-export type RootStackScreens = NavigatorScreenParams<RootStackParamList>;
+export type RootStackParamList = {
+  Tabs: NavigatorScreenParams<TabParamList> | undefined;
+  Editor: { noteId?: string } | undefined;
+};
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<TabParamList>();
 
-/** Shared chrome: safe area + themed background for every screen. */
+/**
+ * Общая обвязка экрана: safe area поверх чёрного.
+ *
+ * Полоса под часами и батареей красится `background`, а не `surface`.
+ * `surface` теперь прозрачное белое — на светлой подложке навигатора оно
+ * давало ровно ту белую плашку сверху, что видно на скриншотах с телефона.
+ */
 const Screen = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
   return (
-    <SafeAreaView edges={['top']} style={[styles.flex, { backgroundColor: theme.colors.surface }]}>
+    <SafeAreaView edges={['top']} style={[styles.flex, { backgroundColor: theme.colors.background }]}>
       <View style={[styles.flex, { backgroundColor: theme.colors.background }]}>{children}</View>
     </SafeAreaView>
   );
@@ -150,7 +170,6 @@ const SearchRoute = ({ navigation }: any) => {
         query={query}
         results={results}
         onChangeQuery={setQuery}
-        onBack={() => navigation.goBack()}
         onOpenNote={(noteId) => navigation.navigate('Editor', { noteId })}
       />
     </Screen>
@@ -166,7 +185,6 @@ const SettingsRoute = ({ navigation }: any) => {
     <Screen>
       <SettingsScreen
         settings={settings}
-        onBack={() => navigation.goBack()}
         onChange={updateSettings}
         onClearAll={() => confirm('Удалить все заметки?', 'Действие необратимо.', clearAll)}
       />
@@ -174,13 +192,65 @@ const SettingsRoute = ({ navigation }: any) => {
   );
 };
 
+/**
+ * Тема самого навигатора. Без неё React Navigation держит светлую схему по
+ * умолчанию и красит подложку экрана в белый — она и просвечивала сквозь
+ * прозрачные поверхности, пока приложение думало, что оно тёмное.
+ */
+const navigationTheme: NavigationTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: colors.background,
+    card: colors.background,
+    text: colors.text,
+    border: colors.border,
+    primary: colors.accentLime,
+  },
+};
+
+/** Вкладки нижней панели — порядок как в вайрфрейме (плита 02). */
+const TABS: TabItem[] = [
+  { key: 'Notes', label: 'Заметки', icon: 'note' },
+  { key: 'Search', label: 'Поиск', icon: 'search' },
+  { key: 'Settings', label: 'Ещё', icon: 'sliders' },
+];
+
+/**
+ * Панель вкладок поверх экранов. React Navigation отдаёт своё состояние,
+ * рисуем нашей `TabBar` — системного таб-бара iOS в навигаторе нет.
+ */
+const AppTabBar = ({ state, navigation }: BottomTabBarProps) => (
+  <TabBar
+    items={TABS}
+    activeKey={state.routes[state.index]?.name ?? 'Notes'}
+    onSelect={(key) => navigation.navigate(key)}
+  />
+);
+
+const Tabs = () => (
+  <Tab.Navigator
+    screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.background } }}
+    tabBar={AppTabBar}
+  >
+    <Tab.Screen name="Notes" component={NotesRoute} />
+    <Tab.Screen name="Search" component={SearchRoute} />
+    <Tab.Screen name="Settings" component={SettingsRoute} />
+  </Tab.Navigator>
+);
+
 export const RootNavigator = () => (
-  <NavigationContainer>
-    <Stack.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
-      <Stack.Screen name="Notes" component={NotesRoute} />
+  <NavigationContainer theme={navigationTheme}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+        contentStyle: { backgroundColor: colors.background },
+      }}
+    >
+      {/* Редактор уезжает поверх вкладок — панель на нём не нужна. */}
+      <Stack.Screen name="Tabs" component={Tabs} />
       <Stack.Screen name="Editor" component={EditorRoute} />
-      <Stack.Screen name="Search" component={SearchRoute} options={{ animation: 'fade' }} />
-      <Stack.Screen name="Settings" component={SettingsRoute} />
     </Stack.Navigator>
   </NavigationContainer>
 );

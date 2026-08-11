@@ -38,7 +38,9 @@ export const NoteList = ({
       contentContainerStyle={[
         {
           paddingHorizontal: theme.spacing.lg,
-          paddingBottom: 96,
+          // Под плавающей панелью вкладок: её высота 60 + отступ 20 снизу
+          // плюс воздух, иначе последняя карточка уезжает под стекло.
+          paddingBottom: 112,
           flexGrow: notes.length === 0 ? 1 : undefined,
         },
         contentContainerStyle,

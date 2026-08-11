@@ -5,6 +5,7 @@ import { Rubik_300Light, Rubik_400Regular, useFonts } from '@expo-google-fonts/r
 
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { ThemeProvider } from './src/theme/ThemeProvider';
+import { colors } from './src/theme/tokens';
 
 export default function App() {
   // Ровно два начертания — столько же, сколько знает src/theme/fonts.ts.
@@ -15,7 +16,9 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <SafeAreaProvider>
+    // Чёрный на самом корне: слой под навигатором — последнее, что просвечивает
+    // сквозь прозрачные поверхности, и по умолчанию он белый.
+    <SafeAreaProvider style={{ backgroundColor: colors.background }}>
       <ThemeProvider>
         {/* Система dark-only, поэтому статус-бар всегда светлый. */}
         <StatusBar style="light" />

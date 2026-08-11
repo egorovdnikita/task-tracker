@@ -48,7 +48,9 @@ export const SearchScreen = ({
           },
         ]}
       >
-        <IconButton name="back" accessibilityLabel="Назад" onPress={onBack} />
+        {/* Поиск теперь вкладка: возврата нет, кнопка появляется только
+            когда экран открыт поверх чего-то (например, из другого места). */}
+        {onBack ? <IconButton name="back" accessibilityLabel="Назад" onPress={onBack} /> : null}
         <SearchBar
           value={query}
           onChangeText={onChangeQuery}

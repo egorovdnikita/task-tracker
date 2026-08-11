@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
   root: {
     position: 'absolute',
     right: 20,
-    bottom: 96,
+    // Над панелью вкладок (60 + 20 снизу), не наезжая на неё.
+    bottom: 100,
     borderRadius: 32,
     shadowColor: '#DCFEAA',
     shadowOpacity: 0.28,

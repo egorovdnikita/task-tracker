@@ -17,8 +17,22 @@ import { theme } from '../src/theme/tokens';
  *
  * `staticDirs` в main.ts отдаёт по /canvaskit/ ровно ту сборку CanvasKit
  * (`full`), которую импортирует загрузчик Skia, — чтобы не ходить на чужой CDN.
+ *
+ * Путь берётся от базы документа, а не от корня домена. На GitHub Pages
+ * витрина лежит в подпапке `/task-tracker/`, и абсолютный `/canvaskit/…`
+ * уходил в 404: `await` на верхнем уровне не разрешался никогда, и вся
+ * витрина навсегда оставалась на экране загрузки.
+ *
+ * По той же причине здесь `catch`: если CanvasKit не поднялся, лучше отдать
+ * витрину без Skia — сломаются отдельные истории, а не всё разом.
  */
-await LoadSkiaWeb({ locateFile: (file) => `/canvaskit/${file}` });
+const canvasKitBase = new URL('.', document.baseURI).href;
+
+try {
+  await LoadSkiaWeb({ locateFile: (file) => `${canvasKitBase}canvaskit/${file}` });
+} catch (error) {
+  console.error('[storybook] CanvasKit не загрузился, истории на Skia работать не будут', error);
+}
 
 /** 390×844 — iPhone 15 logical size, канвас wireframe и референса. */
 const PHONE = { width: 390, height: 844 };

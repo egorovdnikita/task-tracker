@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import type { Preview } from '@storybook/react-vite';
 import { LoadSkiaWeb } from '@shopify/react-native-skia/lib/module/web';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ThemeProvider } from '../src/theme/ThemeProvider';
 import { theme } from '../src/theme/tokens';
@@ -37,6 +38,23 @@ try {
 /** 390×844 — iPhone 15 logical size, канвас wireframe и референса. */
 const PHONE = { width: 390, height: 844 };
 
+/**
+ * Метрики safe area того же iPhone 15. В браузере системных отступов нет,
+ * а компоненты их спрашивают — панель вкладок садится над индикатором
+ * «домой», подсветка фона уходит под часы. Подставляем реальные значения,
+ * иначе витрина показывала бы раскладку, которой на устройстве не бывает.
+ */
+const PHONE_METRICS = {
+  frame: { x: 0, y: 0, width: PHONE.width, height: PHONE.height },
+  insets: { top: 59, left: 0, right: 0, bottom: 34 },
+};
+
+/** Для историй отдельных компонентов рамки телефона нет — отступов тоже. */
+const FLAT_METRICS = {
+  frame: { x: 0, y: 0, width: PHONE.width, height: PHONE.height },
+  insets: { top: 0, left: 0, right: 0, bottom: 0 },
+};
+
 const preview: Preview = {
   parameters: {
     layout: 'centered',
@@ -57,23 +75,25 @@ const preview: Preview = {
       const device = context.parameters.device === true;
 
       return (
-        <ThemeProvider>
-          <View
-            style={{
-              backgroundColor: theme.colors.background,
-              borderRadius: device ? 32 : theme.radius.lg,
-              borderWidth: 1,
-              borderColor: theme.colors.border,
-              overflow: 'hidden',
-              padding: device ? 0 : theme.spacing.xl,
-              width: device ? PHONE.width : undefined,
-              height: device ? PHONE.height : undefined,
-              minWidth: device ? undefined : 320,
-            }}
-          >
-            <Story />
-          </View>
-        </ThemeProvider>
+        <SafeAreaProvider initialMetrics={device ? PHONE_METRICS : FLAT_METRICS}>
+          <ThemeProvider>
+            <View
+              style={{
+                backgroundColor: theme.colors.background,
+                borderRadius: device ? 32 : theme.radius.lg,
+                borderWidth: 1,
+                borderColor: theme.colors.border,
+                overflow: 'hidden',
+                padding: device ? 0 : theme.spacing.xl,
+                width: device ? PHONE.width : undefined,
+                height: device ? PHONE.height : undefined,
+                minWidth: device ? undefined : 320,
+              }}
+            >
+              <Story />
+            </View>
+          </ThemeProvider>
+        </SafeAreaProvider>
       );
     },
   ],

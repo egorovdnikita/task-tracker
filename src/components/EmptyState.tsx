@@ -6,6 +6,7 @@ import { AppText } from './AppText';
 import { Button } from './Button';
 import { Icon, type IconName } from './Icon';
 import { ThinkingOrb, type OrbState } from './ThinkingOrb';
+import { BorderBeam } from '../vendor/border-beam';
 
 export type EmptyStateProps = {
   icon?: IconName;
@@ -57,14 +58,16 @@ export const EmptyState = ({
         </AppText>
       ) : null}
       {actionLabel ? (
-        <Button
-          label={actionLabel}
-          icon="plus"
-          onPress={onAction}
-          // Button по умолчанию прижат влево (`alignSelf: flex-start`),
-          // и `alignItems` родителя его не перебивает — центруем явно.
+        // Луч по контуру: на пустом экране это единственное действие, и оно
+        // именно ждёт нажатия — тот случай, под который луч и заведён.
+        // Тип `sm`, как и везде в приложении.
+        <BorderBeam
+          size="sm"
+          borderRadius={theme.sizes.buttonLarge / 2}
           style={{ marginTop: theme.spacing.md, alignSelf: 'center' }}
-        />
+        >
+          <Button label={actionLabel} icon="plus" onPress={onAction} />
+        </BorderBeam>
       ) : null}
     </View>
   );

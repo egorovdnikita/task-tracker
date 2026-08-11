@@ -11,7 +11,6 @@ import {
   createBottomTabNavigator,
   type BottomTabBarProps,
 } from '@react-navigation/bottom-tabs';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { NoteComposerSheet } from '../components/NoteComposerSheet';
@@ -39,19 +38,16 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
 /**
- * Общая обвязка экрана: safe area поверх чёрного.
+ * Общая обвязка экрана.
  *
- * Полоса под часами и батареей красится `background`, а не `surface`.
- * `surface` теперь прозрачное белое — на светлой подложке навигатора оно
- * давало ровно ту белую плашку сверху, что видно на скриншотах с телефона.
+ * Safe area здесь не выставляется намеренно: её держит `ScreenBackdrop`
+ * внутри каждого экрана. Если обрезать экран по статус-бару снаружи,
+ * подсветка фона обрывается по его нижней кромке и сверху остаётся чёрная
+ * полоса — шов между системной зоной и приложением.
  */
 const Screen = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
-  return (
-    <SafeAreaView edges={['top']} style={[styles.flex, { backgroundColor: theme.colors.background }]}>
-      <View style={[styles.flex, { backgroundColor: theme.colors.background }]}>{children}</View>
-    </SafeAreaView>
-  );
+  return <View style={[styles.flex, { backgroundColor: theme.colors.background }]}>{children}</View>;
 };
 
 const confirm = (title: string, message: string, onConfirm: () => void) => {

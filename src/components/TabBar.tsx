@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../theme/ThemeProvider';
 import { AppText } from './AppText';
@@ -35,9 +36,15 @@ export type TabBarProps = {
  */
 export const TabBar = ({ items, activeKey, onSelect, style }: TabBarProps) => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
-    <View pointerEvents="box-none" style={[styles.wrapper, style]}>
+    <View
+      pointerEvents="box-none"
+      // Над индикатором «домой», а не поверх него. На устройствах без выреза
+      // inset нулевой — там панель садится на собственный отступ.
+      style={[styles.wrapper, { bottom: Math.max(insets.bottom, 12) + 8 }, style]}
+    >
       <GlassSurface
         blurIntensity={60}
         stroke="glass"
@@ -79,7 +86,7 @@ export const TabBar = ({ items, activeKey, onSelect, style }: TabBarProps) => {
 const HEIGHT = 60;
 
 const styles = StyleSheet.create({
-  wrapper: { position: 'absolute', left: 0, right: 0, bottom: 20, alignItems: 'center' },
+  wrapper: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
   bar: { height: HEIGHT, flexDirection: 'row', alignItems: 'center', padding: 5, gap: 2 },
   tab: {
     alignItems: 'center',

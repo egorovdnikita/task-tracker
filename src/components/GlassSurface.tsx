@@ -58,6 +58,27 @@ const resolveStroke = (stroke: GlassSurfaceProps['stroke']) => {
 };
 
 /**
+ * Разбирает `rgba(r,g,b,a)` на цвет и отдельную прозрачность.
+ *
+ * Это не косметика, а обход расхождения платформ. Браузер честно читает
+ * альфу прямо из `stop-color`, а react-native-svg её выбрасывает:
+ * в `extractGradient` цвет маскируется как `color & 0x00ffffff`, и альфа
+ * берётся ИСКЛЮЧИТЕЛЬНО из `stopOpacity`. Без неё `rgba(255,255,255,0.07)`
+ * на устройстве превращался в сплошной белый — отсюда и жирные контуры
+ * вокруг карточек, чипов и круглых кнопок, которых нет в витрине.
+ */
+const RGBA = /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/i;
+
+const splitAlpha = (value: string): { color: string; opacity: number } => {
+  const m = value.match(RGBA);
+  if (!m) return { color: value, opacity: 1 };
+  return {
+    color: `rgb(${m[1]}, ${m[2]}, ${m[3]})`,
+    opacity: m[4] === undefined ? 1 : Number(m[4]),
+  };
+};
+
+/**
  * Базовая поверхность новой системы: матовое стекло + меш из размытых эллипсов
  * + сложная градиентная обводка.
  *
@@ -129,16 +150,24 @@ export const GlassSurface = ({
                   <Stop
                     key={offset}
                     offset={`${offset}%`}
-                    stopColor={blob.color}
-                    stopOpacity={(blob.opacity ?? 1) * k}
+                    stopColor={splitAlpha(blob.color).color}
+                    stopOpacity={splitAlpha(blob.color).opacity * (blob.opacity ?? 1) * k}
                   />
                 ))}
               </RadialGradient>
             ))}
             {strokeSpec ? (
               <LinearGradient id={`${uid}-edge`} x1="0" y1="0" x2="0" y2="1">
-                <Stop offset="0%" stopColor={strokeSpec.from} />
-                <Stop offset="100%" stopColor={strokeSpec.to} />
+                <Stop
+                  offset="0%"
+                  stopColor={splitAlpha(strokeSpec.from).color}
+                  stopOpacity={splitAlpha(strokeSpec.from).opacity}
+                />
+                <Stop
+                  offset="100%"
+                  stopColor={splitAlpha(strokeSpec.to).color}
+                  stopOpacity={splitAlpha(strokeSpec.to).opacity}
+                />
               </LinearGradient>
             ) : null}
           </Defs>

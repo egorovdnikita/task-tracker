@@ -13,7 +13,6 @@ import { IconButton } from './IconButton';
 import { NoteCard } from './NoteCard';
 import { SearchBar } from './SearchBar';
 import { SettingsRow, SettingsSection } from './SettingsRow';
-import { TabBar } from './TabBar';
 import { TextField } from './TextField';
 import { mockNotes } from '../mocks/notes';
 import { useTheme } from '../theme/ThemeProvider';
@@ -148,10 +147,20 @@ export const Overlays: StoryObj = {
 };
 
 export const Navigation: StoryObj = {
-  name: 'Таб-бар и FAB',
+  name: 'FAB над списком',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Панели вкладок здесь нет намеренно: в приложении она нативная — ' +
+          '`NativeTabs` из expo-router поверх `UITabBarController`. В браузере ' +
+          'системного таб-бара не существует, поэтому показывать вместо него ' +
+          'самодельную копию значило бы врать про то, что видит пользователь.',
+      },
+    },
+  },
   render: () => {
     const theme = useTheme();
-    const [tab, setTab] = useState('notes');
     return (
       <View style={{ width: 390, height: 420, backgroundColor: theme.colors.background }}>
         <View style={{ padding: theme.spacing.xl, gap: theme.spacing.md }}>
@@ -159,15 +168,6 @@ export const Navigation: StoryObj = {
           <NoteCard note={mockNotes[2]} compact />
         </View>
         <Fab />
-        <TabBar
-          activeKey={tab}
-          onSelect={setTab}
-          items={[
-            { key: 'notes', label: 'Заметки', icon: 'note' },
-            { key: 'search', label: 'Поиск', icon: 'search' },
-            { key: 'profile', label: 'Профиль', icon: 'user' },
-          ]}
-        />
       </View>
     );
   },

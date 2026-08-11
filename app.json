@@ -3,6 +3,7 @@
     "name": "Task Tracker Notes",
     "slug": "task-tracker",
     "version": "1.0.0",
+    "scheme": "tasktracker",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -24,7 +25,8 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-router"
     ]
   }
 }

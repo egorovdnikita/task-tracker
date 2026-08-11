@@ -1,5 +1,6 @@
 import React from 'react';
 import { FlatList, View, type ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme/ThemeProvider';
 import type { Note } from '../types';
 import { NoteCard } from './NoteCard';
@@ -26,6 +27,7 @@ export const NoteList = ({
   contentContainerStyle,
 }: NoteListProps) => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <FlatList
@@ -38,9 +40,11 @@ export const NoteList = ({
       contentContainerStyle={[
         {
           paddingHorizontal: theme.spacing.lg,
-          // Под плавающей панелью вкладок: её высота 60 + отступ 20 снизу
-          // плюс воздух, иначе последняя карточка уезжает под стекло.
-          paddingBottom: 112,
+          // Нижний отступ берётся из safe area, а не константой: под нативной
+          // панелью вкладок `react-native-screens` уже включает в inset её
+          // высоту, и жёсткое число дало бы двойной запас на одних экранах
+          // и нехватку на других.
+          paddingBottom: insets.bottom + theme.spacing.xxl,
           flexGrow: notes.length === 0 ? 1 : undefined,
         },
         contentContainerStyle,

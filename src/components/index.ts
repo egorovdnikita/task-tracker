@@ -7,7 +7,6 @@ export { ConfirmSheet } from './ConfirmSheet';
 export { EmptyState } from './EmptyState';
 export { Fab } from './Fab';
 export { GlassSurface } from './GlassSurface';
-export { TabBar } from './TabBar';
 export { Icon, iconNames } from './Icon';
 export { IconButton } from './IconButton';
 export { NoteCard } from './NoteCard';

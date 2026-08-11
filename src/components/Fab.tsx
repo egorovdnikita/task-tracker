@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, type ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../theme/ThemeProvider';
 import { GlassSurface } from './GlassSurface';
@@ -22,6 +23,7 @@ export const Fab = ({
   testID,
 }: FabProps) => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const size = theme.sizes.fab;
 
   return (
@@ -32,6 +34,9 @@ export const Fab = ({
       onPress={onPress}
       style={({ pressed }) => [
         styles.root,
+        // Отступ снизу — из safe area: под нативной панелью вкладок он уже
+        // включает её высоту, поэтому кнопка садится над ней сама.
+        { bottom: insets.bottom + theme.spacing.lg },
         { width: size, height: size, transform: [{ scale: pressed ? 0.94 : 1 }] },
         style,
       ]}
@@ -52,8 +57,6 @@ const styles = StyleSheet.create({
   root: {
     position: 'absolute',
     right: 20,
-    // Над панелью вкладок (60 + 20 снизу), не наезжая на неё.
-    bottom: 100,
     borderRadius: 32,
     shadowColor: '#DCFEAA',
     shadowOpacity: 0.28,

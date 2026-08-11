@@ -23,6 +23,7 @@
 | Хранилище | `@react-native-async-storage/async-storage` (локально на устройстве) |
 | UI | Собственная дизайн-система на токенах: `StyleSheet`, `ThemeProvider` (светлая/тёмная схема), без UI-китов |
 | Иконки | `expo-symbols` — системные SF Symbols на iPhone; в вебе и на Android тот же набор рисуется своими SVG-примитивами |
+| Навигация | `expo-router` — файловые роуты в `app/`; вкладки нативные (`NativeTabs` поверх `UITabBarController` из react-native-screens) |
 | Графика и анимация | `@shopify/react-native-skia` 2.2 + `react-native-reanimated` 4 — оба входят в Expo Go SDK 54, dev-build не нужен |
 | Витрина компонентов | Storybook 10 (`@storybook/react-vite`), аддоны `addon-docs`, `addon-a11y` |
 | Сборка витрины | Vite 8 + `@vitejs/plugin-react`, алиас `react-native` → `react-native-web` 0.21 |
@@ -45,10 +46,13 @@
 ## Структура проекта
 
 ```
+app/              файловые роуты expo-router: связывают экраны со стором
+  _layout.tsx     корень: шрифты, провайдеры, стек
+  (tabs)/         группа с нативной панелью вкладок
+  editor.tsx      правка заметки — поверх вкладок
 src/
   components/     переиспользуемые компоненты + их *.stories.tsx
   screens/        экраны S1–S4 — чистые презентационные компоненты + сторис
-  navigation/     RootNavigator: связывает экраны со стором и React Navigation
   store/          Zustand-стор заметок и настроек, селекторы поиска/сортировки
   theme/          дизайн-токены и ThemeProvider
   mocks/          фикстуры для Storybook

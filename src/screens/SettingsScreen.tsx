@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme/ThemeProvider';
 import type { Settings, SortMode } from '../types';
 import { AppHeader } from '../components/AppHeader';
@@ -30,6 +31,7 @@ export const SettingsScreen = ({
   onClearAll,
 }: SettingsScreenProps) => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <ScreenBackdrop name="settings">
@@ -38,8 +40,8 @@ export const SettingsScreen = ({
       <ScrollView
         contentContainerStyle={{
           paddingTop: theme.spacing.lg,
-          // Столько же, сколько у списка: под плавающей панелью вкладок.
-          paddingBottom: 112,
+          // Так же, как у списка: отступ из safe area, а не константой.
+          paddingBottom: insets.bottom + theme.spacing.xxl,
           gap: theme.spacing.xl,
         }}
       >

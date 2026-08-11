@@ -1,4 +1,4 @@
-# Opal — заметки для iOS
+# task-tracker — заметки для iOS
 
 ## Версия SDK
 

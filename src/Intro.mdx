@@ -2,7 +2,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 <Meta title="Введение/Дизайн-система" />
 
-# Дизайн-система Opal
+# Дизайн-система task-tracker
 
 Система нативная для iOS. Это значит буквально следующее: там, где элемент есть
 у платформы, берётся платформенный, а не похожий на него. Собственный компонент
@@ -16,17 +16,22 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 ## Что откуда берётся
 
-| Слой | Источник |
-| --- | --- |
-| Цвет | Семантические цвета UIKit: `label`, `systemBackground`, `separator`, `systemFill`, акценты `systemBlue`…`systemGray6` |
-| Типографика | Стили текста iOS от `largeTitle` до `caption2` на SF Pro, с Dynamic Type |
-| Иконки | SF Symbols через `expo-symbols` |
-| Материалы | `UIVisualEffectView` через `expo-blur`, жидкое стекло через `expo-glass-effect` |
-| Панель вкладок | `UITabBarController` через `expo-router/unstable-native-tabs` |
-| Шапки и поиск | `UINavigationBar` нативного стека: крупный заголовок, `UISearchBar`, размытие |
-| Сегмент-контрол | `UISegmentedControl` через `@react-native-segmented-control/segmented-control` |
-| Выбор даты | `UIDatePicker` через `@react-native-community/datetimepicker` |
-| Тумблер, меню, алерты, шиты | `UISwitch`, `UIAlertController`, системные `formSheet` |
+- **Цвет** — семантические цвета UIKit: `label`, `systemBackground`,
+  `separator`, `systemFill`, акценты `systemBlue`…`systemGray6`
+- **Типографика** — стили текста iOS от `largeTitle` до `caption2` на SF Pro,
+  с Dynamic Type
+- **Иконки** — SF Symbols через `expo-symbols`
+- **Материалы** — `UIVisualEffectView` через `expo-blur`, жидкое стекло через
+  `expo-glass-effect`
+- **Панель вкладок** — `UITabBarController` через
+  `expo-router/unstable-native-tabs`
+- **Шапки и поиск** — `UINavigationBar` нативного стека: крупный заголовок,
+  `UISearchBar`, размытие
+- **Сегмент-контрол** — `UISegmentedControl` через
+  `@react-native-segmented-control/segmented-control`
+- **Выбор даты** — `UIDatePicker` через `@react-native-community/datetimepicker`
+- **Тумблер, меню, алерты, шиты** — `UISwitch`, `UIAlertController`,
+  системные `formSheet`
 
 ## Две схемы
 

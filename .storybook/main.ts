@@ -34,6 +34,9 @@ const reactNativeJsx = (): Plugin => ({
  */
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts|tsx)'],
+  // MDX здесь разбирается базовым Markdown, без remark-gfm: таблицы в
+  // страницах документации не используются — они вываливались бы в текст
+  // строкой с пайпами. Списки читаются везде одинаково.
   addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],
   framework: { name: '@storybook/react-vite', options: {} },
   core: { disableTelemetry: true },

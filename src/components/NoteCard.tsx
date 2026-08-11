@@ -1,125 +1,191 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { useTheme } from '../theme/ThemeProvider';
-import { NOTE_GLOW_OPACITY, noteGlows } from '../theme/tokens';
+import { useTheme } from '../theme';
+import type { LayoutMode, Note } from '../types';
+import { checklistProgress, noteSubtitle, noteTitle } from '../utils/blocks';
 import { formatRelativeDate } from '../utils/date';
-import type { Note } from '../types';
-import { AppText } from './AppText';
-import { GlassSurface } from './GlassSurface';
-import { Icon } from './Icon';
-import { IconButton } from './IconButton';
+import { Symbol } from './Symbol';
+import { Text } from './Text';
 
 export type NoteCardProps = {
   note: Note;
-  compact?: boolean;
+  layout?: LayoutMode;
+  onPress?: () => void;
+  onLongPress?: () => void;
+  /** Режим множественного выбора: слева появляется отметка. Плита 05.2. */
+  selectable?: boolean;
+  selected?: boolean;
+  /** Подсветить совпадение — поиск подсвечивает не только заголовок. */
   highlight?: string;
-  onPress?: (id: string) => void;
-  onMenuPress?: (id: string) => void;
-};
-
-/** Разбивает текст по совпадению, чтобы подсветить его в результатах поиска. */
-const splitHighlight = (text: string, query: string) => {
-  if (!query.trim()) return [{ text, match: false }];
-  const parts: { text: string; match: boolean }[] = [];
-  const lower = text.toLowerCase();
-  const needle = query.trim().toLowerCase();
-  let cursor = 0;
-  let idx = lower.indexOf(needle, cursor);
-  while (idx !== -1) {
-    if (idx > cursor) parts.push({ text: text.slice(cursor, idx), match: false });
-    parts.push({ text: text.slice(idx, idx + needle.length), match: true });
-    cursor = idx + needle.length;
-    idx = lower.indexOf(needle, cursor);
-  }
-  if (cursor < text.length) parts.push({ text: text.slice(cursor), match: false });
-  return parts;
+  style?: StyleProp<ViewStyle>;
 };
 
 /**
- * Карточка на стеклянной поверхности: меш даёт лёгкое свечение по углам,
- * цвет заметки добавляется четвёртым эллипсом поверх пресета.
+ * Карточка заметки.
+ *
+ * Превью зависит от содержимого, а не от типа: у списка задач это прогресс,
+ * у текста — первые строки. Тип заметки — не свойство сущности, а то, чем она
+ * оказалась заполнена.
  */
 export const NoteCard = ({
   note,
-  compact = false,
-  highlight = '',
+  layout = 'list',
   onPress,
-  onMenuPress,
+  onLongPress,
+  selectable = false,
+  selected = false,
+  highlight,
+  style,
 }: NoteCardProps) => {
   const theme = useTheme();
-  const glow = noteGlows[note.glow];
-
-  const mesh = [
-    ...theme.meshes.card,
-    ...(glow
-      ? [{ x: 0.95, y: -0.15, rx: 0.5, ry: 0.85, color: glow, opacity: NOTE_GLOW_OPACITY }]
-      : []),
-  ];
+  const progress = checklistProgress(note);
+  const preview = noteSubtitle(note);
+  const accent = note.accent ? theme.accent(note.accent) : null;
 
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={note.title || 'Без заголовка'}
-      onPress={() => onPress?.(note.id)}
-      style={({ pressed }) => [{ opacity: pressed ? 0.85 : 1 }]}
+      accessibilityState={{ selected: selectable ? selected : undefined }}
+      onPress={onPress}
+      onLongPress={onLongPress}
+      style={({ pressed }) => [
+        styles.card,
+        {
+          padding: theme.spacing.lg,
+          gap: theme.spacing.xs,
+          borderRadius: theme.radius.lg,
+          backgroundColor: theme.colors.secondarySystemGroupedBackground,
+          opacity: pressed ? 0.7 : 1,
+        },
+        selected ? { borderWidth: 2, borderColor: theme.colors.systemBlue } : null,
+        style,
+      ]}
     >
-      <GlassSurface
-        mesh={mesh}
-        stroke="card"
-        tint={theme.tints.card}
-        // Карточка нажимается — отклик стекла тут уместен. Цветное свечение
-        // заметки при этом остаётся: меш рисуется поверх материала.
-        interactive
-        radius={theme.radius.lg}
-        style={{ padding: compact ? theme.spacing.lg : theme.spacing.xl, gap: theme.spacing.sm }}
-      >
-        <View style={styles.titleRow}>
-          {note.pinned ? <Icon name="pin" size={14} tone="accent" /> : null}
-          <AppText variant="body" numberOfLines={1} style={styles.title}>
-            {splitHighlight(note.title || 'Без заголовка', highlight).map((part, i) => (
-              <AppText
-                key={i}
-                variant="body"
-                tone={part.match ? 'accent' : 'default'}
-              >
-                {part.text}
-              </AppText>
-            ))}
-          </AppText>
-          <IconButton
-            name="more"
-            size={32}
-            tone="tertiary"
-            variant="plain"
-            accessibilityLabel="Действия с заметкой"
-            onPress={() => onMenuPress?.(note.id)}
-            style={styles.menu}
+      <View style={[styles.head, { gap: theme.spacing.sm }]}>
+        {selectable ? (
+          <Symbol
+            name={selected ? 'checkmark.circle.fill' : 'circle'}
+            size={20}
+            color={selected ? theme.colors.systemBlue : theme.colors.tertiaryLabel}
           />
-        </View>
-
-        {!compact && note.body ? (
-          <AppText variant="subtle" tone="secondary" numberOfLines={2}>
-            {note.body}
-          </AppText>
         ) : null}
 
-        <View style={styles.metaRow}>
-          <AppText variant="caption" tone="tertiary">
-            {note.tag ? `#${note.tag.toLowerCase()}` : '—'}
-          </AppText>
-          <AppText variant="caption" tone="tertiary">
-            {formatRelativeDate(note.updatedAt)}
-          </AppText>
+        {accent ? (
+          <View
+            accessibilityElementsHidden
+            style={[styles.dot, { backgroundColor: accent, borderRadius: theme.radius.pill }]}
+          />
+        ) : null}
+
+        <Text variant="headline" numberOfLines={1} style={styles.grow}>
+          {noteTitle(note)}
+        </Text>
+
+        {note.pinned ? (
+          <Symbol
+            name="pin.fill"
+            size={13}
+            color={theme.colors.tertiaryLabel}
+            accessibilityLabel="Закреплено"
+          />
+        ) : null}
+      </View>
+
+      {progress ? (
+        <View style={[styles.head, { gap: theme.spacing.xs }]}>
+          <Symbol name="checklist" size={13} color={theme.colors.secondaryLabel} />
+          <Text variant="footnote" color="secondaryLabel">
+            {progress.done} из {progress.total}
+          </Text>
         </View>
-      </GlassSurface>
+      ) : preview ? (
+        <Highlighted
+          text={preview}
+          query={highlight}
+          lines={layout === 'grid' ? 6 : 2}
+        />
+      ) : null}
+
+      <View style={[styles.head, { gap: theme.spacing.sm, marginTop: theme.spacing.xxs }]}>
+        <Text variant="caption1" color="tertiaryLabel">
+          {formatRelativeDate(note.updatedAt)}
+        </Text>
+
+        {note.remindAt ? (
+          <Symbol
+            name="bell.fill"
+            size={11}
+            color={theme.colors.tertiaryLabel}
+            accessibilityLabel="Есть напоминание"
+          />
+        ) : null}
+
+        {note.tags.slice(0, layout === 'grid' ? 1 : 2).map((tag) => (
+          <Text key={tag} variant="caption1" color="tertiaryLabel" numberOfLines={1}>
+            #{tag}
+          </Text>
+        ))}
+      </View>
     </Pressable>
   );
 };
 
+/**
+ * Превью с подсветкой совпадения.
+ *
+ * Подсвечивается строка контекста, а не только заголовок: чаще всего искомое
+ * слово стоит в теле, и без подсветки результат выглядит случайным.
+ */
+const Highlighted = ({
+  text,
+  query,
+  lines,
+}: {
+  text: string;
+  query?: string;
+  lines: number;
+}) => {
+  const theme = useTheme();
+  const needle = query?.trim();
+
+  if (!needle) {
+    return (
+      <Text variant="subheadline" color="secondaryLabel" numberOfLines={lines}>
+        {text}
+      </Text>
+    );
+  }
+
+  const at = text.toLowerCase().indexOf(needle.toLowerCase());
+  if (at < 0) {
+    return (
+      <Text variant="subheadline" color="secondaryLabel" numberOfLines={lines}>
+        {text}
+      </Text>
+    );
+  }
+
+  // Окно вокруг совпадения: искомое слово может стоять глубоко в тексте, и
+  // без сдвига начала строки его в двух строках превью просто не видно.
+  const from = Math.max(0, at - 24);
+  const head = from > 0 ? '…' : '';
+
+  return (
+    <Text variant="subheadline" color="secondaryLabel" numberOfLines={lines}>
+      {head}
+      {text.slice(from, at)}
+      <Text variant="subheadline" weight="semibold" style={{ color: theme.hex.systemBlue }}>
+        {text.slice(at, at + needle.length)}
+      </Text>
+      {text.slice(at + needle.length)}
+    </Text>
+  );
+};
+
 const styles = StyleSheet.create({
-  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  title: { flex: 1 },
-  menu: { marginRight: -8, marginVertical: -8 },
-  metaRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 },
+  card: { borderCurve: 'continuous' },
+  head: { flexDirection: 'row', alignItems: 'center' },
+  grow: { flex: 1 },
+  dot: { width: 8, height: 8 },
 });

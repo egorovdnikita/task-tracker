@@ -1,70 +1,88 @@
 import React from 'react';
-import { Pressable, StyleSheet, type ViewStyle } from 'react-native';
+import { Platform, Pressable, StyleSheet, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useTheme } from '../theme/ThemeProvider';
-import { GlassSurface } from './GlassSurface';
-import { Icon, type IconName } from './Icon';
+import { supportsLiquidGlass, useTheme } from '../theme';
+import { Glass } from './Glass';
+import { Symbol } from './Symbol';
 
 export type FabProps = {
-  onPress?: () => void;
-  icon?: IconName;
+  onPress: () => void;
+  /** Долгое нажатие открывает выбор типа заметки — плита 02.5 вайрфрейма. */
+  onLongPress?: () => void;
   accessibilityLabel?: string;
+  accessibilityHint?: string;
   style?: ViewStyle;
-  testID?: string;
 };
 
-/** Круг «+» из референса: сплошной меш лайм → аква, иконка тёмная. */
+/**
+ * Плавающая кнопка создания.
+ *
+ * Стекло здесь уместно ровно потому, что кнопка плавает над списком: под ней
+ * едет контент, и жидкое стекло его преломляет. На плоском фоне тот же приём
+ * выродился бы в серый круг.
+ *
+ * Отступ снизу берётся из safe area, а не константой: над индикатором «домой»
+ * и над панелью вкладок высота разная, а на устройствах без индикатора её нет
+ * вовсе.
+ */
 export const Fab = ({
   onPress,
-  icon = 'plus',
+  onLongPress,
   accessibilityLabel = 'Новая заметка',
+  accessibilityHint = 'Долгое нажатие — выбрать тип заметки',
   style,
-  testID,
 }: FabProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const size = theme.sizes.fab;
+  const size = theme.controlHeight.fab;
 
   return (
     <Pressable
-      testID={testID}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      accessibilityHint={onLongPress ? accessibilityHint : undefined}
       onPress={onPress}
+      onLongPress={onLongPress}
       style={({ pressed }) => [
         styles.root,
-        // Отступ снизу — из safe area: под нативной панелью вкладок он уже
-        // включает её высоту, поэтому кнопка садится над ней сама.
-        { bottom: insets.bottom + theme.spacing.lg },
-        { width: size, height: size, transform: [{ scale: pressed ? 0.94 : 1 }] },
+        {
+          width: size,
+          height: size,
+          right: theme.spacing.xl,
+          bottom: insets.bottom + theme.spacing.xl,
+          opacity: pressed ? 0.7 : 1,
+        },
         style,
       ]}
     >
-      <GlassSurface
-        mesh="fab"
-        // Без системного стекла: заливка мешем лайм → аква и есть смысл
-        // кнопки, материал бы её замутил.
-        liquid={false}
+      <Glass
         radius={size / 2}
-        tint={theme.colors.accentLime}
-        style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}
+        variant="regular"
+        interactive
+        material="thick"
+        style={[
+          styles.surface,
+          // Тень нужна только тому стеклу, которое системой не отбрасывается
+          // само. На iOS 26 жидкое стекло уже лежит со своей тенью, и вторая
+          // читается как ореол.
+          Platform.OS === 'ios' && supportsLiquidGlass() ? null : styles.shadow,
+        ]}
       >
-        <Icon name={icon} size={28} tone="inverse" strokeWidth={2.2} />
-      </GlassSurface>
+        <Symbol name="plus" size={26} color={theme.colors.systemBlue} weight="medium" />
+      </Glass>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    position: 'absolute',
-    right: 20,
-    borderRadius: 32,
-    shadowColor: '#DCFEAA',
-    shadowOpacity: 0.28,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 8,
+  root: { position: 'absolute' },
+  surface: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  shadow: {
+    shadowColor: '#000',
+    shadowOpacity: 0.18,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 6,
   },
 });

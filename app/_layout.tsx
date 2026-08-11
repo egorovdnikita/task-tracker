@@ -1,37 +1,102 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { ThemeProvider } from '../src/theme/ThemeProvider';
-import { colors } from '../src/theme/tokens';
+import { ThemeProvider, useTheme } from '../src/theme';
+import { useNotesStore } from '../src/store/useNotesStore';
 
 /**
- * Корень приложения на файловых роутах.
+ * Корень приложения.
  *
- * `(tabs)` — группа с нативной панелью вкладок, `editor` лежит рядом и
- * поэтому уезжает поверх неё обычным push: панель на редакторе не нужна.
+ * `(tabs)` — вкладки, редактор и модалки лежат рядом и уезжают поверх них.
+ * Всё, что связано с первым запуском, аккаунтом и синхронизацией, здесь
+ * отсутствует намеренно: приложение работает локально и без входа, так что
+ * маршрутов онбординга и авторизации у него нет.
  */
 export default function RootLayout() {
-  // Шрифт больше не грузится: SF Pro системный, ждать нечего — и заодно
-  // ушёл чёрный кадр, который держался до загрузки Rubik.
+  const appearance = useNotesStore((s) => s.settings.appearance);
+
   return (
-    // Чёрный на самом корне: слой под навигатором — последнее, что просвечивает
-    // сквозь прозрачные поверхности, и по умолчанию он белый.
-    <SafeAreaProvider style={{ backgroundColor: colors.background }}>
-      <ThemeProvider>
-        {/* Система dark-only, поэтому статус-бар всегда светлый. */}
-        <StatusBar style="light" />
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: colors.background },
-          }}
-        >
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="editor" options={{ animation: 'slide_from_right' }} />
-        </Stack>
+    <SafeAreaProvider>
+      <ThemeProvider preference={appearance}>
+        {/* `auto` — статус-бар следует схеме: тёмные буквы на светлой, светлые
+            на тёмной. Фиксировать его значит получить невидимые часы в одной
+            из двух тем. */}
+        <StatusBar style="auto" />
+        <RootStack />
       </ThemeProvider>
     </SafeAreaProvider>
   );
 }
+
+const RootStack = () => {
+  const theme = useTheme();
+
+  return (
+    <Stack
+      screenOptions={{
+        headerTintColor: theme.hex.systemBlue,
+        headerTitleStyle: theme.headerText('headline', 'semibold'),
+        // Шапка прозрачная и размытая — системное поведение: под ней едет
+        // контент, а не белый прямоугольник.
+        headerTransparent: true,
+        headerBlurEffect: theme.scheme === 'dark' ? 'systemChromeMaterialDark' : 'systemChromeMaterialLight',
+        headerShadowVisible: false,
+        contentStyle: { backgroundColor: theme.hex.systemGroupedBackground },
+      }}
+    >
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
+      <Stack.Screen
+        name="note/[id]"
+        options={{ headerBackButtonDisplayMode: 'minimal', title: '' }}
+      />
+
+      {/*
+        Шиты, а не экраны: перенос, теги и напоминание — выбор внутри контекста,
+        и контекст должен остаться виден за ними. `formSheet` даёт настоящий
+        системный лист с ручкой, инерцией и закрытием свайпом.
+      */}
+      <Stack.Screen
+        name="move"
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.5, 0.9],
+          sheetGrabberVisible: true,
+          sheetCornerRadius: theme.radius.xxl,
+          title: 'Переместить',
+        }}
+      />
+      <Stack.Screen
+        name="tags"
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.6, 0.95],
+          sheetGrabberVisible: true,
+          sheetCornerRadius: theme.radius.xxl,
+          title: 'Теги',
+        }}
+      />
+      {/*
+        Захват (плита 04) — полноэкранные модалки, а не листы: камера и запись
+        занимают весь экран по своей природе, и оставлять под ними полоску
+        заметки незачем.
+      */}
+      <Stack.Screen name="capture/voice" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="capture/scan" options={{ presentation: 'fullScreenModal' }} />
+      <Stack.Screen name="capture/sketch" options={{ presentation: 'modal' }} />
+
+      <Stack.Screen
+        name="reminder"
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.55],
+          sheetGrabberVisible: true,
+          sheetCornerRadius: theme.radius.xxl,
+          title: 'Напоминание',
+        }}
+      />
+    </Stack>
+  );
+};

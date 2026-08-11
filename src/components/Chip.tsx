@@ -31,6 +31,10 @@ export const Chip = ({ label, selected = false, count, onPress, disabled, style 
         radius={theme.radius.pill}
         tint={selected ? theme.colors.text : theme.tints.control}
         stroke={selected ? null : 'subtle'}
+        // Выбранный чип — сплошная белая пилюля, системное стекло под ней
+        // не видно; невыбранный получает и материал, и отклик.
+        liquid={!selected}
+        interactive={!selected}
         style={{
           height: theme.sizes.chip,
           paddingHorizontal: theme.spacing.lg,

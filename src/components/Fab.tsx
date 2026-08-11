@@ -43,6 +43,9 @@ export const Fab = ({
     >
       <GlassSurface
         mesh="fab"
+        // Без системного стекла: заливка мешем лайм → аква и есть смысл
+        // кнопки, материал бы её замутил.
+        liquid={false}
         radius={size / 2}
         tint={theme.colors.accentLime}
         style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}

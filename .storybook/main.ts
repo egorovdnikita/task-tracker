@@ -7,7 +7,7 @@ import type { Plugin as EsbuildPlugin } from 'esbuild';
  * Vite такие файлы не парсит, поэтому прогоняем их через esbuild с loader: 'jsx'.
  */
 const RN_JSX_PACKAGES =
-  /node_modules\/(expo-linear-gradient|expo-blur|@expo\/vector-icons|react-native-svg|@react-native|react-native-safe-area-context)\//;
+  /node_modules\/(expo-linear-gradient|expo-blur|expo-glass-effect|expo-symbols|@expo\/vector-icons|react-native-svg|@react-native|react-native-safe-area-context)\//;
 
 const reactNativeJsx = (): Plugin => ({
   name: 'jsx-in-react-native-packages',
@@ -88,8 +88,6 @@ const config: StorybookConfig = {
   core: { disableTelemetry: true },
 
   staticDirs: [
-    // Те же .ttf, что грузит приложение, — витрина отдаёт их по /fonts/…
-    { from: '../node_modules/@expo-google-fonts/rubik', to: '/fonts' },
     // На устройстве Skia нативная, в браузере — CanvasKit (WASM, ~7.6 МБ).
     // Кладём рядом с витриной, чтобы не тянуть с чужого CDN. Только сборка
     // `full` — её импортирует загрузчик Skia; остальные две лишние 16 МБ.

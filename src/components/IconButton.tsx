@@ -57,6 +57,10 @@ export const IconButton = ({
               : theme.tints.control
         }
         stroke={variant === 'plain' ? null : 'subtle'}
+        // Круглая кнопка — ровно тот случай, под который сделан
+        // `isInteractive`: стекло подсвечивается и течёт под пальцем.
+        liquid={variant !== 'plain'}
+        interactive={variant !== 'plain'}
         style={{
           width: diameter,
           height: diameter,

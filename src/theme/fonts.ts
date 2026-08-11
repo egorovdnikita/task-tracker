@@ -1,18 +1,30 @@
+import { Platform } from 'react-native';
+
 /**
- * Rubik, только Light и Regular: у эталона нет жирных начертаний, крупный
- * кегль там держится размером и воздухом, а не весом. Light идёт на заголовки,
- * Regular — на всё остальное.
+ * SF Pro — системный шрифт iOS. Его не грузят файлом: на устройстве он
+ * берётся по имени `System`, в вебе — из стека `-apple-system`.
  *
- * В React Native начертание задаётся не `fontWeight`, а отдельным
- * семейством — иначе система рисует синтетический жир. Поэтому токены
- * типографики несут `fontFamily`, а не вес.
+ * Отличие от прежнего Rubik принципиальное: у системного шрифта начертание
+ * задаётся весом (`fontWeight`), а не отдельным семейством. Поэтому токены
+ * типографики ниже несут пару «семейство + вес», а не одно имя файла, —
+ * иначе iOS нарисует синтетический жир вместо настоящего SF Pro Medium.
  *
- * Те же .ttf подключаются в Storybook через `@font-face` в preview-head.html,
- * поэтому витрина и приложение рендерят один и тот же шрифт.
+ * Веса: Medium (500) на заголовки и подписи контролов, Regular (400) на
+ * пояснения и наборный текст.
  */
 export const fonts = {
-  light: 'Rubik_300Light',
-  regular: 'Rubik_400Regular',
+  /**
+   * На iOS `System` резолвится в SF Pro и подхватывает оптические размеры
+   * (SF Pro Text до 20pt, Display выше) — сам, по кеглю.
+   */
+  system: Platform.select({
+    ios: 'System',
+    default:
+      '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif',
+  }),
 } as const;
 
-export type FontFamily = (typeof fonts)[keyof typeof fonts];
+export const weights = {
+  regular: '400',
+  medium: '500',
+} as const;

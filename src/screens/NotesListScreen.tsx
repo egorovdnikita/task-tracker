@@ -4,7 +4,7 @@ import { useTheme } from '../theme/ThemeProvider';
 import { pluralNotes } from '../utils/date';
 import type { Note } from '../types';
 import { AppHeader } from '../components/AppHeader';
-import { ChipGroup } from '../components/Chip';
+import { GlassSegmentedControl } from '../components/GlassSegmentedControl';
 import { EmptyState } from '../components/EmptyState';
 import { Fab } from '../components/Fab';
 import { NoteList } from '../components/NoteList';
@@ -63,11 +63,16 @@ export const NotesListScreen = ({
         <SearchBar value="" editable={false} onFocus={onOpenSearch} />
       </View>
 
-      <ChipGroup
+      {/*
+        Фильтр по тегу — сегмент-контрол, а не чипы: выбран всегда ровно
+        один тег, и общий трек с едущей плашкой показывает это формой.
+      */}
+      <GlassSegmentedControl
+        accessibilityLabel="Фильтр по тегу"
         items={chips}
         selectedKey={activeTag ?? '__all__'}
         onSelect={(key) => onSelectTag?.(key === '__all__' ? null : key)}
-        style={{ flexGrow: 0, marginBottom: theme.spacing.md }}
+        style={{ marginHorizontal: theme.spacing.lg, marginBottom: theme.spacing.md }}
       />
 
       <NoteList

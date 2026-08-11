@@ -68,6 +68,9 @@ export const NoteCard = ({
         mesh={mesh}
         stroke="card"
         tint={theme.tints.card}
+        // Карточка нажимается — отклик стекла тут уместен. Цветное свечение
+        // заметки при этом остаётся: меш рисуется поверх материала.
+        interactive
         radius={theme.radius.lg}
         style={{ padding: compact ? theme.spacing.lg : theme.spacing.xl, gap: theme.spacing.sm }}
       >

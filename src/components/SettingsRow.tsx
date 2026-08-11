@@ -1,9 +1,8 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { useTheme } from '../theme/ThemeProvider';
 import { AppText } from './AppText';
-import { Switch } from './Switch';
 import { GlassSurface } from './GlassSurface';
 import { Icon, type IconName } from './Icon';
 
@@ -70,7 +69,14 @@ export const SettingsRow = ({
       {isSwitch ? (
         // Нажатие ловит вся строка, поэтому тумблеру своё имя не нужно —
         // иначе VoiceOver прочитает заголовок дважды.
-        <Switch value={value} onValueChange={onValueChange} />
+        // Системный `UISwitch`: своя пилюля повторяла геометрию эталона,
+        // но теряла штатную анимацию, хаптику и Dynamic Type.
+        <Switch
+          value={value}
+          onValueChange={onValueChange}
+          trackColor={{ true: theme.colors.switchOn, false: theme.colors.switchOff }}
+          ios_backgroundColor={theme.colors.switchOff}
+        />
       ) : type === 'select' ? (
         value ? <Icon name="check" size={20} tone="accent" /> : <View style={styles.spacer} />
       ) : (

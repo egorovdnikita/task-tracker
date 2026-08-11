@@ -1,4 +1,4 @@
-import { fonts } from './fonts';
+import { fonts, weights } from './fonts';
 
 /**
  * Design tokens — тёмная система, вдохновлённая референсом Opal.
@@ -55,7 +55,8 @@ export const colors = {
   switchOn: '#4CAF13',
   switchOff: 'rgba(120,120,128,0.32)',
 
-  overlay: 'rgba(0,0,0,0.6)',
+  /** Затемнение под шитом. Слабее прежнего: модалка должна просвечивать. */
+  overlay: 'rgba(0,0,0,0.4)',
 } as const;
 
 /** Градиентная ось акцента: FAB, CTA, круг «+», обводка аватара. */
@@ -115,25 +116,32 @@ export const radius = {
 } as const;
 
 /**
- * Шкала мельче прежней примерно на ступень: на 390pt строка стала длиннее,
- * а иерархия держится не кеглем, а начертанием и цветом. Light — только на
- * крупном, на мелком он рассыпается.
+ * Шкала на SF Pro. Иерархия держится весом и цветом, а не кеглем:
+ * Medium — заголовки и всё, что подписывает контрол; Regular — пояснения
+ * и наборный текст.
+ *
+ * Трекинг задан вручную только там, где SF на крупном кегле расходится:
+ * системный шрифт сам поджимает межбуквенное на Display-размерах, и без
+ * поправки заголовок выглядит разреженным рядом с мелким текстом.
  */
+const face = { fontFamily: fonts.system } as const;
+
 export const typography = {
-  display: { fontSize: 26, lineHeight: 32, fontFamily: fonts.light, letterSpacing: -0.5 },
-  title: { fontSize: 20, lineHeight: 26, fontFamily: fonts.light, letterSpacing: -0.3 },
-  heading: { fontSize: 17, lineHeight: 22, fontFamily: fonts.regular, letterSpacing: -0.2 },
-  body: { fontSize: 15, lineHeight: 20, fontFamily: fonts.regular, letterSpacing: 0 },
-  /** Пояснение под заголовком строки — Light, чтобы не спорить с ним по весу. */
-  subtle: { fontSize: 13, lineHeight: 18, fontFamily: fonts.light, letterSpacing: 0 },
-  caption: { fontSize: 11, lineHeight: 15, fontFamily: fonts.regular, letterSpacing: 0 },
-  overline: { fontSize: 11, lineHeight: 14, fontFamily: fonts.regular, letterSpacing: 0.7 },
-  /** Подпись кнопки — мельче основного текста. */
-  button: { fontSize: 14, lineHeight: 18, fontFamily: fonts.regular, letterSpacing: 0 },
-  /** Значение в поле ввода — тоже Light: набранный текст легче подписей вокруг. */
-  input: { fontSize: 15, lineHeight: 20, fontFamily: fonts.light, letterSpacing: 0 },
+  display: { ...face, fontSize: 28, lineHeight: 34, fontWeight: weights.medium, letterSpacing: -0.5 },
+  title: { ...face, fontSize: 22, lineHeight: 28, fontWeight: weights.medium, letterSpacing: -0.4 },
+  heading: { ...face, fontSize: 17, lineHeight: 22, fontWeight: weights.medium, letterSpacing: -0.3 },
+  /** Наборный текст и значения строк. */
+  body: { ...face, fontSize: 16, lineHeight: 21, fontWeight: weights.regular, letterSpacing: -0.2 },
+  /** Пояснение под заголовком строки. */
+  subtle: { ...face, fontSize: 14, lineHeight: 19, fontWeight: weights.regular, letterSpacing: -0.1 },
+  caption: { ...face, fontSize: 12, lineHeight: 16, fontWeight: weights.regular, letterSpacing: 0 },
+  overline: { ...face, fontSize: 12, lineHeight: 15, fontWeight: weights.medium, letterSpacing: 0.5 },
+  /** Подпись кнопки — контрол, поэтому Medium. */
+  button: { ...face, fontSize: 16, lineHeight: 21, fontWeight: weights.medium, letterSpacing: -0.2 },
+  /** Значение в поле ввода. */
+  input: { ...face, fontSize: 16, lineHeight: 21, fontWeight: weights.regular, letterSpacing: -0.2 },
   /** Крупное значение в поле — заголовок заметки. */
-  inputTitle: { fontSize: 17, lineHeight: 23, fontFamily: fonts.light, letterSpacing: -0.2 },
+  inputTitle: { ...face, fontSize: 19, lineHeight: 25, fontWeight: weights.medium, letterSpacing: -0.4 },
 } as const;
 
 export type TypographyVariant = keyof typeof typography;
@@ -237,7 +245,8 @@ export const tints = {
   cta: 'rgba(255,255,255,0.14)',
   card: 'rgba(255,255,255,0.045)',
   control: 'rgba(255,255,255,0.07)',
-  glass: 'rgba(24,24,24,0.62)',
+  /** Шиты и модалки: заметно прозрачнее панелей — под ними виден экран. */
+  glass: 'rgba(20,20,22,0.42)',
 } as const;
 
 export type TintName = keyof typeof tints;

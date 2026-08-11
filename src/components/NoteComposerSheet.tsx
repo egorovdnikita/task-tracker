@@ -11,6 +11,7 @@ import { GlassSurface } from './GlassSurface';
 import { Icon } from './Icon';
 import { IconButton } from './IconButton';
 import { TextField } from './TextField';
+import { useKeyboardVisible } from '../utils/useKeyboardVisible';
 
 export type NoteComposerDraft = {
   title: string;
@@ -51,6 +52,7 @@ export const NoteComposerSheet = ({
   inline = false,
 }: NoteComposerSheetProps) => {
   const theme = useTheme();
+  const keyboardVisible = useKeyboardVisible();
   const [draft, setDraft] = useState<NoteComposerDraft>(EMPTY);
 
   // Каждое открытие — с чистого листа: черновик прошлого захода в шите
@@ -79,12 +81,16 @@ export const NoteComposerSheet = ({
           mesh="card"
           stroke="glass"
           tint={theme.tints.glass}
+          glassStyle="clear"
           radius={theme.radius.xl}
           style={{
             paddingHorizontal: theme.spacing.lg,
             paddingTop: theme.spacing.md,
             paddingBottom: theme.spacing.xxxl,
             gap: theme.spacing.lg,
+            // Зазор до клавиатуры: `behavior="padding"` сажает шит вплотную
+            // к её кромке, и нижнее поле упирается в ряд клавиш.
+            marginBottom: keyboardVisible ? 10 : 0,
           }}
         >
           <View style={[styles.grabber, { backgroundColor: theme.colors.borderStrong }]} />
@@ -103,6 +109,7 @@ export const NoteComposerSheet = ({
             >
               <GlassSurface
                 mesh="fab"
+                liquid={false}
                 tint={theme.colors.accentLime}
                 radius={theme.sizes.iconButton / 2}
                 style={styles.confirm}

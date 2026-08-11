@@ -72,6 +72,10 @@ export const Button = ({
         mesh={surface.mesh}
         stroke={surface.stroke}
         tint={surface.tint}
+        // Варианты с мешем несут собственный градиент — системное стекло
+        // им не нужно. Остальным оно достаётся вместе с откликом на нажатие.
+        liquid={surface.mesh === null}
+        interactive={surface.mesh === null}
         radius={theme.radius.pill}
         style={{
           height,

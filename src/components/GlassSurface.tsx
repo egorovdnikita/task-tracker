@@ -2,6 +2,7 @@ import React, { useId, useState } from 'react';
 import { StyleSheet, View, type LayoutChangeEvent, type ViewStyle } from 'react-native';
 import { BlurView } from 'expo-blur';
 import Svg, { Defs, Ellipse, LinearGradient, RadialGradient, Rect, Stop } from 'react-native-svg';
+import { GlassView, isLiquidGlassAvailable, type GlassStyle } from 'expo-glass-effect';
 
 import { useTheme } from '../theme/ThemeProvider';
 import { meshes, strokes, type MeshName, type StrokeName } from '../theme/tokens';
@@ -31,6 +32,24 @@ export type GlassSurfaceProps = {
   style?: ViewStyle;
   children?: React.ReactNode;
   pointerEventsNone?: boolean;
+  /**
+   * Просить ли системное жидкое стекло там, где оно есть.
+   *
+   * `false` — поверхность рисуется только нашими слоями. Нужно там, где
+   * важен собственный градиент: у FAB и CTA заливка мешем и есть смысл
+   * элемента, системное стекло его бы съело.
+   */
+  liquid?: boolean;
+  /**
+   * `clear` — прозрачнее и холоднее, `regular` — плотнее. У модалок и
+   * шитов берём `clear`, у мелких контролов `regular`.
+   */
+  glassStyle?: GlassStyle;
+  /**
+   * Отклик на нажатие: системное стекло подсвечивается и слегка «течёт»
+   * под пальцем. Включать только на том, что действительно нажимается.
+   */
+  interactive?: boolean;
 };
 
 /**
@@ -97,6 +116,9 @@ export const GlassSurface = ({
   style,
   children,
   pointerEventsNone = false,
+  liquid = true,
+  glassStyle = 'regular',
+  interactive = false,
 }: GlassSurfaceProps) => {
   const theme = useTheme();
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -124,17 +146,40 @@ export const GlassSurface = ({
     if (width !== size.width || height !== size.height) setSize({ width, height });
   };
 
+  /**
+   * Системное жидкое стекло берём, только если оно есть (iOS 26) и элемент
+   * не несёт собственный градиент: под мешем FAB системный материал всё
+   * равно не виден, а лишний `UIVisualEffectView` на каждой карточке списка
+   * стоит кадров.
+   */
+  const useNativeGlass = liquid && isLiquidGlassAvailable();
+  const Surface = useNativeGlass ? GlassView : View;
+  const surfaceProps = useNativeGlass
+    ? {
+        glassEffectStyle: glassStyle,
+        isInteractive: interactive,
+        // Схема прибита к тёмной: система иначе переключит материал вслед
+        // за настройками телефона, а приложение dark-only.
+        colorScheme: 'dark' as const,
+        ...(tint ? { tintColor: tint } : null),
+      }
+    : null;
+
   return (
-    <View
+    <Surface
+      {...surfaceProps}
       onLayout={onLayout}
       pointerEvents={pointerEventsNone ? 'none' : undefined}
       style={[{ borderRadius: r, overflow: 'hidden' }, style]}
     >
-      {blurIntensity != null ? (
+      {/* Матовое стекло и подложку рисуем сами только там, где системного нет. */}
+      {!useNativeGlass && blurIntensity != null ? (
         <BlurView intensity={blurIntensity} tint="dark" style={StyleSheet.absoluteFill} />
       ) : null}
 
-      {tint ? <View style={[StyleSheet.absoluteFill, { backgroundColor: tint }]} /> : null}
+      {!useNativeGlass && tint ? (
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: tint }]} />
+      ) : null}
 
       {ready && (blobs.length > 0 || strokeSpec) ? (
         <Svg
@@ -183,7 +228,12 @@ export const GlassSurface = ({
             />
           ))}
 
-          {strokeSpec ? (
+          {/*
+            Под системным стеклом свою обводку не рисуем: у него есть
+            собственный световой кант, и вторая линия поверх читается
+            как двойная рамка.
+          */}
+          {strokeSpec && !useNativeGlass ? (
             <Rect
               x={strokeWidth / 2}
               y={strokeWidth / 2}
@@ -200,6 +250,6 @@ export const GlassSurface = ({
       ) : null}
 
       {children}
-    </View>
+    </Surface>
   );
 };

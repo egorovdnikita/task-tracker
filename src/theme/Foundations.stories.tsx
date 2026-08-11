@@ -1,138 +1,241 @@
 import React from 'react';
-import { View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { AppText } from '../components/AppText';
-import { Icon, iconNames } from '../components/Icon';
-import { useTheme } from './ThemeProvider';
+import { Text } from '../components/Text';
 import {
-  colors,
-  gradients,
-  NOTE_GLOW_OPACITY,
-  noteGlowLabels,
-  noteGlows,
+  accentLabels,
+  accentNames,
+  controlHeight,
+  materialNames,
+  palette,
   radius,
-  sizes,
   spacing,
-  typography,
-  type NoteGlow,
-  type TypographyVariant,
-} from './tokens';
+  textStyleNames,
+  textStyles,
+  useTheme,
+  type PaletteName,
+} from './index';
 
-const meta: Meta = {
-  title: 'Основы/Design tokens',
-  parameters: {
-    docs: {
-      description: {
-        component:
-          'Токены сняты пиксельно с референса: цвета — гистограммой площади и пробами по насыщенности, ' +
-          'радиусы — по кривизне углов ÷3, кегли — по высоте прописных (cap / 0.72). Система dark-only.',
-      },
-    },
-  },
-};
+const meta = {
+  title: 'Основы/Токены',
+  parameters: { layout: 'padded', grouped: true },
+} satisfies Meta;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-const Swatch = ({ name, value }: { name: string; value: string }) => {
+const Group = ({ title, children }: { title: string; children: React.ReactNode }) => {
   const theme = useTheme();
   return (
-    <View style={{ gap: 6, width: 132 }}>
-      <View
-        style={{
-          height: 56,
-          borderRadius: theme.radius.sm,
-          backgroundColor: value,
-          borderWidth: 1,
-          borderColor: theme.colors.border,
-        }}
-      />
-      <AppText variant="caption">{name}</AppText>
-      <AppText variant="caption" tone="tertiary">
-        {value}
-      </AppText>
+    <View style={{ gap: theme.spacing.md, marginBottom: theme.spacing.xxl }}>
+      <Text variant="footnote" color="secondaryLabel" style={{ textTransform: 'uppercase' }}>
+        {title}
+      </Text>
+      {children}
     </View>
   );
 };
 
-export const Colors: StoryObj = {
-  name: 'Цвета',
-  render: () => (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16, width: 600 }}>
-      {Object.entries(colors).map(([name, value]) => (
-        <Swatch key={name} name={name} value={value} />
-      ))}
+const Swatch = ({ name }: { name: PaletteName }) => {
+  const theme = useTheme();
+
+  return (
+    <View style={[styles.row, { gap: theme.spacing.md }]}>
+      <View
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: theme.radius.sm,
+          borderCurve: 'continuous',
+          backgroundColor: theme.colors[name],
+          borderWidth: theme.metrics.hairline,
+          borderColor: theme.colors.separator,
+        }}
+      />
+      <View style={styles.grow}>
+        <Text variant="subheadline">{name}</Text>
+        <Text variant="caption1" color="tertiaryLabel">
+          {theme.hex[name]}
+        </Text>
+      </View>
     </View>
+  );
+};
+
+/**
+ * Цвета.
+ *
+ * Переключатель схемы в тулбаре меняет обе колонки разом: значение внизу
+ * каждого образца — то, что реально подставится в этой схеме.
+ */
+export const Цвета: Story = {
+  render: () => (
+    <ScrollView>
+      <Group title="Фоны">
+        {(['systemBackground', 'secondarySystemBackground', 'tertiarySystemBackground',
+           'systemGroupedBackground', 'secondarySystemGroupedBackground',
+           'tertiarySystemGroupedBackground'] as PaletteName[]).map((name) => (
+          <Swatch key={name} name={name} />
+        ))}
+      </Group>
+
+      <Group title="Текст">
+        {(['label', 'secondaryLabel', 'tertiaryLabel', 'quaternaryLabel', 'placeholderText'] as PaletteName[]).map(
+          (name) => <Swatch key={name} name={name} />,
+        )}
+      </Group>
+
+      <Group title="Разделители и заливки">
+        {(['separator', 'opaqueSeparator', 'systemFill', 'secondarySystemFill',
+           'tertiarySystemFill', 'quaternarySystemFill'] as PaletteName[]).map((name) => (
+          <Swatch key={name} name={name} />
+        ))}
+      </Group>
+
+      <Group title="Акценты">
+        {accentNames.map((accent) => (
+          <AccentSwatch key={accent} accent={accent} />
+        ))}
+      </Group>
+
+      <Group title="Серые">
+        {(['systemGray', 'systemGray2', 'systemGray3', 'systemGray4', 'systemGray5',
+           'systemGray6'] as PaletteName[]).map((name) => <Swatch key={name} name={name} />)}
+      </Group>
+    </ScrollView>
   ),
 };
 
-export const Gradients: StoryObj = {
-  name: 'Градиенты',
-  render: () => {
-    const theme = useTheme();
-    return (
-      <View style={{ gap: 16, width: 520 }}>
-        {(Object.keys(gradients) as (keyof typeof gradients)[]).map((name) => (
-          <View key={name} style={{ gap: 6 }}>
-            <AppText variant="caption" tone="secondary">
-              {name} · {gradients[name].join(' → ')}
-            </AppText>
-            <LinearGradient
-              colors={gradients[name] as unknown as [string, string]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={{
-                height: 56,
-                borderRadius: theme.radius.md,
-                borderWidth: 1,
-                borderColor: theme.colors.border,
-              }}
-            />
-          </View>
-        ))}
+const AccentSwatch = ({ accent }: { accent: (typeof accentNames)[number] }) => {
+  const theme = useTheme();
+  const value = theme.accent(accent);
+
+  return (
+    <View style={[styles.row, { gap: theme.spacing.md }]}>
+      <View style={{ width: 44, height: 44, borderRadius: 999, backgroundColor: value }} />
+      <View style={styles.grow}>
+        <Text variant="subheadline">{accentLabels[accent]}</Text>
+        <Text variant="caption1" color="tertiaryLabel">
+          {accent} · {value}
+        </Text>
       </View>
-    );
-  },
+    </View>
+  );
 };
 
-export const NoteGlows: StoryObj = {
-  name: 'Свечения заметок',
+/**
+ * Типографика.
+ *
+ * Значения — при системном размере Large. На устройстве всё это растёт вместе
+ * с Dynamic Type: кегли здесь — точка отсчёта, а не константы.
+ */
+export const Типографика: Story = {
+  render: () => (
+    <ScrollView>
+      {textStyleNames.map((name) => (
+        <View key={name} style={{ marginBottom: 20, gap: 2 }}>
+          <Text variant="caption2" color="tertiaryLabel">
+            {name} · {textStyles[name].fontSize}/{textStyles[name].lineHeight} · вес{' '}
+            {textStyles[name].fontWeight} · трекинг {textStyles[name].letterSpacing}
+          </Text>
+          <Text variant={name}>Съешь ещё этих мягких булок</Text>
+        </View>
+      ))}
+    </ScrollView>
+  ),
+};
+
+/** Метрики: шаг сетки, радиусы и высоты контролов. */
+export const Метрики: Story = {
   render: () => {
-    const theme = useTheme();
+    const Bar = ({ label, size }: { label: string; size: number }) => (
+      <View style={[styles.row, { gap: 12, marginBottom: 8 }]}>
+        <Text variant="caption1" color="secondaryLabel" style={{ width: 108 }}>
+          {label}
+        </Text>
+        <View style={{ height: 16, width: size, borderRadius: 3, backgroundColor: '#0A84FF' }} />
+        <Text variant="caption1" color="tertiaryLabel">
+          {size}
+        </Text>
+      </View>
+    );
+
     return (
-      <View style={{ flexDirection: 'row', gap: 16 }}>
-        {(Object.keys(noteGlows) as NoteGlow[]).map((key) => (
-          <View key={key} style={{ gap: 8, alignItems: 'center', width: 104 }}>
-            <View
-              style={{
-                width: 88,
-                height: 88,
-                borderRadius: theme.radius.lg,
-                backgroundColor: theme.colors.surface,
-                borderWidth: 1,
-                borderColor: theme.colors.border,
-                overflow: 'hidden',
-              }}
-            >
-              {noteGlows[key] ? (
+      <ScrollView>
+        <Group title="Отступы">
+          {Object.entries(spacing).map(([name, value]) => (
+            <Bar key={name} label={name} size={value} />
+          ))}
+        </Group>
+
+        <Group title="Радиусы">
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+            {Object.entries(radius).map(([name, value]) => (
+              <View key={name} style={{ alignItems: 'center', gap: 6 }}>
                 <View
                   style={{
-                    position: 'absolute',
-                    right: -24,
-                    top: -24,
-                    width: 96,
-                    height: 96,
-                    borderRadius: 48,
-                    backgroundColor: noteGlows[key] as string,
-                    opacity: NOTE_GLOW_OPACITY,
+                    width: 64,
+                    height: 64,
+                    borderRadius: Math.min(value, 32),
+                    borderCurve: 'continuous',
+                    backgroundColor: '#8E8E93',
                   }}
                 />
-              ) : null}
-            </View>
-            <AppText variant="caption" tone="secondary">
-              {noteGlowLabels[key]}
-            </AppText>
+                <Text variant="caption2" color="tertiaryLabel">
+                  {name} · {value}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </Group>
+
+        <Group title="Высоты контролов">
+          {Object.entries(controlHeight).map(([name, value]) => (
+            <Bar key={name} label={name} size={value} />
+          ))}
+        </Group>
+      </ScrollView>
+    );
+  },
+};
+
+/**
+ * Материалы.
+ *
+ * В браузере размытия нет — показана запасная заливка, та самая, что уедет
+ * на веб и на Android. На устройстве вместо неё будет системный материал,
+ * а на iOS 26 — жидкое стекло.
+ */
+export const Материалы: Story = {
+  render: () => {
+    const theme = useTheme();
+
+    return (
+      <View style={{ gap: theme.spacing.md }}>
+        <Text variant="footnote" color="secondaryLabel">
+          Ниже — запасной уровень: плотная заливка без размытия.
+        </Text>
+        {materialNames.map((name) => (
+          <View
+            key={name}
+            style={{
+              padding: theme.spacing.lg,
+              borderRadius: theme.radius.lg,
+              borderCurve: 'continuous',
+              backgroundColor: theme.colors.tertiarySystemFill,
+            }}
+          >
+            <Text variant="subheadline" weight="semibold">
+              {name}
+            </Text>
+            <Text variant="caption1" color="secondaryLabel">
+              {name === 'ultraThin'
+                ? 'Поверх фотографии — максимум просвечивает'
+                : name === 'chrome'
+                  ? 'Под панелью навигации — сквозь стекло виден только факт содержимого'
+                  : 'Плавающие панели и шиты'}
+            </Text>
           </View>
         ))}
       </View>
@@ -140,123 +243,7 @@ export const NoteGlows: StoryObj = {
   },
 };
 
-export const Typography: StoryObj = {
-  name: 'Типографика',
-  render: () => (
-    <View style={{ gap: 18, width: 520 }}>
-      {(Object.keys(typography) as TypographyVariant[]).map((variant) => (
-        <View key={variant} style={{ gap: 2 }}>
-          <AppText variant="caption" tone="tertiary">
-            {variant} · {typography[variant].fontSize}/{typography[variant].lineHeight} ·{' '}
-            {typography[variant].fontFamily}
-          </AppText>
-          <AppText variant={variant}>Съешь ещё этих мягких булок</AppText>
-        </View>
-      ))}
-    </View>
-  ),
-};
-
-export const SpacingAndRadius: StoryObj = {
-  name: 'Отступы и радиусы',
-  render: () => {
-    const theme = useTheme();
-    return (
-      <View style={{ gap: 28, width: 520 }}>
-        <View style={{ gap: 8 }}>
-          {Object.entries(spacing).map(([name, value]) => (
-            <View key={name} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-              <AppText variant="caption" tone="tertiary" style={{ width: 64 }}>
-                {name} · {value}
-              </AppText>
-              <View
-                style={{
-                  width: value * 6,
-                  height: 12,
-                  backgroundColor: theme.colors.accentLime,
-                  borderRadius: 2,
-                }}
-              />
-            </View>
-          ))}
-        </View>
-        <View style={{ flexDirection: 'row', gap: 16 }}>
-          {Object.entries(radius).map(([name, value]) => (
-            <View key={name} style={{ alignItems: 'center', gap: 8 }}>
-              <View
-                style={{
-                  width: 72,
-                  height: 72,
-                  borderRadius: value,
-                  backgroundColor: theme.colors.surfaceElevated,
-                  borderWidth: 1,
-                  borderColor: theme.colors.borderStrong,
-                }}
-              />
-              <AppText variant="caption" tone="tertiary">
-                {name} · {value}
-              </AppText>
-            </View>
-          ))}
-        </View>
-      </View>
-    );
-  },
-};
-
-export const Sizes: StoryObj = {
-  name: 'Высоты контролов',
-  render: () => {
-    const theme = useTheme();
-    return (
-      <View style={{ gap: 10, width: 520 }}>
-        {Object.entries(sizes).map(([name, value]) => (
-          <View key={name} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-            <AppText variant="caption" tone="tertiary" style={{ width: 110 }}>
-              {name} · {value}
-            </AppText>
-            <View
-              style={{
-                width: 240,
-                height: value,
-                borderRadius: theme.radius.sm,
-                backgroundColor: theme.colors.surfaceElevated,
-                borderWidth: 1,
-                borderColor: theme.colors.border,
-              }}
-            />
-          </View>
-        ))}
-      </View>
-    );
-  },
-};
-
-export const Icons: StoryObj = {
-  name: 'Иконки',
-  render: () => (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20, width: 520 }}>
-      {iconNames.map((name) => (
-        <View key={name} style={{ alignItems: 'center', gap: 8, width: 84 }}>
-          <Icon name={name} size={26} />
-          <AppText variant="caption" tone="tertiary">
-            {name}
-          </AppText>
-        </View>
-      ))}
-    </View>
-  ),
-};
-
-export const TextTones: StoryObj = {
-  name: 'Тона текста',
-  render: () => (
-    <View style={{ gap: 8 }}>
-      <AppText variant="body">default — основной текст</AppText>
-      <AppText variant="body" tone="secondary">secondary — подписи строк</AppText>
-      <AppText variant="body" tone="tertiary">tertiary — плейсхолдеры</AppText>
-      <AppText variant="body" tone="accent">accent — акцентные значения</AppText>
-      <AppText variant="body" tone="danger">danger — деструктивные действия</AppText>
-    </View>
-  ),
-};
+const styles = StyleSheet.create({
+  row: { flexDirection: 'row', alignItems: 'center' },
+  grow: { flex: 1 },
+});

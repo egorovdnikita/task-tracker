@@ -1,107 +1,147 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, View, type ViewStyle } from 'react-native';
+import type { SFSymbol } from 'sf-symbols-typescript';
 
-import { useTheme } from '../theme/ThemeProvider';
-import { AppText } from './AppText';
-import { GlassSurface } from './GlassSurface';
+import { useTheme, type AccentName } from '../theme';
+import { withAlpha } from './Button';
+import { Symbol } from './Symbol';
+import { Text } from './Text';
 
 export type ChipProps = {
   label: string;
   selected?: boolean;
-  count?: number;
+  icon?: SFSymbol;
+  /** Цвет метки — тега или папки. Без него чип нейтральный. */
+  accent?: AccentName;
+  /** Крестик справа: чип можно снять прямо здесь. */
+  onRemove?: () => void;
   onPress?: () => void;
-  disabled?: boolean;
   style?: ViewStyle;
 };
 
-/** Выбранный чип в референсе — сплошная белая пилюля с тёмным текстом. */
-export const Chip = ({ label, selected = false, count, onPress, disabled, style }: ChipProps) => {
+/**
+ * Чип-фильтр.
+ *
+ * Капсула, а не прямоугольник: в системе так выглядит всё, что можно снять или
+ * выбрать множественно, — в отличие от сегмент-контрола, где выбор ровно один.
+ */
+export const Chip = ({ label, selected = false, icon, accent, onRemove, onPress, style }: ChipProps) => {
   const theme = useTheme();
+  const accentHex = accent ? theme.accent(accent) : theme.hex.systemBlue;
+
+  const background = selected
+    ? accent
+      ? withAlpha(accentHex, theme.scheme === 'dark' ? 0.28 : 0.16)
+      : theme.colors.systemFill
+    : theme.colors.tertiarySystemFill;
+
+  const body = (
+    <>
+      {icon ? <Symbol name={icon} size={13} color={accentHex} weight="semibold" /> : null}
+
+      <Text
+        variant="subheadline"
+        weight={selected ? 'semibold' : 'regular'}
+        color={selected ? 'label' : 'secondaryLabel'}
+        style={selected && accent ? { color: accentHex } : undefined}
+        numberOfLines={1}
+      >
+        {label}
+      </Text>
+    </>
+  );
+
+  const shape: ViewStyle = {
+    height: theme.controlHeight.segmented,
+    paddingLeft: theme.spacing.md,
+    paddingRight: onRemove ? theme.spacing.sm : theme.spacing.md,
+    gap: theme.spacing.xs,
+    borderRadius: theme.radius.pill,
+    backgroundColor: background,
+  };
+
+  /*
+    Крестик — соседний элемент, а не вложенный.
+    Кнопка внутри кнопки — не придирка вёрстки: VoiceOver объявляет такой чип
+    одной целью и до крестика не доходит, а на вебе браузер вложенный <button>
+    просто выбрасывает. Поэтому нажимаемая часть и крестик стоят рядом внутри
+    общей капсулы.
+  */
+  if (onRemove) {
+    return (
+      <View style={[styles.chip, shape, style]}>
+        {onPress ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityState={{ selected }}
+            onPress={onPress}
+            style={({ pressed }) => [styles.chip, { gap: theme.spacing.xs, opacity: pressed ? 0.6 : 1 }]}
+          >
+            {body}
+          </Pressable>
+        ) : (
+          <View style={[styles.chip, { gap: theme.spacing.xs }]}>{body}</View>
+        )}
+
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Убрать «${label}»`}
+          onPress={onRemove}
+          hitSlop={10}
+          style={({ pressed }) => ({ opacity: pressed ? 0.4 : 1 })}
+        >
+          <Symbol name="xmark.circle.fill" size={15} color={theme.colors.tertiaryLabel} />
+        </Pressable>
+      </View>
+    );
+  }
 
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={typeof count === 'number' ? `${label}, ${count}` : label}
-      accessibilityState={{ selected, disabled }}
-      disabled={disabled}
+      accessibilityState={{ selected }}
       onPress={onPress}
-      style={({ pressed }) => [{ opacity: disabled ? 0.4 : pressed ? 0.75 : 1 }, style]}
+      style={({ pressed }) => [styles.chip, shape, { opacity: pressed ? 0.6 : 1 }, style]}
     >
-      <GlassSurface
-        radius={theme.radius.pill}
-        tint={selected ? theme.colors.text : theme.tints.control}
-        stroke={selected ? null : 'subtle'}
-        // Выбранный чип — сплошная белая пилюля, системное стекло под ней
-        // не видно; невыбранный получает и материал, и отклик.
-        liquid={!selected}
-        interactive={!selected}
-        style={{
-          height: theme.sizes.chip,
-          paddingHorizontal: theme.spacing.lg,
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 6,
-        }}
-      >
-        <AppText variant="subtle" tone={selected ? 'inverse' : 'default'}>
-          {label}
-        </AppText>
-        {typeof count === 'number' ? (
-          <AppText variant="subtle" tone={selected ? 'inverse' : 'tertiary'}>
-            {count}
-          </AppText>
-        ) : null}
-      </GlassSurface>
+      {body}
     </Pressable>
   );
 };
 
-export type ChipGroupProps = {
-  items: { key: string; label: string; count?: number }[];
-  selectedKey?: string | null;
-  onSelect?: (key: string) => void;
-  scrollable?: boolean;
-  style?: ViewStyle;
-};
-
-export const ChipGroup = ({
-  items,
-  selectedKey = null,
-  onSelect,
-  scrollable = true,
+/**
+ * Ряд чипов с горизонтальной прокруткой.
+ *
+ * Прокрутка, а не перенос на вторую строку: ряд фильтров должен занимать
+ * фиксированную высоту, иначе список под ним прыгает при каждой смене набора.
+ */
+export const ChipRow = ({
+  children,
   style,
-}: ChipGroupProps) => {
+}: {
+  children: React.ReactNode;
+  style?: ViewStyle;
+}) => {
   const theme = useTheme();
-
-  const content = items.map((item) => (
-    <Chip
-      key={item.key}
-      label={item.label}
-      count={item.count}
-      selected={item.key === selectedKey}
-      onPress={() => onSelect?.(item.key)}
-    />
-  ));
-
-  if (!scrollable) {
-    return <View style={[styles.row, { gap: theme.spacing.sm }, style]}>{content}</View>;
-  }
 
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={[
-        styles.row,
-        { gap: theme.spacing.sm, paddingHorizontal: theme.spacing.xl },
-      ]}
+      contentContainerStyle={{ paddingHorizontal: theme.spacing.lg, gap: theme.spacing.sm }}
       style={style}
     >
-      {content}
+      {children}
     </ScrollView>
   );
 };
 
+/** Те же чипы, но с переносом — когда высота не важна (редактор тегов). */
+export const ChipWrap = ({ children, style }: { children: React.ReactNode; style?: ViewStyle }) => {
+  const theme = useTheme();
+  return <View style={[styles.wrap, { gap: theme.spacing.sm }, style]}>{children}</View>;
+};
+
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' },
+  chip: { flexDirection: 'row', alignItems: 'center' },
+  wrap: { flexDirection: 'row', flexWrap: 'wrap' },
 });

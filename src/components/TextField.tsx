@@ -1,109 +1,85 @@
 import React from 'react';
-import { StyleSheet, TextInput, View, type TextStyle, type ViewStyle } from 'react-native';
+import { StyleSheet, TextInput, View, type TextInputProps, type ViewStyle } from 'react-native';
 
-import { useTheme } from '../theme/ThemeProvider';
-import { AppText } from './AppText';
-import { GlassSurface } from './GlassSurface';
+import { useTheme, type TextStyleName } from '../theme';
+import { Text } from './Text';
 
-export type TextFieldProps = {
-  value: string;
-  onChangeText?: (value: string) => void;
-  placeholder?: string;
+export type TextFieldProps = Omit<TextInputProps, 'style'> & {
+  /** Подпись над полем. В инсет-группах не нужна — там подписывает строка. */
   label?: string;
-  multiline?: boolean;
-  autoFocus?: boolean;
-  /** Без поверхности — для крупного заголовка заметки. */
-  variant?: 'glass' | 'plain';
-  size?: 'title' | 'body';
-  error?: string;
+  /** Пояснение или ошибка под полем. */
+  hint?: string;
+  invalid?: boolean;
+  /** Стиль текста внутри поля. Заголовок заметки крупнее тела. */
+  variant?: TextStyleName;
+  /** Поле без заливки — для тела заметки, где рамка мешает читать. */
+  plain?: boolean;
   style?: ViewStyle;
-  inputStyle?: TextStyle;
-  testID?: string;
 };
 
 /**
- * Поля референса — без рамки: стеклянная подложка и мягкая обводка.
- * Однострочное поле — пилюля, многострочное — радиус 28.
+ * Поле ввода.
+ *
+ * Два вида. Заполненное — для форм: имя папки, тег. И `plain` — для текста
+ * заметки: в редакторе рамка вокруг тела превращает страницу в форму, а текст
+ * должен лежать на странице.
  */
 export const TextField = ({
-  value,
-  onChangeText,
-  placeholder,
   label,
-  multiline = false,
-  autoFocus = false,
-  variant = 'glass',
-  size = 'body',
-  error,
+  hint,
+  invalid = false,
+  variant = 'body',
+  plain = false,
+  multiline,
   style,
-  inputStyle,
-  testID,
+  ...rest
 }: TextFieldProps) => {
   const theme = useTheme();
 
-  const input = (
-    <TextInput
-      testID={testID}
-      accessibilityLabel={label ?? placeholder}
-      value={value}
-      onChangeText={onChangeText}
-      placeholder={placeholder}
-      placeholderTextColor={theme.colors.textTertiary}
-      multiline={multiline}
-      autoFocus={autoFocus}
-      textAlignVertical={multiline ? 'top' : 'center'}
-      style={[
-        // Кегль тот же, что у остальных контролов: заголовок заметки набирался
-        // на `title` (20pt) и висел на полторы ступени выше всего, что рядом.
-        size === 'title' ? theme.typography.inputTitle : theme.typography.input,
-        { color: theme.colors.text },
-        multiline && styles.grow,
-        inputStyle,
-      ]}
-    />
-  );
-
   return (
-    <View style={[{ gap: theme.spacing.sm }, style]}>
+    <View style={[{ gap: theme.spacing.xs }, style]}>
       {label ? (
-        <AppText variant="overline" tone="tertiary">
-          {label.toUpperCase()}
-        </AppText>
+        <Text variant="footnote" color="secondaryLabel">
+          {label}
+        </Text>
       ) : null}
 
-      {variant === 'plain' ? (
-        input
-      ) : (
-        <GlassSurface
-          radius={multiline ? theme.radius.lg : theme.radius.pill}
-          tint={theme.tints.control}
-          // Материал есть, отклика нет: поле не кнопка, обратную связь
-          // на нажатие даёт каретка и клавиатура.
-          glassStyle="regular"
-          // Обводка только на ошибке. В обычном состоянии поле держится
-          // подложкой — светлый контур вокруг каждого поля собирает экран
-          // в сетку рамок, которой в эталоне нет.
-          stroke={error ? { from: theme.colors.danger, to: theme.colors.danger } : null}
-          style={{
-            paddingHorizontal: theme.spacing.xl,
-            paddingVertical: multiline ? theme.spacing.lg : theme.spacing.md,
-            minHeight: multiline ? 160 : theme.sizes.buttonLarge,
-            justifyContent: 'center',
-          }}
-        >
-          {input}
-        </GlassSurface>
-      )}
+      <TextInput
+        {...rest}
+        multiline={multiline}
+        placeholderTextColor={theme.colors.placeholderText}
+        style={[
+          theme.text(variant),
+          {
+            color: theme.colors.label,
+            // Курсор системного акцента: в поле это единственный элемент,
+            // который система красит сама, и подменять его нечем.
+            textAlignVertical: multiline ? 'top' : 'center',
+          },
+          plain
+            ? styles.plain
+            : {
+                minHeight: theme.controlHeight.row,
+                paddingHorizontal: theme.spacing.md,
+                paddingVertical: theme.spacing.sm,
+                borderRadius: theme.radius.sm,
+                borderCurve: 'continuous',
+                backgroundColor: theme.colors.tertiarySystemFill,
+                borderWidth: invalid ? 1 : 0,
+                borderColor: theme.colors.systemRed,
+              },
+        ]}
+      />
 
-      {error ? (
-        <AppText variant="caption" tone="danger">
-          {error}
-        </AppText>
+      {hint ? (
+        <Text variant="caption1" color={invalid ? 'systemRed' : 'secondaryLabel'}>
+          {hint}
+        </Text>
       ) : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  grow: { flex: 1 },
+  plain: { padding: 0 },
 });

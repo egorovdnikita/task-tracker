@@ -1,73 +1,60 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, type ViewStyle } from 'react-native';
+import type { SFSymbol } from 'sf-symbols-typescript';
 
-import { useTheme } from '../theme/ThemeProvider';
-import { AppText } from './AppText';
+import { useTheme } from '../theme';
 import { Button } from './Button';
-import { Icon, type IconName } from './Icon';
-import { ThinkingOrb, type OrbState } from './ThinkingOrb';
-import { BorderBeam } from '../vendor/border-beam';
+import { Symbol } from './Symbol';
+import { Text } from './Text';
 
 export type EmptyStateProps = {
-  icon?: IconName;
-  /**
-   * Точечный орб вместо иконки — без подложки, прямо на фоне экрана.
-   * `composing` — колышущаяся лента: движение есть, центра внимания нет.
-   * `null` возвращает иконку в стеклянном круге.
-   */
-  orb?: OrbState | null;
+  icon?: SFSymbol;
   title: string;
+  /** Что делать дальше. Не извинение за пустоту, а следующий шаг. */
   description?: string;
-  actionLabel?: string;
+  actionTitle?: string;
   onAction?: () => void;
+  style?: ViewStyle;
 };
 
+/**
+ * Пустое состояние.
+ *
+ * Из него всегда есть выход: у каждого списка свой текст и своё действие.
+ * Пустой экран без следующего шага — тупик, и чаще всего именно на нём человек
+ * закрывает приложение.
+ */
 export const EmptyState = ({
-  icon = 'note',
-  orb = 'composing',
+  icon,
   title,
   description,
-  actionLabel,
+  actionTitle,
   onAction,
+  style,
 }: EmptyStateProps) => {
   const theme = useTheme();
 
   return (
-    <View style={[styles.root, { padding: theme.spacing.xxxl, gap: theme.spacing.md }]}>
-      {orb ? (
-        // Без стеклянного круга: подложка спорила с самим орбом — два
-        // округлых силуэта один в другом, и точки читались как шум внутри.
-        <ThinkingOrb
-          state={orb}
-          size={64}
-          accessibilityLabel={title}
-          style={{ marginBottom: theme.spacing.sm }}
-        />
-      ) : (
-        <View style={[styles.iconBox, { backgroundColor: theme.tints.control }]}>
-          <Icon name={icon} size={30} tone="secondary" />
-        </View>
-      )}
+    <View style={[styles.root, { padding: theme.spacing.xxxl, gap: theme.spacing.md }, style]}>
+      {icon ? <Symbol name={icon} size={52} color={theme.colors.quaternaryLabel} /> : null}
 
-      <AppText variant="title" style={styles.center}>
+      <Text variant="title3" weight="semibold" style={styles.center}>
         {title}
-      </AppText>
+      </Text>
+
       {description ? (
-        <AppText variant="subtle" tone="secondary" style={styles.center}>
+        <Text variant="subheadline" color="secondaryLabel" style={[styles.center, styles.measure]}>
           {description}
-        </AppText>
+        </Text>
       ) : null}
-      {actionLabel ? (
-        // Луч по контуру: на пустом экране это единственное действие, и оно
-        // именно ждёт нажатия — тот случай, под который луч и заведён.
-        // Тип `sm`, как и везде в приложении.
-        <BorderBeam
-          size="sm"
-          borderRadius={theme.sizes.buttonLarge / 2}
-          style={{ marginTop: theme.spacing.md, alignSelf: 'center' }}
-        >
-          <Button label={actionLabel} icon="plus" onPress={onAction} />
-        </BorderBeam>
+
+      {actionTitle && onAction ? (
+        <Button
+          title={actionTitle}
+          variant="tinted"
+          onPress={onAction}
+          style={{ marginTop: theme.spacing.sm }}
+        />
       ) : null}
     </View>
   );
@@ -75,6 +62,6 @@ export const EmptyState = ({
 
 const styles = StyleSheet.create({
   root: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  iconBox: { width: 88, height: 88, borderRadius: 44, alignItems: 'center', justifyContent: 'center' },
   center: { textAlign: 'center' },
+  measure: { maxWidth: 280 },
 });

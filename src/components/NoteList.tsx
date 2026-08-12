@@ -15,7 +15,8 @@ export type NoteListProps = {
   notes: Note[];
   layout?: LayoutMode;
   onOpen?: (id: string) => void;
-  onLongPress?: (id: string) => void;
+  /** Долгое нажатие вместе с прямоугольником карточки — под меню на месте. */
+  onLongPress?: (id: string, anchor: { x: number; y: number; width: number; height: number }) => void;
   /** Свайп влево — удалить. Плита 02.2. */
   onDelete?: (id: string) => void;
   /** Свайп вправо — закрепить или открепить. */
@@ -141,7 +142,7 @@ export const NoteList = ({
                 selectable={selectable}
                 selected={selectedIds.includes(note.id)}
                 onPress={() => onOpen?.(note.id)}
-                onLongPress={() => onLongPress?.(note.id)}
+                onLongPress={(anchor) => onLongPress?.(note.id, anchor)}
                 style={[
                   styles.cell,
                   // Карточка сетки — фиксированной высоты, чтобы строка была

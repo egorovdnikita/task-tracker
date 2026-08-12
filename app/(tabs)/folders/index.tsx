@@ -2,14 +2,14 @@ import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack, router } from 'expo-router';
 
-import { IconButton, ListRow, ListSection } from '../../../src/components';
+import { HeaderCapsule, IconButton, ListRow, ListSection } from '../../../src/components';
 import { accentNames, useTheme } from '../../../src/theme';
+import { STATIC_TAGS } from '../../../src/features/tags';
 import { splitEmoji } from '../../../src/utils/emoji';
 import { confirmDestructive, promptForText, showActionSheet } from '../../../src/utils/actionSheet';
 import {
   activeNotes,
   childFolders,
-  collectTags,
   folderCount,
   rootFolders,
   trashedNotes,
@@ -30,6 +30,10 @@ const GLYPH_INSET = 16 + 22 + 12;
  * Папка отвечает на вопрос «где лежит», тег — «про что это», поэтому это два
  * разных блока, а не один список с иконками разной формы. Корзина стоит внизу
  * отдельно: она не папка, и попадать в неё перебором папок неправильно.
+ *
+ * Каждая группа подписана и посчитана, как в референсе: «Папки 3», «Теги 3».
+ * Кнопка «новая папка» стоит в шапке своей группы, а не в шапке экрана — она
+ * создаёт строку именно здесь, и её место рядом с тем, что она пополняет.
  */
 export default function FoldersScreen() {
   const theme = useTheme();
@@ -40,9 +44,14 @@ export default function FoldersScreen() {
   const deleteFolder = useNotesStore((s) => s.deleteFolder);
 
   const roots = useMemo(() => rootFolders(folders), [folders]);
-  const tags = useMemo(() => collectTags(notes), [notes]);
   const inbox = useMemo(() => activeNotes(notes).filter((n) => !n.folderId).length, [notes]);
   const trashed = useMemo(() => trashedNotes(notes).length, [notes]);
+  const tagCount = useMemo(() => {
+    const alive = activeNotes(notes);
+    return Object.fromEntries(
+      STATIC_TAGS.map((tag) => [tag.id, alive.filter((n) => n.tags.includes(tag.id)).length]),
+    ) as Record<string, number>;
+  }, [notes]);
 
   const addFolder = (parentId: string | null = null) =>
     promptForText(
@@ -66,39 +75,46 @@ export default function FoldersScreen() {
       },
     );
 
-  const folderMenu = (id: string, name: string, nested: boolean) =>
-    showActionSheet(
-      [
-        {
-          title: 'Переименовать…',
-          onPress: () =>
-            promptForText('Переименовать', 'Новое имя папки', (next) => renameFolder(id, next), name),
-        },
-        ...(nested ? [] : [{ title: 'Вложенная папка…', onPress: () => addFolder(id) }]),
-        {
-          title: 'Удалить папку',
-          destructive: true,
-          onPress: () =>
-            // Что делать с содержимым — вопрос, а не решение по умолчанию:
-            // молча удалить чужие заметки вместе с папкой нельзя.
-            showActionSheet(
-              [
-                {
-                  title: 'Перенести заметки в корень',
-                  onPress: () => deleteFolder(id, 'moveToRoot'),
-                },
-                {
-                  title: 'Удалить вместе с заметками',
-                  destructive: true,
-                  onPress: () => deleteFolder(id, 'trash'),
-                },
-              ],
-              { title: `Удалить «${name}»`, message: 'Что сделать с заметками внутри?' },
-            ),
-        },
-      ],
-      { title: name },
-    );
+  /** Пункты меню папки. Меню растёт из самой строки — его ставит `ListRow`. */
+  const folderMenu = (id: string, name: string, nested: boolean) => () => [
+    {
+      title: 'Переименовать',
+      icon: 'pencil' as const,
+      onPress: () =>
+        promptForText('Переименовать', 'Новое имя папки', (next) => renameFolder(id, next), name),
+    },
+    ...(nested
+      ? []
+      : [
+          {
+            title: 'Вложенная папка',
+            icon: 'folder.badge.plus' as const,
+            onPress: () => addFolder(id),
+          },
+        ]),
+    {
+      title: 'Удалить папку',
+      icon: 'trash' as const,
+      destructive: true,
+      onPress: () =>
+        // Что делать с содержимым — вопрос, а не решение по умолчанию:
+        // молча удалить чужие заметки вместе с папкой нельзя.
+        showActionSheet(
+          [
+            {
+              title: 'Перенести заметки в корень',
+              onPress: () => deleteFolder(id, 'moveToRoot'),
+            },
+            {
+              title: 'Удалить вместе с заметками',
+              destructive: true,
+              onPress: () => deleteFolder(id, 'trash'),
+            },
+          ],
+          { title: `Удалить «${name}»`, message: 'Что сделать с заметками внутри?' },
+        ),
+    },
+  ];
 
   return (
     <>
@@ -106,24 +122,25 @@ export default function FoldersScreen() {
         options={{
           title: 'Папки',
           headerRight: () => (
-            <IconButton
-              name="folder.badge.plus"
-              accessibilityLabel="Новая папка"
-              onPress={() => addFolder(null)}
-            />
+            <HeaderCapsule>
+              <IconButton
+                name="folder.badge.plus"
+                size={19}
+                accessibilityLabel="Новая папка"
+                onPress={() => addFolder(null)}
+              />
+            </HeaderCapsule>
           ),
         }}
       />
 
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingTop: theme.spacing.sm, paddingBottom: theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
         <ListSection separatorInset={GLYPH_INSET}>
           <ListRow
             title="Все заметки"
             icon="tray.full"
-            iconColor={theme.colors.secondaryLabel}
             value={String(activeNotes(notes).length)}
             accessory={{ type: 'disclosure' }}
             onPress={() => router.navigate('/notes')}
@@ -131,7 +148,6 @@ export default function FoldersScreen() {
           <ListRow
             title="Без папки"
             icon="tray"
-            iconColor={theme.colors.secondaryLabel}
             value={String(inbox)}
             accessory={{ type: 'disclosure' }}
             onPress={() => router.push({ pathname: '/folders/[id]', params: { id: 'root' } })}
@@ -139,7 +155,12 @@ export default function FoldersScreen() {
         </ListSection>
 
         {roots.length > 0 ? (
-          <ListSection header="Папки" count={roots.length} separatorInset={GLYPH_INSET}>
+          <ListSection
+            header="Папки"
+            count={roots.length}
+            action={{ icon: 'plus', label: 'Новая папка', onPress: () => addFolder(null) }}
+            separatorInset={GLYPH_INSET}
+          >
             {roots.flatMap((folder) => [
               <ListRow
                 key={folder.id}
@@ -152,7 +173,8 @@ export default function FoldersScreen() {
                 onPress={() =>
                   router.push({ pathname: '/folders/[id]', params: { id: folder.id } })
                 }
-                onLongPress={() => folderMenu(folder.id, folder.name, false)}
+                menu={folderMenu(folder.id, folder.name, false)}
+                menuTitle={folder.name}
               />,
               // Второй уровень рисуется отступом, а не деревом со стрелками:
               // глубина всего одна, и раскрывать здесь нечего.
@@ -168,7 +190,8 @@ export default function FoldersScreen() {
                   onPress={() =>
                     router.push({ pathname: '/folders/[id]', params: { id: child.id } })
                   }
-                  onLongPress={() => folderMenu(child.id, child.name, true)}
+                  menu={folderMenu(child.id, child.name, true)}
+                  menuTitle={child.name}
                 />
               )),
             ])}
@@ -179,29 +202,32 @@ export default function FoldersScreen() {
           </ListSection>
         )}
 
-        {tags.length > 0 ? (
-          <ListSection header="Теги" count={tags.length} separatorInset={GLYPH_INSET}>
-            {tags.map((tag) => (
-              <ListRow
-                key={tag}
-                title={tag}
-                icon="number"
-                iconColor={theme.colors.secondaryLabel}
-                value={String(activeNotes(notes).filter((n) => n.tags.includes(tag)).length)}
-                accessory={{ type: 'disclosure' }}
-                onPress={() =>
-                  router.push({ pathname: '/folders/[id]', params: { id: `tag:${tag}` } })
-                }
-              />
-            ))}
-          </ListSection>
-        ) : null}
+        {/*
+          Теги — те же три, что в фильтре списка, и стоят они здесь всегда,
+          а не появляются, когда хоть один назначен. Раздел, который то есть,
+          то нет, приходится каждый раз искать заново; постоянный со счётчиком
+          «0» ещё и говорит, что тег свободен.
+        */}
+        <ListSection header="Теги" count={STATIC_TAGS.length} separatorInset={GLYPH_INSET}>
+          {STATIC_TAGS.map((tag) => (
+            <ListRow
+              key={tag.id}
+              title={tag.label}
+              icon={tag.icon}
+              iconColor={theme.accent(tag.accent)}
+              value={String(tagCount[tag.id] ?? 0)}
+              accessory={{ type: 'disclosure' }}
+              onPress={() =>
+                router.push({ pathname: '/folders/[id]', params: { id: `tag:${tag.id}` } })
+              }
+            />
+          ))}
+        </ListSection>
 
         <ListSection separatorInset={GLYPH_INSET}>
           <ListRow
             title="Корзина"
             icon="trash"
-            iconColor={theme.colors.secondaryLabel}
             value={trashed > 0 ? String(trashed) : undefined}
             accessory={{ type: 'disclosure' }}
             onPress={() => router.push('/folders/trash')}

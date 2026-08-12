@@ -10,46 +10,48 @@ export type SearchFieldProps = {
   onChangeText: (value: string) => void;
   placeholder?: string;
   onSubmitEditing?: () => void;
+  /**
+   * Как поле выглядит.
+   *
+   * `card` — белая карточка на тёплой подложке: поле стоит в потоке списка,
+   * под заголовком, и должно отделяться от фона само. Системная заливка
+   * `tertiarySystemFill` полупрозрачно-серая, и на тёплом почти-белом фоне
+   * она давала серый прямоугольник, который глаз не находил.
+   *
+   * `glass` — плавающая капсула поверх списка. Стекло оправдано только там,
+   * где под полем действительно едет контент.
+   */
+  tone?: 'card' | 'glass';
   style?: StyleProp<ViewStyle>;
 };
 
 /**
- * Поле поиска у нижнего края.
+ * Поле поиска.
  *
- * Системного поля поиска для этого места нет: `UISearchBar` живёт в шапке
- * навигации, а внизу iOS 26 отдаёт только слот вкладки с ролью `search`.
- * Вкладку поиска мы убрали — искать нужно внутри списка, который перед
- * глазами, а не на отдельном экране, — поэтому поле собрано своё.
- *
- * Собрано оно из системных частей: капсула жидкого стекла, символ `magnifying
- * glass`, обычный `TextInput` с системной клавиатурой и `clearButtonMode`.
- * Ничего из этого не нарисовано заново.
+ * Системного поля для этого места нет: `UISearchBar` живёт внутри
+ * `UINavigationBar` и приходит вместе с крупным заголовком, а заголовок здесь
+ * встроенный — он стоит в одну строку с кнопками управления списком. Поэтому
+ * поле собрано своё, но из системных частей: символ `magnifyingglass`,
+ * обычный `TextInput` с системной клавиатурой, системная типографика.
  */
 export const SearchField = ({
   value,
   onChangeText,
   placeholder = 'Поиск',
   onSubmitEditing,
+  tone = 'card',
   style,
 }: SearchFieldProps) => {
   const theme = useTheme();
 
-  return (
-    <Glass
-      material="thick"
-      variant="regular"
-      radius={theme.radius.pill}
-      style={[
-        styles.root,
-        styles.shadow,
-        {
-          height: theme.controlHeight.searchFieldBottom,
-          paddingHorizontal: theme.spacing.lg,
-          gap: theme.spacing.sm,
-        },
-        style,
-      ]}
-    >
+  const shape: ViewStyle = {
+    height: theme.controlHeight.searchFieldBottom,
+    paddingHorizontal: theme.spacing.lg,
+    gap: theme.spacing.sm,
+  };
+
+  const body = (
+    <>
       <Symbol name="magnifyingglass" size={17} color={theme.colors.secondaryLabel} />
 
       <TextInput
@@ -61,6 +63,7 @@ export const SearchField = ({
         returnKeyType="search"
         autoCapitalize="none"
         autoCorrect={false}
+        clearButtonMode="never"
         accessibilityLabel={placeholder}
         style={[theme.text('body'), styles.input, { color: theme.colors.label }]}
       />
@@ -76,7 +79,39 @@ export const SearchField = ({
           <Symbol name="xmark.circle.fill" size={17} color={theme.colors.tertiaryLabel} />
         </Pressable>
       ) : null}
-    </Glass>
+    </>
+  );
+
+  if (tone === 'glass') {
+    return (
+      <Glass
+        material="thick"
+        variant="regular"
+        radius={theme.radius.pill}
+        style={[styles.root, styles.shadow, shape, style]}
+      >
+        {body}
+      </Glass>
+    );
+  }
+
+  return (
+    <View
+      style={[
+        styles.root,
+        shape,
+        {
+          borderRadius: theme.radius.md,
+          borderCurve: 'continuous',
+          // Тот же белый, что у карточки заметки: поле — такой же остров на
+          // подложке, как и всё остальное в списке.
+          backgroundColor: theme.colors.secondarySystemGroupedBackground,
+        },
+        style,
+      ]}
+    >
+      {body}
+    </View>
   );
 };
 

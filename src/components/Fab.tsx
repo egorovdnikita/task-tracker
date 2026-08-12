@@ -1,13 +1,17 @@
-import React from 'react';
-import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import React, { useRef } from 'react';
+import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { useTheme } from '../theme';
+import type { MenuAnchor } from './Menu';
 import { Symbol } from './Symbol';
 
 export type FabProps = {
   onPress: () => void;
-  /** Долгое нажатие открывает выбор типа заметки — плита 02.5 вайрфрейма. */
-  onLongPress?: () => void;
+  /**
+   * Долгое нажатие открывает выбор типа заметки — плита 02.5 вайрфрейма.
+   * Кнопка отдаёт свой прямоугольник: меню разворачивается вверх от круга.
+   */
+  onLongPress?: (anchor: MenuAnchor) => void;
   accessibilityLabel?: string;
   accessibilityHint?: string;
   style?: StyleProp<ViewStyle>;
@@ -21,8 +25,8 @@ export type FabProps = {
  * текст на тёплом фоне. Кнопка растворялась ровно в том состоянии, где нужна
  * сильнее всего, — на почти пустом экране.
  *
- * Позиционированием кнопка не занимается: её ставит `BottomBar` в один ряд с
- * полем поиска над панелью вкладок, и место у неё одно на всех экранах.
+ * Позиционированием кнопка не занимается: её ставит `BottomBar` справа в ряду
+ * панели вкладок, и место у неё одно на всех экранах.
  */
 export const Fab = ({
   onPress,
@@ -33,14 +37,23 @@ export const Fab = ({
 }: FabProps) => {
   const theme = useTheme();
   const size = theme.controlHeight.fab;
+  const ref = useRef<View>(null);
 
   return (
     <Pressable
+      ref={ref}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       accessibilityHint={onLongPress ? accessibilityHint : undefined}
       onPress={onPress}
-      onLongPress={onLongPress}
+      onLongPress={
+        onLongPress
+          ? () =>
+              ref.current?.measureInWindow((x, y, width, height) =>
+                onLongPress({ x, y, width, height }),
+              )
+          : undefined
+      }
       style={({ pressed }) => [
         styles.root,
         styles.shadow,

@@ -158,6 +158,14 @@ export const IconButton = ({
   ...rest
 }: IconButtonProps) => {
   const theme = useTheme();
+  // Рамка кнопки квадратная и на треть шире символа.
+  //
+  // Без неё кнопка равнялась глифу, а глифы SF разной ширины: `pin` узкий и
+  // высокий, `folder.badge.plus` широкий и низкий, `ellipsis.circle` круглый.
+  // Поставленные рядом, они вставали каждый по своему центру, и ряд выглядел
+  // расшатанным — а широкие ещё и обрезались краем шапки. Общая рамка даёт им
+  // одну коробку, внутри которой символ центрируется сам.
+  const frame = Math.max(theme.controlHeight.buttonCompact, Math.round(size * 1.5));
 
   return (
     <Pressable
@@ -165,9 +173,10 @@ export const IconButton = ({
       accessibilityLabel={accessibilityLabel}
       accessibilityState={{ disabled: Boolean(disabled) }}
       disabled={disabled}
-      hitSlop={Math.max(0, (theme.metrics.hitSlop - size) / 2)}
+      hitSlop={Math.max(0, (theme.metrics.hitSlop - frame) / 2)}
       style={({ pressed }) => [
         styles.iconButton,
+        { width: frame, height: frame },
         { opacity: disabled ? 0.35 : pressed ? 0.4 : 1 },
         style,
       ]}
@@ -176,6 +185,29 @@ export const IconButton = ({
       <Symbol name={name} size={size} color={theme.colors[color]} />
     </Pressable>
   );
+};
+
+/**
+ * Группа кнопок в шапке.
+ *
+ * Обычный ряд без своего фона — и это принципиально. Стеклянную капсулу под
+ * кнопками шапки iOS 26 рисует сама: на референсе переключатель вида и меню
+ * стоят внутри общей пилюли, и та пилюля системная, а не нарисованная. Своё
+ * стекло здесь дало бы стекло внутри стекла — двойную кромку и лишний вес.
+ *
+ * Роль компонента — только расстановка: одинаковый зазор между кнопками во
+ * всех шапках приложения.
+ */
+export const HeaderCapsule = ({
+  children,
+  style,
+}: {
+  children: React.ReactNode;
+  style?: ViewStyle;
+}) => {
+  const theme = useTheme();
+
+  return <View style={[styles.capsule, { gap: theme.spacing.xs }, style]}>{children}</View>;
 };
 
 /** Подмешать альфу к hex или rgb-строке — для бледных акцентных заливок. */
@@ -196,4 +228,5 @@ const styles = StyleSheet.create({
   fill: { flex: 1, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   body: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   iconButton: { alignItems: 'center', justifyContent: 'center' },
+  capsule: { flexDirection: 'row', alignItems: 'center' },
 });

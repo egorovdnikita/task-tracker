@@ -32,11 +32,10 @@ export const Список: Story = {
 
     return (
       <ScrollView>
-        <ListSection header="Вид" separatorInset={theme.metrics.separatorInset + 29 + theme.spacing.md}>
+        <ListSection header="Вид" separatorInset={theme.metrics.separatorInset + 22 + theme.spacing.md}>
           <ListRow
             title="Оформление"
             icon="circle.lefthalf.filled"
-            iconBackground={theme.colors.systemIndigo}
             value="Как в системе"
             accessory={{ type: 'disclosure' }}
             onPress={() => {}}
@@ -45,9 +44,18 @@ export const Список: Story = {
             title="Отмеченные вниз"
             subtitle="Выполненные пункты уезжают в конец списка"
             icon="checklist"
-            iconBackground={theme.colors.systemGreen}
             accessory={{ type: 'switch', value: switched, onValueChange: setSwitched }}
           />
+        </ListSection>
+
+        <ListSection
+          header="Папки"
+          count={2}
+          action={{ icon: 'plus', label: 'Новая папка', onPress: () => {} }}
+          separatorInset={theme.metrics.separatorInset + 22 + theme.spacing.md}
+        >
+          <ListRow title="Работа" icon="folder.fill" value="12" accessory={{ type: 'disclosure' }} onPress={() => {}} />
+          <ListRow title="Личное" icon="folder.fill" value="4" accessory={{ type: 'disclosure' }} onPress={() => {}} />
         </ListSection>
 
         <ListSection header="Оформление" footer="Схема меняется вместе с системной.">

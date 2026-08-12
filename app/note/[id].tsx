@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import {
@@ -7,15 +7,18 @@ import {
   Chip,
   ChipWrap,
   Confetti,
-  EditorToolbar,
+  HeaderCapsule,
   IconButton,
+  MenuButton,
+  NoteTools,
   Symbol,
   Text,
+  type MenuItem,
 } from '../../src/components';
 import { useTheme, type PaletteName } from '../../src/theme';
 import { hasContent, makeChecklistBlock, makeTextBlock } from '../../src/utils/blocks';
 import { dueState, formatDateTime } from '../../src/utils/date';
-import { showActionSheet } from '../../src/utils/actionSheet';
+import { STATIC_TAGS, tagLabel } from '../../src/features/tags';
 import { notify } from '../../src/features/notify';
 import { useNotesStore } from '../../src/store/useNotesStore';
 import type { NoteBlock } from '../../src/types';
@@ -122,27 +125,38 @@ export default function NoteScreen() {
     setBlocks(note.id, blocks);
   };
 
-  const menu = () =>
-    showActionSheet([
-      { title: note.pinned ? 'Открепить' : 'Закрепить', onPress: () => togglePinned(note.id) },
-      {
-        title: note.remindAt ? 'Изменить напоминание…' : 'Напомнить…',
-        onPress: () => router.push({ pathname: '/reminder', params: { id: note.id } }),
+  const menuItems = (): MenuItem[] => [
+    {
+      title: note.pinned ? 'Открепить' : 'Закрепить',
+      icon: note.pinned ? 'pin.slash' : 'pin',
+      onPress: () => togglePinned(note.id),
+    },
+    {
+      title: note.remindAt ? 'Изменить напоминание' : 'Напомнить',
+      icon: 'bell' as const,
+      onPress: () => router.push({ pathname: '/reminder', params: { id: note.id } }),
+    },
+    {
+      title: 'Переместить',
+      icon: 'folder' as const,
+      onPress: () => router.push({ pathname: '/move', params: { ids: note.id } }),
+    },
+    {
+      title: 'Удалить',
+      icon: 'trash' as const,
+      destructive: true,
+      onPress: () => {
+        trashNotes([note.id]);
+        router.back();
       },
-      {
-        title: 'Переместить…',
-        onPress: () => router.push({ pathname: '/move', params: { ids: note.id } }),
-      },
-      { title: 'Теги…', onPress: () => router.push({ pathname: '/tags', params: { id: note.id } }) },
-      {
-        title: 'Удалить',
-        destructive: true,
-        onPress: () => {
-          trashNotes([note.id]);
-          router.back();
-        },
-      },
-    ]);
+    },
+  ];
+
+  /** Переключить свой тег. Унаследованные теги при этом остаются на месте. */
+  const toggleTag = (id: string) =>
+    updateNote(note.id, {
+      tags: note.tags.includes(id) ? note.tags.filter((t) => t !== id) : [...note.tags, id],
+    });
 
   return (
     <>
@@ -157,16 +171,33 @@ export default function NoteScreen() {
             Раньше `headerRight` отдавал то один элемент, то два, и нативная
             шапка растягивала группу: один и тот же экран выглядел по-разному
             в зависимости от того, закреплена заметка или нет.
+
+            Группа собрана в ту же стеклянную капсулу, что и на списках, —
+            один и тот же орган управления выглядит одинаково везде.
           */
           headerRight: () => (
-            <View style={{ flexDirection: 'row', gap: theme.spacing.lg }}>
+            <HeaderCapsule>
               <IconButton
                 name={note.pinned ? 'pin.fill' : 'pin'}
+                size={19}
                 accessibilityLabel={note.pinned ? 'Открепить' : 'Закрепить'}
                 onPress={() => togglePinned(note.id)}
               />
-              <IconButton name="ellipsis.circle" accessibilityLabel="Меню заметки" onPress={menu} />
-            </View>
+
+              <MenuButton
+                accessibilityLabel="Меню заметки"
+                items={menuItems}
+                style={({ pressed }) => ({
+                  width: theme.controlHeight.buttonCompact,
+                  height: theme.controlHeight.buttonCompact,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  opacity: pressed ? 0.4 : 1,
+                })}
+              >
+                <Symbol name="ellipsis" size={19} color={theme.colors.accent} />
+              </MenuButton>
+            </HeaderCapsule>
           ),
         }}
       />
@@ -251,66 +282,84 @@ export default function NoteScreen() {
             }
           />
 
-          {note.tags.length > 0 ? (
+          {/*
+            Теги — три готовых чипа прямо здесь, а не отдельный шит.
+
+            Шит открывался пустым: своих тегов у новой заметки нет, поле
+            «Название тега» не нажималось, и единственным, что он предлагал,
+            была подсказка набрать `#тег` где-то ещё. Три заданных признака
+            ставятся касанием и видны в том же месте, где всё остальное про
+            заметку.
+          */}
+          <View style={{ gap: theme.spacing.sm }}>
+            <Text variant="footnote" color="secondaryLabel">
+              Теги
+            </Text>
+
             <ChipWrap>
-              {note.tags.map((tag) => (
+              {STATIC_TAGS.map((tag) => (
                 <Chip
-                  key={tag}
-                  label={tag}
-                  icon="tag"
-                  selected
-                  onRemove={() =>
-                    updateNote(note.id, { tags: note.tags.filter((t) => t !== tag) })
-                  }
+                  key={tag.id}
+                  label={tag.label}
+                  icon={tag.icon}
+                  accent={tag.accent}
+                  outlined={!note.tags.includes(tag.id)}
+                  selected={note.tags.includes(tag.id)}
+                  onPress={() => toggleTag(tag.id)}
                 />
               ))}
-            </ChipWrap>
-          ) : null}
-        </ScrollView>
 
-        <EditorToolbar
-          showLabels={settings.toolbarLabels}
-          onDismissKeyboard={Keyboard.dismiss}
-          actions={[
-            {
-              name: 'checklist',
-              label: 'Список',
-              onPress: () => setBlocks(note.id, [...note.blocks, makeChecklistBlock()]),
-            },
-            {
-              name: 'text.alignleft',
-              label: 'Текст',
-              onPress: () => setBlocks(note.id, [...note.blocks, makeTextBlock()]),
-            },
-            // Плита 04: запись, скан и рисунок — такие же блоки в потоке, как
-            // текст и список, поэтому и вставляются той же панелью.
-            {
-              name: 'mic',
-              label: 'Запись',
-              onPress: () => router.push({ pathname: '/capture/voice', params: { id: note.id } }),
-            },
-            {
-              name: 'doc.text.viewfinder',
-              label: 'Скан',
-              onPress: () => router.push({ pathname: '/capture/scan', params: { id: note.id } }),
-            },
-            {
-              name: 'scribble',
-              label: 'Рисунок',
-              onPress: () => router.push({ pathname: '/capture/sketch', params: { id: note.id } }),
-            },
-            {
-              name: 'bell',
-              label: 'Напомнить',
-              onPress: () => router.push({ pathname: '/reminder', params: { id: note.id } }),
-            },
-            {
-              name: 'tag',
-              label: 'Теги',
-              onPress: () => router.push({ pathname: '/tags', params: { id: note.id } }),
-            },
-          ]}
-        />
+              {/* Теги из прежних версий не исчезают: их нельзя поставить
+                  заново, но снять можно — иначе они остались бы навсегда. */}
+              {note.tags
+                .filter((tag) => !STATIC_TAGS.some((item) => item.id === tag))
+                .map((tag) => (
+                  <Chip
+                    key={tag}
+                    label={tagLabel(tag)}
+                    icon="tag"
+                    selected
+                    onRemove={() =>
+                      updateNote(note.id, { tags: note.tags.filter((t) => t !== tag) })
+                    }
+                  />
+                ))}
+            </ChipWrap>
+          </View>
+
+          {/* Плита 04: запись, скан и рисунок — такие же блоки в потоке, как
+              текст и список, поэтому и вставляются одним рядом. */}
+          <NoteTools
+            tools={[
+              {
+                name: 'checklist',
+                label: 'Список',
+                onPress: () => setBlocks(note.id, [...note.blocks, makeChecklistBlock()]),
+              },
+              {
+                name: 'text.alignleft',
+                label: 'Текст',
+                onPress: () => setBlocks(note.id, [...note.blocks, makeTextBlock()]),
+              },
+              {
+                name: 'mic',
+                label: 'Запись',
+                onPress: () => router.push({ pathname: '/capture/voice', params: { id: note.id } }),
+              },
+              {
+                name: 'doc.text.viewfinder',
+                label: 'Скан',
+                onPress: () => router.push({ pathname: '/capture/scan', params: { id: note.id } }),
+              },
+              {
+                name: 'scribble',
+                label: 'Рисунок',
+                onPress: () =>
+                  router.push({ pathname: '/capture/sketch', params: { id: note.id } }),
+              },
+            ]}
+          />
+        </ScrollView>
       </KeyboardAvoidingView>
 
       <Confetti active={celebrating} onDone={() => setCelebrating(false)} />

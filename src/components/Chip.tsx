@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, ScrollView, StyleSheet, View, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
 import type { SFSymbol } from 'sf-symbols-typescript';
 
 import { useTheme, type AccentName } from '../theme';
@@ -137,33 +137,13 @@ export const Chip = ({
 };
 
 /**
- * Ряд чипов с горизонтальной прокруткой.
+ * Чипы с переносом на вторую строку.
  *
- * Прокрутка, а не перенос на вторую строку: ряд фильтров должен занимать
- * фиксированную высоту, иначе список под ним прыгает при каждой смене набора.
+ * Переносом, а не прокруткой: набор здесь конечный — три тега и пара
+ * атрибутов, — и он обязан быть виден целиком. Прокручиваемый ряд прячет
+ * часть выбора за краем экрана, и о существовании третьего тега приходится
+ * догадываться.
  */
-export const ChipRow = ({
-  children,
-  style,
-}: {
-  children: React.ReactNode;
-  style?: ViewStyle;
-}) => {
-  const theme = useTheme();
-
-  return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ paddingHorizontal: theme.spacing.lg, gap: theme.spacing.sm }}
-      style={style}
-    >
-      {children}
-    </ScrollView>
-  );
-};
-
-/** Те же чипы, но с переносом — когда высота не важна (редактор тегов). */
 export const ChipWrap = ({ children, style }: { children: React.ReactNode; style?: ViewStyle }) => {
   const theme = useTheme();
   return <View style={[styles.wrap, { gap: theme.spacing.sm }, style]}>{children}</View>;

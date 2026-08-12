@@ -1,9 +1,16 @@
 export { BottomBar, type BottomBarProps } from './BottomBar';
-export { Button, IconButton, withAlpha, type ButtonProps, type ButtonVariant, type IconButtonProps } from './Button';
+export {
+  Button,
+  HeaderCapsule,
+  IconButton,
+  withAlpha,
+  type ButtonProps,
+  type ButtonVariant,
+  type IconButtonProps,
+} from './Button';
 export { Checkbox, type CheckboxProps } from './Checkbox';
-export { Chip, ChipRow, ChipWrap, type ChipProps } from './Chip';
+export { Chip, ChipWrap, type ChipProps } from './Chip';
 export { Confetti, type ConfettiProps } from './Confetti';
-export { EditorToolbar, type EditorToolbarProps, type ToolbarAction } from './EditorToolbar';
 export { EmptyState, type EmptyStateProps } from './EmptyState';
 export { Fab, type FabProps } from './Fab';
 export { Glass, GlassGroup, type GlassGroupProps, type GlassProps } from './Glass';
@@ -15,8 +22,17 @@ export {
   type ListRowProps,
   type ListSectionProps,
 } from './List';
+export {
+  MenuButton,
+  MenuHost,
+  showMenu,
+  type MenuAnchor,
+  type MenuButtonProps,
+  type MenuItem,
+} from './Menu';
 export { ScanBlockView, SketchBlockView, VoiceBlockView } from './MediaBlocks';
 export { BlockEditor, type BlockEditorProps } from './NoteBlocks';
+export { NoteTools, type NoteTool, type NoteToolsProps } from './NoteTools';
 export { Waveform, type WaveformProps } from './Waveform';
 export { NoteCard, type NoteCardProps } from './NoteCard';
 export { NoteList, type NoteListProps } from './NoteList';

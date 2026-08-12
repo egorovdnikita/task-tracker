@@ -78,13 +78,10 @@ export const NotificationHost = () => {
         style={{
           position: 'absolute',
           left: theme.spacing.lg,
-          // Над нижним рядом с поиском и созданием, а не поверх него.
+          // Над панелью вкладок и над кругом создания, а не поверх них: круг
+          // стоит справа в ряду панели и поднимается над ней на свою половину.
           bottom:
-            insets.bottom +
-            theme.metrics.tabBar +
-            theme.controlHeight.fab +
-            theme.spacing.md +
-            theme.spacing.sm,
+            insets.bottom + theme.metrics.tabBar / 2 + theme.controlHeight.fab + theme.spacing.sm,
         }}
       />
     </View>

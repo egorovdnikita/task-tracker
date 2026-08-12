@@ -8,16 +8,18 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { Chip, ChipRow, Symbol, Text } from '../src/components';
+import { Chip, MenuButton, Separator, Symbol, Text } from '../src/components';
 import { useTheme } from '../src/theme';
+import { useKeyboardVisible } from '../src/utils/useKeyboardVisible';
 import { makeChecklistBlock, makeChecklistItem, makeTextBlock } from '../src/utils/blocks';
 import { formatDateTime } from '../src/utils/date';
-import { showActionSheet } from '../src/utils/actionSheet';
 import { reminderPresets, scheduleReminder } from '../src/features/reminders';
+import { STATIC_TAGS } from '../src/features/tags';
 import { notify } from '../src/features/notify';
-import { collectTags, rootFolders, useNotesStore } from '../src/store/useNotesStore';
+import { rootFolders, useNotesStore } from '../src/store/useNotesStore';
 
 /** Теги, набранные прямо в строке: `#работа` уезжает в теги, а не в заголовок. */
 const parseTags = (text: string): { title: string; tags: string[] } => {
@@ -28,13 +30,22 @@ const parseTags = (text: string): { title: string; tags: string[] } => {
 /**
  * Создание заметки — шит с поднятой клавиатурой.
  *
- * Раньше плюс заводил заметку в сторе и открывал полноценный редактор. Это
- * оставляло мусор: передумал — а заметка уже создана, и уезжает в корзину
- * пустой. Теперь заметка появляется в тот момент, когда в неё что-то попало,
- * а не когда открыли форму; закрытый без ввода шит не оставляет следов.
+ * Заметка появляется в тот момент, когда в неё что-то попало, а не когда
+ * открыли форму: закрытый без ввода шит не оставляет следов. Полный экран
+ * остаётся для существующей заметки — там, где есть что редактировать.
  *
- * Полный экран заметки остаётся для существующей заметки — там, где есть что
- * редактировать.
+ * Раскладка собрана по референсу и держится на одном правиле: у шита ровно
+ * три этажа, и каждый знает свою высоту.
+ *
+ *  1. Текст — растёт и прокручивается, забирает всё свободное место.
+ *  2. Атрибуты — ряд чипов постоянной высоты.
+ *  3. Строка отправки — назначение слева, запись и отправка справа.
+ *
+ * Прежняя версия этого не разделяла: прокрутка стояла в колонке без `flex`,
+ * то есть без заданной высоты, и схлопывалась в ноль. Всё, что шло после неё,
+ * наезжало на её содержимое — заголовок, описание, чипы и кнопки оказывались
+ * в одной точке экрана. Отсюда `flex: 1` на прокрутке и `flexGrow: 0` на
+ * обоих нижних этажах.
  */
 export default function CreateScreen() {
   const { folder, tag, kind } = useLocalSearchParams<{
@@ -43,8 +54,12 @@ export default function CreateScreen() {
     kind?: string;
   }>();
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
+  // Клавиатура убрана — под строкой отправки появляется домашний индикатор,
+  // и её нужно поднять над ним. Поднята — `KeyboardAvoidingView` уже отвёл
+  // ровно столько, сколько занимает клавиатура, и добавлять нечего.
+  const keyboard = useKeyboardVisible();
 
-  const notes = useNotesStore((s) => s.notes);
   const folders = useNotesStore((s) => s.folders);
   const createNote = useNotesStore((s) => s.createNote);
 
@@ -57,7 +72,6 @@ export default function CreateScreen() {
   const [tags, setTags] = useState<string[]>(tag ? [tag] : []);
   const [folderId, setFolderId] = useState<string | null>(folder ?? null);
 
-  const allTags = useMemo(() => collectTags(notes), [notes]);
   const roots = useMemo(() => rootFolders(folders), [folders]);
   const destination = folderId ? folders.find((f) => f.id === folderId)?.name : null;
 
@@ -86,59 +100,38 @@ export default function CreateScreen() {
     router.back();
   };
 
-  const chooseReminder = () =>
-    showActionSheet(
-      [
-        ...reminderPresets().map((preset) => ({
-          title: `${preset.label} · ${formatDateTime(preset.at)}`,
-          onPress: () => setRemindAt(preset.at),
-        })),
-        ...(remindAt ? [{ title: 'Без напоминания', onPress: () => setRemindAt(null) }] : []),
-      ],
-      { title: 'Напомнить' },
-    );
-
-  const chooseTag = () =>
-    showActionSheet(
-      allTags.length > 0
-        ? allTags.map((tag) => ({
-            title: tags.includes(tag) ? `✓ ${tag}` : tag,
-            onPress: () =>
-              setTags((current) =>
-                current.includes(tag) ? current.filter((t) => t !== tag) : [...current, tag],
-              ),
-          }))
-        : [{ title: 'Наберите #тег прямо в строке', onPress: () => {} }],
-      { title: 'Теги' },
-    );
-
-  const chooseFolder = () =>
-    showActionSheet(
-      [
-        { title: 'Без папки', onPress: () => setFolderId(null) },
-        ...roots.map((item) => ({ title: item.name, onPress: () => setFolderId(item.id) })),
-      ],
-      { title: 'Куда положить' },
+  const toggleTag = (id: string) =>
+    setTags((current) =>
+      current.includes(id) ? current.filter((t) => t !== id) : [...current, id],
     );
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Новая заметка' }} />
+      <Stack.Screen options={{ headerShown: false }} />
 
-      {/* Клавиатура поднята с самого открытия, и всё, кроме текста, обязано
+      {/* Клавиатура поднята с самого открытия, и нижние два этажа обязаны
           остаться над ней: выбор срока и папки — часть той же строки ввода. */}
       <KeyboardAvoidingView
-        style={styles.grow}
+        style={[styles.grow, { backgroundColor: theme.colors.systemGroupedBackground }]}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
+          style={styles.grow}
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ padding: theme.spacing.lg, gap: theme.spacing.md }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: theme.spacing.lg,
+            // Сверху — место под ручку шита: без неё первая строка текста
+            // упирается в кромку.
+            paddingTop: theme.spacing.xxl,
+            paddingBottom: theme.spacing.lg,
+            gap: theme.spacing.sm,
+          }}
         >
           {/*
-            Плейсхолдер учит синтаксису вместо экрана онбординга: `#работа`
-            в строке станет тегом, а не частью заголовка.
+            Первое, что видно в шите, — собственный текст, а не подпись к
+            полю. Плейсхолдер при этом учит синтаксису вместо онбординга:
+            `#работа` в строке станет тегом, а не частью заголовка.
           */}
           <TextInput
             autoFocus
@@ -147,8 +140,11 @@ export default function CreateScreen() {
             onSubmitEditing={submit}
             placeholder="Например: Созвон по релизу #работа"
             placeholderTextColor={theme.colors.placeholderText}
-            returnKeyType="done"
-            style={[theme.text('title3', 'semibold'), { color: theme.colors.label, padding: 0 }]}
+            returnKeyType="next"
+            style={[
+              theme.text('title3', 'semibold'),
+              { color: theme.colors.label, padding: 0 },
+            ]}
           />
 
           <TextInput
@@ -159,7 +155,7 @@ export default function CreateScreen() {
             multiline
             style={[
               theme.text('body'),
-              { color: theme.colors.label, padding: 0, minHeight: 44, textAlignVertical: 'top' },
+              { color: theme.colors.label, padding: 0, textAlignVertical: 'top' },
             ]}
           />
         </ScrollView>
@@ -168,8 +164,27 @@ export default function CreateScreen() {
           Атрибуты — обводные чипы с иконкой и словом, а не ряд одних иконок:
           у иконки без подписи угадывается «микрофон», но не «напоминание».
           Каждый чип показывает своё значение, как только оно выбрано.
+
+          Теги здесь тоже чипы, и их три — заранее заданных. Раньше на их
+          месте стоял один чип «Тег», открывавший список; когда своих тегов
+          ещё не было, список оказывался пустым, и вместо выбора появлялся
+          алерт с текстом «наберите #тег прямо в строке» — то есть кнопка,
+          которая ничего не делает. Три готовых тега ставятся касанием.
         */}
-        <ChipRow style={{ flexGrow: 0, marginBottom: theme.spacing.sm }}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          // Высота задана явно, а не выведена из содержимого: у прокрутки в
+          // колонке своей высоты нет, и без числа этот этаж схлопнулся бы —
+          // ровно так и разъезжался прежний шит.
+          style={[styles.fixed, { height: theme.controlHeight.segmented + theme.spacing.xl }]}
+          contentContainerStyle={{
+            alignItems: 'center',
+            paddingHorizontal: theme.spacing.lg,
+            gap: theme.spacing.sm,
+          }}
+        >
           <Chip
             label="Список задач"
             icon="checklist"
@@ -177,46 +192,68 @@ export default function CreateScreen() {
             selected={checklist}
             onPress={() => setChecklist((value) => !value)}
           />
-          <Chip
-            label={remindAt ? formatDateTime(remindAt) : 'Напомнить'}
-            icon="bell"
-            outlined={!remindAt}
-            selected={Boolean(remindAt)}
-            onPress={chooseReminder}
-          />
-          <Chip
-            label={tags.length > 0 ? tags.join(', ') : 'Тег'}
-            icon="tag"
-            outlined={tags.length === 0}
-            selected={tags.length > 0}
-            onPress={chooseTag}
-          />
-        </ChipRow>
+
+          <ReminderChip value={remindAt} onChange={setRemindAt} />
+
+          {STATIC_TAGS.map((item) => (
+            <Chip
+              key={item.id}
+              label={item.label}
+              icon={item.icon}
+              accent={item.accent}
+              outlined={!tags.includes(item.id)}
+              selected={tags.includes(item.id)}
+              onPress={() => toggleTag(item.id)}
+            />
+          ))}
+        </ScrollView>
+
+        {/* Линия отделяет ввод от отправки: ниже неё ничего не набирают,
+            ниже неё только решают, куда это уйдёт. */}
+        <Separator />
 
         <View
           style={[
             styles.actions,
+            styles.fixed,
             {
               paddingHorizontal: theme.spacing.lg,
-              paddingBottom: theme.spacing.lg,
+              paddingTop: theme.spacing.md,
+              paddingBottom: keyboard ? theme.spacing.md : Math.max(theme.spacing.md, insets.bottom),
               gap: theme.spacing.md,
             },
           ]}
         >
           {/* Куда положить — до создания и одним касанием, а не отдельным
               шитом переноса после. */}
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Куда положить"
-            onPress={chooseFolder}
-            style={({ pressed }) => [styles.destination, { opacity: pressed ? 0.5 : 1, gap: theme.spacing.xs }]}
+          <MenuButton
+            accessibilityLabel={`Куда положить: ${destination ?? 'Без папки'}`}
+            title="Куда положить"
+            items={() => [
+              {
+                title: 'Без папки',
+                icon: 'tray',
+                checked: folderId === null,
+                onPress: () => setFolderId(null),
+              },
+              ...roots.map((item) => ({
+                title: item.name,
+                icon: 'folder' as const,
+                checked: folderId === item.id,
+                onPress: () => setFolderId(item.id),
+              })),
+            ]}
+            style={({ pressed }) => [
+              styles.destination,
+              { opacity: pressed ? 0.5 : 1, gap: theme.spacing.xs },
+            ]}
           >
             <Symbol name="folder" size={15} color={theme.colors.secondaryLabel} />
             <Text variant="subheadline" color="secondaryLabel" numberOfLines={1}>
               {destination ?? 'Без папки'}
             </Text>
             <Symbol name="chevron.down" size={11} color={theme.colors.tertiaryLabel} />
-          </Pressable>
+          </MenuButton>
 
           {/* Голос — второй способ ввода после клавиатуры, а не пункт меню
               наравне со сканом и рисунком. */}
@@ -233,6 +270,41 @@ export default function CreateScreen() {
     </>
   );
 }
+
+/** Чип срока: показывает выбранное время и открывает меню из себя же. */
+const ReminderChip = ({
+  value,
+  onChange,
+}: {
+  value: number | null;
+  onChange: (at: number | null) => void;
+}) => (
+  <MenuButton
+    accessibilityLabel={value ? `Напомнить ${formatDateTime(value)}` : 'Напомнить'}
+    title="Напомнить"
+    items={() => [
+      ...reminderPresets().map((preset) => ({
+        title: `${preset.label} · ${formatDateTime(preset.at)}`,
+        onPress: () => onChange(preset.at),
+      })),
+      ...(value
+        ? [{ title: 'Без напоминания', destructive: true, onPress: () => onChange(null) }]
+        : []),
+    ]}
+  >
+    {/* Чип внутри кнопки касаний не принимает: нажатие должно достаться
+        обёртке, иначе измерять нечего — меню растёт из прямоугольника
+        триггера, а не из того, что оказалось под пальцем. */}
+    <View pointerEvents="none">
+      <Chip
+        label={value ? formatDateTime(value) : 'Напомнить'}
+        icon="bell"
+        outlined={!value}
+        selected={Boolean(value)}
+      />
+    </View>
+  </MenuButton>
+);
 
 const RoundButton = ({
   icon,
@@ -281,6 +353,9 @@ const RoundButton = ({
 
 const styles = StyleSheet.create({
   grow: { flex: 1 },
+  // Этажи под прокруткой не растягиваются и не сжимаются: их высота задана
+  // содержимым, и делить с прокруткой им нечего.
+  fixed: { flexGrow: 0, flexShrink: 0 },
   actions: { flexDirection: 'row', alignItems: 'center' },
   destination: { flex: 1, flexDirection: 'row', alignItems: 'center' },
   round: { alignItems: 'center', justifyContent: 'center' },

@@ -60,7 +60,6 @@ export const defaultSettings: Settings = {
   sort: 'updated',
   layout: { root: 'list' },
   moveCheckedDown: true,
-  toolbarLabels: true,
   celebratedFirstDone: false,
 };
 
@@ -198,7 +197,7 @@ export const useNotesStore = create<NotesState>()(
     }),
     {
       name: 'task-tracker-notes',
-      version: 4,
+      version: 5,
       storage: createJSONStorage(() => AsyncStorage),
       /**
        * v1 хранил тело строкой и цвет из светлой палитры, v2 — свечение из
@@ -210,13 +209,23 @@ export const useNotesStore = create<NotesState>()(
        * экраном, и на нём эта история была единственным содержимым до ввода.
        * Поиск переехал полем в список, показывать историю стало негде — и
        * хранить её больше незачем.
+       *
+       * v4 держал `toolbarLabels` — тумблер подписей в панели над клавиатурой.
+       * Панели больше нет: инструменты стоят плитками на самой странице, и
+       * подпись у них есть всегда. Настройка осталась бы переключателем,
+       * который ни на что не влияет.
+       *
+       * Сами теги заметок при этом не трогаются. Фильтр показывает три
+       * заданных, но чужой тег из прежней версии остаётся в `note.tags`,
+       * виден на карточке и снимается в редакторе.
        */
       migrate: (persisted: any, from) => {
-        if (from >= 4 || !persisted) return persisted;
+        if (from >= 5 || !persisted) return persisted;
 
-        if (from === 3) {
+        if (from === 3 || from === 4) {
           const settings: Record<string, unknown> = { ...defaultSettings, ...persisted.settings };
           delete settings.recentQueries;
+          delete settings.toolbarLabels;
           return { ...persisted, settings };
         }
 
@@ -296,10 +305,6 @@ export const searchNotes = (notes: Note[], query: string): Note[] => {
 
 export const notesInFolder = (notes: Note[], folderId: string | null): Note[] =>
   activeNotes(notes).filter((n) => n.folderId === folderId);
-
-/** Все теги, которые где-то используются, по алфавиту. */
-export const collectTags = (notes: Note[]): string[] =>
-  [...new Set(activeNotes(notes).flatMap((n) => n.tags))].sort((a, b) => a.localeCompare(b, 'ru'));
 
 /**
  * Сколько заметок в папке. Счётчик включает вложенные папки — так на плите

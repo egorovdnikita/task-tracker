@@ -42,9 +42,16 @@ export default function TabsLayout() {
         <Label>Папки</Label>
       </NativeTabs.Trigger>
 
+      {/*
+        «Настройки», а не «Ещё». «Ещё» — не раздел, а признание, что для
+        содержимого не нашлось имени: за ним может оказаться что угодно, и
+        зайти туда можно только наугад. Внутри лежат оформление, порядок
+        сортировки, поведение списка и работа с данными — это настройки, так
+        вкладка и называется.
+      */}
       <NativeTabs.Trigger name="more">
-        <Icon sf={{ default: 'ellipsis.circle', selected: 'ellipsis.circle.fill' }} />
-        <Label>Ещё</Label>
+        <Icon sf={{ default: 'gearshape', selected: 'gearshape.fill' }} />
+        <Label>Настройки</Label>
       </NativeTabs.Trigger>
     </NativeTabs>
   );

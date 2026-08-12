@@ -3,40 +3,36 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../theme';
-import { useKeyboardHeight } from '../utils/useKeyboardVisible';
 import { Fab } from './Fab';
-import { SearchField } from './SearchField';
+import type { MenuAnchor } from './Menu';
 
 export type BottomBarProps = {
-  /** Поле поиска слева. Без него в ряду остаётся одна кнопка создания. */
-  search?: {
-    value: string;
-    onChangeText: (value: string) => void;
-    placeholder?: string;
-  };
   onCreate: () => void;
-  onLongPressCreate?: () => void;
+  onLongPressCreate?: (anchor: MenuAnchor) => void;
   createLabel?: string;
-  /** Панель вкладок под рядом. На экранах вне вкладок её нет. */
+  /** Панель вкладок под кнопкой. На экранах вне вкладок её нет. */
   overTabBar?: boolean;
   /** Спрятать — например, пока идёт множественный выбор. */
   hidden?: boolean;
 };
 
 /**
- * Нижний ряд: поиск и создание.
+ * Кнопка создания у нижнего края.
  *
- * Здесь сходятся два решения. Первое — поиск перестал быть вкладкой: искать
- * нужно в списке, который перед глазами, а не на отдельном экране, куда
- * список надо принести. Второе — кнопка создания стоит на одном месте всегда,
- * в том числе на пустом экране: раньше она пряталась, когда список пуст, и
- * приложение без единой заметки оказывалось без способа её завести.
+ * Поиск отсюда ушёл наверх, под заголовок: искать глазами удобнее там, где
+ * заголовок объясняет, что именно ищут, а внизу поле спорило за место и за
+ * палец с панелью вкладок. Внизу осталось одно — то, ради чего приложение
+ * открывают чаще всего.
  *
- * Ряд прижат к нижнему краю над панелью вкладок — туда дотягивается большой
- * палец. С клавиатурой он поднимается: искать вслепую под клавиатурой нельзя.
+ * Кнопка стоит справа, в один ряд с панелью вкладок и в свободном поле рядом
+ * с ней: панель вкладок iOS 26 — капсула по центру, и справа от неё остаётся
+ * место ровно под круг. Ниже кнопку опускать нельзя: панель вкладок рисуется
+ * нативно и лежит поверх содержимого экрана, так что нижняя половина круга
+ * ушла бы под неё вместе с половиной цели касания. Поэтому круг накрывает
+ * только верхнюю половину панели — визуально он в её ряду, а нажимается
+ * целиком.
  */
 export const BottomBar = ({
-  search,
   onCreate,
   onLongPressCreate,
   createLabel,
@@ -45,42 +41,21 @@ export const BottomBar = ({
 }: BottomBarProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const keyboard = useKeyboardHeight();
 
   if (hidden) return null;
 
-  const resting = insets.bottom + (overTabBar ? theme.metrics.tabBar : 0) + theme.spacing.sm;
+  const bottom = insets.bottom + (overTabBar ? theme.metrics.tabBar / 2 : theme.spacing.sm);
 
   return (
     <View
       pointerEvents="box-none"
-      style={[
-        styles.root,
-        {
-          left: theme.spacing.lg,
-          right: theme.spacing.lg,
-          bottom: keyboard > 0 ? keyboard + theme.spacing.sm : resting,
-          gap: theme.spacing.md,
-        },
-      ]}
+      style={[styles.root, { right: theme.spacing.md, bottom }]}
     >
-      {search ? (
-        <SearchField
-          value={search.value}
-          onChangeText={search.onChangeText}
-          placeholder={search.placeholder}
-          style={styles.grow}
-        />
-      ) : (
-        <View style={styles.grow} pointerEvents="none" />
-      )}
-
       <Fab onPress={onCreate} onLongPress={onLongPressCreate} accessibilityLabel={createLabel} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  root: { position: 'absolute', flexDirection: 'row', alignItems: 'center' },
-  grow: { flex: 1 },
+  root: { position: 'absolute' },
 });

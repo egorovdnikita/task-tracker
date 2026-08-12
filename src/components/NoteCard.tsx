@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { useTheme, type PaletteName } from '../theme';
@@ -24,7 +24,12 @@ export type NoteCardProps = {
   note: Note;
   layout?: LayoutMode;
   onPress?: () => void;
-  onLongPress?: () => void;
+  /**
+   * Долгое нажатие. Прямоугольник карточки в координатах окна передаётся
+   * вместе с событием: меню растёт из той карточки, к которой относится, и
+   * иначе непонятно, чью именно заметку оно сейчас удалит.
+   */
+  onLongPress?: (anchor: { x: number; y: number; width: number; height: number }) => void;
   /** Режим множественного выбора: слева появляется отметка. Плита 05.2. */
   selectable?: boolean;
   selected?: boolean;
@@ -54,13 +59,22 @@ export const NoteCard = ({
   const progress = checklistProgress(note);
   const preview = noteSubtitle(note);
   const accent = note.accent ? theme.accent(note.accent) : null;
+  const ref = useRef<View>(null);
 
   return (
     <Pressable
+      ref={ref}
       accessibilityRole="button"
       accessibilityState={{ selected: selectable ? selected : undefined }}
       onPress={onPress}
-      onLongPress={onLongPress}
+      onLongPress={
+        onLongPress
+          ? () =>
+              ref.current?.measureInWindow((x, y, width, height) =>
+                onLongPress({ x, y, width, height }),
+              )
+          : undefined
+      }
       style={({ pressed }) => [
         styles.card,
         {

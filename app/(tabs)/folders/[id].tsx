@@ -1,13 +1,22 @@
 import React, { useMemo, useState } from 'react';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { BottomBar, EmptyState, IconButton, NoteList } from '../../../src/components';
+import {
+  BottomBar,
+  EmptyState,
+  HeaderCapsule,
+  IconButton,
+  NoteList,
+  SearchField,
+  showMenu,
+  type MenuAnchor,
+} from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { useNotesStore, activeNotes, searchNotes, sortNotes } from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 import { offerUndo } from '../../../src/features/notify';
+import { tagLabel } from '../../../src/features/tags';
 import { pluralNotes } from '../../../src/utils/date';
-import { showActionSheet } from '../../../src/utils/actionSheet';
 
 /**
  * Содержимое папки, тега или корня.
@@ -34,7 +43,8 @@ export default function FolderScreen() {
 
   const scope = useMemo(() => {
     if (id === 'root') return { title: 'Без папки', folderId: null as string | null, tag: null };
-    if (id?.startsWith('tag:')) return { title: id.slice(4), folderId: null, tag: id.slice(4) };
+    if (id?.startsWith('tag:'))
+      return { title: tagLabel(id.slice(4)), folderId: null, tag: id.slice(4) };
     const folder = folders.find((f) => f.id === id);
     return { title: folder?.name ?? 'Папка', folderId: id ?? null, tag: null };
   }, [id, folders]);
@@ -61,18 +71,31 @@ export default function FolderScreen() {
     );
   };
 
-  const noteMenu = (noteId: string) => {
+  const noteMenu = (noteId: string, anchor: MenuAnchor) => {
     const note = notes.find((n) => n.id === noteId);
     if (!note) return;
 
-    showActionSheet([
-      { title: note.pinned ? 'Открепить' : 'Закрепить', onPress: () => togglePinned(noteId) },
-      {
-        title: 'Переместить…',
-        onPress: () => router.push({ pathname: '/move', params: { ids: noteId } }),
-      },
-      { title: 'Удалить', destructive: true, onPress: () => trashWithUndo([noteId]) },
-    ]);
+    showMenu(
+      [
+        {
+          title: note.pinned ? 'Открепить' : 'Закрепить',
+          icon: note.pinned ? 'pin.slash' : 'pin',
+          onPress: () => togglePinned(noteId),
+        },
+        {
+          title: 'Переместить',
+          icon: 'folder',
+          onPress: () => router.push({ pathname: '/move', params: { ids: noteId } }),
+        },
+        {
+          title: 'Удалить',
+          icon: 'trash',
+          destructive: true,
+          onPress: () => trashWithUndo([noteId]),
+        },
+      ],
+      anchor,
+    );
   };
 
   // Шит создания открывается сразу с этой папкой: человек уже сказал, где он
@@ -93,11 +116,14 @@ export default function FolderScreen() {
         options={{
           title: scope.title,
           headerRight: () => (
-            <IconButton
-              name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
-              accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
-              onPress={() => setLayout(id ?? 'root', layout === 'list' ? 'grid' : 'list')}
-            />
+            <HeaderCapsule>
+              <IconButton
+                name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
+                size={19}
+                accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
+                onPress={() => setLayout(id ?? 'root', layout === 'list' ? 'grid' : 'list')}
+              />
+            </HeaderCapsule>
           ),
         }}
       />
@@ -113,11 +139,25 @@ export default function FolderScreen() {
             ? selection.toggle(noteId)
             : router.push({ pathname: '/note/[id]', params: { id: noteId } })
         }
-        onLongPress={(noteId) => (selection.active ? selection.toggle(noteId) : noteMenu(noteId))}
+        onLongPress={(noteId, anchor) =>
+          selection.active ? selection.toggle(noteId) : noteMenu(noteId, anchor)
+        }
         onDelete={(noteId) => trashWithUndo([noteId])}
         onTogglePin={togglePinned}
         contentInsetBottom={
-          theme.metrics.tabBar + theme.controlHeight.fab + (selection.active ? 64 : 0)
+          theme.metrics.tabBar + theme.spacing.xxl + (selection.active ? 64 : 0)
+        }
+        ListHeaderComponent={
+          !selection.active ? (
+            // Поиск под заголовком, как в корневом списке: одно место на всех
+            // экранах со списком заметок.
+            <SearchField
+              value={query}
+              onChangeText={setQuery}
+              placeholder={`Поиск: ${scope.title}`}
+              style={{ marginBottom: theme.spacing.xs }}
+            />
+          ) : null
         }
         ListEmptyComponent={
           query.trim() ? (
@@ -132,7 +172,7 @@ export default function FolderScreen() {
               title={scope.tag ? 'С этим тегом пусто' : 'В папке пусто'}
               description={
                 scope.tag
-                  ? 'Тег появится в списке, когда им будет помечена хотя бы одна заметка.'
+                  ? 'Тег ставится чипом в самой заметке — и в шите создания, и в открытой.'
                   : 'Перенесите сюда заметки или создайте новую кнопкой внизу справа.'
               }
             />
@@ -140,11 +180,7 @@ export default function FolderScreen() {
         }
       />
 
-      <BottomBar
-        hidden={selection.active}
-        search={{ value: query, onChangeText: setQuery, placeholder: `Поиск: ${scope.title}` }}
-        onCreate={create}
-      />
+      <BottomBar hidden={selection.active} onCreate={create} />
 
       <SelectionBar
         selection={selection}

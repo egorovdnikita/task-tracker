@@ -1,15 +1,22 @@
 import React, { useMemo } from 'react';
-import { ScrollView, Share } from 'react-native';
+import { ScrollView, Share, View } from 'react-native';
 import Constants from 'expo-constants';
 import { Stack, router } from 'expo-router';
 
-import { ListRow, ListSection, Text } from '../../../src/components';
+import { ListRow, ListSection, Symbol, Text } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import type { SortMode } from '../../../src/types';
 import { APPEARANCE_LABELS, SORT_LABELS } from '../../../src/features/labels';
 import { noteText, noteTitle } from '../../../src/utils/blocks';
 import { showActionSheet } from '../../../src/utils/actionSheet';
 import { activeNotes, trashedNotes, useNotesStore } from '../../../src/store/useNotesStore';
+
+/** Первые три кнопки панели редактора — их хватает, чтобы показать разницу. */
+const TOOLBAR_PREVIEW = [
+  { icon: 'checklist', label: 'Список' },
+  { icon: 'mic', label: 'Запись' },
+  { icon: 'bell', label: 'Напомнить' },
+] as const;
 
 /**
  * Плита 08.3 — настройки.
@@ -87,6 +94,45 @@ export default function MoreScreen() {
               onValueChange: (moveCheckedDown) => updateSettings({ moveCheckedDown }),
             }}
           />
+          <ListRow
+            title="Подписи в панели"
+            subtitle="Слово рядом с иконкой в панели редактора"
+            icon="textformat"
+            iconBackground={theme.colors.systemOrange}
+            accessory={{
+              type: 'switch',
+              value: settings.toolbarLabels,
+              onValueChange: (toolbarLabels) => updateSettings({ toolbarLabels }),
+            }}
+          />
+
+          {/*
+            Настройка не описывается словами, а показывается: ниже тот самый
+            ряд ровно в том виде, в каком он появится над клавиатурой.
+          */}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: theme.spacing.lg,
+              paddingVertical: theme.spacing.md,
+              gap: settings.toolbarLabels ? theme.spacing.md : theme.spacing.lg,
+            }}
+          >
+            {TOOLBAR_PREVIEW.map(({ icon, label }) => (
+              <View
+                key={icon}
+                style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}
+              >
+                <Symbol name={icon} size={20} color={theme.colors.accent} />
+                {settings.toolbarLabels ? (
+                  <Text variant="footnote" color="accent">
+                    {label}
+                  </Text>
+                ) : null}
+              </View>
+            ))}
+          </View>
         </ListSection>
 
         <ListSection header="Мои данные" footer="Заметки хранятся только на этом устройстве.">

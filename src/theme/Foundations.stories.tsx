@@ -72,6 +72,16 @@ const Swatch = ({ name }: { name: PaletteName }) => {
 export const Цвета: Story = {
   render: () => (
     <ScrollView>
+      {/*
+        Продуктовый слой стоит первым: это те три значения, которыми продукт
+        отличается от iOS по умолчанию. Всё, что ниже, — системное.
+      */}
+      <Group title="Продукт">
+        <Swatch name="accent" />
+        <Swatch name="systemBackground" />
+        <Swatch name="secondarySystemGroupedBackground" />
+      </Group>
+
       <Group title="Фоны">
         {(['systemBackground', 'secondarySystemBackground', 'tertiarySystemBackground',
            'systemGroupedBackground', 'secondarySystemGroupedBackground',

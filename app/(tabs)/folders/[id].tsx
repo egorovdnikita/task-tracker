@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { EmptyState, Fab, IconButton, NoteList, Toast } from '../../../src/components';
-import { useNotesStore, activeNotes, sortNotes } from '../../../src/store/useNotesStore';
+import { BottomBar, EmptyState, IconButton, NoteList } from '../../../src/components';
+import { useTheme } from '../../../src/theme';
+import { useNotesStore, activeNotes, searchNotes, sortNotes } from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
-import { makeTextBlock } from '../../../src/utils/blocks';
+import { offerUndo } from '../../../src/features/notify';
 import { pluralNotes } from '../../../src/utils/date';
 import { showActionSheet } from '../../../src/utils/actionSheet';
 
@@ -19,16 +20,16 @@ import { showActionSheet } from '../../../src/utils/actionSheet';
  */
 export default function FolderScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const theme = useTheme();
   const notes = useNotesStore((s) => s.notes);
   const folders = useNotesStore((s) => s.folders);
   const settings = useNotesStore((s) => s.settings);
   const setLayout = useNotesStore((s) => s.setLayout);
-  const createNote = useNotesStore((s) => s.createNote);
   const trashNotes = useNotesStore((s) => s.trashNotes);
   const restoreNotes = useNotesStore((s) => s.restoreNotes);
   const togglePinned = useNotesStore((s) => s.togglePinned);
 
-  const [toast, setToast] = useState<{ message: string; undo: () => void } | null>(null);
+  const [query, setQuery] = useState('');
   const selection = useSelection();
 
   const scope = useMemo(() => {
@@ -41,21 +42,23 @@ export default function FolderScreen() {
   const layout = settings.layout[id ?? 'root'] ?? 'list';
 
   const visible = useMemo(() => {
-    const base = activeNotes(notes);
+    // Поиск идёт внутри папки, а не по всем заметкам: человек ищет там, где
+    // стоит, — иначе список под полем перестал бы быть содержимым папки.
+    const base = query.trim() ? searchNotes(notes, query) : activeNotes(notes);
     const filtered = scope.tag
       ? base.filter((n) => n.tags.includes(scope.tag!))
       : id === 'root'
         ? base.filter((n) => !n.folderId)
         : base.filter((n) => n.folderId === scope.folderId);
     return sortNotes(filtered, settings.sort);
-  }, [notes, scope, id, settings.sort]);
+  }, [notes, query, scope, id, settings.sort]);
 
   const trashWithUndo = (ids: string[]) => {
     trashNotes(ids);
-    setToast({
-      message: ids.length === 1 ? 'Заметка в корзине' : `В корзине: ${ids.length}`,
-      undo: () => restoreNotes(ids),
-    });
+    offerUndo(
+      ids.length === 1 ? 'Заметка в корзине' : `В корзине: ${ids.length}`,
+      () => restoreNotes(ids),
+    );
   };
 
   const noteMenu = (noteId: string) => {
@@ -72,12 +75,17 @@ export default function FolderScreen() {
     ]);
   };
 
-  const create = () => {
-    // Заметка создаётся сразу в этой папке: человек уже сказал, где он
-    // находится, и переспрашивать после создания было бы лишним шагом.
-    const note = createNote({ blocks: [makeTextBlock()], folderId: scope.folderId, tags: scope.tag ? [scope.tag] : [] });
-    router.push({ pathname: '/note/[id]', params: { id: note.id } });
-  };
+  // Шит создания открывается сразу с этой папкой: человек уже сказал, где он
+  // находится, и переспрашивать после создания было бы лишним шагом.
+  const create = () =>
+    router.push({
+      pathname: '/create',
+      params: scope.tag
+        ? { tag: scope.tag }
+        : scope.folderId
+          ? { folder: scope.folderId }
+          : {},
+    });
 
   return (
     <>
@@ -97,6 +105,7 @@ export default function FolderScreen() {
       <NoteList
         notes={visible}
         layout={layout}
+        highlight={query}
         selectable={selection.active}
         selectedIds={selection.ids}
         onOpen={(noteId) =>
@@ -105,23 +114,37 @@ export default function FolderScreen() {
             : router.push({ pathname: '/note/[id]', params: { id: noteId } })
         }
         onLongPress={(noteId) => (selection.active ? selection.toggle(noteId) : noteMenu(noteId))}
-        contentInsetBottom={selection.active ? 64 : 0}
+        onDelete={(noteId) => trashWithUndo([noteId])}
+        onTogglePin={togglePinned}
+        contentInsetBottom={
+          theme.metrics.tabBar + theme.controlHeight.fab + (selection.active ? 64 : 0)
+        }
         ListEmptyComponent={
-          <EmptyState
-            icon={scope.tag ? 'tag' : 'folder'}
-            title={scope.tag ? 'С этим тегом пусто' : 'В папке пусто'}
-            description={
-              scope.tag
-                ? 'Тег появится в списке, когда им будет помечена хотя бы одна заметка.'
-                : 'Перенесите сюда заметки или создайте новую.'
-            }
-            actionTitle="Создать заметку"
-            onAction={create}
-          />
+          query.trim() ? (
+            <EmptyState
+              icon="magnifyingglass"
+              title="Ничего не найдено"
+              description={`По запросу «${query}» здесь заметок нет.`}
+            />
+          ) : (
+            <EmptyState
+              icon={scope.tag ? 'tag' : 'folder'}
+              title={scope.tag ? 'С этим тегом пусто' : 'В папке пусто'}
+              description={
+                scope.tag
+                  ? 'Тег появится в списке, когда им будет помечена хотя бы одна заметка.'
+                  : 'Перенесите сюда заметки или создайте новую кнопкой внизу справа.'
+              }
+            />
+          )
         }
       />
 
-      {visible.length > 0 && !selection.active ? <Fab onPress={create} /> : null}
+      <BottomBar
+        hidden={selection.active}
+        search={{ value: query, onChangeText: setQuery, placeholder: `Поиск: ${scope.title}` }}
+        onCreate={create}
+      />
 
       <SelectionBar
         selection={selection}
@@ -130,13 +153,6 @@ export default function FolderScreen() {
           selection.clear();
         }}
         summary={pluralNotes(selection.ids.length)}
-      />
-
-      <Toast
-        message={toast?.message ?? null}
-        onAction={toast?.undo}
-        onHide={() => setToast(null)}
-        offset={64}
       />
     </>
   );

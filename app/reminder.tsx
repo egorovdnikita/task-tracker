@@ -61,7 +61,10 @@ export default function ReminderScreen() {
     <>
       <Stack.Screen options={{ title: 'Напоминание' }} />
 
+      {/* Без системной поправки на инсеты блок «Уведомления выключены»
+          заезжал под заголовок шита и первая строка была перекрыта. */}
       <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
         {permission !== 'granted' ? (

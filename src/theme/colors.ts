@@ -23,7 +23,7 @@ const pair = (light: string, dark: string): ColorPair => ({ light, dark });
  * это те же цвета, которыми система красит свои элементы, и расхождение с ними
  * читается на экране мгновенно — чужая кнопка рядом с системной.
  */
-export const palette = {
+const systemPalette = {
   // ── Акценты ───────────────────────────────────────────────────────────────
   systemRed: pair('#FF3B30', '#FF453A'),
   systemOrange: pair('#FF9500', '#FF9F0A'),
@@ -90,6 +90,49 @@ export const palette = {
   link: pair('#007AFF', '#0A84FF'),
 } as const;
 
+/**
+ * Продуктовый слой поверх системного: подложка и акцент.
+ *
+ * Ровно три вещи, которыми продукт отличается от iOS по умолчанию, — фон,
+ * акцент и форма хрома. Первые две живут здесь, третья — в компонентах.
+ *
+ * Подложка тёплая, а не `#FFFFFF`/`#000000`: чистый чёрный на OLED читается
+ * дырой, в которой висят карточки, а чистый белый рядом с белой карточкой не
+ * даёт ей отделиться. Тёплый почти-белый и тёплый почти-чёрный оставляют
+ * карточке чистый белый (в тёмной — приподнятый тёплый серый), и слои
+ * различаются без единой линии.
+ *
+ * Акцент — один тёплый красно-оранжевый вместо системного синего. Он тратится
+ * скупо: кнопка создания, активная вкладка, ссылки, подтверждающие действия.
+ * Всё остальное — серые.
+ *
+ * Плата за это известна и принята: перечисленные здесь токены больше не
+ * приходят из UIKit, то есть не подстраиваются под «Увеличение контраста» и
+ * vibrancy. Контрастные токены — текст, разделители, заливки — остаются
+ * системными, поэтому подстройка сохраняется там, где она решает читаемость.
+ */
+const productPalette = {
+  systemBackground: pair('#FAF8F5', '#171614'),
+  secondarySystemBackground: pair('#FFFFFF', '#211F1D'),
+  tertiarySystemBackground: pair('#FFFFFF', '#2B2926'),
+
+  systemGroupedBackground: pair('#F6F3EE', '#121110'),
+  secondarySystemGroupedBackground: pair('#FFFFFF', '#1E1C1A'),
+  tertiarySystemGroupedBackground: pair('#FAF8F5', '#2A2724'),
+
+  /**
+   * Акцент продукта.
+   *
+   * Значения проверены на контраст: в светлой 4.79:1 к подложке и 5.08:1 у
+   * белого глифа на заливке; в тёмной — 5.61:1 и 3.22:1. Ниже трогать нельзя,
+   * иначе белый плюс на круге создания перестанет читаться.
+   */
+  accent: pair('#C93B26', '#F2603F'),
+  link: pair('#C93B26', '#F2603F'),
+} as const;
+
+export const palette = { ...systemPalette, ...productPalette } as const;
+
 export type PaletteName = keyof typeof palette;
 
 /**
@@ -114,14 +157,14 @@ const UIKIT_ALIASES: Partial<Record<PaletteName, string>> = {
  * Акцентные цвета сюда не входят намеренно: их значения нужны нам в JS —
  * цветом папки красится символ, и его приходится передавать в `tintColor`
  * строкой.
+ *
+ * Фонов здесь тоже нет: они переопределены продуктовым слоем, и системное
+ * значение подменило бы тёплую подложку обратно на чистый белый и чёрный.
  */
 const NATIVE_ON_IOS: PaletteName[] = [
   'label', 'secondaryLabel', 'tertiaryLabel', 'quaternaryLabel', 'placeholderText',
   'separator', 'opaqueSeparator',
-  'systemBackground', 'secondarySystemBackground', 'tertiarySystemBackground',
-  'systemGroupedBackground', 'secondarySystemGroupedBackground', 'tertiarySystemGroupedBackground',
   'systemFill', 'secondarySystemFill', 'tertiarySystemFill', 'quaternarySystemFill',
-  'link',
 ];
 
 const platformColor = (ReactNative as { PlatformColor?: (...names: string[]) => ColorValue })

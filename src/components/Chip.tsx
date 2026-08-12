@@ -16,6 +16,14 @@ export type ChipProps = {
   /** Крестик справа: чип можно снять прямо здесь. */
   onRemove?: () => void;
   onPress?: () => void;
+  /**
+   * Обводка вместо заливки — чип-действие, а не чип-фильтр.
+   *
+   * Разница смысловая: фильтр показывает состояние («выбран тег»), действие
+   * открывает выбор («поставить срок»). Заливка у второго читалась бы как
+   * уже сделанный выбор.
+   */
+  outlined?: boolean;
   style?: ViewStyle;
 };
 
@@ -25,25 +33,43 @@ export type ChipProps = {
  * Капсула, а не прямоугольник: в системе так выглядит всё, что можно снять или
  * выбрать множественно, — в отличие от сегмент-контрола, где выбор ровно один.
  */
-export const Chip = ({ label, selected = false, icon, accent, onRemove, onPress, style }: ChipProps) => {
+export const Chip = ({
+  label,
+  selected = false,
+  icon,
+  accent,
+  onRemove,
+  onPress,
+  outlined = false,
+  style,
+}: ChipProps) => {
   const theme = useTheme();
-  const accentHex = accent ? theme.accent(accent) : theme.hex.systemBlue;
+  const accentHex = accent ? theme.accent(accent) : theme.hex.accent;
 
-  const background = selected
-    ? accent
-      ? withAlpha(accentHex, theme.scheme === 'dark' ? 0.28 : 0.16)
-      : theme.colors.systemFill
-    : theme.colors.tertiarySystemFill;
+  const background = outlined
+    ? 'transparent'
+    : selected
+      ? accent
+        ? withAlpha(accentHex, theme.scheme === 'dark' ? 0.28 : 0.16)
+        : theme.colors.systemFill
+      : theme.colors.tertiarySystemFill;
 
   const body = (
     <>
-      {icon ? <Symbol name={icon} size={13} color={accentHex} weight="semibold" /> : null}
+      {icon ? (
+        <Symbol
+          name={icon}
+          size={13}
+          color={outlined ? theme.colors.secondaryLabel : accentHex}
+          weight="semibold"
+        />
+      ) : null}
 
       <Text
         variant="subheadline"
         weight={selected ? 'semibold' : 'regular'}
-        color={selected ? 'label' : 'secondaryLabel'}
-        style={selected && accent ? { color: accentHex } : undefined}
+        color={outlined ? 'label' : selected ? 'label' : 'secondaryLabel'}
+        style={selected && accent && !outlined ? { color: accentHex } : undefined}
         numberOfLines={1}
       >
         {label}
@@ -58,6 +84,8 @@ export const Chip = ({ label, selected = false, icon, accent, onRemove, onPress,
     gap: theme.spacing.xs,
     borderRadius: theme.radius.pill,
     backgroundColor: background,
+    borderWidth: outlined ? theme.metrics.hairline * 2 : 0,
+    borderColor: theme.colors.separator,
   };
 
   /*

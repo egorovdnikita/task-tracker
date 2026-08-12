@@ -4,6 +4,7 @@ import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import { ListRow, ListSection } from '../src/components';
 import { accentNames, useTheme } from '../src/theme';
+import { splitEmoji } from '../src/utils/emoji';
 import { promptForText } from '../src/utils/actionSheet';
 import { childFolders, rootFolders, useNotesStore } from '../src/store/useNotesStore';
 
@@ -37,14 +38,17 @@ export default function MoveScreen() {
         }}
       />
 
+      {/* Шапка шита прозрачная, и без системной поправки на инсеты первая
+          строка списка встаёт под неё. */}
       <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
         <ListSection>
           <ListRow
             title="Без папки"
             icon="tray"
-            iconBackground={theme.colors.systemGray2}
+            iconColor={theme.colors.secondaryLabel}
             onPress={() => move(null)}
           />
         </ListSection>
@@ -54,17 +58,19 @@ export default function MoveScreen() {
             {roots.flatMap((folder) => [
               <ListRow
                 key={folder.id}
-                title={folder.name}
+                title={splitEmoji(folder.name).rest}
+                emoji={splitEmoji(folder.name).emoji ?? undefined}
                 icon="folder.fill"
-                iconBackground={theme.accent(folder.accent)}
+                iconColor={theme.accent(folder.accent)}
                 onPress={() => move(folder.id)}
               />,
               ...childFolders(folders, folder.id).map((child) => (
                 <ListRow
                   key={child.id}
-                  title={`    ${child.name}`}
+                  title={`    ${splitEmoji(child.name).rest}`}
+                  emoji={splitEmoji(child.name).emoji ?? undefined}
                   icon="folder"
-                  iconBackground={theme.accent(child.accent)}
+                  iconColor={theme.accent(child.accent)}
                   onPress={() => move(child.id)}
                 />
               )),
@@ -76,7 +82,7 @@ export default function MoveScreen() {
           <ListRow
             title="Новая папка…"
             icon="folder.badge.plus"
-            iconBackground={theme.colors.systemBlue}
+            iconColor={theme.colors.accent}
             onPress={() =>
               promptForText('Новая папка', 'Как её назвать?', (name) => {
                 const folder = createFolder(

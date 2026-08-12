@@ -37,6 +37,14 @@ export const Separator = ({ inset = 0, style }: { inset?: number; style?: ViewSt
 export type ListSectionProps = {
   /** Шапка секции. В системе — прописными и вторичным цветом. */
   header?: string;
+  /**
+   * Число в шапке — «Папки 8».
+   *
+   * Меняет и набор: с числом шапка перестаёт быть прописными и становится
+   * обычной строкой. Прописные вторичным читаются как служебная подпись, а
+   * когда в шапке важно количество, эта строгость мешает его увидеть.
+   */
+  count?: number;
   /** Пояснение под секцией: что произойдёт, а не что это такое. */
   footer?: string;
   children: ReactNode;
@@ -53,6 +61,7 @@ export type ListSectionProps = {
  */
 export const ListSection = ({
   header,
+  count,
   footer,
   children,
   separatorInset = 0,
@@ -62,19 +71,39 @@ export const ListSection = ({
   const rows = Children.toArray(children).filter(Boolean);
 
   return (
-    <View style={[{ marginBottom: theme.spacing.xxl }, style]}>
+    // Зазор между группами крупный: остров держится вместе не рамкой, а
+    // воздухом вокруг. При тесной расстановке две группы читаются одной.
+    <View style={[{ marginBottom: theme.spacing.xxxl }, style]}>
       {header ? (
-        <Text
-          variant="footnote"
-          color="secondaryLabel"
-          style={{
-            marginHorizontal: theme.spacing.lg + theme.spacing.lg,
-            marginBottom: theme.spacing.sm,
-            textTransform: 'uppercase',
-          }}
-        >
-          {header}
-        </Text>
+        count === undefined ? (
+          <Text
+            variant="footnote"
+            color="secondaryLabel"
+            style={{
+              marginHorizontal: theme.spacing.lg + theme.spacing.lg,
+              marginBottom: theme.spacing.sm,
+              textTransform: 'uppercase',
+            }}
+          >
+            {header}
+          </Text>
+        ) : (
+          <View
+            style={[
+              styles.countHeader,
+              {
+                marginHorizontal: theme.spacing.lg + theme.spacing.xs,
+                marginBottom: theme.spacing.sm,
+                gap: theme.spacing.sm,
+              },
+            ]}
+          >
+            <Text variant="headline">{header}</Text>
+            <Text variant="headline" color="tertiaryLabel">
+              {count}
+            </Text>
+          </View>
+        )
       ) : null}
 
       <View
@@ -130,6 +159,21 @@ export type ListRowProps = {
   icon?: SFSymbol;
   /** Цвет плашки под иконкой. Без него иконка рисуется без плашки. */
   iconBackground?: ColorValue;
+  /**
+   * Цвет самого глифа — вместо плашки.
+   *
+   * Признак живёт в цвете символа, а не в заливке под ним: плашка 29pt
+   * тяжелее того, что обозначает, и в списке из десяти папок первым, что
+   * видит глаз, оказываются десять цветных квадратов.
+   */
+  iconColor?: ColorValue;
+  /**
+   * Эмодзи вместо иконки — когда человек назвал папку «📦 Покупки».
+   *
+   * Своё обозначение всегда лучше назначенного: цвет различает две папки,
+   * эмодзи — десять, и выбирает его тот, кто эти папки завёл.
+   */
+  emoji?: string;
   accessory?: ListRowAccessory;
   /** Свой элемент справа — например крестик, снимающий строку. */
   trailing?: ReactNode;
@@ -148,6 +192,8 @@ export const ListRow = ({
   value,
   icon,
   iconBackground,
+  iconColor,
+  emoji,
   accessory = { type: 'none' },
   trailing,
   onPress,
@@ -172,16 +218,22 @@ export const ListRow = ({
         },
       ]}
     >
-      {icon ? (
+      {emoji ? (
+        <Text variant="title3" style={styles.emoji}>
+          {emoji}
+        </Text>
+      ) : icon ? (
         iconBackground ? (
           <SymbolBadge name={icon} background={iconBackground} />
         ) : (
-          <Symbol name={icon} size={22} color={theme.colors.systemBlue} />
+          <Symbol name={icon} size={22} color={iconColor ?? theme.colors.accent} />
         )
       ) : null}
 
       <View style={styles.labels}>
-        <Text variant="body" color={color}>
+        {/* Заголовок строки — Semibold: в списке он подписывает всё, что стоит
+            под ним и справа от него, и обычным весом теряется среди значений. */}
+        <Text variant="body" weight="semibold" color={color}>
           {title}
         </Text>
         {subtitle ? (
@@ -204,7 +256,7 @@ export const ListRow = ({
       ) : null}
 
       {accessory.type === 'checkmark' && accessory.checked ? (
-        <Symbol name="checkmark" size={16} color={theme.colors.systemBlue} weight="semibold" />
+        <Symbol name="checkmark" size={16} color={theme.colors.accent} weight="semibold" />
       ) : null}
 
       {accessory.type === 'switch' ? (
@@ -241,6 +293,9 @@ export const ListRow = ({
 };
 
 const styles = StyleSheet.create({
+  countHeader: { flexDirection: 'row', alignItems: 'baseline' },
+  // Ширина как у глифа: с эмодзи и без него строки стоят в одну колонку.
+  emoji: { width: 22, textAlign: 'center' },
   group: { overflow: 'hidden', borderCurve: 'continuous' },
   row: { flexDirection: 'row', alignItems: 'center' },
   labels: { flex: 1, gap: 1 },

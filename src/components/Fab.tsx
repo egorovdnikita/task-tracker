@@ -1,9 +1,7 @@
 import React from 'react';
-import { Platform, Pressable, StyleSheet, type ViewStyle } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
 
-import { supportsLiquidGlass, useTheme } from '../theme';
-import { Glass } from './Glass';
+import { useTheme } from '../theme';
 import { Symbol } from './Symbol';
 
 export type FabProps = {
@@ -12,19 +10,19 @@ export type FabProps = {
   onLongPress?: () => void;
   accessibilityLabel?: string;
   accessibilityHint?: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 };
 
 /**
- * Плавающая кнопка создания.
+ * Круглая кнопка создания.
  *
- * Стекло здесь уместно ровно потому, что кнопка плавает над списком: под ней
- * едет контент, и жидкое стекло его преломляет. На плоском фоне тот же приём
- * выродился бы в серый круг.
+ * Сплошная заливка акцентом, а не стекло. Стекло здесь было ошибкой: оно
+ * показывает то, что под ним, а под кнопкой создания — список, то есть серый
+ * текст на тёплом фоне. Кнопка растворялась ровно в том состоянии, где нужна
+ * сильнее всего, — на почти пустом экране.
  *
- * Отступ снизу берётся из safe area, а не константой: над индикатором «домой»
- * и над панелью вкладок высота разная, а на устройствах без индикатора её нет
- * вовсе.
+ * Позиционированием кнопка не занимается: её ставит `BottomBar` в один ряд с
+ * полем поиска над панелью вкладок, и место у неё одно на всех экранах.
  */
 export const Fab = ({
   onPress,
@@ -34,7 +32,6 @@ export const Fab = ({
   style,
 }: FabProps) => {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const size = theme.controlHeight.fab;
 
   return (
@@ -46,43 +43,33 @@ export const Fab = ({
       onLongPress={onLongPress}
       style={({ pressed }) => [
         styles.root,
+        styles.shadow,
         {
           width: size,
           height: size,
-          right: theme.spacing.xl,
-          bottom: insets.bottom + theme.spacing.xl,
-          opacity: pressed ? 0.7 : 1,
+          borderRadius: size / 2,
+          backgroundColor: theme.colors.accent,
+          // Нажатие гасит кнопку, как гасит любую системную: пружина здесь
+          // читалась бы как элемент из другого приложения.
+          opacity: pressed ? 0.8 : 1,
         },
         style,
       ]}
     >
-      <Glass
-        radius={size / 2}
-        variant="regular"
-        interactive
-        material="thick"
-        style={[
-          styles.surface,
-          // Тень нужна только тому стеклу, которое системой не отбрасывается
-          // само. На iOS 26 жидкое стекло уже лежит со своей тенью, и вторая
-          // читается как ореол.
-          Platform.OS === 'ios' && supportsLiquidGlass() ? null : styles.shadow,
-        ]}
-      >
-        <Symbol name="plus" size={26} color={theme.colors.systemBlue} weight="medium" />
-      </Glass>
+      <Symbol name="plus" size={28} color="#FFFFFF" weight="semibold" />
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  root: { position: 'absolute' },
-  surface: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  root: { alignItems: 'center', justifyContent: 'center' },
+  // Тень здесь своя, а не системная: круг лежит не на стекле, а поверх
+  // списка, и без тени он выглядит наклеенным.
   shadow: {
     shadowColor: '#000',
-    shadowOpacity: 0.18,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.22,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
     elevation: 6,
   },
 });

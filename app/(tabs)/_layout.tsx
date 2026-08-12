@@ -17,14 +17,17 @@ import { useTheme } from '../../src/theme';
  * Иконки — имена SF Symbols. Свои SVG здесь были бы единственными
  * несистемными элементами внутри системного контейнера.
  *
- * Состав вкладок — с плиты 02.2 вайрфрейма.
+ * Вкладки поиска здесь нет намеренно. Поиск — не раздел, а действие над тем
+ * списком, который человек уже видит; вкладка уводила его на пустой экран и
+ * требовала принести список туда заново. Поле поиска теперь стоит у нижнего
+ * края самого списка, вместе с кнопкой создания.
  */
 export default function TabsLayout() {
   const theme = useTheme();
 
   return (
     <NativeTabs
-      tintColor={theme.hex.systemBlue}
+      tintColor={theme.hex.accent}
       // Панель сворачивается, когда список едет вниз, и возвращается при
       // движении вверх — так контенту достаётся весь экран во время чтения.
       minimizeBehavior="onScrollDown"
@@ -32,11 +35,6 @@ export default function TabsLayout() {
       <NativeTabs.Trigger name="notes">
         <Icon sf={{ default: 'note.text', selected: 'note.text' }} />
         <Label>Заметки</Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="search" role="search">
-        <Icon sf="magnifyingglass" />
-        <Label>Поиск</Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="folders">

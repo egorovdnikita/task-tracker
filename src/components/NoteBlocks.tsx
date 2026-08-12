@@ -202,8 +202,8 @@ const ChecklistBlockEditor = ({
           { gap: theme.spacing.md, opacity: pressed ? 0.5 : 1 },
         ]}
       >
-        <Symbol name="plus.circle" size={22} color={theme.colors.systemBlue} />
-        <Text variant="body" color="systemBlue">
+        <Symbol name="plus.circle" size={22} color={theme.colors.accent} />
+        <Text variant="body" color="accent">
           Добавить пункт
         </Text>
       </Pressable>

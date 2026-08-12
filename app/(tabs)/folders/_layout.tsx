@@ -14,7 +14,7 @@ export default function FoldersLayout() {
         headerBlurEffect:
           theme.scheme === 'dark' ? 'systemChromeMaterialDark' : 'systemChromeMaterialLight',
         headerShadowVisible: false,
-        headerTintColor: theme.hex.systemBlue,
+        headerTintColor: theme.hex.accent,
         headerTitleStyle: theme.headerText('headline', 'semibold'),
         headerLargeTitleStyle: theme.headerText('largeTitle', 'bold'),
         contentStyle: { backgroundColor: theme.hex.systemGroupedBackground },

@@ -1,21 +1,24 @@
 import React, { useMemo, useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Stack, router } from 'expo-router';
 
 import {
+  BottomBar,
   Chip,
   ChipRow,
   EmptyState,
-  Fab,
   IconButton,
   NoteList,
-  Toast,
+  SegmentedControl,
+  Symbol,
+  Text,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
-import { BLOCK_LABELS } from '../../../src/types';
-import { makeChecklistBlock, makeTextBlock } from '../../../src/utils/blocks';
+import { BLOCK_LABELS, type BlockType } from '../../../src/types';
 import { showActionSheet } from '../../../src/utils/actionSheet';
 import { pluralNotes } from '../../../src/utils/date';
+import { SORT_LABELS } from '../../../src/features/labels';
+import { offerUndo } from '../../../src/features/notify';
 import {
   activeNotes,
   collectTags,
@@ -25,19 +28,28 @@ import {
 } from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 
+/** Источник совпадения — плита 06.2 разводит выдачу именно по нему. */
+type Source = 'all' | 'text' | 'voice' | 'scan';
+
+const SOURCES: { value: Source; label: string; blocks: BlockType[] }[] = [
+  { value: 'all', label: 'Все', blocks: [] },
+  { value: 'text', label: 'Текст', blocks: ['text', 'checklist'] },
+  { value: 'voice', label: 'Голос', blocks: ['voice'] },
+  { value: 'scan', label: 'Сканы', blocks: ['scan'] },
+];
+
 /**
- * Плиты 02.1–02.3 и 02.5 — дом.
+ * Плиты 02.1–02.3, 02.5 и 06.1–06.2 — дом.
  *
  * Главный экран не витрина, а стопка последнего: сортировка по изменению,
- * закреплённое сверху, фильтр тегом. Поиск живёт в шапке и открывается
- * свайпом вниз по списку — это же и есть системное поле поиска в
- * `UINavigationController`.
+ * закреплённое сверху, фильтр тегом. Поиск живёт полем у нижнего края — там,
+ * куда дотягивается большой палец, и там же, где кнопка создания: искать и
+ * заводить новое приходится чаще всего, и оба действия стоят на одном месте.
  */
 export default function NotesScreen() {
   const theme = useTheme();
   const notes = useNotesStore((s) => s.notes);
   const settings = useNotesStore((s) => s.settings);
-  const createNote = useNotesStore((s) => s.createNote);
   const setLayout = useNotesStore((s) => s.setLayout);
   const updateSettings = useNotesStore((s) => s.updateSettings);
   const togglePinned = useNotesStore((s) => s.togglePinned);
@@ -46,25 +58,29 @@ export default function NotesScreen() {
 
   const [query, setQuery] = useState('');
   const [tag, setTag] = useState<string | null>(null);
-  const [toast, setToast] = useState<{ message: string; undo: () => void } | null>(null);
+  const [source, setSource] = useState<Source>('all');
   const selection = useSelection();
+
+  // Поиск идёт, когда набрано хотя бы два символа: по одной букве выдача — это
+  // весь список, и показывать её как результат нечестно.
+  const searching = query.trim().length >= 2;
 
   const layout = settings.layout.root ?? 'list';
   const tags = useMemo(() => collectTags(notes), [notes]);
 
   const visible = useMemo(() => {
-    const base = query.trim() ? searchNotes(notes, query) : activeNotes(notes);
-    const filtered = tag ? base.filter((n) => n.tags.includes(tag)) : base;
-    return sortNotes(filtered, settings.sort);
-  }, [notes, query, tag, settings.sort]);
+    const base = searching ? searchNotes(notes, query) : activeNotes(notes);
+    const byTag = tag ? base.filter((n) => n.tags.includes(tag)) : base;
 
-  const openNew = (blocks = [makeTextBlock()]) => {
-    const note = createNote({ blocks });
-    router.push({ pathname: '/note/[id]', params: { id: note.id } });
-  };
+    const wanted = searching ? SOURCES.find((s) => s.value === source)?.blocks ?? [] : [];
+    const bySource =
+      wanted.length === 0 ? byTag : byTag.filter((n) => n.blocks.some((b) => wanted.includes(b.type)));
+
+    return sortNotes(bySource, settings.sort);
+  }, [notes, query, searching, tag, source, settings.sort]);
 
   /**
-   * Плита 02.5: короткий тап создаёт текстовую заметку, долгий — выбор типа.
+   * Плита 02.5: короткий тап открывает шит создания, долгий — выбор типа.
    *
    * Порядок не случайный: текст и список закреплены сверху как самые частые,
    * дальше идут те, что требуют разрешений и отдельного экрана.
@@ -72,8 +88,11 @@ export default function NotesScreen() {
   const chooseType = () =>
     showActionSheet(
       [
-        { title: BLOCK_LABELS.text, onPress: () => openNew() },
-        { title: BLOCK_LABELS.checklist, onPress: () => openNew([makeChecklistBlock()]) },
+        { title: BLOCK_LABELS.text, onPress: () => router.push('/create') },
+        {
+          title: BLOCK_LABELS.checklist,
+          onPress: () => router.push({ pathname: '/create', params: { kind: 'checklist' } }),
+        },
         // Заметка создаётся не здесь, а на самом экране захвата: если человек
         // передумает и закроет камеру, пустая заметка не должна остаться.
         { title: BLOCK_LABELS.voice, onPress: () => router.push('/capture/voice') },
@@ -85,10 +104,10 @@ export default function NotesScreen() {
 
   const trashWithUndo = (ids: string[]) => {
     trashNotes(ids);
-    setToast({
-      message: ids.length === 1 ? 'Заметка в корзине' : `В корзине: ${ids.length}`,
-      undo: () => restoreNotes(ids),
-    });
+    offerUndo(
+      ids.length === 1 ? 'Заметка в корзине' : `В корзине: ${ids.length}`,
+      () => restoreNotes(ids),
+    );
   };
 
   const noteMenu = (id: string) => {
@@ -113,9 +132,9 @@ export default function NotesScreen() {
   const sortMenu = () =>
     showActionSheet(
       [
-        { title: 'По дате изменения', onPress: () => updateSettings({ sort: 'updated' }) },
-        { title: 'По дате создания', onPress: () => updateSettings({ sort: 'created' }) },
-        { title: 'По заголовку', onPress: () => updateSettings({ sort: 'title' }) },
+        { title: SORT_LABELS.updated, onPress: () => updateSettings({ sort: 'updated' }) },
+        { title: SORT_LABELS.created, onPress: () => updateSettings({ sort: 'created' }) },
+        { title: SORT_LABELS.title, onPress: () => updateSettings({ sort: 'title' }) },
       ],
       { title: 'Сортировка' },
     );
@@ -125,25 +144,15 @@ export default function NotesScreen() {
       <Stack.Screen
         options={{
           title: 'Заметки',
-          headerSearchBarOptions: {
-            placeholder: 'Поиск по заметкам',
-            onChangeText: (event) => setQuery(event.nativeEvent.text),
-            onCancelButtonPress: () => setQuery(''),
-            hideWhenScrolling: true,
-          },
+          // Кнопок в шапке остался минимум: переключатель вида. Сортировка
+          // уехала под заголовок пилюлей — там видно не только то, что её
+          // можно сменить, но и на чём она стоит сейчас.
           headerRight: () => (
-            <View style={{ flexDirection: 'row', gap: theme.spacing.lg }}>
-              <IconButton
-                name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
-                accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
-                onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
-              />
-              <IconButton
-                name="arrow.up.arrow.down"
-                accessibilityLabel="Сортировка"
-                onPress={sortMenu}
-              />
-            </View>
+            <IconButton
+              name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
+              accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
+              onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
+            />
           ),
         }}
       />
@@ -160,29 +169,73 @@ export default function NotesScreen() {
             : router.push({ pathname: '/note/[id]', params: { id } })
         }
         onLongPress={(id) => (selection.active ? selection.toggle(id) : noteMenu(id))}
-        contentInsetBottom={selection.active ? 64 : 0}
+        onDelete={(id) => trashWithUndo([id])}
+        onTogglePin={togglePinned}
+        // Место под нижний ряд с поиском и созданием — последняя карточка не
+        // должна прятаться под ним.
+        contentInsetBottom={
+          theme.metrics.tabBar +
+          theme.controlHeight.fab +
+          (selection.active ? 64 : 0)
+        }
         ListHeaderComponent={
-          tags.length > 0 && !selection.active ? (
-            <ChipRow style={{ marginHorizontal: -theme.spacing.lg, marginBottom: theme.spacing.xs }}>
-              <Chip label="Все" selected={tag === null} onPress={() => setTag(null)} />
-              {tags.map((name) => (
-                <Chip
-                  key={name}
-                  label={name}
-                  selected={tag === name}
-                  onPress={() => setTag(tag === name ? null : name)}
+          !selection.active ? (
+            <View style={{ gap: theme.spacing.sm, marginBottom: theme.spacing.xs }}>
+              {/*
+                Во время поиска на месте сортировки стоит фильтр по источнику
+                совпадения: сортировка выдачи не про то, а разводить их по
+                двум строкам значит держать строку, которая полезна вполовину
+                времени.
+              */}
+              {searching ? (
+                <SegmentedControl
+                  accessibilityLabel="Источник совпадения"
+                  segments={SOURCES.map(({ value, label }) => ({ value, label }))}
+                  selected={source}
+                  onChange={setSource}
                 />
-              ))}
-            </ChipRow>
+              ) : (
+                <SortPill label={SORT_LABELS[settings.sort]} onPress={sortMenu} />
+              )}
+
+              {tags.length > 0 ? (
+                <ChipRow style={{ marginHorizontal: -theme.spacing.lg }}>
+                  <Chip label="Все" selected={tag === null} onPress={() => setTag(null)} />
+                  {tags.map((name) => (
+                    <Chip
+                      key={name}
+                      label={name}
+                      selected={tag === name}
+                      onPress={() => setTag(tag === name ? null : name)}
+                    />
+                  ))}
+                </ChipRow>
+              ) : null}
+            </View>
           ) : null
         }
         ListEmptyComponent={
-          query.trim() ? (
-            <EmptyState
-              icon="magnifyingglass"
-              title="Ничего не найдено"
-              description={`По запросу «${query}» заметок нет.`}
-            />
+          searching ? (
+            // Экран не заканчивается тупиком: если пусто только из-за фильтра,
+            // предлагаем снять фильтр, а не переписывать запрос.
+            source !== 'all' || tag ? (
+              <EmptyState
+                icon="line.3.horizontal.decrease.circle"
+                title="Пусто в этом фильтре"
+                description={`По запросу «${query}» с выбранным фильтром ничего нет.`}
+                actionTitle="Снять фильтр"
+                onAction={() => {
+                  setSource('all');
+                  setTag(null);
+                }}
+              />
+            ) : (
+              <EmptyState
+                icon="magnifyingglass"
+                title="Ничего не найдено"
+                description={`По запросу «${query}» заметок нет. Проверьте раскладку или попробуйте другое слово.`}
+              />
+            )
           ) : tag ? (
             <EmptyState
               icon="tag"
@@ -195,19 +248,22 @@ export default function NotesScreen() {
             <EmptyState
               icon="note.text"
               title="Здесь пока пусто"
-              description="Первая заметка обычно самая короткая — так и надо."
-              actionTitle="Создать заметку"
-              onAction={() => openNew()}
+              description="Первая заметка обычно самая короткая — так и надо. Кнопка создания внизу справа."
             />
           )
         }
       />
 
-      {/* На пустом экране плавающая кнопка теряется, поэтому там действие
-          вынесено в центр — а вместе они не появляются никогда. */}
-      {visible.length > 0 && !selection.active ? (
-        <Fab onPress={() => openNew()} onLongPress={chooseType} />
-      ) : null}
+      <BottomBar
+        hidden={selection.active}
+        search={{
+          value: query,
+          onChangeText: setQuery,
+          placeholder: 'Поиск по заметкам',
+        }}
+        onCreate={() => router.push('/create')}
+        onLongPressCreate={chooseType}
+      />
 
       <SelectionBar
         selection={selection}
@@ -217,13 +273,45 @@ export default function NotesScreen() {
         }}
         summary={pluralNotes(selection.ids.length)}
       />
-
-      <Toast
-        message={toast?.message ?? null}
-        onAction={toast?.undo}
-        onHide={() => setToast(null)}
-        offset={64}
-      />
     </>
   );
 }
+
+/**
+ * Сортировка пилюлей под заголовком.
+ *
+ * Раньше она пряталась в иконку в шапке, и текущее значение было не видно:
+ * список стоял в порядке, который ниоткуда не следовал. Пилюля показывает и
+ * то, что порядок можно сменить, и то, какой он сейчас.
+ */
+const SortPill = ({ label, onPress }: { label: string; onPress: () => void }) => {
+  const theme = useTheme();
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Сортировка: ${label}`}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.pill,
+        {
+          height: theme.controlHeight.segmented,
+          paddingHorizontal: theme.spacing.md,
+          gap: theme.spacing.xs,
+          borderRadius: theme.radius.pill,
+          backgroundColor: theme.colors.tertiarySystemFill,
+          opacity: pressed ? 0.6 : 1,
+        },
+      ]}
+    >
+      <Text variant="subheadline" color="secondaryLabel" numberOfLines={1}>
+        {label}
+      </Text>
+      <Symbol name="chevron.down" size={11} color={theme.colors.tertiaryLabel} weight="semibold" />
+    </Pressable>
+  );
+};
+
+const styles = StyleSheet.create({
+  pill: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start' },
+});

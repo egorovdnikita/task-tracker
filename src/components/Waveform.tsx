@@ -61,7 +61,7 @@ export const Waveform = ({
                 borderRadius: theme.radius.pill,
                 backgroundColor:
                   progress === undefined || played
-                    ? theme.colors.systemBlue
+                    ? theme.colors.accent
                     : theme.colors.quaternaryLabel,
               }}
             />

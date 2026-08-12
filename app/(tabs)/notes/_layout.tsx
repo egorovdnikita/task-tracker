@@ -21,7 +21,7 @@ export default function NotesLayout() {
         headerBlurEffect:
           theme.scheme === 'dark' ? 'systemChromeMaterialDark' : 'systemChromeMaterialLight',
         headerShadowVisible: false,
-        headerTintColor: theme.hex.systemBlue,
+        headerTintColor: theme.hex.accent,
         headerTitleStyle: theme.headerText('headline', 'semibold'),
         headerLargeTitleStyle: theme.headerText('largeTitle', 'bold'),
         headerLargeStyle: { backgroundColor: 'transparent' },

@@ -4,6 +4,7 @@ import { Stack, router } from 'expo-router';
 
 import { IconButton, ListRow, ListSection } from '../../../src/components';
 import { accentNames, useTheme } from '../../../src/theme';
+import { splitEmoji } from '../../../src/utils/emoji';
 import { confirmDestructive, promptForText, showActionSheet } from '../../../src/utils/actionSheet';
 import {
   activeNotes,
@@ -14,6 +15,14 @@ import {
   trashedNotes,
   useNotesStore,
 } from '../../../src/store/useNotesStore';
+
+/**
+ * Отбивка разделителя под глифом строки: поле экрана, ширина символа и зазор.
+ *
+ * Считается от глифа в 22pt, а не от плашки в 29pt: плашки под иконками
+ * больше нет — цвет папки живёт в самом символе.
+ */
+const GLYPH_INSET = 16 + 22 + 12;
 
 /**
  * Плита 05.1 — папки и теги.
@@ -38,7 +47,7 @@ export default function FoldersScreen() {
   const addFolder = (parentId: string | null = null) =>
     promptForText(
       parentId ? 'Вложенная папка' : 'Новая папка',
-      'Как её назвать?',
+      'Как её назвать? Имя может начинаться с эмодзи — оно встанет вместо иконки.',
       (name) => {
         // Одинаковые имена на одном уровне запрещены: две папки «Работа»
         // рядом невозможно различить, а переименование потом не помогает —
@@ -110,11 +119,11 @@ export default function FoldersScreen() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.sm, paddingBottom: theme.spacing.xxxl }}
       >
-        <ListSection separatorInset={theme.metrics.separatorInset + 29 + theme.spacing.md}>
+        <ListSection separatorInset={GLYPH_INSET}>
           <ListRow
             title="Все заметки"
             icon="tray.full"
-            iconBackground={theme.colors.systemGray}
+            iconColor={theme.colors.secondaryLabel}
             value={String(activeNotes(notes).length)}
             accessory={{ type: 'disclosure' }}
             onPress={() => router.navigate('/notes')}
@@ -122,7 +131,7 @@ export default function FoldersScreen() {
           <ListRow
             title="Без папки"
             icon="tray"
-            iconBackground={theme.colors.systemGray2}
+            iconColor={theme.colors.secondaryLabel}
             value={String(inbox)}
             accessory={{ type: 'disclosure' }}
             onPress={() => router.push({ pathname: '/folders/[id]', params: { id: 'root' } })}
@@ -130,16 +139,14 @@ export default function FoldersScreen() {
         </ListSection>
 
         {roots.length > 0 ? (
-          <ListSection
-            header="Мои папки"
-            separatorInset={theme.metrics.separatorInset + 29 + theme.spacing.md}
-          >
+          <ListSection header="Папки" count={roots.length} separatorInset={GLYPH_INSET}>
             {roots.flatMap((folder) => [
               <ListRow
                 key={folder.id}
-                title={folder.name}
+                title={splitEmoji(folder.name).rest}
+                emoji={splitEmoji(folder.name).emoji ?? undefined}
                 icon="folder.fill"
-                iconBackground={theme.accent(folder.accent)}
+                iconColor={theme.accent(folder.accent)}
                 value={String(folderCount(notes, folders, folder.id))}
                 accessory={{ type: 'disclosure' }}
                 onPress={() =>
@@ -152,9 +159,10 @@ export default function FoldersScreen() {
               ...childFolders(folders, folder.id).map((child) => (
                 <ListRow
                   key={child.id}
-                  title={`    ${child.name}`}
+                  title={`    ${splitEmoji(child.name).rest}`}
+                  emoji={splitEmoji(child.name).emoji ?? undefined}
                   icon="folder"
-                  iconBackground={theme.accent(child.accent)}
+                  iconColor={theme.accent(child.accent)}
                   value={String(folderCount(notes, folders, child.id))}
                   accessory={{ type: 'disclosure' }}
                   onPress={() =>
@@ -172,12 +180,13 @@ export default function FoldersScreen() {
         )}
 
         {tags.length > 0 ? (
-          <ListSection header="Теги" separatorInset={theme.metrics.separatorInset + 22 + theme.spacing.md}>
+          <ListSection header="Теги" count={tags.length} separatorInset={GLYPH_INSET}>
             {tags.map((tag) => (
               <ListRow
                 key={tag}
                 title={tag}
-                icon="tag"
+                icon="number"
+                iconColor={theme.colors.secondaryLabel}
                 value={String(activeNotes(notes).filter((n) => n.tags.includes(tag)).length)}
                 accessory={{ type: 'disclosure' }}
                 onPress={() =>
@@ -188,11 +197,11 @@ export default function FoldersScreen() {
           </ListSection>
         ) : null}
 
-        <ListSection separatorInset={theme.metrics.separatorInset + 29 + theme.spacing.md}>
+        <ListSection separatorInset={GLYPH_INSET}>
           <ListRow
             title="Корзина"
             icon="trash"
-            iconBackground={theme.colors.systemGray}
+            iconColor={theme.colors.secondaryLabel}
             value={trashed > 0 ? String(trashed) : undefined}
             accessory={{ type: 'disclosure' }}
             onPress={() => router.push('/folders/trash')}

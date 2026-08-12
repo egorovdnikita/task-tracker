@@ -50,7 +50,7 @@ export const Button = ({
   fullWidth = false,
   disabled,
   style,
-  tint = 'systemBlue',
+  tint = 'accent',
   ...rest
 }: ButtonProps) => {
   const theme = useTheme();
@@ -152,7 +152,7 @@ export const IconButton = ({
   name,
   accessibilityLabel,
   size = 22,
-  color = 'systemBlue',
+  color = 'accent',
   disabled,
   style,
   ...rest

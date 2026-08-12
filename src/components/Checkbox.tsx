@@ -47,7 +47,7 @@ export const Checkbox = ({
       <Symbol
         name={checked ? 'checkmark.circle.fill' : 'circle'}
         size={size}
-        color={checked ? theme.colors.systemBlue : theme.colors.tertiaryLabel}
+        color={checked ? theme.colors.accent : theme.colors.tertiaryLabel}
       />
     </Pressable>
   );

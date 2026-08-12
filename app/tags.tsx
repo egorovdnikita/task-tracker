@@ -41,7 +41,10 @@ export default function TagsScreen() {
     <>
       <Stack.Screen options={{ title: 'Теги' }} />
 
+      {/* Шапка шита прозрачная, и без системной поправки на инсеты поле
+          «Название тега» встаёт под заголовок. */}
       <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
@@ -86,7 +89,7 @@ export default function TagsScreen() {
               <ListRow
                 title={`Создать «${query}»`}
                 icon="plus"
-                titleColor="systemBlue"
+                titleColor="accent"
                 onPress={() => add(query)}
               />
             ) : null}

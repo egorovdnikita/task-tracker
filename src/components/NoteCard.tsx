@@ -1,12 +1,24 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { useTheme } from '../theme';
+import { useTheme, type PaletteName } from '../theme';
 import type { LayoutMode, Note } from '../types';
 import { checklistProgress, noteSubtitle, noteTitle } from '../utils/blocks';
-import { formatRelativeDate } from '../utils/date';
+import { dueState, formatRelativeDate, formatShortDate } from '../utils/date';
 import { Symbol } from './Symbol';
 import { Text } from './Text';
+
+/**
+ * Цвет срока: просрочено — красный, сегодня — зелёный, впереди — фиолетовый.
+ *
+ * Цвет здесь несёт смысл, а не украшает: он читается раньше текста, и «уже
+ * прошло» отличается от «на неделе» до того, как прочитана дата.
+ */
+const DUE_COLOR: Record<ReturnType<typeof dueState>, PaletteName> = {
+  overdue: 'systemRed',
+  today: 'systemGreen',
+  future: 'systemPurple',
+};
 
 export type NoteCardProps = {
   note: Note;
@@ -58,7 +70,7 @@ export const NoteCard = ({
           backgroundColor: theme.colors.secondarySystemGroupedBackground,
           opacity: pressed ? 0.7 : 1,
         },
-        selected ? { borderWidth: 2, borderColor: theme.colors.systemBlue } : null,
+        selected ? { borderWidth: 2, borderColor: theme.colors.accent } : null,
         style,
       ]}
     >
@@ -67,7 +79,7 @@ export const NoteCard = ({
           <Symbol
             name={selected ? 'checkmark.circle.fill' : 'circle'}
             size={20}
-            color={selected ? theme.colors.systemBlue : theme.colors.tertiaryLabel}
+            color={selected ? theme.colors.accent : theme.colors.tertiaryLabel}
           />
         ) : null}
 
@@ -107,17 +119,20 @@ export const NoteCard = ({
         />
       ) : null}
 
-      <View style={[styles.head, { gap: theme.spacing.sm, marginTop: theme.spacing.xxs }]}>
-        <Text variant="caption1" color="tertiaryLabel">
-          {formatRelativeDate(note.updatedAt)}
-        </Text>
+      {/*
+        Строка метаданных: у каждой пары иконка наследует цвет своего значения.
+        Одним серым здесь было хуже — срок и дата изменения выглядели одним и
+        тем же фактом, хотя один из них про будущее, а другой про прошлое.
+      */}
+      <View style={[styles.head, { gap: theme.spacing.md, marginTop: theme.spacing.xxs }]}>
+        <Meta icon="clock" text={formatRelativeDate(note.updatedAt)} color="tertiaryLabel" />
 
         {note.remindAt ? (
-          <Symbol
-            name="bell.fill"
-            size={11}
-            color={theme.colors.tertiaryLabel}
-            accessibilityLabel="Есть напоминание"
+          <Meta
+            icon="bell.fill"
+            text={formatShortDate(note.remindAt)}
+            color={DUE_COLOR[dueState(note.remindAt)]}
+            accessibilityLabel="Напоминание"
           />
         ) : null}
 
@@ -128,6 +143,35 @@ export const NoteCard = ({
         ))}
       </View>
     </Pressable>
+  );
+};
+
+/** Пара «иконка + значение» одного цвета. Из таких собрана строка метаданных. */
+const Meta = ({
+  icon,
+  text,
+  color,
+  accessibilityLabel,
+}: {
+  icon: Parameters<typeof Symbol>[0]['name'];
+  text: string;
+  color: PaletteName;
+  accessibilityLabel?: string;
+}) => {
+  const theme = useTheme();
+
+  return (
+    <View style={[styles.head, { gap: theme.spacing.xs }]}>
+      <Symbol
+        name={icon}
+        size={11}
+        color={theme.colors[color]}
+        accessibilityLabel={accessibilityLabel}
+      />
+      <Text variant="caption1" color={color}>
+        {text}
+      </Text>
+    </View>
   );
 };
 
@@ -175,7 +219,7 @@ const Highlighted = ({
     <Text variant="subheadline" color="secondaryLabel" numberOfLines={lines}>
       {head}
       {text.slice(from, at)}
-      <Text variant="subheadline" weight="semibold" style={{ color: theme.hex.systemBlue }}>
+      <Text variant="subheadline" weight="semibold" style={{ color: theme.hex.accent }}>
         {text.slice(at, at + needle.length)}
       </Text>
       {text.slice(at + needle.length)}

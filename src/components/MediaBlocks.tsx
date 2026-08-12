@@ -134,7 +134,7 @@ export const VoiceBlockView = ({
           <Symbol
             name={status.playing ? 'pause.circle.fill' : 'play.circle.fill'}
             size={38}
-            color={theme.colors.systemBlue}
+            color={theme.colors.accent}
           />
         </Pressable>
 

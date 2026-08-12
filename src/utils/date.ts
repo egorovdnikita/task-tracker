@@ -30,6 +30,23 @@ export const formatRelativeDate = (ts: number, now: number = Date.now()): string
   return formatShortDate(ts);
 };
 
+/**
+ * Срок относительно сейчас — просрочен, сегодня или впереди.
+ *
+ * Нужен затем, что дата на карточке красится по смыслу, а не одним серым:
+ * цвет читается раньше, чем текст, и «вчера» от «завтра» отличается до того,
+ * как человек прочитал число.
+ */
+export type DueState = 'overdue' | 'today' | 'future';
+
+export const dueState = (at: number, now: number = Date.now()): DueState => {
+  const endOfToday = new Date(now);
+  endOfToday.setHours(23, 59, 59, 999);
+
+  if (at < now) return 'overdue';
+  return at <= endOfToday.getTime() ? 'today' : 'future';
+};
+
 /** 12 заметок / 1 заметка / 3 заметки */
 export const pluralNotes = (count: number): string => {
   const mod10 = count % 10;

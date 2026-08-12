@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
@@ -6,15 +6,35 @@ import {
   BlockEditor,
   Chip,
   ChipWrap,
+  Confetti,
   EditorToolbar,
   IconButton,
+  Symbol,
   Text,
 } from '../../src/components';
-import { useTheme } from '../../src/theme';
+import { useTheme, type PaletteName } from '../../src/theme';
 import { hasContent, makeChecklistBlock, makeTextBlock } from '../../src/utils/blocks';
-import { formatDateTime } from '../../src/utils/date';
+import { dueState, formatDateTime } from '../../src/utils/date';
 import { showActionSheet } from '../../src/utils/actionSheet';
+import { notify } from '../../src/features/notify';
 import { useNotesStore } from '../../src/store/useNotesStore';
+import type { NoteBlock } from '../../src/types';
+
+const DUE_COLOR: Record<ReturnType<typeof dueState>, PaletteName> = {
+  overdue: 'systemRed',
+  today: 'systemGreen',
+  future: 'systemPurple',
+};
+
+/** Сколько пунктов отмечено во всех чек-листах заметки. */
+const doneCount = (blocks: NoteBlock[]): number =>
+  blocks.reduce(
+    (total, block) =>
+      block.type === 'checklist'
+        ? total + block.items.filter((item) => item.done).length
+        : total,
+    0,
+  );
 
 /**
  * Плиты 03.1–03.3 — редактор.
@@ -23,8 +43,9 @@ import { useNotesStore } from '../../src/store/useNotesStore';
  * стор сразу, а стор пишется на диск. Кнопка появляется там, где сохранение
  * может не удаться, — а локальной записи не от чего падать.
  *
- * Поэтому в шапке стоит не действие, а состояние: когда заметка изменена
- * последний раз. Это то же самое место, где в вайрфрейме стоял статус.
+ * Поэтому в шапке стоит не действие, а состояние: «Сохранение…» на время
+ * записи и «Сохранено» после неё. Дата изменения мелким серым под заголовком
+ * этого не заменяла — она меняется молча, и подтверждения человек не получал.
  */
 export default function NoteScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -32,15 +53,36 @@ export default function NoteScreen() {
 
   const notes = useNotesStore((s) => s.notes);
   const folders = useNotesStore((s) => s.folders);
-  const moveCheckedDown = useNotesStore((s) => s.settings.moveCheckedDown);
+  const settings = useNotesStore((s) => s.settings);
   const updateNote = useNotesStore((s) => s.updateNote);
+  const updateSettings = useNotesStore((s) => s.updateSettings);
   const setBlocks = useNotesStore((s) => s.setBlocks);
   const togglePinned = useNotesStore((s) => s.togglePinned);
   const trashNotes = useNotesStore((s) => s.trashNotes);
+  const deleteForever = useNotesStore((s) => s.deleteForever);
   const restoreNotes = useNotesStore((s) => s.restoreNotes);
 
   const note = useMemo(() => notes.find((n) => n.id === id) ?? null, [notes, id]);
   const [titleDraft, setTitleDraft] = useState(note?.title ?? '');
+
+  /**
+   * Статус сохранения.
+   *
+   * Запись мгновенная, но сказать о ней всё равно нужно: «Сохранение…» на
+   * долю секунды и «Сохранено» после — это не индикатор процесса, а
+   * подтверждение, что правка не потерялась.
+   */
+  const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [celebrating, setCelebrating] = useState(false);
+  const lastSaved = useRef(note?.updatedAt);
+
+  useEffect(() => {
+    if (!note || note.updatedAt === lastSaved.current) return;
+    lastSaved.current = note.updatedAt;
+    setStatus('saving');
+    const timer = setTimeout(() => setStatus('saved'), 500);
+    return () => clearTimeout(timer);
+  }, [note]);
 
   if (!note) {
     return (
@@ -53,14 +95,31 @@ export default function NoteScreen() {
   const folder = note.folderId ? folders.find((f) => f.id === note.folderId) : null;
 
   /**
-   * Пустая заметка при выходе не остаётся.
+   * Пустая заметка при выходе не остаётся — и не уезжает в корзину.
    *
-   * Создание происходит до открытия редактора — иначе некуда писать, — и
-   * если человек ничего не написал, он не создавал заметку, а передумал.
+   * В корзину попадает то, что было содержимым: оттуда его можно вернуть, и
+   * оно лежит там со своим сроком. Заметка, в которую не написали ни строчки,
+   * содержимым не была никогда — от неё в корзине оставались записи «Без
+   * заголовка», которые нечего восстанавливать.
    */
   const leave = () => {
-    if (!note.title.trim() && !hasContent(note.blocks)) trashNotes([note.id]);
+    if (!note.title.trim() && !hasContent(note.blocks)) deleteForever([note.id]);
     router.back();
+  };
+
+  /**
+   * Первое выполненное дело замечается один раз.
+   *
+   * Не на каждом чек-боксе: событие здесь — не «пункт отмечен», а «в этом
+   * приложении впервые что-то доведено до конца».
+   */
+  const changeBlocks = (blocks: NoteBlock[]) => {
+    if (!settings.celebratedFirstDone && doneCount(blocks) > doneCount(note.blocks)) {
+      updateSettings({ celebratedFirstDone: true });
+      setCelebrating(true);
+      notify('🎉 Первое дело закрыто');
+    }
+    setBlocks(note.id, blocks);
   };
 
   const menu = () =>
@@ -89,18 +148,23 @@ export default function NoteScreen() {
     <>
       <Stack.Screen
         options={{
+          title: status === 'saving' ? 'Сохранение…' : status === 'saved' ? 'Сохранено' : '',
           headerLeft: () => (
             <IconButton name="chevron.left" accessibilityLabel="Назад" onPress={leave} />
           ),
+          /*
+            Обе кнопки рисуются всегда, меняется только символ закрепления.
+            Раньше `headerRight` отдавал то один элемент, то два, и нативная
+            шапка растягивала группу: один и тот же экран выглядел по-разному
+            в зависимости от того, закреплена заметка или нет.
+          */
           headerRight: () => (
             <View style={{ flexDirection: 'row', gap: theme.spacing.lg }}>
-              {note.pinned ? (
-                <IconButton
-                  name="pin.fill"
-                  accessibilityLabel="Открепить"
-                  onPress={() => togglePinned(note.id)}
-                />
-              ) : null}
+              <IconButton
+                name={note.pinned ? 'pin.fill' : 'pin'}
+                accessibilityLabel={note.pinned ? 'Открепить' : 'Закрепить'}
+                onPress={() => togglePinned(note.id)}
+              />
               <IconButton name="ellipsis.circle" accessibilityLabel="Меню заметки" onPress={menu} />
             </View>
           ),
@@ -128,7 +192,7 @@ export default function NoteScreen() {
             <Text
               variant="footnote"
               weight="semibold"
-              color="systemBlue"
+              color="accent"
               onPress={() => restoreNotes([note.id])}
             >
               Восстановить
@@ -156,16 +220,32 @@ export default function NoteScreen() {
             style={[theme.text('title2', 'bold'), { color: theme.colors.label, padding: 0 }]}
           />
 
-          <Text variant="caption1" color="tertiaryLabel">
-            {formatDateTime(note.updatedAt)}
-            {folder ? ` · ${folder.name}` : ''}
-            {note.remindAt ? ` · напоминание ${formatDateTime(note.remindAt)}` : ''}
-          </Text>
+          {/* Метаданные: срок окрашен по смыслу, иконка того же цвета.
+              Остальное — третичным серым: это справка, а не содержание. */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.md }}>
+            <Text variant="caption1" color="tertiaryLabel">
+              {formatDateTime(note.updatedAt)}
+              {folder ? ` · ${folder.name}` : ''}
+            </Text>
+
+            {note.remindAt ? (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.xs }}>
+                <Symbol
+                  name="bell.fill"
+                  size={11}
+                  color={theme.colors[DUE_COLOR[dueState(note.remindAt)]]}
+                />
+                <Text variant="caption1" color={DUE_COLOR[dueState(note.remindAt)]}>
+                  {formatDateTime(note.remindAt)}
+                </Text>
+              </View>
+            ) : null}
+          </View>
 
           <BlockEditor
             blocks={note.blocks}
-            moveCheckedDown={moveCheckedDown}
-            onChange={(blocks) => setBlocks(note.id, blocks)}
+            moveCheckedDown={settings.moveCheckedDown}
+            onChange={changeBlocks}
             onEditSketch={(blockId) =>
               router.push({ pathname: '/capture/sketch', params: { id: note.id, block: blockId } })
             }
@@ -189,43 +269,51 @@ export default function NoteScreen() {
         </ScrollView>
 
         <EditorToolbar
+          showLabels={settings.toolbarLabels}
           onDismissKeyboard={Keyboard.dismiss}
           actions={[
             {
               name: 'checklist',
-              accessibilityLabel: 'Добавить список задач',
+              label: 'Список',
               onPress: () => setBlocks(note.id, [...note.blocks, makeChecklistBlock()]),
             },
             {
               name: 'text.alignleft',
-              accessibilityLabel: 'Добавить текстовый блок',
+              label: 'Текст',
               onPress: () => setBlocks(note.id, [...note.blocks, makeTextBlock()]),
             },
             // Плита 04: запись, скан и рисунок — такие же блоки в потоке, как
             // текст и список, поэтому и вставляются той же панелью.
             {
               name: 'mic',
-              accessibilityLabel: 'Записать голос',
+              label: 'Запись',
               onPress: () => router.push({ pathname: '/capture/voice', params: { id: note.id } }),
             },
             {
               name: 'doc.text.viewfinder',
-              accessibilityLabel: 'Отсканировать документ',
+              label: 'Скан',
               onPress: () => router.push({ pathname: '/capture/scan', params: { id: note.id } }),
             },
             {
               name: 'scribble',
-              accessibilityLabel: 'Нарисовать',
+              label: 'Рисунок',
               onPress: () => router.push({ pathname: '/capture/sketch', params: { id: note.id } }),
             },
             {
+              name: 'bell',
+              label: 'Напомнить',
+              onPress: () => router.push({ pathname: '/reminder', params: { id: note.id } }),
+            },
+            {
               name: 'tag',
-              accessibilityLabel: 'Теги заметки',
+              label: 'Теги',
               onPress: () => router.push({ pathname: '/tags', params: { id: note.id } }),
             },
           ]}
         />
       </KeyboardAvoidingView>
+
+      <Confetti active={celebrating} onDone={() => setCelebrating(false)} />
     </>
   );
 }

@@ -53,9 +53,6 @@ type NotesState = {
 
   updateSettings: (patch: Partial<Settings>) => void;
   setLayout: (scope: string, mode: LayoutMode) => void;
-  pushRecentQuery: (query: string) => void;
-  removeRecentQuery: (query: string) => void;
-  clearRecentQueries: () => void;
 };
 
 export const defaultSettings: Settings = {
@@ -63,7 +60,8 @@ export const defaultSettings: Settings = {
   sort: 'updated',
   layout: { root: 'list' },
   moveCheckedDown: true,
-  recentQueries: [],
+  toolbarLabels: true,
+  celebratedFirstDone: false,
 };
 
 const touch = <T extends Note>(note: T): T => ({ ...note, updatedAt: Date.now() });
@@ -197,36 +195,30 @@ export const useNotesStore = create<NotesState>()(
         set({
           settings: { ...get().settings, layout: { ...get().settings.layout, [scope]: mode } },
         }),
-
-      pushRecentQuery: (query) => {
-        const value = query.trim();
-        if (value.length < 2) return;
-        const rest = get().settings.recentQueries.filter((q) => q !== value);
-        set({ settings: { ...get().settings, recentQueries: [value, ...rest].slice(0, 8) } });
-      },
-
-      removeRecentQuery: (query) =>
-        set({
-          settings: {
-            ...get().settings,
-            recentQueries: get().settings.recentQueries.filter((q) => q !== query),
-          },
-        }),
-
-      clearRecentQueries: () => set({ settings: { ...get().settings, recentQueries: [] } }),
     }),
     {
       name: 'task-tracker-notes',
-      version: 3,
+      version: 4,
       storage: createJSONStorage(() => AsyncStorage),
       /**
        * v1 хранил тело строкой и цвет из светлой палитры, v2 — свечение из
        * dark-only системы и один тег. Обе схемы переводятся вперёд без потерь:
        * тело становится текстовым блоком, тег — списком из одного элемента,
        * свечение — акцентом из системной палитры.
+       *
+       * v3 держал историю запросов: поиск был отдельной вкладкой со своим
+       * экраном, и на нём эта история была единственным содержимым до ввода.
+       * Поиск переехал полем в список, показывать историю стало негде — и
+       * хранить её больше незачем.
        */
       migrate: (persisted: any, from) => {
-        if (from >= 3 || !persisted) return persisted;
+        if (from >= 4 || !persisted) return persisted;
+
+        if (from === 3) {
+          const settings: Record<string, unknown> = { ...defaultSettings, ...persisted.settings };
+          delete settings.recentQueries;
+          return { ...persisted, settings };
+        }
 
         const accentOf = (value: unknown): AccentName | null => {
           const map: Record<string, AccentName> = {

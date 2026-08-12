@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
-import { Stack, router } from 'expo-router';
+import { Stack } from 'expo-router';
 
-import { EmptyState, ListRow, ListSection, Text, Toast } from '../../../src/components';
+import { EmptyState, ListRow, ListSection, Text } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { noteTitle } from '../../../src/utils/blocks';
 import { confirmDestructive, showActionSheet } from '../../../src/utils/actionSheet';
@@ -12,6 +12,7 @@ import {
   useNotesStore,
 } from '../../../src/store/useNotesStore';
 import { pluralNotes } from '../../../src/utils/date';
+import { notify } from '../../../src/features/notify';
 
 /**
  * Плита 08.5 — корзина.
@@ -27,7 +28,6 @@ export default function TrashScreen() {
   const emptyTrash = useNotesStore((s) => s.emptyTrash);
   const folders = useNotesStore((s) => s.folders);
 
-  const [toast, setToast] = useState<string | null>(null);
   const trashed = useMemo(() => trashedNotes(notes), [notes]);
 
   const restore = (id: string) => {
@@ -36,7 +36,7 @@ export default function TrashScreen() {
     // Заметка возвращается в свою папку; если папки уже нет — в корень,
     // и об этом надо сказать, иначе она «пропадёт» второй раз.
     const home = note?.folderId ? folders.find((f) => f.id === note.folderId) : null;
-    setToast(
+    notify(
       note?.folderId && !home
         ? 'Папки больше нет — заметка вернулась в корень'
         : `Восстановлено: «${noteTitle(note!)}»`,
@@ -59,7 +59,8 @@ export default function TrashScreen() {
           contentContainerStyle={{ paddingTop: theme.spacing.sm, paddingBottom: theme.spacing.xxxl }}
         >
           <ListSection
-            header={pluralNotes(trashed.length)}
+            header="В корзине"
+            count={trashed.length}
             footer="Нажмите на заметку, чтобы восстановить её или удалить сразу."
           >
             {trashed.map((note) => (
@@ -117,8 +118,6 @@ export default function TrashScreen() {
           </Text>
         </ScrollView>
       )}
-
-      <Toast message={toast} actionTitle="Открыть" onAction={() => router.navigate('/notes')} onHide={() => setToast(null)} />
     </>
   );
 }

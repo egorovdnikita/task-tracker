@@ -4,6 +4,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Button } from './Button';
 import { Chip, ChipWrap } from './Chip';
+import { Fab } from './Fab';
+import { SearchField } from './SearchField';
 import { Text } from './Text';
 import { TextField } from './TextField';
 
@@ -92,6 +94,14 @@ export const Чипы: Story = {
           <Chip label="Синий" accent="blue" selected />
           <Chip label="Снимается" selected onRemove={() => {}} />
         </ChipWrap>
+
+        {/* Обводка — чип-действие: он открывает выбор, а не показывает
+            сделанный. Заливка у такого читалась бы как уже выбранное. */}
+        <ChipWrap>
+          <Chip label="Список задач" icon="checklist" outlined onPress={() => {}} />
+          <Chip label="Напомнить" icon="bell" outlined onPress={() => {}} />
+          <Chip label="Тег" icon="tag" outlined onPress={() => {}} />
+        </ChipWrap>
       </View>
     );
   },
@@ -100,9 +110,11 @@ export const Чипы: Story = {
 /**
  * Поля ввода.
  *
- * Поля поиска здесь нет: его роль играет `UISearchBar` в шапке навигации —
- * системный, вместе с кнопкой «Отменить» и затемнением списка на время ввода.
- * Показывать рядом свою копию значило бы предлагать выбрать между ними.
+ * Поле поиска здесь своё, и это единственное исключение из правила «системное
+ * вместо похожего»: системного поля поиска у нижнего края не существует —
+ * `UISearchBar` живёт в шапке, а внизу iOS 26 отдаёт только слот вкладки с
+ * ролью `search`. Вкладку поиска мы убрали, поэтому поле собрано из системных
+ * частей: капсула стекла, символ `magnifyingglass`, обычный `TextInput`.
  */
 export const Поля: Story = {
   render: () => {
@@ -118,8 +130,33 @@ export const Поля: Story = {
           hint="Папка с таким именем уже есть на этом уровне"
           onChangeText={() => {}}
         />
+
+        <SearchFieldExample />
       </View>
     );
   },
+};
+
+const SearchFieldExample = () => {
+  const [query, setQuery] = useState('');
+  return <SearchField value={query} onChangeText={setQuery} placeholder="Поиск по заметкам" />;
+};
+
+/**
+ * Кнопка создания.
+ *
+ * Сплошной круг акцентом, а не стекло: под кнопкой едет список, и стеклянная
+ * кнопка растворялась ровно там, где нужна сильнее всего, — на почти пустом
+ * экране. На устройстве она стоит в нижнем ряду справа, рядом с полем поиска.
+ */
+export const Создание: Story = {
+  render: () => (
+    <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
+      <Fab onPress={() => {}} />
+      <Text variant="footnote" color="secondaryLabel">
+        Долгое нажатие — выбор типа заметки
+      </Text>
+    </View>
+  ),
 };
 

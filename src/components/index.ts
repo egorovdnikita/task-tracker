@@ -1,6 +1,8 @@
+export { BottomBar, type BottomBarProps } from './BottomBar';
 export { Button, IconButton, withAlpha, type ButtonProps, type ButtonVariant, type IconButtonProps } from './Button';
 export { Checkbox, type CheckboxProps } from './Checkbox';
 export { Chip, ChipRow, ChipWrap, type ChipProps } from './Chip';
+export { Confetti, type ConfettiProps } from './Confetti';
 export { EditorToolbar, type EditorToolbarProps, type ToolbarAction } from './EditorToolbar';
 export { EmptyState, type EmptyStateProps } from './EmptyState';
 export { Fab, type FabProps } from './Fab';
@@ -18,8 +20,14 @@ export { BlockEditor, type BlockEditorProps } from './NoteBlocks';
 export { Waveform, type WaveformProps } from './Waveform';
 export { NoteCard, type NoteCardProps } from './NoteCard';
 export { NoteList, type NoteListProps } from './NoteList';
+export {
+  MessagePill,
+  UndoButton,
+  type MessagePillProps,
+  type UndoButtonProps,
+} from './Notifications';
+export { SearchField, type SearchFieldProps } from './SearchField';
 export { SegmentedControl, type Segment, type SegmentedControlProps } from './SegmentedControl';
 export { Symbol, SymbolBadge, type SymbolBadgeProps, type SymbolProps } from './Symbol';
 export { Text, type TextProps } from './Text';
 export { TextField, type TextFieldProps } from './TextField';
-export { Toast, type ToastProps } from './Toast';

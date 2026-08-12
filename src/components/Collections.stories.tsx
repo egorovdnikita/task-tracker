@@ -6,7 +6,7 @@ import { EmptyState } from './EmptyState';
 import { ListRow, ListSection, Separator } from './List';
 import { NoteCard } from './NoteCard';
 import { Text } from './Text';
-import { Toast } from './Toast';
+import { MessagePill, UndoButton } from './Notifications';
 import { useTheme } from '../theme';
 import { mockChecklistNote, mockNote, mockNotes } from '../mocks/notes';
 
@@ -94,8 +94,8 @@ export const Карточки: Story = {
 export const Сетка: Story = {
   render: () => (
     <View style={{ flexDirection: 'row', gap: 12 }}>
-      <NoteCard note={mockNote} layout="grid" style={{ flex: 1, height: 168 }} />
-      <NoteCard note={mockChecklistNote} layout="grid" style={{ flex: 1, height: 168 }} />
+      <NoteCard note={mockNote} layout="grid" style={{ flex: 1, height: 140 }} />
+      <NoteCard note={mockChecklistNote} layout="grid" style={{ flex: 1, height: 140 }} />
     </View>
   ),
 };
@@ -117,22 +117,42 @@ export const Пусто: Story = {
 };
 
 /**
- * Тост с отменой.
+ * Уведомления: сообщение сверху, отмена снизу.
  *
- * Живёт ради одного правила: любое разрушающее действие обратимо пять секунд.
- * Без кнопки показывать его незачем.
+ * Раньше это был один тост внизу по центру, и он делал две работы сразу —
+ * докладывал и держал единственный способ вернуть сделанное. Сообщение живёт
+ * секунду и ничего не требует; отмена — кнопка с обводкой и сроком в пять
+ * секунд, ровно столько любое разрушающее действие обратимо.
  */
-export const Отмена: Story = {
+export const Уведомления: Story = {
   parameters: { grouped: false },
   render: () => {
-    const [message, setMessage] = useState<string | null>('Заметка в корзине');
+    const [message, setMessage] = useState<string | null>('Заметка добавлена');
+    const [undo, setUndo] = useState<string | null>('Заметка в корзине');
 
     return (
-      <View style={{ height: 200, justifyContent: 'flex-end' }}>
-        <Text variant="footnote" color="secondaryLabel" onPress={() => setMessage('Заметка в корзине')}>
+      <View style={{ height: 260, justifyContent: 'space-between' }}>
+        <View style={{ alignItems: 'center' }}>
+          <MessagePill message={message} duration={100000} onHide={() => setMessage(null)} />
+        </View>
+
+        <Text
+          variant="footnote"
+          color="secondaryLabel"
+          onPress={() => {
+            setMessage('Заметка добавлена');
+            setUndo('Заметка в корзине');
+          }}
+        >
           Нажмите, чтобы показать снова
         </Text>
-        <Toast message={message} onAction={() => {}} onHide={() => setMessage(null)} />
+
+        <UndoButton
+          description={undo}
+          duration={100000}
+          onUndo={() => {}}
+          onHide={() => setUndo(null)}
+        />
       </View>
     );
   },

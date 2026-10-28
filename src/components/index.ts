@@ -14,6 +14,8 @@ export { Confetti, type ConfettiProps } from './Confetti';
 export { EmptyState, type EmptyStateProps } from './EmptyState';
 export { Fab, type FabProps } from './Fab';
 export { Glass, GlassGroup, type GlassGroupProps, type GlassProps } from './Glass';
+export { GlassSurface, type GlassSurfaceProps } from './GlassSurface';
+export { ScreenBackdrop, type ScreenBackdropProps } from './ScreenBackdrop';
 export {
   ListRow,
   ListSection,
@@ -46,4 +48,5 @@ export { SearchField, type SearchFieldProps } from './SearchField';
 export { SegmentedControl, type Segment, type SegmentedControlProps } from './SegmentedControl';
 export { Symbol, SymbolBadge, type SymbolBadgeProps, type SymbolProps } from './Symbol';
 export { Text, type TextProps } from './Text';
+export { ThinkingOrb, type OrbState, type ThinkingOrbProps } from './ThinkingOrb';
 export { TextField, type TextFieldProps } from './TextField';

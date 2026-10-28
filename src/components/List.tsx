@@ -12,6 +12,7 @@ import type { SFSymbol } from 'sf-symbols-typescript';
 import { useTheme, type PaletteName } from '../theme';
 import { showMenu, type MenuItem } from './Menu';
 import { Symbol, SymbolBadge } from './Symbol';
+import { GlassSurface } from './GlassSurface';
 import { Text } from './Text';
 
 /**
@@ -144,10 +145,18 @@ export const ListSection = ({
           {
             marginHorizontal: theme.spacing.lg,
             borderRadius: theme.radius.md,
-            backgroundColor: theme.colors.secondarySystemGroupedBackground,
           },
         ]}
       >
+        {/* Группа строк — та же стеклянная карточка Opal, что и заметка. */}
+        <GlassSurface
+          mesh="card"
+          stroke="card"
+          tint={theme.tints.card}
+          radius={theme.radius.md}
+          pointerEventsNone
+          style={StyleSheet.absoluteFill}
+        />
         {rows.map((row, index) => (
           <Fragment key={index}>
             {index > 0 ? <Separator inset={separatorInset} /> : null}

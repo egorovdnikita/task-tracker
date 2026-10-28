@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { useTheme, type PaletteName } from '../theme';
+import { NOTE_GLOW_OPACITY, useTheme, type PaletteName } from '../theme';
 import type { LayoutMode, Note } from '../types';
 import { checklistProgress, noteSubtitle, noteTitle } from '../utils/blocks';
 import { dueState, formatRelativeDate, formatShortDate } from '../utils/date';
+import { GlassSurface } from './GlassSurface';
 import { Symbol } from './Symbol';
 import { Text } from './Text';
 
@@ -78,16 +79,34 @@ export const NoteCard = ({
       style={({ pressed }) => [
         styles.card,
         {
-          padding: theme.spacing.lg,
+          padding: theme.spacing.xl,
           gap: theme.spacing.xs,
           borderRadius: theme.radius.lg,
-          backgroundColor: theme.colors.secondarySystemGroupedBackground,
-          opacity: pressed ? 0.7 : 1,
+          opacity: pressed ? 0.85 : 1,
         },
-        selected ? { borderWidth: 2, borderColor: theme.colors.accent } : null,
+        selected ? { borderWidth: 1.5, borderColor: theme.colors.accent } : null,
         style,
       ]}
     >
+      {/*
+        Карточка на стекле Opal: подложка с альфой, меш с лёгким свечением по
+        углам и градиентный кант. Цвет заметки — не полоска и не заливка, а
+        четвёртый эллипс в правом верхнем углу: в эталоне метка едва
+        проступает и не спорит с текстом.
+      */}
+      <GlassSurface
+        mesh={[
+          ...theme.meshes.card,
+          ...(accent
+            ? [{ x: 0.95, y: -0.15, rx: 0.5, ry: 0.85, color: accent, opacity: NOTE_GLOW_OPACITY }]
+            : []),
+        ]}
+        stroke="card"
+        tint={theme.tints.card}
+        radius={theme.radius.lg}
+        pointerEventsNone
+        style={StyleSheet.absoluteFill}
+      />
       <View style={[styles.head, { gap: theme.spacing.sm }]}>
         {selectable ? (
           <Symbol

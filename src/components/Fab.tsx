@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'rea
 
 import { useTheme } from '../theme';
 import type { MenuAnchor } from './Menu';
+import { GlassSurface } from './GlassSurface';
 import { Symbol } from './Symbol';
 
 export type FabProps = {
@@ -18,12 +19,11 @@ export type FabProps = {
 };
 
 /**
- * Круглая кнопка создания.
+ * Круг «+» из эталона Opal: сплошной меш лайм → аква, глиф чёрный.
  *
- * Сплошная заливка акцентом, а не стекло. Стекло здесь было ошибкой: оно
- * показывает то, что под ним, а под кнопкой создания — список, то есть серый
- * текст на тёплом фоне. Кнопка растворялась ровно в том состоянии, где нужна
- * сильнее всего, — на почти пустом экране.
+ * Без системного стекла: заливка мешем и есть смысл кнопки, материал бы её
+ * замутил. Свечение под кругом — его же цвета, а не чёрная тень: на чёрном
+ * фоне тень не видна, а лаймовый ореол отделяет круг от списка под ним.
  *
  * Позиционированием кнопка не занимается: её ставит `BottomBar` справа в ряду
  * панели вкладок, и место у неё одно на всех экранах.
@@ -55,34 +55,32 @@ export const Fab = ({
           : undefined
       }
       style={({ pressed }) => [
-        styles.root,
-        styles.shadow,
-        {
-          width: size,
-          height: size,
-          borderRadius: size / 2,
-          backgroundColor: theme.colors.accent,
-          // Нажатие гасит кнопку, как гасит любую системную: пружина здесь
-          // читалась бы как элемент из другого приложения.
-          opacity: pressed ? 0.8 : 1,
-        },
+        styles.glow,
+        { width: size, height: size, borderRadius: size / 2 },
+        { transform: [{ scale: pressed ? 0.94 : 1 }] },
         style,
       ]}
     >
-      <Symbol name="plus" size={28} color="#FFFFFF" weight="semibold" />
+      <GlassSurface
+        mesh="fab"
+        liquid={false}
+        radius={size / 2}
+        tint={theme.hex.accent}
+        style={[styles.root, { width: size, height: size }]}
+      >
+        <Symbol name="plus" size={26} color={theme.hex.onAccent} weight="semibold" />
+      </GlassSurface>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   root: { alignItems: 'center', justifyContent: 'center' },
-  // Тень здесь своя, а не системная: круг лежит не на стекле, а поверх
-  // списка, и без тени он выглядит наклеенным.
-  shadow: {
-    shadowColor: '#000',
-    shadowOpacity: 0.22,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
+  glow: {
+    shadowColor: '#DCFEAA',
+    shadowOpacity: 0.28,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
   },
 });

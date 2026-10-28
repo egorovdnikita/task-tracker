@@ -344,7 +344,7 @@ const RoundButton = ({
       <Symbol
         name={icon}
         size={22}
-        color={tone === 'accent' ? '#FFFFFF' : theme.colors.label}
+        color={tone === 'accent' ? theme.hex.onAccent : theme.colors.label}
         weight="semibold"
       />
     </Pressable>

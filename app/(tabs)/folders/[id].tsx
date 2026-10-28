@@ -10,6 +10,7 @@ import {
   SearchField,
   showMenu,
   type MenuAnchor,
+  ScreenBackdrop,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { useNotesStore, activeNotes, searchNotes, sortNotes } from '../../../src/store/useNotesStore';
@@ -112,6 +113,7 @@ export default function FolderScreen() {
 
   return (
     <>
+      <ScreenBackdrop name="notes" />
       <Stack.Screen
         options={{
           title: scope.title,

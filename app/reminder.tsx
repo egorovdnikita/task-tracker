@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { Button, ListRow, ListSection, Text } from '../src/components';
+import { Button, ListRow, ListSection, Text, ScreenBackdrop } from '../src/components';
 import { useTheme } from '../src/theme';
 import { formatDateTime } from '../src/utils/date';
 import {
@@ -59,6 +59,7 @@ export default function ReminderScreen() {
 
   return (
     <>
+      <ScreenBackdrop name="editor" />
       <Stack.Screen options={{ title: 'Напоминание' }} />
 
       {/* Без системной поправки на инсеты блок «Уведомления выключены»

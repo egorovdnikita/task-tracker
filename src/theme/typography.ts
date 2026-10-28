@@ -31,7 +31,7 @@ export const textStyles = {
   title2: { fontSize: 22, lineHeight: 28, letterSpacing: 0.35, fontWeight: '400' },
   title3: { fontSize: 20, lineHeight: 25, letterSpacing: 0.38, fontWeight: '400' },
   /** Подписывает то, что под ней: заголовок строки, шапка секции. */
-  headline: { fontSize: 17, lineHeight: 22, letterSpacing: -0.41, fontWeight: '600' },
+  headline: { fontSize: 17, lineHeight: 22, letterSpacing: -0.41, fontWeight: '500' },
   body: { fontSize: 17, lineHeight: 22, letterSpacing: -0.41, fontWeight: '400' },
   callout: { fontSize: 16, lineHeight: 21, letterSpacing: -0.32, fontWeight: '400' },
   subheadline: { fontSize: 15, lineHeight: 20, letterSpacing: -0.24, fontWeight: '400' },

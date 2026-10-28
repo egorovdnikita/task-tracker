@@ -1,9 +1,30 @@
 import React from 'react';
 import { View } from 'react-native';
 import type { Preview } from '@storybook/react-vite';
+import { LoadSkiaWeb } from '@shopify/react-native-skia/lib/module/web';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { ThemeProvider, palette, type AppearancePreference } from '../src/theme';
+import { ThemeProvider, palette } from '../src/theme';
+
+/**
+ * В приложении Skia — нативный модуль, в браузере её роль играет CanvasKit.
+ *
+ * Ждём на верхнем уровне модуля: веб-сборка Skia делает
+ * `Skia = JsiSkApi(global.CanvasKit)` прямо при импорте, то есть CanvasKit
+ * обязан существовать раньше, чем что-либо импортирует Skia. Истории
+ * Storybook подгружаются динамически уже после этого модуля.
+ *
+ * Путь — от базы документа, а не от корня домена: на GitHub Pages витрина
+ * лежит в подпапке, и абсолютный `/canvaskit/…` уходил в 404. `catch` —
+ * чтобы без CanvasKit сломался только орб, а не вся витрина.
+ */
+const canvasKitBase = new URL('.', document.baseURI).href;
+
+try {
+  await LoadSkiaWeb({ locateFile: (file) => `${canvasKitBase}canvaskit/${file}` });
+} catch (error) {
+  console.error('[storybook] CanvasKit не загрузился, орб работать не будет', error);
+}
 
 /** 390×844 — логический размер iPhone 15, канвас вайрфреймов. */
 const PHONE = { width: 390, height: 844 };
@@ -39,44 +60,25 @@ const preview: Preview = {
     a11y: { test: 'todo' },
   },
 
-  /** Переключатель схемы в тулбаре — обе темы проверяются на одном экране. */
-  globalTypes: {
-    scheme: {
-      description: 'Цветовая схема',
-      toolbar: {
-        title: 'Схема',
-        icon: 'mirror',
-        items: [
-          { value: 'light', title: 'Светлая' },
-          { value: 'dark', title: 'Тёмная' },
-        ],
-        dynamicTitle: true,
-      },
-    },
-  },
-
-  initialGlobals: { scheme: 'light' },
-
   decorators: [
     (Story, context) => {
-      const scheme = (context.globals.scheme ?? 'light') as AppearancePreference;
       // `device: true` оборачивает историю в рамку телефона — для экранов.
       const device = context.parameters.device === true;
       const grouped = context.parameters.grouped === true;
 
       const background = grouped
-        ? palette.systemGroupedBackground[scheme === 'dark' ? 'dark' : 'light']
-        : palette.systemBackground[scheme === 'dark' ? 'dark' : 'light'];
+        ? palette.systemGroupedBackground.dark
+        : palette.systemBackground.dark;
 
       return (
         <SafeAreaProvider initialMetrics={device ? PHONE_METRICS : FLAT_METRICS}>
-          <ThemeProvider preference={scheme}>
+          <ThemeProvider>
             <View
               style={{
                 backgroundColor: background,
                 borderRadius: device ? 32 : 16,
                 borderWidth: 1,
-                borderColor: palette.separator[scheme === 'dark' ? 'dark' : 'light'],
+                borderColor: palette.separator.dark,
                 overflow: 'hidden',
                 padding: device ? 0 : 20,
                 width: device ? PHONE.width : undefined,

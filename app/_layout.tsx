@@ -7,7 +7,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MenuHost } from '../src/components';
 import { ThemeProvider, useTheme } from '../src/theme';
 import { NotificationHost } from '../src/features/notify';
-import { useNotesStore } from '../src/store/useNotesStore';
 
 /**
  * Корень приложения.
@@ -18,18 +17,14 @@ import { useNotesStore } from '../src/store/useNotesStore';
  * маршрутов онбординга и авторизации у него нет.
  */
 export default function RootLayout() {
-  const appearance = useNotesStore((s) => s.settings.appearance);
-
   return (
     // Корень жестов нужен свайпам по карточке: без него распознаватели
     // `react-native-gesture-handler` не получают касания.
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <ThemeProvider preference={appearance}>
-          {/* `auto` — статус-бар следует схеме: тёмные буквы на светлой, светлые
-              на тёмной. Фиксировать его значит получить невидимые часы в одной
-              из двух тем. */}
-          <StatusBar style="auto" />
+        <ThemeProvider>
+          {/* Система dark-only, поэтому статус-бар всегда светлый. */}
+          <StatusBar style="light" />
           <RootStack />
           {/* Меню смонтировано в корне, а не в экране: оно всплывает поверх
               шапки и панели вкладок, и вложенное в экран было бы обрезано
@@ -53,20 +48,15 @@ const RootStack = () => {
         headerTintColor: theme.hex.accent,
         headerTitleStyle: theme.headerText('headline', 'semibold'),
         /*
-          Шапка того же цвета, что страница под ней, и без размытия.
+          Шапка прозрачная и без размытия.
 
-          Раньше она была прозрачной с `systemChromeMaterial`. Материал —
-          системный и правильный, но он рассчитан на системную же подложку:
-          поверх нашей тёплой он подмешивал свой холодный почти-белый, и на
-          каждом экране сверху лежала светлая полоса шириной в шапку. Видно
-          это было именно на модалках, где полоса упиралась в тёплый лист.
-
-          Размытие имеет смысл, когда под шапкой едет контент. Здесь заголовок
-          встроенный, содержимое начинается под ним, и размывать нечего —
-          поэтому плоская заливка ровно того же цвета, что и страница.
+          Свет в системе Opal идёт из-за верхней кромки экрана: подсветка фона
+          лежит под шапкой и статус-баром. Плотная шапка срезала бы его ровно
+          там, где он ярче всего, и оставила чёрную полосу поперёк экрана.
+          Размытие тоже не нужно — заголовок встроенный, под ним не едет
+          контент, а системный материал подмешивал бы свой серый к чёрному.
         */
-        headerTransparent: false,
-        headerStyle: { backgroundColor: theme.hex.systemGroupedBackground },
+        headerTransparent: true,
         headerShadowVisible: false,
         contentStyle: { backgroundColor: theme.hex.systemGroupedBackground },
       }}
@@ -130,9 +120,18 @@ const RootStack = () => {
         занимают весь экран по своей природе, и оставлять под ними полоску
         заметки незачем.
       */}
-      <Stack.Screen name="capture/voice" options={{ presentation: 'modal' }} />
-      <Stack.Screen name="capture/scan" options={{ presentation: 'fullScreenModal' }} />
-      <Stack.Screen name="capture/sketch" options={{ presentation: 'modal' }} />
+      <Stack.Screen
+        name="capture/voice"
+        options={{ presentation: 'modal', headerTransparent: false, headerStyle: { backgroundColor: '#000000' } }}
+      />
+      <Stack.Screen
+        name="capture/scan"
+        options={{ presentation: 'fullScreenModal', headerTransparent: false, headerStyle: { backgroundColor: '#000000' } }}
+      />
+      <Stack.Screen
+        name="capture/sketch"
+        options={{ presentation: 'modal', headerTransparent: false, headerStyle: { backgroundColor: '#000000' } }}
+      />
 
       <Stack.Screen
         name="reminder"

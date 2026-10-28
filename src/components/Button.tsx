@@ -10,7 +10,7 @@ import {
 import type { SFSymbol } from 'sf-symbols-typescript';
 
 import { useTheme, type PaletteName } from '../theme';
-import { Glass } from './Glass';
+import { GlassSurface } from './GlassSurface';
 import { Symbol } from './Symbol';
 import { Text } from './Text';
 
@@ -63,15 +63,33 @@ export const Button = ({
   // тоже полный, поэтому одна ветка на оба размера.
   const borderRadius = theme.radius.pill;
 
-  const label = variant === 'filled' || variant === 'glassProminent' ? '#FFFFFF' : theme.hex[accent];
+  /*
+    Варианты — поверхности Opal:
 
-  const fill: Record<ButtonVariant, ViewStyle> = {
-    filled: { backgroundColor: theme.colors[accent] },
-    tinted: { backgroundColor: withAlpha(theme.hex[accent], 0.15) },
-    gray: { backgroundColor: theme.colors.tertiarySystemFill },
-    plain: { backgroundColor: 'transparent' },
-    glass: {},
-    glassProminent: {},
+    - `filled` — главная кнопка эталона: стеклянная пилюля с мешем, свет снизу,
+      оливковый слева → бирюзовый справа. Подпись белая: меш светлеет только у
+      нижней кромки, буквы стоят на тёмном. Разрушающая — тот же профиль по
+      красной оси: если «Удалить» выглядит ссылкой, а «Отмена» — кнопкой, глаз
+      выбирает отмену не потому, что решил, а потому, что она заметнее.
+    - `tinted` и `gray` — стеклянная пилюля без меша; у первой подпись акцентом.
+    - `plain` — только подпись.
+  */
+  const label =
+    variant === 'filled' || variant === 'gray' || variant === 'glass'
+      ? theme.hex.label
+      : variant === 'glassProminent'
+        ? theme.hex.onAccent
+        : theme.hex[accent];
+
+  const surface: Record<ButtonVariant, React.ComponentProps<typeof GlassSurface> | null> = {
+    filled: destructive
+      ? { mesh: 'danger', stroke: 'danger', tint: 'rgba(255,87,122,0.16)', liquid: false }
+      : { mesh: 'cta', stroke: 'cta', tint: theme.tints.cta, liquid: false },
+    tinted: { stroke: 'subtle', tint: theme.tints.control, interactive: true },
+    gray: { stroke: 'subtle', tint: theme.tints.control, interactive: true },
+    plain: null,
+    glass: { stroke: 'glass', tint: theme.tints.glass, interactive: true },
+    glassProminent: { mesh: 'fab', tint: theme.hex.accent, liquid: false },
   };
 
   const body = (
@@ -85,7 +103,7 @@ export const Button = ({
         {icon ? <Symbol name={icon} size={17} color={label} weight="semibold" /> : null}
         <Text
           variant={size === 'large' ? 'headline' : 'subheadline'}
-          weight="semibold"
+          weight="medium"
           style={{ color: label }}
           numberOfLines={1}
         >
@@ -105,33 +123,27 @@ export const Button = ({
     opacity: inactive ? 0.35 : 1,
   };
 
-  const glassy = variant === 'glass' || variant === 'glassProminent';
+  const spec = surface[variant];
 
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled: Boolean(inactive), busy: loading }}
       disabled={inactive}
-      // Нажатие гасит кнопку, а не сжимает её: система именно так и делает,
-      // и пружина здесь выглядела бы как элемент из другого приложения.
-      style={({ pressed }) => [frame, { opacity: pressed && !inactive ? 0.6 : frame.opacity }, style]}
+      style={({ pressed }) => [frame, { opacity: pressed && !inactive ? 0.82 : frame.opacity }, style]}
       {...rest}
     >
-      {glassy ? (
-        <Glass
-          radius={borderRadius}
-          variant="regular"
-          interactive
-          tintColor={variant === 'glassProminent' ? theme.hex[accent] : undefined}
-          style={styles.fill}
-        >
-          {body}
-        </Glass>
-      ) : (
-        <View style={[styles.fill, { borderRadius, borderCurve: 'continuous' }, fill[variant]]}>
-          {body}
-        </View>
-      )}
+      <View style={[styles.fill, { borderRadius, borderCurve: 'continuous' }]}>
+        {spec ? (
+          <GlassSurface
+            {...spec}
+            radius={borderRadius}
+            pointerEventsNone
+            style={StyleSheet.absoluteFill}
+          />
+        ) : null}
+        {body}
+      </View>
     </Pressable>
   );
 };

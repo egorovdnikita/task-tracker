@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, TextInput, View, type StyleProp, type ViewStyle 
 
 import { useTheme } from '../theme';
 import { Glass } from './Glass';
+import { GlassSurface } from './GlassSurface';
 import { Symbol } from './Symbol';
 
 export type SearchFieldProps = {
@@ -103,13 +104,18 @@ export const SearchField = ({
         {
           borderRadius: theme.radius.md,
           borderCurve: 'continuous',
-          // Тот же белый, что у карточки заметки: поле — такой же остров на
-          // подложке, как и всё остальное в списке.
-          backgroundColor: theme.colors.secondarySystemGroupedBackground,
         },
         style,
       ]}
     >
+      {/* Поле на стекле Opal: главный стеклянный элемент экрана поиска. */}
+      <GlassSurface
+        stroke="glass"
+        tint={theme.tints.control}
+        radius={theme.radius.md}
+        pointerEventsNone
+        style={StyleSheet.absoluteFill}
+      />
       {body}
     </View>
   );

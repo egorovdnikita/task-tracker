@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import { Appearance, useColorScheme, type ColorValue } from 'react-native';
+import React, { createContext, useContext, useEffect } from 'react';
+import { Appearance, type ColorValue } from 'react-native';
 
 import {
   accentColor,
@@ -11,6 +11,7 @@ import {
   type ResolvedPalette,
 } from './colors';
 import { controlHeight, metrics, radius, spacing } from './metrics';
+import { backdrops, meshes, strokes, tints } from './opal';
 import { headerTextStyle, textStyle, type TextStyleName, type WeightName } from './typography';
 
 /** Что выбрано в настройках приложения. `system` — следовать за системой. */
@@ -30,6 +31,10 @@ export type Theme = {
   radius: typeof radius;
   metrics: typeof metrics;
   controlHeight: typeof controlHeight;
+  meshes: typeof meshes;
+  strokes: typeof strokes;
+  tints: typeof tints;
+  backdrops: typeof backdrops;
 };
 
 const makeTheme = (scheme: ColorScheme): Theme => ({
@@ -43,45 +48,44 @@ const makeTheme = (scheme: ColorScheme): Theme => ({
   radius,
   metrics,
   controlHeight,
+  meshes,
+  strokes,
+  tints,
+  backdrops,
 });
 
-const ThemeContext = createContext<Theme>(makeTheme('light'));
+const ThemeContext = createContext<Theme>(makeTheme('dark'));
 
 export type ThemeProviderProps = {
   children: React.ReactNode;
   /**
-   * Схема приложения. `system` отдаёт решение системе.
-   *
-   * Переопределение уезжает в `Appearance.setColorScheme`, а не остаётся
-   * внутри React: на iOS этот вызов ставит `overrideUserInterfaceStyle` на
-   * корневом окне, и вместе с нашими компонентами схему меняют системные —
-   * панель вкладок, клавиатура, алерты, стекло. Держи мы схему только в
-   * контексте, эти элементы остались бы в системной, и половина экрана
-   * оказалась бы из другой темы.
+   * Принимается ради совместимости с сохранёнными настройками и витриной, но
+   * не влияет ни на что: система Opal dark-only.
    */
   preference?: AppearancePreference;
 };
 
-export const ThemeProvider = ({ children, preference = 'system' }: ThemeProviderProps) => {
+const DARK = makeTheme('dark');
+
+/**
+ * Система dark-only, поэтому провайдер отдаёт одну константу.
+ *
+ * Схема всё равно прибивается к тёмной в `Appearance.setColorScheme`: на iOS
+ * вызов ставит `overrideUserInterfaceStyle` на окно, и вместе с нашими
+ * экранами тёмными становятся системные — панель вкладок, клавиатура,
+ * алерты, меню и стекло. Без этого при светлой теме телефона панель вкладок
+ * и клавиатура приезжали бы светлыми поверх чёрного экрана.
+ *
+ * Хук `useTheme()` и поле `scheme` сохранены: компоненты не должны зависеть
+ * от того, появится ли когда-нибудь вторая схема.
+ */
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   useEffect(() => {
-    // Метода нет в react-native-web: там окна приложения не существует, и
-    // переопределять нечего. Обе схемы витрина всё равно показывает — она
-    // берёт их из `preference` ниже, а не из системы.
-    Appearance.setColorScheme?.(preference === 'system' ? null : preference);
-  }, [preference]);
+    // В react-native-web метода нет: окна приложения там не существует.
+    Appearance.setColorScheme?.('dark');
+  }, []);
 
-  const system = useColorScheme();
-
-  // Своя схема считается из предпочтения напрямую, а не вычитывается обратно
-  // из `useColorScheme`. Иначе она зависела бы от того, доехал ли вызов выше
-  // до платформы: на вебе `setColorScheme` не делает ничего, и переключатель
-  // в настройках переставал бы работать в витрине.
-  const scheme: ColorScheme =
-    preference === 'system' ? (system === 'dark' ? 'dark' : 'light') : preference;
-
-  const theme = useMemo(() => makeTheme(scheme), [scheme]);
-
-  return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
+  return <ThemeContext.Provider value={DARK}>{children}</ThemeContext.Provider>;
 };
 
 export const useTheme = (): Theme => useContext(ThemeContext);

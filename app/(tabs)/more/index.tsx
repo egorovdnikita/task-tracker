@@ -3,10 +3,10 @@ import { ScrollView, Share } from 'react-native';
 import Constants from 'expo-constants';
 import { Stack, router } from 'expo-router';
 
-import { ListRow, ListSection, Text } from '../../../src/components';
+import { ListRow, ListSection, Text, ScreenBackdrop } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import type { SortMode } from '../../../src/types';
-import { APPEARANCE_LABELS, SORT_LABELS } from '../../../src/features/labels';
+import { SORT_LABELS } from '../../../src/features/labels';
 import { noteText, noteTitle } from '../../../src/utils/blocks';
 import { showActionSheet } from '../../../src/utils/actionSheet';
 import { activeNotes, trashedNotes, useNotesStore } from '../../../src/store/useNotesStore';
@@ -49,9 +49,11 @@ export default function MoreScreen() {
 
   return (
     <>
+      <ScreenBackdrop name="settings" />
       <Stack.Screen options={{ title: 'Настройки' }} />
 
       <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
         {/*
@@ -63,13 +65,6 @@ export default function MoreScreen() {
           одного цвета подписывает строку и уступает ей первое место.
         */}
         <ListSection header="Вид">
-          <ListRow
-            title="Оформление"
-            icon="circle.lefthalf.filled"
-            value={APPEARANCE_LABELS[settings.appearance]}
-            accessory={{ type: 'disclosure' }}
-            onPress={() => router.push('/more/appearance')}
-          />
           <ListRow
             title="Сортировка"
             icon="arrow.up.arrow.down"

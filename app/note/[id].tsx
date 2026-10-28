@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
+import { useHeaderHeight } from '@react-navigation/elements';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import {
@@ -14,6 +15,7 @@ import {
   Symbol,
   Text,
   type MenuItem,
+  ScreenBackdrop,
 } from '../../src/components';
 import { useTheme, type PaletteName } from '../../src/theme';
 import { hasContent, makeChecklistBlock, makeTextBlock } from '../../src/utils/blocks';
@@ -53,6 +55,7 @@ const doneCount = (blocks: NoteBlock[]): number =>
 export default function NoteScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const theme = useTheme();
+  const headerHeight = useHeaderHeight();
 
   const notes = useNotesStore((s) => s.notes);
   const folders = useNotesStore((s) => s.folders);
@@ -160,6 +163,7 @@ export default function NoteScreen() {
 
   return (
     <>
+      <ScreenBackdrop name="editor" />
       <Stack.Screen
         options={{
           title: status === 'saving' ? 'Сохранение…' : status === 'saved' ? 'Сохранено' : '',
@@ -202,8 +206,12 @@ export default function NoteScreen() {
         }}
       />
 
+      {/*
+        Отступ от прозрачной шапки — здесь, а не системной поправкой у списка:
+        над списком может стоять плашка «в корзине», и под шапку уехала бы она.
+      */}
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={{ flex: 1, paddingTop: headerHeight }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         {note.deletedAt ? (
@@ -232,7 +240,6 @@ export default function NoteScreen() {
         ) : null}
 
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             padding: theme.spacing.lg,

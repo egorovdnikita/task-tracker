@@ -23,8 +23,8 @@ export default function NotesLayout() {
     <Stack
       screenOptions={{
         headerLargeTitle: false,
-        headerTransparent: false,
-        headerStyle: { backgroundColor: theme.hex.systemGroupedBackground },
+        // Прозрачная, как в корневом стеке: подсветка фона идёт из-под неё.
+        headerTransparent: true,
         headerShadowVisible: false,
         headerTintColor: theme.hex.accent,
         headerTitleStyle: theme.headerText('headline', 'semibold'),

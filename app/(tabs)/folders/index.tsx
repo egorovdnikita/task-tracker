@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack, router } from 'expo-router';
 
-import { HeaderCapsule, IconButton, ListRow, ListSection } from '../../../src/components';
+import { HeaderCapsule, IconButton, ListRow, ListSection, ScreenBackdrop } from '../../../src/components';
 import { accentNames, useTheme } from '../../../src/theme';
 import { STATIC_TAGS } from '../../../src/features/tags';
 import { splitEmoji } from '../../../src/utils/emoji';
@@ -118,6 +118,7 @@ export default function FoldersScreen() {
 
   return (
     <>
+      <ScreenBackdrop name="folders" />
       <Stack.Screen
         options={{
           title: 'Папки',
@@ -135,6 +136,7 @@ export default function FoldersScreen() {
       />
 
       <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
         <ListSection separatorInset={GLYPH_INSET}>

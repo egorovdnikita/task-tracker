@@ -14,6 +14,7 @@ import {
   Symbol,
   showMenu,
   type MenuAnchor,
+  ScreenBackdrop,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { BLOCK_LABELS } from '../../../src/types';
@@ -136,6 +137,7 @@ export default function NotesScreen() {
 
   return (
     <>
+      <ScreenBackdrop name="notes" />
       <Stack.Screen
         options={{
           title: 'Заметки',

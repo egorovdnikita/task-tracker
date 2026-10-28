@@ -58,9 +58,11 @@ export const MessagePill = ({ message, duration = 1800, onHide, style }: Message
           paddingHorizontal: theme.spacing.lg,
           paddingVertical: theme.spacing.sm,
           borderRadius: theme.radius.pill,
-          // Приподнятая поверхность, а не карточка: в тёмной схеме пилюля на
-          // фоне подложки должна отделяться сама, без обводки.
-          backgroundColor: theme.colors.tertiarySystemBackground,
+          // Плотная приподнятая поверхность с кантом: пилюля всплывает поверх
+          // списка, и прозрачная подложка смешала бы её текст с текстом под ней.
+          backgroundColor: theme.colors.elevated,
+          borderWidth: theme.metrics.hairline * 2,
+          borderColor: theme.colors.separator,
           opacity: enter,
           transform: [
             { translateY: enter.interpolate({ inputRange: [0, 1], outputRange: [-16, 0] }) },
@@ -149,7 +151,7 @@ export const UndoButton = ({
             borderRadius: theme.radius.pill,
             borderWidth: theme.metrics.hairline * 2,
             borderColor: theme.colors.separator,
-            backgroundColor: theme.colors.tertiarySystemBackground,
+            backgroundColor: theme.colors.elevated,
             opacity: pressed ? 0.6 : 1,
           },
         ]}

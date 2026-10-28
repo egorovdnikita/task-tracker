@@ -1,17 +1,14 @@
 import React from 'react';
-import { Platform, View, type ViewProps, type ViewStyle } from 'react-native';
-import { BlurView } from 'expo-blur';
-import { GlassView } from 'expo-glass-effect';
+import { Platform, StyleSheet, View, type ViewProps } from 'react-native';
 
 import {
   blurIntensity,
-  blurTint,
-  materialFallback,
   supportsLiquidGlass,
   useTheme,
   type GlassVariant,
   type MaterialName,
 } from '../theme';
+import { GlassSurface } from './GlassSurface';
 
 export type GlassProps = ViewProps & {
   /**
@@ -56,44 +53,25 @@ export const Glass = ({
   ...rest
 }: GlassProps) => {
   const theme = useTheme();
-  const shape: ViewStyle = {
-    borderRadius: radius,
-    borderCurve: 'continuous',
-    overflow: 'hidden',
-  };
 
-  if (Platform.OS === 'ios' && supportsLiquidGlass()) {
-    return (
-      <GlassView
-        {...rest}
-        glassEffectStyle={variant}
-        tintColor={tintColor}
-        isInteractive={interactive}
-        style={[shape, style]}
-      >
-        {children}
-      </GlassView>
-    );
-  }
-
-  if (Platform.OS === 'ios') {
-    return (
-      <BlurView
-        {...rest}
-        tint={blurTint(material, theme.scheme)}
-        intensity={blurIntensity[material]}
-        style={[shape, style]}
-      >
-        {children}
-      </BlurView>
-    );
-  }
-
+  /*
+    Стекло Opal: матовый блюр, тёмная прозрачная подложка и световой кант
+    градиентом сверху вниз. На iOS 26 вместо блюра и подложки — системное
+    жидкое стекло, прибитое к тёмной схеме; кант под ним не рисуется, у
+    системного стекла он свой.
+  */
   return (
-    <View
-      {...rest}
-      style={[shape, { backgroundColor: materialFallback[material][theme.scheme] }, style]}
-    >
+    <View {...rest} style={[{ borderRadius: radius, borderCurve: 'continuous' }, style]}>
+      <GlassSurface
+        stroke="glass"
+        tint={tintColor ?? theme.tints.glass}
+        blurIntensity={Platform.OS === 'ios' ? blurIntensity[material] : null}
+        glassStyle={variant}
+        interactive={interactive}
+        radius={radius ?? 0}
+        style={StyleSheet.absoluteFill}
+        pointerEventsNone
+      />
       {children}
     </View>
   );

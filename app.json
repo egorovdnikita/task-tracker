@@ -6,7 +6,7 @@
     "scheme": "tasktracker",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -44,6 +44,7 @@
           "recordAudioAndroid": false
         }
       ]
-    ]
+    ],
+    "backgroundColor": "#000000"
   }
 }

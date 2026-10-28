@@ -37,6 +37,19 @@ export {
 } from './metrics';
 
 export {
+  NOTE_GLOW_OPACITY,
+  backdrops,
+  meshes,
+  strokes,
+  tints,
+  type BackdropName,
+  type MeshBlob,
+  type MeshName,
+  type StrokeName,
+  type TintName,
+} from './opal';
+
+export {
   ThemeProvider,
   useColorSchemeName,
   useTheme,

@@ -13,6 +13,7 @@ import { Button, IconButton, Text, headerItems } from '../../src/components';
 import { Waveform } from '../../src/components/Waveform';
 import { useTheme } from '../../src/theme';
 import { persistMedia } from '../../src/features/media';
+import { confirmDestructive } from '../../src/utils/actionSheet';
 import { formatDuration, makeVoiceBlock } from '../../src/utils/blocks';
 import type { VoiceMarker } from '../../src/types';
 import { useNotesStore } from '../../src/store/useNotesStore';
@@ -43,6 +44,10 @@ export default function VoiceCaptureScreen() {
   const [markers, setMarkers] = useState<VoiceMarker[]>([]);
   const [levels, setLevels] = useState<number[]>([]);
   const started = useRef(false);
+  // Запись не стартует сама: человек, открывший экран по ошибке, не должен
+  // уже писаться. Микрофон готовится заранее, чтобы старт был мгновенным.
+  const [prepared, setPrepared] = useState(false);
+  const [begun, setBegun] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -62,15 +67,14 @@ export default function VoiceCaptureScreen() {
       await recorder.prepareToRecordAsync();
       if (cancelled) return;
 
-      recorder.record();
-      started.current = true;
+      setPrepared(true);
     })();
 
     return () => {
       cancelled = true;
       if (started.current) recorder.stop().catch(() => {});
     };
-    // Записываем ровно один раз за открытие экрана.
+    // Готовим микрофон ровно один раз за открытие экрана.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -120,10 +124,30 @@ export default function VoiceCaptureScreen() {
     router.replace({ pathname: '/note/[id]', params: { id: created.id } });
   };
 
-  const cancel = async () => {
+  const begin = () => {
+    recorder.record();
+    started.current = true;
+    setBegun(true);
+  };
+
+  const discard = async () => {
     if (started.current) await recorder.stop().catch(() => {});
     started.current = false;
     router.back();
+  };
+
+  /** Длинную запись одно касание крестика не стирает — сначала вопрос. */
+  const cancel = () => {
+    if (duration < 10_000) {
+      void discard();
+      return;
+    }
+    confirmDestructive(
+      'Удалить запись?',
+      `Записано ${formatDuration(duration)}. Вернуть её будет нельзя.`,
+      'Удалить',
+      () => void discard(),
+    );
   };
 
   if (denied) {
@@ -161,42 +185,56 @@ export default function VoiceCaptureScreen() {
             {formatDuration(duration)}
           </Text>
           <Text variant="footnote" color="secondaryLabel">
-            {state.isRecording ? 'Идёт запись' : 'Пауза'}
+            {!begun ? 'Готово к записи' : state.isRecording ? 'Идёт запись' : 'Пауза'}
           </Text>
         </View>
 
         <Waveform levels={levels} markers={markers.map((m) => m.atMs)} durationMs={duration} />
 
-        <View style={[styles.controls, { gap: theme.spacing.xxl }]}>
+        {!begun ? (
           <Button
-            title={markerLabel}
-            variant="gray"
-            icon="mappin"
-            // Метка ставится по текущему времени: к ней потом можно вернуться
-            // при прослушивании.
-            onPress={() => setMarkers((m) => [...m, { id: `${duration}`, atMs: duration }])}
-            disabled={!state.isRecording}
+            title="Начать запись"
+            variant="filled"
+            size="large"
+            icon="mic.fill"
+            fullWidth
+            disabled={!prepared}
+            onPress={begin}
           />
+        ) : (
+          <>
+            <View style={[styles.controls, { gap: theme.spacing.xxl }]}>
+              <Button
+                title={markerLabel}
+                variant="gray"
+                icon="mappin"
+                // Метка ставится по текущему времени: к ней потом можно вернуться
+                // при прослушивании.
+                onPress={() => setMarkers((m) => [...m, { id: `${duration}`, atMs: duration }])}
+                disabled={!state.isRecording}
+              />
 
-          <Button
-            title={state.isRecording ? 'Пауза' : 'Продолжить'}
-            variant="tinted"
-            icon={state.isRecording ? 'pause.fill' : 'play.fill'}
-            onPress={() => {
-              if (state.isRecording) recorder.pause();
-              else recorder.record();
-            }}
-          />
-        </View>
+              <Button
+                title={state.isRecording ? 'Пауза' : 'Продолжить'}
+                variant="tinted"
+                icon={state.isRecording ? 'pause.fill' : 'play.fill'}
+                onPress={() => {
+                  if (state.isRecording) recorder.pause();
+                  else recorder.record();
+                }}
+              />
+            </View>
 
-        <Button
-          title="Готово"
-          variant="filled"
-          size="large"
-          fullWidth
-          disabled={duration < 500}
-          onPress={finish}
-        />
+            <Button
+              title="Готово"
+              variant="filled"
+              size="large"
+              fullWidth
+              disabled={duration < 500}
+              onPress={finish}
+            />
+          </>
+        )}
       </View>
     </>
   );

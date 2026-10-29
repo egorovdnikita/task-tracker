@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 
-import { EmptyState, ListRow, ListSection, Text, ScreenBackdrop } from '../../../src/components';
+import { EmptyState, ListRow, ListSection, ScreenBackdrop } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { noteTitle } from '../../../src/utils/blocks';
 import { confirmDestructive, showActionSheet } from '../../../src/utils/actionSheet';
@@ -109,14 +109,6 @@ export default function TrashScreen() {
               }
             />
           </ListSection>
-
-          <Text
-            variant="caption1"
-            color="tertiaryLabel"
-            style={{ textAlign: 'center', paddingHorizontal: theme.spacing.xxl }}
-          >
-            Заметки хранятся только на этом устройстве и никуда не отправляются.
-          </Text>
         </ScrollView>
       )}
     </>

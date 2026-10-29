@@ -1,15 +1,14 @@
 import React, { useMemo } from 'react';
-import { ScrollView, Share } from 'react-native';
+import { ScrollView, Share, View } from 'react-native';
 import Constants from 'expo-constants';
-import { Stack, router } from 'expo-router';
+import { Stack } from 'expo-router';
 
-import { ListRow, ListSection, Text, ScreenBackdrop } from '../../../src/components';
+import { ListRow, ListSection, MenuButton, Text, ScreenBackdrop } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import type { SortMode } from '../../../src/types';
 import { SORT_LABELS } from '../../../src/features/labels';
 import { noteText, noteTitle } from '../../../src/utils/blocks';
-import { showActionSheet } from '../../../src/utils/actionSheet';
-import { activeNotes, trashedNotes, useNotesStore } from '../../../src/store/useNotesStore';
+import { activeNotes, useNotesStore } from '../../../src/store/useNotesStore';
 
 /**
  * Плита 08.3 — настройки.
@@ -29,7 +28,6 @@ export default function MoreScreen() {
   const updateSettings = useNotesStore((s) => s.updateSettings);
 
   const alive = useMemo(() => activeNotes(notes), [notes]);
-  const trashed = useMemo(() => trashedNotes(notes), [notes]);
 
   /**
    * Экспорт — системный шит «Поделиться» с обычным текстом.
@@ -65,21 +63,29 @@ export default function MoreScreen() {
           одного цвета подписывает строку и уступает ей первое место.
         */}
         <ListSection header="Вид">
-          <ListRow
+          {/* Выбор из списка — то же меню с галочкой, что в шапке «Заметок».
+              Лист снизу без отметки текущего значения здесь не к месту:
+              `ActionSheetIOS` оставлен вопросам. */}
+          <MenuButton
+            accessibilityLabel={`Сортировка: ${SORT_LABELS[settings.sort]}`}
             title="Сортировка"
-            icon="arrow.up.arrow.down"
-            value={SORT_LABELS[settings.sort]}
-            accessory={{ type: 'disclosure' }}
-            onPress={() =>
-              showActionSheet(
-                (Object.keys(SORT_LABELS) as SortMode[]).map((mode) => ({
-                  title: SORT_LABELS[mode],
-                  onPress: () => updateSettings({ sort: mode }),
-                })),
-                { title: 'Сортировка' },
-              )
+            items={() =>
+              (Object.keys(SORT_LABELS) as SortMode[]).map((mode) => ({
+                title: SORT_LABELS[mode],
+                checked: settings.sort === mode,
+                onPress: () => updateSettings({ sort: mode }),
+              }))
             }
-          />
+            style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
+          >
+            <View pointerEvents="none">
+              <ListRow
+                title="Сортировка"
+                icon="arrow.up.arrow.down"
+                value={SORT_LABELS[settings.sort]}
+              />
+            </View>
+          </MenuButton>
           <ListRow
             title="Отмеченные вниз"
             icon="checklist"
@@ -98,13 +104,6 @@ export default function MoreScreen() {
             value={String(alive.length)}
             disabled={alive.length === 0}
             onPress={exportNotes}
-          />
-          <ListRow
-            title="Корзина"
-            icon="trash"
-            value={trashed.length > 0 ? String(trashed.length) : undefined}
-            accessory={{ type: 'disclosure' }}
-            onPress={() => router.push('/folders/trash')}
           />
         </ListSection>
 

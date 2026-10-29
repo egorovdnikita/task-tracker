@@ -25,6 +25,7 @@ import { SelectionBar, useSelection } from '../../../src/features/selection';
 import { offerUndo } from '../../../src/features/notify';
 import { tagLabel } from '../../../src/features/tags';
 import { chooseNoteType, type CreateScope } from '../../../src/features/create';
+import { SortButton } from '../../../src/features/sort';
 import { pluralNotes } from '../../../src/utils/date';
 
 /**
@@ -156,6 +157,7 @@ export default function FolderScreen() {
                     accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
                     onPress={() => setLayout(id ?? 'root', layout === 'list' ? 'grid' : 'list')}
                   />
+                  <SortButton />
                 </HeaderCapsule>
               )),
         }}
@@ -204,8 +206,10 @@ export default function FolderScreen() {
               description={
                 scope.tag
                   ? 'Тег ставится чипом в самой заметке — и в шите создания, и в открытой.'
-                  : 'Перенесите сюда заметки или создайте новую кнопкой внизу справа.'
+                  : 'Перенесите сюда заметки или создайте новую.'
               }
+              actionTitle="Новая заметка"
+              onAction={create}
             />
           )
         }

@@ -197,11 +197,6 @@ export default function VoiceCaptureScreen() {
           disabled={duration < 500}
           onPress={finish}
         />
-
-        <Text variant="caption1" color="tertiaryLabel" style={styles.middle}>
-          Запись хранится на устройстве и никуда не отправляется. Расшифровки нет: она живёт во
-          фреймворке Speech, которого Expo Go не даёт.
-        </Text>
       </View>
     </>
   );

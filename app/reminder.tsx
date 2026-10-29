@@ -127,10 +127,7 @@ export default function ReminderScreen() {
           Пикер системный: колёса, календарь, локаль, 12/24 часа и Dynamic Type
           в нём уже есть, и повторять это своими барабанами незачем.
         */}
-        <ListSection
-          header="Точное время"
-          footer="Напоминание живёт на устройстве и никуда не отправляется."
-        >
+        <ListSection header="Точное время">
           <View
             style={{
               paddingHorizontal: theme.spacing.lg,

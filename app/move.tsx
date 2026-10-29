@@ -5,7 +5,7 @@ import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { ListRow, ListSection, ScreenBackdrop } from '../src/components';
 import { accentNames, useTheme } from '../src/theme';
 import { splitEmoji } from '../src/utils/emoji';
-import { promptForText } from '../src/utils/actionSheet';
+import { promptForFolderName } from '../src/features/folders';
 import { childFolders, rootFolders, useNotesStore } from '../src/store/useNotesStore';
 
 /**
@@ -86,13 +86,18 @@ export default function MoveScreen() {
             title="Новая папка…"
             icon="folder.badge.plus"
             onPress={() =>
-              promptForText('Новая папка', 'Как её назвать?', (name) => {
-                const folder = createFolder(
-                  name,
-                  accentNames[folders.length % accentNames.length],
-                  null,
-                );
-                move(folder.id);
+              promptForFolderName({
+                title: 'Новая папка',
+                message: 'Как её назвать?',
+                parentId: null,
+                onSubmit: (name) => {
+                  const folder = createFolder(
+                    name,
+                    accentNames[folders.length % accentNames.length],
+                    null,
+                  );
+                  move(folder.id);
+                },
               })
             }
           />

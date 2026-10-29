@@ -7,11 +7,9 @@ import {
   EmptyState,
   HeaderCapsule,
   IconButton,
-  MenuButton,
   NoteList,
   SearchField,
   SegmentedControl,
-  Symbol,
   showMenu,
   type MenuAnchor,
   ScreenBackdrop,
@@ -19,7 +17,6 @@ import {
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { pluralNotes } from '../../../src/utils/date';
-import { SORT_LABELS } from '../../../src/features/labels';
 import { STATIC_TAGS } from '../../../src/features/tags';
 import { offerUndo } from '../../../src/features/notify';
 import {
@@ -31,6 +28,7 @@ import {
 } from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 import { chooseNoteType } from '../../../src/features/create';
+import { SortButton } from '../../../src/features/sort';
 
 /** Фильтр по тегу. `all` — без фильтра, остальное — идентификатор своего тега. */
 const TAG_SEGMENTS = [
@@ -52,7 +50,6 @@ export default function NotesScreen() {
   const notes = useNotesStore((s) => s.notes);
   const settings = useNotesStore((s) => s.settings);
   const setLayout = useNotesStore((s) => s.setLayout);
-  const updateSettings = useNotesStore((s) => s.updateSettings);
   const togglePinned = useNotesStore((s) => s.togglePinned);
   const trashNotes = useNotesStore((s) => s.trashNotes);
   const restoreNotes = useNotesStore((s) => s.restoreNotes);
@@ -151,26 +148,7 @@ export default function NotesScreen() {
                     onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
                   />
 
-                  <MenuButton
-                    accessibilityLabel={`Сортировка: ${SORT_LABELS[settings.sort]}`}
-                    title="Сортировка"
-                    items={() =>
-                      (Object.keys(SORT_LABELS) as (keyof typeof SORT_LABELS)[]).map((mode) => ({
-                        title: SORT_LABELS[mode],
-                        checked: settings.sort === mode,
-                        onPress: () => updateSettings({ sort: mode }),
-                      }))
-                    }
-                    style={({ pressed }) => ({
-                      width: theme.controlHeight.buttonCompact,
-                      height: theme.controlHeight.buttonCompact,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      opacity: pressed ? 0.4 : 1,
-                    })}
-                  >
-                    <Symbol name="arrow.up.arrow.down" size={20} color={theme.colors.label} />
-                  </MenuButton>
+                  <SortButton />
                 </HeaderCapsule>
               )),
         }}
@@ -255,7 +233,11 @@ export default function NotesScreen() {
             <EmptyState
               icon="note.text"
               title="Здесь пока пусто"
-              description="Первая заметка обычно самая короткая — так и надо. Кнопка создания внизу справа."
+              description="Первая заметка обычно самая короткая — так и надо."
+              // Действие вместо слов «кнопка внизу справа»: инструкция о
+              // положении кнопки врёт при любой другой раскладке.
+              actionTitle="Новая заметка"
+              onAction={() => router.push('/create')}
             />
           )
         }

@@ -6,7 +6,8 @@ import { HeaderCapsule, IconButton, ListRow, ListSection, ScreenBackdrop, header
 import { accentNames, useTheme } from '../../../src/theme';
 import { STATIC_TAGS } from '../../../src/features/tags';
 import { splitEmoji } from '../../../src/utils/emoji';
-import { confirmDestructive, promptForText, showActionSheet } from '../../../src/utils/actionSheet';
+import { showActionSheet } from '../../../src/utils/actionSheet';
+import { promptForFolderName } from '../../../src/features/folders';
 import {
   activeNotes,
   childFolders,
@@ -54,26 +55,13 @@ export default function FoldersScreen() {
   }, [notes]);
 
   const addFolder = (parentId: string | null = null) =>
-    promptForText(
-      parentId ? 'Вложенная папка' : 'Новая папка',
-      'Как её назвать? Имя может начинаться с эмодзи — оно встанет вместо иконки.',
-      (name) => {
-        // Одинаковые имена на одном уровне запрещены: две папки «Работа»
-        // рядом невозможно различить, а переименование потом не помогает —
-        // человек уже разложил заметки не туда.
-        const siblings = folders.filter((f) => f.parentId === parentId);
-        if (siblings.some((f) => f.name.toLowerCase() === name.toLowerCase())) {
-          confirmDestructive(
-            'Имя занято',
-            `Папка «${name}» на этом уровне уже есть.`,
-            'Понятно',
-            () => {},
-          );
-          return;
-        }
-        createFolder(name, accentNames[folders.length % accentNames.length], parentId);
-      },
-    );
+    promptForFolderName({
+      title: parentId ? 'Вложенная папка' : 'Новая папка',
+      message: 'Как её назвать? Имя может начинаться с эмодзи — оно встанет вместо иконки.',
+      parentId,
+      onSubmit: (name) =>
+        createFolder(name, accentNames[folders.length % accentNames.length], parentId),
+    });
 
   /** Пункты меню папки. Меню растёт из самой строки — его ставит `ListRow`. */
   const folderMenu = (id: string, name: string, nested: boolean) => () => [
@@ -81,7 +69,14 @@ export default function FoldersScreen() {
       title: 'Переименовать',
       icon: 'pencil' as const,
       onPress: () =>
-        promptForText('Переименовать', 'Новое имя папки', (next) => renameFolder(id, next), name),
+        promptForFolderName({
+          title: 'Переименовать',
+          message: 'Новое имя папки',
+          parentId: folders.find((f) => f.id === id)?.parentId ?? null,
+          initial: name,
+          renaming: id,
+          onSubmit: (next) => renameFolder(id, next),
+        }),
     },
     ...(nested
       ? []
@@ -140,13 +135,9 @@ export default function FoldersScreen() {
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
         <ListSection separatorInset={GLYPH_INSET}>
-          <ListRow
-            title="Все заметки"
-            icon="tray.full"
-            value={String(activeNotes(notes).length)}
-            accessory={{ type: 'disclosure' }}
-            onPress={() => router.navigate('/notes')}
-          />
+          {/* «Все заметки» здесь больше нет: строка перекидывала на соседнюю
+              вкладку и уводила из стека «Папок», а все заметки — это и есть
+              вкладка «Заметки». */}
           <ListRow
             title="Без папки"
             icon="tray"

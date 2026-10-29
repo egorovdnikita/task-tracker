@@ -24,6 +24,7 @@ import {
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 import { offerUndo } from '../../../src/features/notify';
 import { tagLabel } from '../../../src/features/tags';
+import { chooseNoteType, type CreateScope } from '../../../src/features/create';
 import { pluralNotes } from '../../../src/utils/date';
 
 /**
@@ -112,11 +113,13 @@ export default function FolderScreen() {
 
   // Шит создания открывается сразу с этой папкой: человек уже сказал, где он
   // находится, и переспрашивать после создания было бы лишним шагом.
-  const create = () =>
-    router.push({
-      pathname: '/create',
-      params: scope.tag ? { tag: scope.tag } : scope.folderId ? { folder: scope.folderId } : {},
-    });
+  const createScope: CreateScope = scope.tag
+    ? { tag: scope.tag }
+    : scope.folderId
+      ? { folder: scope.folderId }
+      : {};
+
+  const create = () => router.push({ pathname: '/create', params: createScope });
 
   return (
     <>
@@ -208,7 +211,11 @@ export default function FolderScreen() {
         }
       />
 
-      <BottomBar hidden={selection.active} onCreate={create} />
+      <BottomBar
+        hidden={selection.active}
+        onCreate={create}
+        onLongPressCreate={(anchor) => chooseNoteType(anchor, createScope)}
+      />
 
       <SelectionBar
         selection={selection}

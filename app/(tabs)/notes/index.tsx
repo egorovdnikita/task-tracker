@@ -18,7 +18,6 @@ import {
   headerItems,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
-import { BLOCK_LABELS } from '../../../src/types';
 import { pluralNotes } from '../../../src/utils/date';
 import { SORT_LABELS } from '../../../src/features/labels';
 import { STATIC_TAGS } from '../../../src/features/tags';
@@ -31,6 +30,7 @@ import {
   useNotesStore,
 } from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
+import { chooseNoteType } from '../../../src/features/create';
 
 /** Фильтр по тегу. `all` — без фильтра, остальное — идентификатор своего тега. */
 const TAG_SEGMENTS = [
@@ -70,39 +70,6 @@ export default function NotesScreen() {
     const byTag = tag === 'all' ? base : base.filter((n) => n.tags.includes(tag));
     return sortNotes(byTag, settings.sort);
   }, [notes, query, searching, tag, settings.sort]);
-
-  /**
-   * Плита 02.5: короткий тап открывает шит создания, долгий — выбор типа.
-   *
-   * Порядок не случайный: текст и список закреплены сверху как самые частые,
-   * дальше идут те, что требуют разрешений и отдельного экрана.
-   */
-  const chooseType = (anchor: MenuAnchor) =>
-    showMenu(
-      [
-        { title: BLOCK_LABELS.text, icon: 'text.alignleft', onPress: () => router.push('/create') },
-        {
-          title: BLOCK_LABELS.checklist,
-          icon: 'checklist',
-          onPress: () => router.push({ pathname: '/create', params: { kind: 'checklist' } }),
-        },
-        // Заметка создаётся не здесь, а на самом экране захвата: если человек
-        // передумает и закроет камеру, пустая заметка не должна остаться.
-        { title: BLOCK_LABELS.voice, icon: 'mic', onPress: () => router.push('/capture/voice') },
-        {
-          title: BLOCK_LABELS.scan,
-          icon: 'doc.text.viewfinder',
-          onPress: () => router.push('/capture/scan'),
-        },
-        {
-          title: BLOCK_LABELS.sketch,
-          icon: 'scribble',
-          onPress: () => router.push('/capture/sketch'),
-        },
-      ],
-      anchor,
-      'Новая заметка',
-    );
 
   const trashWithUndo = (ids: string[]) => {
     trashNotes(ids);
@@ -297,7 +264,7 @@ export default function NotesScreen() {
       <BottomBar
         hidden={selection.active}
         onCreate={() => router.push('/create')}
-        onLongPressCreate={chooseType}
+        onLongPressCreate={(anchor) => chooseNoteType(anchor)}
       />
 
       <SelectionBar

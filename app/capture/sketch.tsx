@@ -27,7 +27,17 @@ const PEN_ACCENTS = ['blue', 'red', 'orange', 'green', 'purple'] as const;
  * поэтому не отсекается — об этом честнее сказать, чем сделать вид.
  */
 export default function SketchCaptureScreen() {
-  const { id, block: blockId } = useLocalSearchParams<{ id?: string; block?: string }>();
+  const {
+    id,
+    block: blockId,
+    folder,
+    tag,
+  } = useLocalSearchParams<{
+    id?: string;
+    block?: string;
+    folder?: string;
+    tag?: string;
+  }>();
   const theme = useTheme();
 
   const notes = useNotesStore((s) => s.notes);
@@ -44,7 +54,10 @@ export default function SketchCaptureScreen() {
   const [current, setCurrent] = useState<string>('');
   const [width, setWidth] = useState(4);
   const [accent, setAccent] = useState<(typeof PEN_ACCENTS)[number]>('blue');
-  const [canvas, setCanvas] = useState({ width: existing?.width ?? 0, height: existing?.height ?? 0 });
+  const [canvas, setCanvas] = useState({
+    width: existing?.width ?? 0,
+    height: existing?.height ?? 0,
+  });
 
   // Перо держим в ref, а не в состоянии: PanResponder создаётся один раз, и
   // замыкание на состоянии заморозило бы в нём цвет и толщину первого штриха.
@@ -113,7 +126,12 @@ export default function SketchCaptureScreen() {
       return;
     }
 
-    const created = createNote({ blocks: [block] });
+    const created = createNote({
+      blocks: [block],
+      // Начато из папки или тега — заметка ложится туда же.
+      folderId: folder ?? null,
+      tags: tag ? [tag] : [],
+    });
     router.replace({ pathname: '/note/[id]', params: { id: created.id } });
   };
 
@@ -148,7 +166,10 @@ export default function SketchCaptureScreen() {
         <View
           onLayout={measure}
           {...responder.panHandlers}
-          style={[styles.canvas, { backgroundColor: theme.colors.secondarySystemGroupedBackground }]}
+          style={[
+            styles.canvas,
+            { backgroundColor: theme.colors.secondarySystemGroupedBackground },
+          ]}
         >
           <Svg style={StyleSheet.absoluteFill}>
             {strokes.map((stroke) => (

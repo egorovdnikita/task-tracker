@@ -25,7 +25,11 @@ import { useNotesStore } from '../../src/store/useNotesStore';
  * подтверждение, что запись идёт. Таймер говорит сколько, волна — что вообще.
  */
 export default function VoiceCaptureScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, folder, tag } = useLocalSearchParams<{
+    id?: string;
+    folder?: string;
+    tag?: string;
+  }>();
   const theme = useTheme();
 
   const notes = useNotesStore((s) => s.notes);
@@ -107,7 +111,12 @@ export default function VoiceCaptureScreen() {
     }
 
     // Запись из шторки создания: заметки ещё нет, и она заводится вокруг записи.
-    const created = createNote({ blocks: [block] });
+    const created = createNote({
+      blocks: [block],
+      // Начато из папки или тега — заметка ложится туда же.
+      folderId: folder ?? null,
+      tags: tag ? [tag] : [],
+    });
     router.replace({ pathname: '/note/[id]', params: { id: created.id } });
   };
 
@@ -126,7 +135,8 @@ export default function VoiceCaptureScreen() {
             Нет доступа к микрофону
           </Text>
           <Text variant="subheadline" color="secondaryLabel" style={styles.middle}>
-            Разрешите доступ в «Настройках» → «Конфиденциальность» → «Микрофон», и запись заработает.
+            Разрешите доступ в «Настройках» → «Конфиденциальность» → «Микрофон», и запись
+            заработает.
           </Text>
           <Button title="Закрыть" variant="tinted" onPress={() => router.back()} />
         </View>

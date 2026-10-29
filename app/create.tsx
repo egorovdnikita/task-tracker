@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -19,14 +20,21 @@ import { useKeyboardVisible } from '../src/utils/useKeyboardVisible';
 import { makeChecklistBlock, makeChecklistItem, makeTextBlock } from '../src/utils/blocks';
 import { formatDateTime } from '../src/utils/date';
 import { reminderPresets, scheduleReminder } from '../src/features/reminders';
-import { STATIC_TAGS } from '../src/features/tags';
+import { STATIC_TAGS, staticTag } from '../src/features/tags';
+import { showActionSheet } from '../src/utils/actionSheet';
 import { notify } from '../src/features/notify';
 import { rootFolders, useNotesStore } from '../src/store/useNotesStore';
 
 /** Теги, набранные прямо в строке: `#работа` уезжает в теги, а не в заголовок. */
 const parseTags = (text: string): { title: string; tags: string[] } => {
   const tags = [...text.matchAll(/#([^\s#]+)/g)].map((match) => match[1]);
-  return { title: text.replace(/#[^\s#]+/g, '').replace(/\s+/g, ' ').trim(), tags };
+  return {
+    title: text
+      .replace(/#[^\s#]+/g, '')
+      .replace(/\s+/g, ' ')
+      .trim(),
+    tags,
+  };
 };
 
 /**
@@ -70,6 +78,7 @@ export default function CreateScreen() {
   // человек пришёл.
   const [tags, setTags] = useState<string[]>(tag ? [tag] : []);
   const [folderId, setFolderId] = useState<string | null>(folder ?? null);
+  const details = useRef<React.ComponentRef<typeof TextInput>>(null);
 
   const roots = useMemo(() => rootFolders(folders), [folders]);
   const destination = folderId ? folders.find((f) => f.id === folderId)?.name : null;
@@ -77,13 +86,21 @@ export default function CreateScreen() {
   const parsed = parseTags(text);
   const ready = parsed.title.length > 0 || description.trim().length > 0;
 
-  const submit = async () => {
-    if (!ready) return;
-
-    const body = description.trim();
+  /** Заметка из того, что набрано в панели. */
+  const save = () => {
+    // В режиме списка каждая строка описания — свой пункт: раньше всё
+    // описание целиком становилось одним пунктом.
+    const lines = description
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
     const blocks = checklist
-      ? [makeChecklistBlock(body ? [makeChecklistItem(body)] : undefined)]
-      : [makeTextBlock(body)];
+      ? [
+          makeChecklistBlock(
+            lines.length > 0 ? lines.map((line) => makeChecklistItem(line)) : undefined,
+          ),
+        ]
+      : [makeTextBlock(description.trim())];
 
     const note = createNote({
       title: parsed.title,
@@ -93,10 +110,58 @@ export default function CreateScreen() {
       remindAt,
     });
 
-    if (remindAt) await scheduleReminder(note, remindAt);
-
+    if (remindAt) void scheduleReminder(note, remindAt);
     notify('Заметка добавлена');
+    return note;
+  };
+
+  const submit = () => {
+    if (!ready) return;
+    save();
     router.back();
+  };
+
+  /**
+   * Захват из панели — голос, скан, рисунок.
+   *
+   * Набранное не выбрасывается: если в панели уже есть текст, заметка
+   * создаётся с ним, и захват дописывает в неё. Раньше `replace` на экран
+   * записи молча терял всё, что было набрано.
+   */
+  const capture = (pathname: '/capture/voice' | '/capture/scan' | '/capture/sketch') => {
+    if (ready) {
+      router.replace({ pathname, params: { id: save().id } });
+      return;
+    }
+    router.replace({
+      pathname,
+      params: { ...(folderId ? { folder: folderId } : {}), ...(tags[0] ? { tag: tags[0] } : {}) },
+    });
+  };
+
+  /**
+   * Касание по затемнению.
+   *
+   * Пустую панель оно закрывает. Набранный текст промахом мимо поля не
+   * теряется: первое касание убирает клавиатуру, а закрыть панель с текстом
+   * можно только ответив на вопрос.
+   */
+  const dismiss = () => {
+    if (!ready) {
+      router.back();
+      return;
+    }
+    if (keyboard) {
+      Keyboard.dismiss();
+      return;
+    }
+    showActionSheet(
+      [
+        { title: 'Создать заметку', onPress: submit },
+        { title: 'Удалить набранное', destructive: true, onPress: () => router.back() },
+      ],
+      { title: 'Набранный текст не сохранён' },
+    );
   };
 
   const toggleTag = (id: string) =>
@@ -121,8 +186,8 @@ export default function CreateScreen() {
         */}
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Закрыть"
-          onPress={() => router.back()}
+          accessibilityLabel={ready ? 'Убрать клавиатуру' : 'Закрыть'}
+          onPress={dismiss}
           style={StyleSheet.absoluteFill}
         >
           <BlurView intensity={24} tint="dark" style={StyleSheet.absoluteFill} />
@@ -167,22 +232,23 @@ export default function CreateScreen() {
               autoFocus
               value={text}
               onChangeText={setText}
-              onSubmitEditing={submit}
+              // «Далее» ведёт в описание, а не отправляет: отправка — круглая
+              // кнопка, и подпись клавиши не должна обещать другое действие.
+              onSubmitEditing={() => details.current?.focus()}
+              submitBehavior="submit"
               placeholder="Например: Созвон по релизу #работа"
               placeholderTextColor={theme.colors.placeholderText}
               returnKeyType="next"
-              style={[
-                theme.text('title3', 'semibold'),
-                { color: theme.colors.label, padding: 0 },
-              ]}
+              style={[theme.text('title3', 'semibold'), { color: theme.colors.label, padding: 0 }]}
             />
 
             {/* Описание растёт до пяти строк и дальше прокручивается само:
                 панель не должна выталкивать свой верх за край экрана. */}
             <TextInput
+              ref={details}
               value={description}
               onChangeText={setDescription}
-              placeholder={checklist ? 'Первый пункт' : 'Описание'}
+              placeholder={checklist ? 'Пункты — каждый с новой строки' : 'Описание'}
               placeholderTextColor={theme.colors.placeholderText}
               multiline
               style={[
@@ -202,8 +268,9 @@ export default function CreateScreen() {
             у иконки без подписи угадывается «микрофон», но не «напоминание».
             Каждый чип показывает своё значение, как только оно выбрано.
 
-            Теги здесь тоже чипы, и их три — заранее заданных: ставятся
-            касанием, без списка, который мог оказаться пустым.
+            Теги собраны в один чип с меню. Пять чипов — список, срок и три
+            тега — не помещались по ширине, и ряд уезжал за край: та же
+            причина, по которой фильтр на «Заметках» стал сегментом.
           */}
           <ScrollView
             horizontal
@@ -219,7 +286,7 @@ export default function CreateScreen() {
             }}
           >
             <Chip
-              label="Список задач"
+              label="Список"
               icon="checklist"
               outlined={!checklist}
               selected={checklist}
@@ -228,17 +295,7 @@ export default function CreateScreen() {
 
             <ReminderChip value={remindAt} onChange={setRemindAt} />
 
-            {STATIC_TAGS.map((item) => (
-              <Chip
-                key={item.id}
-                label={item.label}
-                icon={item.icon}
-                accent={item.accent}
-                outlined={!tags.includes(item.id)}
-                selected={tags.includes(item.id)}
-                onPress={() => toggleTag(item.id)}
-              />
-            ))}
+            <TagChip value={tags} onToggle={toggleTag} />
           </ScrollView>
 
           {/* Линия отделяет ввод от отправки: ниже неё ничего не набирают,
@@ -286,13 +343,30 @@ export default function CreateScreen() {
               <Symbol name="chevron.down" size={16} color={theme.colors.tertiaryLabel} />
             </MenuButton>
 
-            {/* Голос — второй способ ввода после клавиатуры, а не пункт меню
-                наравне со сканом и рисунком. */}
+            {/* Голос — второй способ ввода после клавиатуры, поэтому своя
+                кнопка. Скан и рисунок реже — они в меню рядом, а не только
+                в долгом нажатии на кнопку создания, о котором никто не знает. */}
+            <MenuButton
+              accessibilityLabel="Добавить скан или рисунок"
+              items={() => [
+                {
+                  title: 'Скан',
+                  icon: 'doc.text.viewfinder',
+                  onPress: () => capture('/capture/scan'),
+                },
+                { title: 'Рисунок', icon: 'scribble', onPress: () => capture('/capture/sketch') },
+              ]}
+            >
+              <View pointerEvents="none">
+                <RoundButton icon="plus" label="Добавить" tone="muted" onPress={() => {}} />
+              </View>
+            </MenuButton>
+
             <RoundButton
               icon="waveform"
               label="Записать голосом"
               tone="muted"
-              onPress={() => router.replace('/capture/voice')}
+              onPress={() => capture('/capture/voice')}
             />
 
             <RoundButton icon="arrow.up" label="Создать" disabled={!ready} onPress={submit} />
@@ -302,6 +376,42 @@ export default function CreateScreen() {
     </>
   );
 }
+
+/**
+ * Чип тегов: один на все три тега, с галочками в меню.
+ *
+ * Выбран один — чип показывает его имя, иконку и цвет; несколько — их число.
+ */
+const TagChip = ({ value, onToggle }: { value: string[]; onToggle: (id: string) => void }) => {
+  const single = value.length === 1 ? staticTag(value[0]) : undefined;
+  const label = value.length === 0 ? 'Тег' : single ? single.label : `Теги · ${value.length}`;
+
+  return (
+    <MenuButton
+      accessibilityLabel={value.length === 0 ? 'Тег' : `Теги: ${label}`}
+      title="Теги"
+      items={() =>
+        STATIC_TAGS.map((tag) => ({
+          title: tag.label,
+          icon: tag.icon,
+          checked: value.includes(tag.id),
+          onPress: () => onToggle(tag.id),
+        }))
+      }
+    >
+      {/* Касания достаются обёртке — по той же причине, что у чипа срока. */}
+      <View pointerEvents="none">
+        <Chip
+          label={label}
+          icon={single?.icon ?? 'tag'}
+          accent={single?.accent}
+          outlined={value.length === 0}
+          selected={value.length > 0}
+        />
+      </View>
+    </MenuButton>
+  );
+};
 
 /** Чип срока: показывает выбранное время и открывает меню из себя же. */
 const ReminderChip = ({
@@ -368,7 +478,9 @@ const RoundButton = ({
           height: size,
           borderRadius: size / 2,
           backgroundColor:
-            tone === 'accent' ? theme.colors.accent : theme.colors.tertiarySystemFill,
+            // Вторичная кнопка — прозрачное белое, как кнопки шапки: серая
+            // заливка гасила подсветку Opal.
+            tone === 'accent' ? theme.colors.accent : theme.tints.control,
           opacity: disabled ? 0.35 : pressed ? 0.7 : 1,
         },
       ]}

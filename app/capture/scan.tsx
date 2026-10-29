@@ -23,7 +23,11 @@ import { useNotesStore } from '../../src/store/useNotesStore';
  * целиком.
  */
 export default function ScanCaptureScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, folder, tag } = useLocalSearchParams<{
+    id?: string;
+    folder?: string;
+    tag?: string;
+  }>();
   const theme = useTheme();
 
   const notes = useNotesStore((s) => s.notes);
@@ -67,7 +71,12 @@ export default function ScanCaptureScreen() {
       return;
     }
 
-    const created = createNote({ blocks: [block] });
+    const created = createNote({
+      blocks: [block],
+      // Начато из папки или тега — заметка ложится туда же.
+      folderId: folder ?? null,
+      tags: tag ? [tag] : [],
+    });
     router.replace({ pathname: '/note/[id]', params: { id: created.id } });
   };
 
@@ -106,7 +115,8 @@ export default function ScanCaptureScreen() {
           unstable_headerRightItems: headerItems(() =>
             pages.length > 0 ? (
               <IconButton name="checkmark" accessibilityLabel="Готово" onPress={finish} />
-            ) : null),
+            ) : null,
+          ),
         }}
       />
 
@@ -179,7 +189,13 @@ const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   middle: { textAlign: 'center' },
   frame: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
-  guide: { width: '82%', aspectRatio: 0.72, borderWidth: 2, borderRadius: 12, borderStyle: 'dashed' },
+  guide: {
+    width: '82%',
+    aspectRatio: 0.72,
+    borderWidth: 2,
+    borderRadius: 12,
+    borderStyle: 'dashed',
+  },
   bar: {
     position: 'absolute',
     left: 0,

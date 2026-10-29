@@ -25,10 +25,18 @@ import { useTheme, type PaletteName } from '../../src/theme';
 import { hasContent, makeChecklistBlock, makeTextBlock } from '../../src/utils/blocks';
 import { dueState, formatDateTime } from '../../src/utils/date';
 import { STATIC_TAGS, tagLabel } from '../../src/features/tags';
-import { notify } from '../../src/features/notify';
+import { notify, offerUndo } from '../../src/features/notify';
 import { useKeyboardVisible } from '../../src/utils/useKeyboardVisible';
 import { useNotesStore } from '../../src/store/useNotesStore';
 import type { NoteBlock } from '../../src/types';
+
+const REMOVED: Record<NoteBlock['type'], string> = {
+  text: 'Текст удалён',
+  checklist: 'Список удалён',
+  voice: 'Запись удалена',
+  scan: 'Скан удалён',
+  sketch: 'Рисунок удалён',
+};
 
 const DUE_COLOR: Record<ReturnType<typeof dueState>, PaletteName> = {
   overdue: 'systemRed',
@@ -291,6 +299,17 @@ export default function NoteScreen() {
             onChange={changeBlocks}
             onEditSketch={(blockId) =>
               router.push({ pathname: '/capture/sketch', params: { id: note.id, block: blockId } })
+            }
+            onRemoved={(block, index) =>
+              offerUndo(REMOVED[block.type], () => {
+                // Возвращаем в текущие блоки, а не в снимок до удаления: правки,
+                // сделанные за время показа отмены, не должны пропасть.
+                const current = useNotesStore.getState().notes.find((n) => n.id === note.id);
+                if (!current) return;
+                const next = [...current.blocks];
+                next.splice(Math.min(index, next.length), 0, block);
+                setBlocks(note.id, next);
+              })
             }
           />
 

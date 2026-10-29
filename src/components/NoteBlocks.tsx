@@ -3,7 +3,6 @@ import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { useTheme } from '../theme';
 import type { ChecklistItem, NoteBlock } from '../types';
-import { removeMedia } from '../features/media';
 import { makeChecklistItem } from '../utils/blocks';
 import { Checkbox } from './Checkbox';
 import { ScanBlockView, SketchBlockView, VoiceBlockView } from './MediaBlocks';
@@ -18,6 +17,8 @@ export type BlockEditorProps = {
   autoFocus?: boolean;
   /** Открыть рисунок на дорисовку. Плита 04.4. */
   onEditSketch?: (blockId: string) => void;
+  /** Блок удалён — экран предлагает отмену и знает, куда его вернуть. */
+  onRemoved?: (block: NoteBlock, index: number) => void;
 };
 
 /**
@@ -32,6 +33,7 @@ export const BlockEditor = ({
   moveCheckedDown = true,
   autoFocus = false,
   onEditSketch,
+  onRemoved,
 }: BlockEditorProps) => {
   const theme = useTheme();
 
@@ -39,16 +41,16 @@ export const BlockEditor = ({
     onChange(blocks.map((b) => (b.id === id ? next : b)));
 
   /**
-   * Удаление блока с медиа уносит и файл.
+   * Удаление блока не трогает файл.
    *
-   * Иначе документы приложения растут записями, на которые уже ничто не
-   * ссылается, — и вычистить их потом нечем: связь блока с файлом была
-   * единственной.
+   * Голосовую запись не повторить, а кнопка удаления стоит рядом с плеером —
+   * промах стоил бы записи. Блок можно вернуть отменой, поэтому файл живёт,
+   * пока на него ссылаются, а сирот убирает `sweepMedia` при запуске.
    */
   const remove = (block: NoteBlock) => {
-    if (block.type === 'voice') removeMedia(block.uri);
-    if (block.type === 'scan') block.pages.forEach((page) => removeMedia(page.uri));
+    const index = blocks.findIndex((b) => b.id === block.id);
     onChange(blocks.filter((b) => b.id !== block.id));
+    onRemoved?.(block, index);
   };
 
   return (

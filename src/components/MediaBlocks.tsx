@@ -88,7 +88,8 @@ const BlockShell = ({
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Удалить блок"
-          hitSlop={10}
+          // 18pt глифа и по 13 с каждой стороны — полные 44pt цели касания.
+          hitSlop={13}
           onPress={onRemove}
           style={({ pressed }) => ({ opacity: pressed ? 0.4 : 1 })}
         >

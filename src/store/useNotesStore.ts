@@ -14,6 +14,7 @@ import {
 } from '../types';
 import { makeId, makeTextBlock, noteText } from '../utils/blocks';
 import { cancelReminder, scheduleReminder } from '../features/reminders';
+import { sweepMedia } from '../features/media';
 
 const DAY = 86_400_000;
 
@@ -288,12 +289,25 @@ export const useNotesStore = create<NotesState>()(
         if (!state) return;
         useNotesStore.setState({ hydrated: true });
         useNotesStore.getState().purgeExpired();
+        sweepMedia(mediaUris(useNotesStore.getState().notes));
       },
     },
   ),
 );
 
 // ── Селекторы ───────────────────────────────────────────────────────────────
+
+/** Файлы, на которые ссылаются заметки, включая лежащие в корзине. */
+const mediaUris = (notes: Note[]): string[] =>
+  notes.flatMap((note) =>
+    note.blocks.flatMap((block) =>
+      block.type === 'voice'
+        ? [block.uri]
+        : block.type === 'scan'
+          ? block.pages.map((page) => page.uri)
+          : [],
+    ),
+  );
 
 /** Живые заметки — всё, что не в корзине. */
 export const activeNotes = (notes: Note[]): Note[] => notes.filter((n) => n.deletedAt === null);

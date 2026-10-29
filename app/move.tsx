@@ -2,10 +2,9 @@ import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { ListRow, ListSection } from '../src/components';
-import { accentNames, useTheme } from '../src/theme';
+import { IconButton, ListRow, ListSection, headerItems } from '../src/components';
+import { useTheme } from '../src/theme';
 import { splitEmoji } from '../src/utils/emoji';
-import { promptForFolderName } from '../src/features/folders';
 import { childFolders, rootFolders, useNotesStore } from '../src/store/useNotesStore';
 
 /**
@@ -20,7 +19,6 @@ export default function MoveScreen() {
   const theme = useTheme();
   const folders = useNotesStore((s) => s.folders);
   const moveNotes = useNotesStore((s) => s.moveNotes);
-  const createFolder = useNotesStore((s) => s.createFolder);
 
   const targets = useMemo(() => (ids ? ids.split(',').filter(Boolean) : []), [ids]);
   const roots = useMemo(() => rootFolders(folders), [folders]);
@@ -35,6 +33,11 @@ export default function MoveScreen() {
       <Stack.Screen
         options={{
           title: targets.length > 1 ? `Переместить: ${targets.length}` : 'Переместить',
+          // Закрыть — круг с крестиком слева, как в шитах Opal: свайпа вниз
+          // не видно, а кнопка — видна.
+          unstable_headerLeftItems: headerItems(() => (
+            <IconButton name="xmark" size={20} accessibilityLabel="Закрыть" onPress={() => router.back()} />
+          )),
         }}
       />
 
@@ -44,7 +47,7 @@ export default function MoveScreen() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
-        <ListSection>
+        <ListSection tone="sheet">
           <ListRow
             title="Без папки"
             icon="tray"
@@ -54,7 +57,7 @@ export default function MoveScreen() {
         </ListSection>
 
         {roots.length > 0 ? (
-          <ListSection header="Папки">
+          <ListSection tone="sheet" header="Папки">
             {roots.flatMap((folder) => [
               <ListRow
                 key={folder.id}
@@ -80,24 +83,12 @@ export default function MoveScreen() {
           </ListSection>
         ) : null}
 
-        <ListSection>
+        <ListSection tone="sheet">
           <ListRow
             title="Новая папка…"
             icon="folder.badge.plus"
             onPress={() =>
-              promptForFolderName({
-                title: 'Новая папка',
-                message: 'Как её назвать?',
-                parentId: null,
-                onSubmit: (name) => {
-                  const folder = createFolder(
-                    name,
-                    accentNames[folders.length % accentNames.length],
-                    null,
-                  );
-                  move(folder.id);
-                },
-              })
+              router.push({ pathname: '/folder', params: { move: targets.join(',') } })
             }
           />
         </ListSection>

@@ -20,6 +20,9 @@ export type FabProps = {
    * без свечения. Плавающей кнопки у Opal нет, создание живёт в шапке.
    */
   compact?: boolean;
+  /** Глиф в круге: `plus` для создания, `checkmark` — подтверждение в шите. */
+  icon?: 'plus' | 'checkmark';
+  disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -39,6 +42,8 @@ export const Fab = ({
   accessibilityLabel = 'Новая заметка',
   accessibilityHint = 'Долгое нажатие — выбрать тип заметки',
   compact = false,
+  icon = 'plus',
+  disabled = false,
   style,
 }: FabProps) => {
   const theme = useTheme();
@@ -50,6 +55,8 @@ export const Fab = ({
       ref={ref}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      accessibilityState={{ disabled }}
+      disabled={disabled}
       accessibilityHint={onLongPress ? accessibilityHint : undefined}
       onPress={onPress}
       onLongPress={
@@ -63,7 +70,7 @@ export const Fab = ({
       style={({ pressed }) => [
         compact ? null : styles.glow,
         { width: size, height: size, borderRadius: size / 2 },
-        { transform: [{ scale: pressed ? 0.94 : 1 }] },
+        { transform: [{ scale: pressed ? 0.94 : 1 }], opacity: disabled ? 0.35 : 1 },
         style,
       ]}
     >
@@ -74,7 +81,7 @@ export const Fab = ({
         tint={theme.hex.accent}
         style={[styles.root, { width: size, height: size }]}
       >
-        <Symbol name="plus" size={compact ? 22 : 26} color={theme.hex.onAccent} weight="semibold" />
+        <Symbol name={icon} size={compact ? 22 : 26} color={theme.hex.onAccent} weight="semibold" />
       </GlassSurface>
     </Pressable>
   );

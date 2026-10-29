@@ -39,6 +39,12 @@ export default function RootLayout() {
   );
 }
 
+/**
+ * Подложка шитов — замер Opal: `#1F1F1F`–`#202020`. Шит на ступень светлее
+ * экрана, а группы строк внутри — ещё на ступень (`ListSection tone="sheet"`).
+ */
+const SHEET = { backgroundColor: '#1F1F1F' };
+
 const RootStack = () => {
   const theme = useTheme();
 
@@ -113,8 +119,35 @@ const RootStack = () => {
           sheetGrabberVisible: true,
           sheetCornerRadius: theme.radius.xxl,
           title: 'Переместить',
+          contentStyle: SHEET,
         }}
       />
+      {/* Папка: имя, цвет и превью строки — шит вместо системного алерта. */}
+      <Stack.Screen
+        name="folder"
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.75, 0.95],
+          sheetGrabberVisible: true,
+          sheetCornerRadius: theme.radius.xxl,
+          contentStyle: SHEET,
+        }}
+      />
+      {/* Сведения о заметке — справка без правки, поэтому шит, а не экран. */}
+      <Stack.Screen
+        name="note-info"
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.75, 0.95],
+          sheetGrabberVisible: true,
+          sheetCornerRadius: theme.radius.xxl,
+          title: 'О заметке',
+          contentStyle: SHEET,
+        }}
+      />
+      {/* Все напоминания разом — экран поверх вкладок: в него ведут и
+          «Папки», и «Настройки → Уведомления». */}
+      <Stack.Screen name="reminders" options={{ title: 'Напоминания' }} />
       {/*
         Шита тегов больше нет. Он открывался пустым: своих тегов у заметки не
         было, поле «Название тега» не нажималось, и единственным содержимым
@@ -151,6 +184,7 @@ const RootStack = () => {
           sheetGrabberVisible: true,
           sheetCornerRadius: theme.radius.xxl,
           title: 'Напоминание',
+          contentStyle: SHEET,
         }}
       />
     </Stack>

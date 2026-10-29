@@ -7,7 +7,9 @@ import {
   Button,
   GlassSurface,
   ListRow,
+  IconButton,
   ListSection,
+  headerItems,
   Text,
 } from '../src/components';
 import { useTheme } from '../src/theme';
@@ -65,7 +67,16 @@ export default function ReminderScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Напоминание' }} />
+      <Stack.Screen
+        options={{
+          title: 'Напоминание',
+          // Закрыть — круг с крестиком слева, как в шитах Opal: свайпа вниз
+          // не видно, а кнопка — видна.
+          unstable_headerLeftItems: headerItems(() => (
+            <IconButton name="xmark" size={20} accessibilityLabel="Закрыть" onPress={() => router.back()} />
+          )),
+        }}
+      />
 
       {/* Без системной поправки на инсеты блок «Уведомления выключены»
           заезжал под заголовок шита и первая строка была перекрыта. */}
@@ -103,13 +114,13 @@ export default function ReminderScreen() {
             </Text>
             <Button
               title="Разрешить уведомления"
-              variant="tinted"
+              variant="white"
               onPress={async () => setPermission(await requestPermission())}
             />
           </View>
         ) : null}
 
-        <ListSection header="Когда напомнить">
+        <ListSection tone="sheet" header="Когда напомнить">
           {presets.map((preset) => (
             <ListRow
               key={preset.key}
@@ -125,7 +136,7 @@ export default function ReminderScreen() {
           Пикер системный: колёса, календарь, локаль, 12/24 часа и Dynamic Type
           в нём уже есть, и повторять это своими барабанами незачем.
         */}
-        <ListSection header="Точное время">
+        <ListSection tone="sheet" header="Точное время">
           <View
             style={{
               paddingHorizontal: theme.spacing.lg,
@@ -144,14 +155,14 @@ export default function ReminderScreen() {
             />
             <Button
               title={`Напомнить ${formatDateTime(exact.getTime())}`}
-              variant="tinted"
+              variant="white"
               onPress={() => choose(exact.getTime())}
             />
           </View>
         </ListSection>
 
         {note.remindAt ? (
-          <ListSection footer={`Сейчас стоит на ${formatDateTime(note.remindAt)}.`}>
+          <ListSection tone="sheet" footer={`Сейчас стоит на ${formatDateTime(note.remindAt)}.`}>
             <ListRow title="Убрать напоминание" destructive onPress={clear} />
           </ListSection>
         ) : null}

@@ -53,3 +53,4 @@ export { Text, type TextProps } from './Text';
 export { ThinkingOrb, type OrbState, type ThinkingOrbProps } from './ThinkingOrb';
 export { TextField, type TextFieldProps } from './TextField';
 export { RootHeader, type RootHeaderProps } from './RootHeader';
+export { StatRing, type StatRingProps } from './StatRing';

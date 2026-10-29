@@ -210,6 +210,11 @@ export default function NoteScreen() {
       onPress: () => router.push({ pathname: '/move', params: { ids: note.id } }),
     },
     {
+      title: 'О заметке',
+      icon: 'info.circle' as const,
+      onPress: () => router.push({ pathname: '/note-info', params: { id: note.id } }),
+    },
+    {
       title: 'Удалить',
       icon: 'trash' as const,
       destructive: true,

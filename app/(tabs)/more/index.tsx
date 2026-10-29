@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import { ScrollView, Share, View } from 'react-native';
 import Constants from 'expo-constants';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 
 import {
+  GLYPH_SEPARATOR_INSET,
   ListRow,
   ListSection,
   MenuButton,
@@ -73,7 +74,7 @@ export default function MoreScreen() {
           экране, — глаз шёл по цветам, а не по названиям. Контурный глиф
           одного цвета подписывает строку и уступает ей первое место.
         */}
-        <ListSection header="Вид">
+        <ListSection separatorInset={GLYPH_SEPARATOR_INSET} header="Вид">
           {/* Выбор из списка — то же меню с галочкой, что в шапке «Заметок».
               Лист снизу без отметки текущего значения здесь не к месту:
               `ActionSheetIOS` оставлен вопросам. */}
@@ -108,7 +109,25 @@ export default function MoreScreen() {
           />
         </ListSection>
 
-        <ListSection header="Мои данные" footer="Заметки хранятся только на этом устройстве.">
+        {/* Обзор — новые разделы: сводка по заметкам и всё про напоминания. */}
+        <ListSection separatorInset={GLYPH_SEPARATOR_INSET} header="Обзор">
+          <ListRow
+            title="Статистика"
+            subtitle="Сколько заметок, слов и выполненных пунктов"
+            icon="chart.bar"
+            accessory={{ type: 'disclosure' }}
+            onPress={() => router.push('/more/stats')}
+          />
+          <ListRow
+            title="Уведомления"
+            subtitle="Разрешение, все сроки и готовые варианты"
+            icon="bell"
+            accessory={{ type: 'disclosure' }}
+            onPress={() => router.push('/more/notifications')}
+          />
+        </ListSection>
+
+        <ListSection separatorInset={GLYPH_SEPARATOR_INSET} header="Мои данные" footer="Заметки хранятся только на этом устройстве.">
           <ListRow
             title="Экспортировать заметки"
             icon="square.and.arrow.up"

@@ -10,11 +10,10 @@ import {
   RootHeader,
   ScreenBackdrop,
 } from '../../../src/components';
-import { accentNames, useTheme } from '../../../src/theme';
+import { useTheme } from '../../../src/theme';
 import { STATIC_TAGS } from '../../../src/features/tags';
 import { splitEmoji } from '../../../src/utils/emoji';
 import { showActionSheet } from '../../../src/utils/actionSheet';
-import { promptForFolderName } from '../../../src/features/folders';
 import {
   activeNotes,
   childFolders,
@@ -39,13 +38,15 @@ export default function FoldersScreen() {
   const theme = useTheme();
   const notes = useNotesStore((s) => s.notes);
   const folders = useNotesStore((s) => s.folders);
-  const createFolder = useNotesStore((s) => s.createFolder);
-  const renameFolder = useNotesStore((s) => s.renameFolder);
   const deleteFolder = useNotesStore((s) => s.deleteFolder);
 
   const roots = useMemo(() => rootFolders(folders), [folders]);
   const inbox = useMemo(() => activeNotes(notes).filter((n) => !n.folderId).length, [notes]);
   const trashed = useMemo(() => trashedNotes(notes).length, [notes]);
+  const reminders = useMemo(
+    () => activeNotes(notes).filter((n) => n.remindAt !== null && n.remindAt > Date.now()).length,
+    [notes],
+  );
   const tagCount = useMemo(() => {
     const alive = activeNotes(notes);
     return Object.fromEntries(
@@ -53,29 +54,16 @@ export default function FoldersScreen() {
     ) as Record<string, number>;
   }, [notes]);
 
+  /** Создание и правка — шит папки с именем и цветом, а не системный алерт. */
   const addFolder = (parentId: string | null = null) =>
-    promptForFolderName({
-      title: parentId ? 'Вложенная папка' : 'Новая папка',
-      message: 'Как её назвать? Имя может начинаться с эмодзи — оно встанет вместо иконки.',
-      parentId,
-      onSubmit: (name) =>
-        createFolder(name, accentNames[folders.length % accentNames.length], parentId),
-    });
+    router.push({ pathname: '/folder', params: parentId ? { parent: parentId } : {} });
 
   /** Пункты меню папки. Меню растёт из самой строки — его ставит `ListRow`. */
   const folderMenu = (id: string, name: string, nested: boolean) => () => [
     {
-      title: 'Переименовать',
+      title: 'Имя и цвет',
       icon: 'pencil' as const,
-      onPress: () =>
-        promptForFolderName({
-          title: 'Переименовать',
-          message: 'Новое имя папки',
-          parentId: folders.find((f) => f.id === id)?.parentId ?? null,
-          initial: name,
-          renaming: id,
-          onSubmit: (next) => renameFolder(id, next),
-        }),
+      onPress: () => router.push({ pathname: '/folder', params: { id } }),
     },
     ...(nested
       ? []
@@ -217,6 +205,14 @@ export default function FoldersScreen() {
         </ListSection>
 
         <ListSection separatorInset={GLYPH_SEPARATOR_INSET}>
+          {/* Напоминания — срез по сроку, рядом с другими служебными местами. */}
+          <ListRow
+            title="Напоминания"
+            icon="bell"
+            value={reminders > 0 ? String(reminders) : undefined}
+            accessory={{ type: 'disclosure' }}
+            onPress={() => router.push('/reminders')}
+          />
           <ListRow
             title="Корзина"
             icon="trash"

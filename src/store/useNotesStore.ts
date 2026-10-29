@@ -65,6 +65,8 @@ type NotesState = {
 
   createFolder: (name: string, accent: AccentName, parentId?: string | null) => Folder;
   renameFolder: (id: string, name: string) => void;
+  /** Имя и цвет разом — шит папки правит оба поля одним «Готово». */
+  updateFolder: (id: string, patch: Partial<Pick<Folder, 'name' | 'accent'>>) => void;
   deleteFolder: (id: string, contents: 'moveToRoot' | 'trash') => void;
 
   updateSettings: (patch: Partial<Settings>) => void;
@@ -189,6 +191,9 @@ export const useNotesStore = create<NotesState>()(
         set({ folders: [...get().folders, folder] });
         return folder;
       },
+
+      updateFolder: (id, patch) =>
+        set({ folders: get().folders.map((f) => (f.id === id ? { ...f, ...patch } : f)) }),
 
       renameFolder: (id, name) =>
         set({ folders: get().folders.map((f) => (f.id === id ? { ...f, name } : f)) }),

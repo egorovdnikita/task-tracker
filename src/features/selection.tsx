@@ -10,6 +10,8 @@ export type Selection = {
   active: boolean;
   ids: string[];
   toggle: (id: string) => void;
+  /** Отметить все видимые; если все уже отмечены — снять отметку. */
+  toggleAll: (ids: string[]) => void;
   clear: () => void;
 };
 
@@ -30,13 +32,16 @@ export const useSelection = (): Selection => {
     );
   }, []);
 
+  const toggleAll = useCallback((all: string[]) => {
+    setIds((current) => (all.every((id) => current.includes(id)) ? [] : all));
+  }, []);
   const clear = useCallback(() => setIds([]), []);
 
   const active = ids.length > 0;
 
   return useMemo(
-    () => ({ active, ids, toggle, clear }),
-    [active, ids, toggle, clear],
+    () => ({ active, ids, toggle, toggleAll, clear }),
+    [active, ids, toggle, toggleAll, clear],
   );
 };
 

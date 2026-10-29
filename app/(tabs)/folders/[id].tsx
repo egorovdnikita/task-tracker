@@ -14,7 +14,13 @@ import {
   headerItems,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
-import { useNotesStore, activeNotes, isSearching, searchNotes, sortNotes } from '../../../src/store/useNotesStore';
+import {
+  useNotesStore,
+  activeNotes,
+  isSearching,
+  searchNotes,
+  sortNotes,
+} from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 import { offerUndo } from '../../../src/features/notify';
 import { tagLabel } from '../../../src/features/tags';
@@ -69,9 +75,8 @@ export default function FolderScreen() {
 
   const trashWithUndo = (ids: string[]) => {
     trashNotes(ids);
-    offerUndo(
-      ids.length === 1 ? 'Заметка в корзине' : `В корзине: ${ids.length}`,
-      () => restoreNotes(ids),
+    offerUndo(ids.length === 1 ? 'Заметка в корзине' : `В корзине: ${ids.length}`, () =>
+      restoreNotes(ids),
     );
   };
 
@@ -81,6 +86,9 @@ export default function FolderScreen() {
 
     showMenu(
       [
+        // Вход в множественный выбор. Без него панель с переносом и удалением
+        // была недостижима: отмечать начинали только из уже начатого выбора.
+        { title: 'Выбрать', icon: 'checkmark.circle', onPress: () => selection.toggle(noteId) },
         {
           title: note.pinned ? 'Открепить' : 'Закрепить',
           icon: note.pinned ? 'pin.slash' : 'pin',
@@ -107,11 +115,7 @@ export default function FolderScreen() {
   const create = () =>
     router.push({
       pathname: '/create',
-      params: scope.tag
-        ? { tag: scope.tag }
-        : scope.folderId
-          ? { folder: scope.folderId }
-          : {},
+      params: scope.tag ? { tag: scope.tag } : scope.folderId ? { folder: scope.folderId } : {},
     });
 
   return (
@@ -120,16 +124,37 @@ export default function FolderScreen() {
       <Stack.Screen
         options={{
           title: scope.title,
-          unstable_headerRightItems: headerItems(() => (
-            <HeaderCapsule>
-              <IconButton
-                name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
-                size={19}
-                accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
-                onPress={() => setLayout(id ?? 'root', layout === 'list' ? 'grid' : 'list')}
-              />
-            </HeaderCapsule>
-          )),
+          // В режиме выбора управление подачей списка не нужно — на его месте
+          // «Выбрать все»; снять выбор можно крестиком на нижней панели.
+          unstable_headerRightItems: selection.active
+            ? headerItems(() => (
+                <HeaderCapsule>
+                  <IconButton
+                    name={
+                      visible.every((n) => selection.ids.includes(n.id))
+                        ? 'checkmark.circle.fill'
+                        : 'checkmark.circle'
+                    }
+                    size={19}
+                    accessibilityLabel={
+                      visible.every((n) => selection.ids.includes(n.id))
+                        ? 'Снять отметку со всех'
+                        : 'Выбрать все'
+                    }
+                    onPress={() => selection.toggleAll(visible.map((n) => n.id))}
+                  />
+                </HeaderCapsule>
+              ))
+            : headerItems(() => (
+                <HeaderCapsule>
+                  <IconButton
+                    name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
+                    size={19}
+                    accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
+                    onPress={() => setLayout(id ?? 'root', layout === 'list' ? 'grid' : 'list')}
+                  />
+                </HeaderCapsule>
+              )),
         }}
       />
 
@@ -149,9 +174,7 @@ export default function FolderScreen() {
         }
         onDelete={(noteId) => trashWithUndo([noteId])}
         onTogglePin={togglePinned}
-        contentInsetBottom={
-          theme.metrics.tabBar + theme.spacing.xxl + (selection.active ? 64 : 0)
-        }
+        contentInsetBottom={theme.metrics.tabBar + theme.spacing.xxl + (selection.active ? 64 : 0)}
         ListHeaderComponent={
           !selection.active ? (
             // Поиск под заголовком, как в корневом списке: одно место на всех

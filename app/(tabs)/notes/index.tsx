@@ -23,7 +23,13 @@ import { pluralNotes } from '../../../src/utils/date';
 import { SORT_LABELS } from '../../../src/features/labels';
 import { STATIC_TAGS } from '../../../src/features/tags';
 import { offerUndo } from '../../../src/features/notify';
-import { activeNotes, isSearching, searchNotes, sortNotes, useNotesStore } from '../../../src/store/useNotesStore';
+import {
+  activeNotes,
+  isSearching,
+  searchNotes,
+  sortNotes,
+  useNotesStore,
+} from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 
 /** Фильтр по тегу. `all` — без фильтра, остальное — идентификатор своего тега. */
@@ -100,9 +106,8 @@ export default function NotesScreen() {
 
   const trashWithUndo = (ids: string[]) => {
     trashNotes(ids);
-    offerUndo(
-      ids.length === 1 ? 'Заметка в корзине' : `В корзине: ${ids.length}`,
-      () => restoreNotes(ids),
+    offerUndo(ids.length === 1 ? 'Заметка в корзине' : `В корзине: ${ids.length}`, () =>
+      restoreNotes(ids),
     );
   };
 
@@ -113,6 +118,9 @@ export default function NotesScreen() {
 
     showMenu(
       [
+        // Вход в множественный выбор. Без него панель с переносом и удалением
+        // была недостижима: отмечать начинали только из уже начатого выбора.
+        { title: 'Выбрать', icon: 'checkmark.circle', onPress: () => selection.toggle(id) },
         {
           title: note.pinned ? 'Открепить' : 'Закрепить',
           icon: note.pinned ? 'pin.slash' : 'pin',
@@ -146,37 +154,58 @@ export default function NotesScreen() {
             под заголовком: её место рядом с переключателем вида, потому что
             обе меняют не содержимое списка, а его подачу.
           */
-          unstable_headerRightItems: headerItems(() => (
-            <HeaderCapsule>
-              <IconButton
-                name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
-                size={19}
-                accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
-                onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
-              />
+          // В режиме выбора управление подачей списка не нужно — на его месте
+          // «Выбрать все»; снять выбор можно крестиком на нижней панели.
+          unstable_headerRightItems: selection.active
+            ? headerItems(() => (
+                <HeaderCapsule>
+                  <IconButton
+                    name={
+                      visible.every((n) => selection.ids.includes(n.id))
+                        ? 'checkmark.circle.fill'
+                        : 'checkmark.circle'
+                    }
+                    size={19}
+                    accessibilityLabel={
+                      visible.every((n) => selection.ids.includes(n.id))
+                        ? 'Снять отметку со всех'
+                        : 'Выбрать все'
+                    }
+                    onPress={() => selection.toggleAll(visible.map((n) => n.id))}
+                  />
+                </HeaderCapsule>
+              ))
+            : headerItems(() => (
+                <HeaderCapsule>
+                  <IconButton
+                    name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
+                    size={19}
+                    accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
+                    onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
+                  />
 
-              <MenuButton
-                accessibilityLabel={`Сортировка: ${SORT_LABELS[settings.sort]}`}
-                title="Сортировка"
-                items={() =>
-                  (Object.keys(SORT_LABELS) as (keyof typeof SORT_LABELS)[]).map((mode) => ({
-                    title: SORT_LABELS[mode],
-                    checked: settings.sort === mode,
-                    onPress: () => updateSettings({ sort: mode }),
-                  }))
-                }
-                style={({ pressed }) => ({
-                  width: theme.controlHeight.buttonCompact,
-                  height: theme.controlHeight.buttonCompact,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  opacity: pressed ? 0.4 : 1,
-                })}
-              >
-                <Symbol name="arrow.up.arrow.down" size={20} color={theme.colors.label} />
-              </MenuButton>
-            </HeaderCapsule>
-          )),
+                  <MenuButton
+                    accessibilityLabel={`Сортировка: ${SORT_LABELS[settings.sort]}`}
+                    title="Сортировка"
+                    items={() =>
+                      (Object.keys(SORT_LABELS) as (keyof typeof SORT_LABELS)[]).map((mode) => ({
+                        title: SORT_LABELS[mode],
+                        checked: settings.sort === mode,
+                        onPress: () => updateSettings({ sort: mode }),
+                      }))
+                    }
+                    style={({ pressed }) => ({
+                      width: theme.controlHeight.buttonCompact,
+                      height: theme.controlHeight.buttonCompact,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      opacity: pressed ? 0.4 : 1,
+                    })}
+                  >
+                    <Symbol name="arrow.up.arrow.down" size={20} color={theme.colors.label} />
+                  </MenuButton>
+                </HeaderCapsule>
+              )),
         }}
       />
 
@@ -198,9 +227,7 @@ export default function NotesScreen() {
         onTogglePin={togglePinned}
         // Место под кнопку создания в ряду панели вкладок — последняя карточка
         // не должна прятаться под ней.
-        contentInsetBottom={
-          theme.metrics.tabBar + theme.spacing.xxl + (selection.active ? 64 : 0)
-        }
+        contentInsetBottom={theme.metrics.tabBar + theme.spacing.xxl + (selection.active ? 64 : 0)}
         ListHeaderComponent={
           !selection.active ? (
             <View
@@ -210,11 +237,7 @@ export default function NotesScreen() {
             >
               {/* Поиск сразу под заголовком: белой карточкой, в потоке
                   списка, а не плавающей капсулой у нижнего края. */}
-              <SearchField
-                value={query}
-                onChangeText={setQuery}
-                placeholder="Поиск по заметкам"
-              />
+              <SearchField value={query} onChangeText={setQuery} placeholder="Поиск по заметкам" />
 
               {/*
                 Срез — сегмент-контрол, а не ряд чипов.

@@ -27,7 +27,9 @@ export type StaticTag = {
 };
 
 export const STATIC_TAGS: StaticTag[] = [
-  { id: 'важное', label: 'Важное', icon: 'exclamationmark', accent: 'red' },
+  // Оранжевый, а не красный: красный в системе — удаление, и красный чип
+  // в шите создания читался как ошибка.
+  { id: 'важное', label: 'Важное', icon: 'exclamationmark', accent: 'orange' },
   { id: 'работа', label: 'Работа', icon: 'briefcase', accent: 'blue' },
   { id: 'личное', label: 'Личное', icon: 'heart', accent: 'pink' },
 ];

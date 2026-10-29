@@ -1,89 +1,57 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { create } from 'zustand';
 
-import { MessagePill, UndoButton } from '../components';
+import { Toast } from '../components';
 import { useTheme } from '../theme';
 
-type Undo = { description: string; action: () => void };
+/**
+ * Тост один на всё приложение: новое событие заменяет прежнее. Сообщение с
+ * отменой и без неё — один и тот же тост, различается только кнопкой.
+ */
+type Toast = { message: string; undo?: () => void; id: number };
 
 type NotifyState = {
-  message: string | null;
-  undo: Undo | null;
-  /** Сообщить и ничего не требовать: «Заметка добавлена». */
+  toast: Toast | null;
   notify: (message: string) => void;
-  /**
-   * Предложить вернуть сделанное. `description` — что именно отменяется,
-   * он же вторая строка кнопки.
-   */
-  offerUndo: (description: string, action: () => void, message?: string) => void;
-  hideMessage: () => void;
-  hideUndo: () => void;
+  /** `description` — что случилось и что вернёт «Отменить». */
+  offerUndo: (description: string, action: () => void) => void;
+  hide: () => void;
 };
 
-/**
- * Уведомления приложения — сообщение и отмена.
- *
- * Стор, а не состояние экрана: заметка создаётся в шите, а сообщение о ней
- * должно появиться на экране под шитом, когда шит уже закрылся. Хранить это
- * в экране значит передавать событие через параметры маршрута обратно.
- */
+let seq = 0;
+
 export const useNotify = create<NotifyState>()((set) => ({
-  message: null,
-  undo: null,
-  notify: (message) => set({ message }),
-  offerUndo: (description, action, message) =>
-    set({ undo: { description, action }, message: message ?? null }),
-  hideMessage: () => set({ message: null }),
-  hideUndo: () => set({ undo: null }),
+  toast: null,
+  notify: (message) => set({ toast: { message, id: ++seq } }),
+  offerUndo: (description, action) =>
+    set({ toast: { message: description, undo: action, id: ++seq } }),
+  hide: () => set({ toast: null }),
 }));
 
 export const notify = (message: string) => useNotify.getState().notify(message);
+export const offerUndo = (description: string, action: () => void) =>
+  useNotify.getState().offerUndo(description, action);
 
-export const offerUndo = (description: string, action: () => void, message?: string) =>
-  useNotify.getState().offerUndo(description, action, message);
-
-/**
- * Место, где уведомления живут на экране.
- *
- * Смонтировано один раз в корне: сообщение всегда у верхнего края на месте
- * заголовка, отмена — всегда слева внизу над нижним рядом. Постоянное место
- * важнее близости к тому, что вызвало сообщение: искать его глазами не нужно.
- */
 export const NotificationHost = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { message, undo, hideMessage, hideUndo } = useNotify();
+  const { toast, hide } = useNotify();
 
   return (
-    <View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
-      <View
-        pointerEvents="none"
-        style={{
-          position: 'absolute',
-          top: insets.top + theme.spacing.sm,
-          left: theme.spacing.lg,
-          right: theme.spacing.lg,
-          alignItems: 'center',
-        }}
-      >
-        <MessagePill message={message} onHide={hideMessage} />
-      </View>
-
-      <UndoButton
-        description={undo?.description ?? null}
-        onUndo={() => undo?.action()}
-        onHide={hideUndo}
-        style={{
-          position: 'absolute',
-          left: theme.spacing.lg,
-          // Над панелью вкладок и над кругом создания, а не поверх них: круг
-          // стоит справа в ряду панели и поднимается над ней на свою половину.
-          bottom:
-            insets.bottom + theme.metrics.tabBar / 2 + theme.controlHeight.fab + theme.spacing.sm,
-        }}
-      />
+    <View
+      pointerEvents="box-none"
+      style={{
+        position: 'absolute',
+        left: theme.spacing.lg,
+        right: theme.spacing.lg,
+        // Над кнопкой создания, а не рядом с ней.
+        bottom:
+          insets.bottom + theme.metrics.tabBar / 2 + theme.controlHeight.fab + theme.spacing.md,
+      }}
+    >
+      <Toast key={toast?.id} message={toast?.message ?? null} onUndo={toast?.undo} onHide={hide} />
     </View>
   );
 };

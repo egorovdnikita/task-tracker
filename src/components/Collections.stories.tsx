@@ -6,7 +6,7 @@ import { EmptyState } from './EmptyState';
 import { ListRow, ListSection, Separator } from './List';
 import { NoteCard } from './NoteCard';
 import { Text } from './Text';
-import { MessagePill, UndoButton } from './Notifications';
+import { Toast } from './Notifications';
 import { useTheme } from '../theme';
 import { mockChecklistNote, mockNote, mockNotes } from '../mocks/notes';
 
@@ -125,42 +125,28 @@ export const Пусто: Story = {
 };
 
 /**
- * Уведомления: сообщение сверху, отмена снизу.
+ * Тост: что случилось и, если можно вернуть, «Отменить» в той же строке.
  *
- * Раньше это был один тост внизу по центру, и он делал две работы сразу —
- * докладывал и держал единственный способ вернуть сделанное. Сообщение живёт
- * секунду и ничего не требует; отмена — кнопка с обводкой и сроком в пять
- * секунд, ровно столько любое разрушающее действие обратимо.
+ * Сообщение и отмена раньше жили в противоположных углах экрана, и связь
+ * «что отменяется» терялась. Теперь у события одно место над кнопкой создания.
  */
-export const Уведомления: Story = {
+export const Тост: Story = {
   parameters: { grouped: false },
   render: () => {
-    const [message, setMessage] = useState<string | null>('Заметка добавлена');
-    const [undo, setUndo] = useState<string | null>('Заметка в корзине');
+    const [shown, setShown] = useState(true);
 
     return (
-      <View style={{ height: 260, justifyContent: 'space-between' }}>
-        <View style={{ alignItems: 'center' }}>
-          <MessagePill message={message} duration={100000} onHide={() => setMessage(null)} />
-        </View>
-
-        <Text
-          variant="footnote"
-          color="secondaryLabel"
-          onPress={() => {
-            setMessage('Заметка добавлена');
-            setUndo('Заметка в корзине');
-          }}
-        >
-          Нажмите, чтобы показать снова
-        </Text>
-
-        <UndoButton
-          description={undo}
+      <View style={{ gap: 16 }}>
+        <Toast message="Заметка добавлена" duration={100000} onHide={() => {}} />
+        <Toast
+          message={shown ? 'Заметка в корзине' : null}
           duration={100000}
           onUndo={() => {}}
-          onHide={() => setUndo(null)}
+          onHide={() => setShown(false)}
         />
+        <Text variant="footnote" color="secondaryLabel" onPress={() => setShown(true)}>
+          Нажмите, чтобы показать снова
+        </Text>
       </View>
     );
   },

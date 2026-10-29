@@ -1,5 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
 import type { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,6 +25,7 @@ import {
   Text,
   type MenuItem,
   ScreenBackdrop,
+  GlassSurface,
   headerItems,
   backItem,
 } from '../../src/components';
@@ -39,9 +47,11 @@ const REMOVED: Record<NoteBlock['type'], string> = {
 };
 
 const DUE_COLOR: Record<ReturnType<typeof dueState>, PaletteName> = {
+  // Цвет несёт смысл, а не украшает: красный — просрочено, акцент — сегодня,
+  // всё дальше — обычная справка.
   overdue: 'systemRed',
-  today: 'systemGreen',
-  future: 'systemPurple',
+  today: 'accent',
+  future: 'secondaryLabel',
 };
 
 /** Сколько пунктов отмечено во всех чек-листах заметки. */
@@ -248,14 +258,27 @@ export default function NoteScreen() {
         {note.deletedAt ? (
           <View
             style={{
-              backgroundColor: theme.colors.tertiarySystemFill,
+              marginHorizontal: theme.spacing.lg,
               paddingHorizontal: theme.spacing.lg,
               paddingVertical: theme.spacing.md,
               flexDirection: 'row',
               alignItems: 'center',
               gap: theme.spacing.md,
+              borderRadius: theme.radius.md,
+              borderCurve: 'circular',
+              overflow: 'hidden',
             }}
           >
+            {/* Стекло Opal, а не серая заливка: серая гасила подсветку фона. */}
+            <GlassSurface
+              mesh="card"
+              stroke="card"
+              tint={theme.tints.card}
+              radius={theme.radius.md}
+              liquid={false}
+              pointerEventsNone
+              style={StyleSheet.absoluteFill}
+            />
             <Text variant="footnote" color="secondaryLabel" style={{ flex: 1 }}>
               Заметка в корзине — правки не сохранятся
             </Text>

@@ -183,7 +183,9 @@ export default function FoldersScreen() {
               ...childFolders(folders, folder.id).map((child) => (
                 <ListRow
                   key={child.id}
-                  title={`    ${splitEmoji(child.name).rest}`}
+                  title={splitEmoji(child.name).rest}
+                  level={1}
+                  hint={`Вложена в «${splitEmoji(folder.name).rest}»`}
                   emoji={splitEmoji(child.name).emoji ?? undefined}
                   icon="folder"
                   iconColor={theme.accent(child.accent)}

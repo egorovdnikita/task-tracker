@@ -238,7 +238,19 @@ export type ListRowProps = {
   destructive?: boolean;
   disabled?: boolean;
   titleColor?: PaletteName;
+  /**
+   * Уровень вложенности — для папки внутри папки.
+   *
+   * Отступ — отбивкой строки, а не пробелами в начале имени: пробелы VoiceOver
+   * читал паузой, и при крупном тексте сдвиг не рос вместе с ним.
+   */
+  level?: number;
+  /** Подсказка VoiceOver — например, в какую папку вложена эта. */
+  hint?: string;
 };
+
+/** Отступ одного уровня вложенности — ширина глифа и зазора за ним. */
+const LEVEL_INDENT = 24;
 
 export const ListRow = ({
   title,
@@ -257,6 +269,8 @@ export const ListRow = ({
   destructive = false,
   disabled = false,
   titleColor,
+  level = 0,
+  hint,
 }: ListRowProps) => {
   const theme = useTheme();
   const color: PaletteName = destructive ? 'systemRed' : titleColor ?? 'label';
@@ -276,6 +290,7 @@ export const ListRow = ({
         {
           minHeight: subtitle ? theme.controlHeight.rowDetail : theme.controlHeight.row,
           paddingHorizontal: theme.spacing.xl,
+          paddingLeft: theme.spacing.xl + level * LEVEL_INDENT,
           paddingVertical: theme.spacing.md,
           gap: theme.spacing.lg,
           opacity: disabled ? 0.35 : 1,
@@ -346,6 +361,7 @@ export const ListRow = ({
     <Pressable
       ref={ref}
       accessibilityRole="button"
+      accessibilityHint={hint}
       accessibilityState={{ disabled, selected: accessory.type === 'checkmark' ? accessory.checked : undefined }}
       disabled={disabled}
       onPress={onPress}

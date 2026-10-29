@@ -4,32 +4,39 @@ import { Animated, Pressable, StyleSheet, View, type StyleProp, type ViewStyle }
 import { useTheme } from '../theme';
 import { Text } from './Text';
 
-export type MessagePillProps = {
+export type ToastProps = {
+  /** Что случилось. `null` — тоста нет. */
   message: string | null;
-  /** Сколько держится. Сообщение ничего не требует, поэтому недолго. */
+  /** Отмена случившегося. Есть — в тосте кнопка «Отменить». */
+  onUndo?: () => void;
+  /**
+   * Сколько держится. Сообщение ничего не требует и живёт недолго; с отменой —
+   * пять секунд, срок обратимости из сквозного состояния C3.
+   */
   duration?: number;
   onHide: () => void;
   style?: StyleProp<ViewStyle>;
 };
 
 /**
- * Сообщение — пилюля у верхнего края.
+ * Тост — одна пилюля над кнопкой создания: что случилось и, если это можно
+ * вернуть, «Отменить» в той же строке.
  *
- * Раньше сообщение и отмена жили в одном тосте внизу, и он делал две работы
- * сразу: докладывал о случившемся и держал единственный способ это отменить.
- * Внизу же стоят панель вкладок и кнопка создания, так что тост конкурировал
- * с ними за то же место и за тот же палец.
- *
- * Теперь роли разведены. Сообщение встаёт на место заголовка, живёт секунду,
- * кнопки не несёт и пропадает само. Отмена — отдельная кнопка внизу слева.
+ * Сообщение и отмена уже жили раздельно — пилюля у верхнего края и кнопка
+ * внизу слева, — и после удаления человек видел их одновременно в
+ * противоположных углах экрана: связь «что отменяется» терялась. Теперь у
+ * события одно место. Оно над кнопкой создания, а не рядом с ней: тост не
+ * спорит с ней и с панелью вкладок за палец.
  */
-export const MessagePill = ({ message, duration = 1800, onHide, style }: MessagePillProps) => {
+export const Toast = ({ message, onUndo, duration, onHide, style }: ToastProps) => {
   const theme = useTheme();
   const enter = useRef(new Animated.Value(0)).current;
+  const hold = duration ?? (onUndo ? 5000 : 1800);
 
   useEffect(() => {
     if (!message) return;
 
+    enter.setValue(0);
     Animated.spring(enter, {
       toValue: 1,
       useNativeDriver: true,
@@ -40,136 +47,80 @@ export const MessagePill = ({ message, duration = 1800, onHide, style }: Message
 
     const timer = setTimeout(() => {
       Animated.timing(enter, { toValue: 0, duration: 160, useNativeDriver: true }).start(onHide);
-    }, duration);
+    }, hold);
 
     return () => clearTimeout(timer);
-  }, [message, duration, enter, onHide]);
+  }, [message, hold, enter, onHide]);
 
   if (!message) return null;
 
   return (
     <Animated.View
       accessibilityLiveRegion="polite"
-      pointerEvents="none"
+      pointerEvents="box-none"
       style={[
-        styles.pill,
+        styles.toast,
         styles.shadow,
         {
-          paddingHorizontal: theme.spacing.lg,
-          paddingVertical: theme.spacing.sm,
+          paddingLeft: theme.spacing.lg,
+          paddingRight: onUndo ? theme.spacing.xs : theme.spacing.lg,
+          minHeight: theme.controlHeight.buttonCompact,
+          gap: theme.spacing.sm,
           borderRadius: theme.radius.pill,
-          // Плотная приподнятая поверхность с кантом: пилюля всплывает поверх
-          // списка, и прозрачная подложка смешала бы её текст с текстом под ней.
+          // Плотная приподнятая поверхность с кантом: тост всплывает поверх
+          // списка, и прозрачная подложка смешала бы его текст с текстом под ним.
           backgroundColor: theme.colors.elevated,
           borderWidth: theme.metrics.hairline * 2,
           borderColor: theme.colors.separator,
           opacity: enter,
           transform: [
-            { translateY: enter.interpolate({ inputRange: [0, 1], outputRange: [-16, 0] }) },
+            { translateY: enter.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) },
           ],
         },
         style,
       ]}
     >
-      <Text variant="subheadline" weight="semibold" numberOfLines={1}>
+      <Text variant="subheadline" weight="semibold" numberOfLines={1} style={styles.shrink}>
         {message}
       </Text>
-    </Animated.View>
-  );
-};
 
-export type UndoButtonProps = {
-  /** Что именно отменяется — вторая строка кнопки. */
-  description: string | null;
-  onUndo: () => void;
-  onHide: () => void;
-  /** Пять секунд — срок обратимости из сквозного состояния C3. */
-  duration?: number;
-  style?: StyleProp<ViewStyle>;
-};
-
-/**
- * Отмена — кнопка с обводкой, а не тост.
- *
- * Обводка вместо заливки, потому что действие уже случилось и кнопка не
- * главная на экране: она предлагает вернуться, а не зовёт нажать. Две строки —
- * «Отменить» акцентом и под ним серым то, что отменяется: без второй строки
- * через пять секунд неясно, к чему относилось предложение.
- */
-export const UndoButton = ({
-  description,
-  onUndo,
-  onHide,
-  duration = 5000,
-  style,
-}: UndoButtonProps) => {
-  const theme = useTheme();
-  const enter = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (!description) return;
-
-    Animated.spring(enter, {
-      toValue: 1,
-      useNativeDriver: true,
-      stiffness: 260,
-      damping: 26,
-      mass: 0.9,
-    }).start();
-
-    const timer = setTimeout(() => {
-      Animated.timing(enter, { toValue: 0, duration: 160, useNativeDriver: true }).start(onHide);
-    }, duration);
-
-    return () => clearTimeout(timer);
-  }, [description, duration, enter, onHide]);
-
-  if (!description) return null;
-
-  return (
-    <Animated.View
-      style={[
-        {
-          opacity: enter,
-          transform: [{ translateY: enter.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }],
-        },
-        style,
-      ]}
-    >
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={`Отменить: ${description}`}
-        onPress={() => {
-          onUndo();
-          onHide();
-        }}
-        style={({ pressed }) => [
-          styles.undo,
-          {
-            paddingHorizontal: theme.spacing.lg,
-            paddingVertical: theme.spacing.sm,
-            borderRadius: theme.radius.pill,
-            borderWidth: theme.metrics.hairline * 2,
-            borderColor: theme.colors.separator,
-            backgroundColor: theme.colors.elevated,
-            opacity: pressed ? 0.6 : 1,
-          },
-        ]}
-      >
-        <Text variant="subheadline" weight="semibold" color="accent">
-          Отменить
-        </Text>
-        <Text variant="caption1" color="secondaryLabel" numberOfLines={1}>
-          {description}
-        </Text>
-      </Pressable>
+      {onUndo ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Отменить: ${message}`}
+          hitSlop={4}
+          onPress={() => {
+            onUndo();
+            onHide();
+          }}
+          style={({ pressed }) => [
+            styles.action,
+            {
+              height: theme.controlHeight.buttonCompact,
+              paddingHorizontal: theme.spacing.md,
+              opacity: pressed ? 0.5 : 1,
+            },
+          ]}
+        >
+          <Text variant="subheadline" weight="semibold" color="accent">
+            Отменить
+          </Text>
+        </Pressable>
+      ) : null}
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  pill: { alignSelf: 'center', borderCurve: 'continuous' },
-  undo: { alignSelf: 'flex-start', alignItems: 'flex-start', borderCurve: 'continuous' },
+  toast: {
+    alignSelf: 'center',
+    maxWidth: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderCurve: 'continuous',
+  },
+  shrink: { flexShrink: 1 },
+  action: { justifyContent: 'center' },
   shadow: {
     shadowColor: '#000',
     shadowOpacity: 0.16,

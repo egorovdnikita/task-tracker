@@ -1,9 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { Button, ListRow, ListSection, Text, ScreenBackdrop } from '../src/components';
+import {
+  Button,
+  GlassSurface,
+  ListRow,
+  ListSection,
+  Text,
+  ScreenBackdrop,
+} from '../src/components';
 import { useTheme } from '../src/theme';
 import { formatDateTime } from '../src/utils/date';
 import {
@@ -76,10 +83,20 @@ export default function ReminderScreen() {
               padding: theme.spacing.lg,
               gap: theme.spacing.md,
               borderRadius: theme.radius.md,
-              borderCurve: 'continuous',
-              backgroundColor: theme.colors.secondarySystemGroupedBackground,
+              borderCurve: 'circular',
+              overflow: 'hidden',
             }}
           >
+            {/* Стекло Opal, а не серая заливка: серая гасила подсветку фона. */}
+            <GlassSurface
+              mesh="card"
+              stroke="card"
+              tint={theme.tints.card}
+              radius={theme.radius.md}
+              liquid={false}
+              pointerEventsNone
+              style={StyleSheet.absoluteFill}
+            />
             <Text variant="subheadline" weight="semibold">
               Уведомления выключены
             </Text>

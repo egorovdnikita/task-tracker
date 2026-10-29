@@ -254,7 +254,9 @@ const SwipeRow = ({
                 progress,
                 pinned ? 'Открепить' : 'Закрепить',
                 pinned ? 'pin.slash.fill' : 'pin.fill',
-                theme.hex.systemOrange,
+                // Монохромно: закрепление не главное действие и не опасное.
+                // Цвет у свайпа остаётся только у «Удалить».
+                theme.tints.control,
                 onTogglePin,
                 'left',
               )

@@ -41,10 +41,8 @@ export { Waveform, type WaveformProps } from './Waveform';
 export { NoteCard, type NoteCardProps } from './NoteCard';
 export { NoteList, type NoteListProps } from './NoteList';
 export {
-  MessagePill,
-  UndoButton,
-  type MessagePillProps,
-  type UndoButtonProps,
+  Toast,
+  type ToastProps,
 } from './Notifications';
 export { SearchField, type SearchFieldProps } from './SearchField';
 export { SegmentedControl, type Segment, type SegmentedControlProps } from './SegmentedControl';

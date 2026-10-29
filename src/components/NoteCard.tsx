@@ -16,9 +16,11 @@ import { Text } from './Text';
  * прошло» отличается от «на неделе» до того, как прочитана дата.
  */
 const DUE_COLOR: Record<ReturnType<typeof dueState>, PaletteName> = {
+  // Цвет несёт смысл, а не украшает: красный — просрочено, акцент — сегодня,
+  // всё дальше — обычная справка.
   overdue: 'systemRed',
-  today: 'systemGreen',
-  future: 'systemPurple',
+  today: 'accent',
+  future: 'secondaryLabel',
 };
 
 export type NoteCardProps = {

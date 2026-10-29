@@ -14,7 +14,7 @@ import {
   headerItems,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
-import { useNotesStore, activeNotes, searchNotes, sortNotes } from '../../../src/store/useNotesStore';
+import { useNotesStore, activeNotes, isSearching, searchNotes, sortNotes } from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 import { offerUndo } from '../../../src/features/notify';
 import { tagLabel } from '../../../src/features/tags';
@@ -53,17 +53,19 @@ export default function FolderScreen() {
 
   const layout = settings.layout[id ?? 'root'] ?? 'list';
 
+  const searching = isSearching(query);
+
   const visible = useMemo(() => {
     // Поиск идёт внутри папки, а не по всем заметкам: человек ищет там, где
     // стоит, — иначе список под полем перестал бы быть содержимым папки.
-    const base = query.trim() ? searchNotes(notes, query) : activeNotes(notes);
+    const base = searching ? searchNotes(notes, query) : activeNotes(notes);
     const filtered = scope.tag
       ? base.filter((n) => n.tags.includes(scope.tag!))
       : id === 'root'
         ? base.filter((n) => !n.folderId)
         : base.filter((n) => n.folderId === scope.folderId);
     return sortNotes(filtered, settings.sort);
-  }, [notes, query, scope, id, settings.sort]);
+  }, [notes, query, searching, scope, id, settings.sort]);
 
   const trashWithUndo = (ids: string[]) => {
     trashNotes(ids);
@@ -134,7 +136,7 @@ export default function FolderScreen() {
       <NoteList
         notes={visible}
         layout={layout}
-        highlight={query}
+        highlight={searching ? query : undefined}
         selectable={selection.active}
         selectedIds={selection.ids}
         onOpen={(noteId) =>
@@ -163,7 +165,7 @@ export default function FolderScreen() {
           ) : null
         }
         ListEmptyComponent={
-          query.trim() ? (
+          searching ? (
             <EmptyState
               icon="magnifyingglass"
               title="Ничего не найдено"

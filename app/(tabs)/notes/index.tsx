@@ -23,7 +23,7 @@ import { pluralNotes } from '../../../src/utils/date';
 import { SORT_LABELS } from '../../../src/features/labels';
 import { STATIC_TAGS } from '../../../src/features/tags';
 import { offerUndo } from '../../../src/features/notify';
-import { activeNotes, searchNotes, sortNotes, useNotesStore } from '../../../src/store/useNotesStore';
+import { activeNotes, isSearching, searchNotes, sortNotes, useNotesStore } from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 
 /** Фильтр по тегу. `all` — без фильтра, остальное — идентификатор своего тега. */
@@ -55,9 +55,7 @@ export default function NotesScreen() {
   const [tag, setTag] = useState('all');
   const selection = useSelection();
 
-  // Поиск идёт, когда набрано хотя бы два символа: по одной букве выдача — это
-  // весь список, и показывать её как результат нечестно.
-  const searching = query.trim().length >= 2;
+  const searching = isSearching(query);
 
   const layout = settings.layout.root ?? 'list';
 
@@ -185,7 +183,7 @@ export default function NotesScreen() {
       <NoteList
         notes={visible}
         layout={layout}
-        highlight={query}
+        highlight={searching ? query : undefined}
         selectable={selection.active}
         selectedIds={selection.ids}
         onOpen={(id) =>

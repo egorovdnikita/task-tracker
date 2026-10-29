@@ -292,9 +292,17 @@ export const sortNotes = (notes: Note[], sort: SortMode): Note[] =>
  * Корзина не ищется: заметка в ней уже удалена, и находить её вперемешку с
  * живыми значит показывать результат, по которому нельзя работать.
  */
+/**
+ * Поиск идёт, когда набрано хотя бы два символа: по одной букве выдача — это
+ * весь список, и показывать её как результат нечестно. Правило одно на все
+ * экраны — иначе папка пустела после первой буквы, а подсветка загоралась
+ * раньше фильтра.
+ */
+export const isSearching = (query: string): boolean => query.trim().length >= 2;
+
 export const searchNotes = (notes: Note[], query: string): Note[] => {
+  if (!isSearching(query)) return [];
   const needle = query.trim().toLowerCase();
-  if (needle.length < 2) return [];
 
   return activeNotes(notes).filter((note) =>
     [note.title, noteText(note), note.tags.join(' ')].some((field) =>

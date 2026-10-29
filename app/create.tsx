@@ -276,9 +276,10 @@ export default function CreateScreen() {
             horizontal
             showsHorizontalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
-            // Высота задана явно: у горизонтальной прокрутки в колонке своей
-            // высоты нет, и без числа ряд схлопнулся бы.
-            style={[styles.fixed, { height: theme.controlHeight.segmented + theme.spacing.lg }]}
+            // Нижняя граница высоты задана явно: у горизонтальной прокрутки в
+            // колонке своей высоты нет, и без числа ряд схлопнулся бы. Именно
+            // граница, а не высота — при крупном тексте чип растёт.
+            style={[styles.fixed, { minHeight: theme.controlHeight.segmented + theme.spacing.lg }]}
             contentContainerStyle={{
               alignItems: 'center',
               paddingHorizontal: theme.spacing.xl,

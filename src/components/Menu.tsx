@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
-  AccessibilityInfo,
   Animated,
   Dimensions,
   Modal,
@@ -13,6 +12,7 @@ import type { SFSymbol } from 'sf-symbols-typescript';
 import { create } from 'zustand';
 
 import { useTheme } from '../theme';
+import { useReduceMotion } from '../utils/useReduceMotion';
 import { Glass } from './Glass';
 import { Symbol } from './Symbol';
 import { Text } from './Text';
@@ -88,11 +88,7 @@ export const MenuHost = () => {
   // Состоянием, а не ссылкой: ответ приходит асинхронно, и без перерисовки
   // первое меню за запуск открылось бы с анимацией даже при выключенном
   // движении — то есть ровно там, где это заметнее всего.
-  const [reduceMotion, setReduceMotion] = useState(false);
-
-  useEffect(() => {
-    AccessibilityInfo.isReduceMotionEnabled().then(setReduceMotion);
-  }, []);
+  const reduceMotion = useReduceMotion();
 
   useEffect(() => {
     if (!request) return;

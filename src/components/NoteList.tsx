@@ -1,5 +1,12 @@
 import React, { useMemo, useRef } from 'react';
-import { Pressable, SectionList, StyleSheet, View, type ViewStyle } from 'react-native';
+import {
+  Pressable,
+  SectionList,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+  type ViewStyle,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ReanimatedSwipeable, {
   type SwipeableMethods,
@@ -67,6 +74,7 @@ export const NoteList = ({
 }: NoteListProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const { fontScale } = useWindowDimensions();
 
   // Одинокая карточка сеткой не выкладывается: половина ширины занята, вторая
   // пуста, и экран выглядит сломанным, а не полупустым. Сетка начинается там,
@@ -154,7 +162,10 @@ export const NoteList = ({
                   styles.cell,
                   // Карточка сетки — фиксированной высоты, чтобы строка была
                   // одинаковой независимо от содержимого соседа.
-                  columns > 1 ? { height: 140 } : null,
+                  // Высота ячейки сетки растёт с размером текста: при крупном
+                  // Dynamic Type фиксированные 140pt обрезали заголовок и
+                  // превью. Потолок — двойная высота, дальше сетка теряет смысл.
+                  columns > 1 ? { height: Math.round(140 * Math.min(fontScale, 2)) } : null,
                 ]}
               />
             );

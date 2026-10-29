@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { AccessibilityInfo, Animated, Dimensions, Easing, StyleSheet, View } from 'react-native';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { Animated, Dimensions, Easing, StyleSheet, View } from 'react-native';
 
 import { useTheme } from '../theme';
+import { useReduceMotion } from '../utils/useReduceMotion';
 
 export type ConfettiProps = {
   /** Запуск. Ставится один раз на событие и сбрасывается по `onDone`. */
@@ -27,11 +28,7 @@ const PALETTE = ['red', 'orange', 'yellow', 'green', 'mint', 'purple', 'pink'] a
 export const Confetti = ({ active, onDone, count = 28 }: ConfettiProps) => {
   const theme = useTheme();
   const progress = useRef(new Animated.Value(0)).current;
-  const [reduceMotion, setReduceMotion] = useState(true);
-
-  useEffect(() => {
-    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => setReduceMotion(enabled));
-  }, []);
+  const reduceMotion = useReduceMotion(true);
 
   const particles = useMemo(
     () =>

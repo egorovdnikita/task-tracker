@@ -81,7 +81,7 @@ const BlockShell = ({
           </Text>
         )}
 
-        <Text variant="caption1" color="tertiaryLabel">
+        <Text variant="caption1" color="secondaryLabel">
           {summary}
         </Text>
 

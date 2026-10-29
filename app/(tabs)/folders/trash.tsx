@@ -1,16 +1,12 @@
 import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 
 import { EmptyState, ListRow, ListSection, ScreenBackdrop } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { noteTitle } from '../../../src/utils/blocks';
-import { confirmDestructive, showActionSheet } from '../../../src/utils/actionSheet';
-import {
-  daysLeftInTrash,
-  trashedNotes,
-  useNotesStore,
-} from '../../../src/store/useNotesStore';
+import { confirmDestructive } from '../../../src/utils/actionSheet';
+import { daysLeftInTrash, trashedNotes, useNotesStore } from '../../../src/store/useNotesStore';
 import { pluralNotes } from '../../../src/utils/date';
 import { notify } from '../../../src/features/notify';
 
@@ -57,12 +53,15 @@ export default function TrashScreen() {
       ) : (
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
-          contentContainerStyle={{ paddingTop: theme.spacing.sm, paddingBottom: theme.spacing.xxxl }}
+          contentContainerStyle={{
+            paddingTop: theme.spacing.sm,
+            paddingBottom: theme.spacing.xxxl,
+          }}
         >
           <ListSection
             header="В корзине"
             count={trashed.length}
-            footer="Нажмите на заметку, чтобы восстановить её или удалить сразу."
+            footer="Нажмите на заметку, чтобы посмотреть её. Долгое нажатие — восстановить или удалить сразу."
           >
             {trashed.map((note) => (
               <ListRow
@@ -70,25 +69,30 @@ export default function TrashScreen() {
                 title={noteTitle(note)}
                 subtitle={`Удалится через ${daysLeftInTrash(note)} дн.`}
                 accessory={{ type: 'disclosure' }}
-                onPress={() =>
-                  showActionSheet(
-                    [
-                      { title: 'Восстановить', onPress: () => restore(note.id) },
-                      {
-                        title: 'Удалить навсегда',
-                        destructive: true,
-                        onPress: () =>
-                          confirmDestructive(
-                            'Удалить навсегда?',
-                            'Эту заметку нельзя будет вернуть.',
-                            'Удалить',
-                            () => deleteForever([note.id]),
-                          ),
-                      },
-                    ],
-                    { title: noteTitle(note) },
-                  )
-                }
+                // Касание открывает заметку на просмотр: раньше её нельзя было
+                // увидеть, только восстановить или стереть вслепую. Быстрые
+                // действия — меню по долгому нажатию из самой строки.
+                onPress={() => router.push({ pathname: '/note/[id]', params: { id: note.id } })}
+                menuTitle={noteTitle(note)}
+                menu={() => [
+                  {
+                    title: 'Восстановить',
+                    icon: 'arrow.uturn.backward',
+                    onPress: () => restore(note.id),
+                  },
+                  {
+                    title: 'Удалить навсегда',
+                    icon: 'trash',
+                    destructive: true,
+                    onPress: () =>
+                      confirmDestructive(
+                        'Удалить навсегда?',
+                        'Эту заметку нельзя будет вернуть.',
+                        'Удалить',
+                        () => deleteForever([note.id]),
+                      ),
+                  },
+                ]}
               />
             ))}
           </ListSection>

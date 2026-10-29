@@ -36,6 +36,7 @@ import { STATIC_TAGS, tagLabel } from '../../src/features/tags';
 import { notify, offerUndo } from '../../src/features/notify';
 import { useKeyboardVisible } from '../../src/utils/useKeyboardVisible';
 import { useNotesStore } from '../../src/store/useNotesStore';
+import { confirmDestructive } from '../../src/utils/actionSheet';
 import type { NoteBlock } from '../../src/types';
 
 const REMOVED: Record<NoteBlock['type'], string> = {
@@ -89,6 +90,7 @@ export default function NoteScreen() {
   const togglePinned = useNotesStore((s) => s.togglePinned);
   const trashNotes = useNotesStore((s) => s.trashNotes);
   const restoreNotes = useNotesStore((s) => s.restoreNotes);
+  const deleteForever = useNotesStore((s) => s.deleteForever);
 
   const note = useMemo(() => notes.find((n) => n.id === id) ?? null, [notes, id]);
   const [titleDraft, setTitleDraft] = useState(note?.title ?? '');
@@ -166,6 +168,32 @@ export default function NoteScreen() {
     setBlocks(note.id, blocks);
   };
 
+  /** Заметка из корзины открывается на просмотр: правки в ней недоступны. */
+  const trashed = note.deletedAt !== null;
+
+  const trashedMenu = (): MenuItem[] => [
+    {
+      title: 'Восстановить',
+      icon: 'arrow.uturn.backward' as const,
+      onPress: () => restoreNotes([note.id]),
+    },
+    {
+      title: 'Удалить навсегда',
+      icon: 'trash' as const,
+      destructive: true,
+      onPress: () =>
+        confirmDestructive(
+          'Удалить навсегда?',
+          'Эту заметку нельзя будет вернуть.',
+          'Удалить',
+          () => {
+            router.back();
+            deleteForever([note.id]);
+          },
+        ),
+    },
+  ];
+
   const menuItems = (): MenuItem[] => [
     {
       title: note.pinned ? 'Открепить' : 'Закрепить',
@@ -222,16 +250,19 @@ export default function NoteScreen() {
           */
           unstable_headerRightItems: headerItems(() => (
             <HeaderCapsule>
-              <IconButton
-                name={note.pinned ? 'pin.fill' : 'pin'}
-                size={19}
-                accessibilityLabel={note.pinned ? 'Открепить' : 'Закрепить'}
-                onPress={() => togglePinned(note.id)}
-              />
+              {/* В корзине закреплять нечего — там только меню восстановления. */}
+              {!trashed ? (
+                <IconButton
+                  name={note.pinned ? 'pin.fill' : 'pin'}
+                  size={19}
+                  accessibilityLabel={note.pinned ? 'Открепить' : 'Закрепить'}
+                  onPress={() => togglePinned(note.id)}
+                />
+              ) : null}
 
               <MenuButton
                 accessibilityLabel="Меню заметки"
-                items={menuItems}
+                items={trashed ? trashedMenu : menuItems}
                 style={({ pressed }) => ({
                   width: theme.controlHeight.buttonCompact,
                   height: theme.controlHeight.buttonCompact,
@@ -280,7 +311,7 @@ export default function NoteScreen() {
               style={StyleSheet.absoluteFill}
             />
             <Text variant="footnote" color="secondaryLabel" style={{ flex: 1 }}>
-              Заметка в корзине — правки не сохранятся
+              Заметка в корзине. Восстановите её, чтобы править
             </Text>
             <Text
               variant="footnote"
@@ -307,15 +338,17 @@ export default function NoteScreen() {
               setTitleDraft(value);
               updateNote(note.id, { title: value });
             }}
+            editable={!trashed}
             placeholder="Заголовок"
             placeholderTextColor={theme.colors.placeholderText}
             style={[theme.text('title2', 'bold'), { color: theme.colors.label, padding: 0 }]}
           />
 
           {/* Метаданные: срок окрашен по смыслу, иконка того же цвета.
-              Остальное — третичным серым: это справка, а не содержание. */}
+              Остальное — вторичным серым: это справка, а не содержание, но
+              третичный на чистом чёрном в 12pt давал контраст около 3:1. */}
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.md }}>
-            <Text variant="caption1" color="tertiaryLabel">
+            <Text variant="caption1" color="secondaryLabel">
               {formatDateTime(note.updatedAt)}
               {folder ? ` · ${folder.name}` : ''}
               {status === 'saving' ? ' · Сохранение…' : status === 'saved' ? ' · Сохранено' : ''}
@@ -335,27 +368,33 @@ export default function NoteScreen() {
             ) : null}
           </View>
 
-          <BlockEditor
-            blocks={note.blocks}
-            moveCheckedDown={settings.moveCheckedDown}
-            onChange={changeBlocks}
-            onEditSketch={(blockId) =>
-              router.push({ pathname: '/capture/sketch', params: { id: note.id, block: blockId } })
-            }
-            onRemoved={(block, index) =>
-              offerUndo(REMOVED[block.type], () => {
-                // Возвращаем в текущие блоки, а не в снимок до удаления: правки,
-                // сделанные за время показа отмены, не должны пропасть.
-                const current = useNotesStore.getState().notes.find((n) => n.id === note.id);
-                if (!current) return;
-                const next = [...current.blocks];
-                next.splice(Math.min(index, next.length), 0, block);
-                setBlocks(note.id, next);
-              })
-            }
-          />
+          {/* Тело и теги в корзине только для чтения: раньше плашка обещала,
+              что правки не сохранятся, а они сохранялись. */}
+          <View pointerEvents={trashed ? 'none' : 'auto'} style={{ gap: theme.spacing.lg }}>
+            <BlockEditor
+              blocks={note.blocks}
+              moveCheckedDown={settings.moveCheckedDown}
+              onChange={changeBlocks}
+              onEditSketch={(blockId) =>
+                router.push({
+                  pathname: '/capture/sketch',
+                  params: { id: note.id, block: blockId },
+                })
+              }
+              onRemoved={(block, index) =>
+                offerUndo(REMOVED[block.type], () => {
+                  // Возвращаем в текущие блоки, а не в снимок до удаления: правки,
+                  // сделанные за время показа отмены, не должны пропасть.
+                  const current = useNotesStore.getState().notes.find((n) => n.id === note.id);
+                  if (!current) return;
+                  const next = [...current.blocks];
+                  next.splice(Math.min(index, next.length), 0, block);
+                  setBlocks(note.id, next);
+                })
+              }
+            />
 
-          {/*
+            {/*
             Теги — три готовых чипа прямо здесь, а не отдельный шит.
 
             Шит открывался пустым: своих тегов у новой заметки нет, поле
@@ -364,40 +403,41 @@ export default function NoteScreen() {
             ставятся касанием и видны в том же месте, где всё остальное про
             заметку.
           */}
-          <View style={{ gap: theme.spacing.sm }}>
-            <Text variant="footnote" color="secondaryLabel">
-              Теги
-            </Text>
+            <View style={{ gap: theme.spacing.sm }}>
+              <Text variant="footnote" color="secondaryLabel">
+                Теги
+              </Text>
 
-            <ChipWrap>
-              {STATIC_TAGS.map((tag) => (
-                <Chip
-                  key={tag.id}
-                  label={tag.label}
-                  icon={tag.icon}
-                  accent={tag.accent}
-                  outlined={!note.tags.includes(tag.id)}
-                  selected={note.tags.includes(tag.id)}
-                  onPress={() => toggleTag(tag.id)}
-                />
-              ))}
-
-              {/* Теги из прежних версий не исчезают: их нельзя поставить
-                  заново, но снять можно — иначе они остались бы навсегда. */}
-              {note.tags
-                .filter((tag) => !STATIC_TAGS.some((item) => item.id === tag))
-                .map((tag) => (
+              <ChipWrap>
+                {STATIC_TAGS.map((tag) => (
                   <Chip
-                    key={tag}
-                    label={tagLabel(tag)}
-                    icon="tag"
-                    selected
-                    onRemove={() =>
-                      updateNote(note.id, { tags: note.tags.filter((t) => t !== tag) })
-                    }
+                    key={tag.id}
+                    label={tag.label}
+                    icon={tag.icon}
+                    accent={tag.accent}
+                    outlined={!note.tags.includes(tag.id)}
+                    selected={note.tags.includes(tag.id)}
+                    onPress={() => toggleTag(tag.id)}
                   />
                 ))}
-            </ChipWrap>
+
+                {/* Теги из прежних версий не исчезают: их нельзя поставить
+                  заново, но снять можно — иначе они остались бы навсегда. */}
+                {note.tags
+                  .filter((tag) => !STATIC_TAGS.some((item) => item.id === tag))
+                  .map((tag) => (
+                    <Chip
+                      key={tag}
+                      label={tagLabel(tag)}
+                      icon="tag"
+                      selected
+                      onRemove={() =>
+                        updateNote(note.id, { tags: note.tags.filter((t) => t !== tag) })
+                      }
+                    />
+                  ))}
+              </ChipWrap>
+            </View>
           </View>
         </ScrollView>
 

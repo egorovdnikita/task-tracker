@@ -202,7 +202,7 @@ const ChecklistBlockEditor = ({
           { gap: theme.spacing.md, opacity: pressed ? 0.5 : 1 },
         ]}
       >
-        <Symbol name="plus.circle" size={22} color={theme.colors.accent} />
+        <Symbol name="plus.circle" size={22} color={theme.colors.secondaryLabel} />
         <Text variant="body" color="accent">
           Добавить пункт
         </Text>

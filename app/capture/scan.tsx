@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 
-import { Button, Glass, IconButton, Symbol, Text } from '../../src/components';
+import { Button, Glass, IconButton, Symbol, Text, headerItems } from '../../src/components';
 import { useTheme } from '../../src/theme';
 import { persistMedia } from '../../src/features/media';
 import { makeId, makeScanBlock } from '../../src/utils/blocks';
@@ -100,13 +100,13 @@ export default function ScanCaptureScreen() {
       <Stack.Screen
         options={{
           title: pages.length > 0 ? `Страниц: ${pages.length}` : 'Скан',
-          headerLeft: () => (
+          unstable_headerLeftItems: headerItems(() => (
             <IconButton name="xmark" accessibilityLabel="Отменить" onPress={() => router.back()} />
-          ),
-          headerRight: () =>
+          )),
+          unstable_headerRightItems: headerItems(() =>
             pages.length > 0 ? (
               <IconButton name="checkmark" accessibilityLabel="Готово" onPress={finish} />
-            ) : null,
+            ) : null),
         }}
       />
 
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#000' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   middle: { textAlign: 'center' },
-  frame: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' },
+  frame: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
   guide: { width: '82%', aspectRatio: 0.72, borderWidth: 2, borderRadius: 12, borderStyle: 'dashed' },
   bar: {
     position: 'absolute',

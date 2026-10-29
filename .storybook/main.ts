@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/react-vite';
 import type { Plugin } from 'vite';
 import type { Plugin as EsbuildPlugin } from 'esbuild';
@@ -111,7 +112,22 @@ const config: StorybookConfig = {
             find: 'react-native/Libraries/Image/AssetRegistry',
             replacement: 'react-native-web/dist/modules/AssetRegistry',
           },
-          { find: /^react-native$/, replacement: 'react-native-web' },
+          // `react-native-svg` в вебе берёт реестр ассетов из пакета RN,
+          // которого в браузерной сборке нет; у react-native-web он свой.
+          {
+            find: '@react-native/assets-registry/registry',
+            replacement: 'react-native-web/dist/modules/AssetRegistry',
+          },
+          // npm держит `expo-modules-core` только внутри `expo/node_modules`, и
+          // из `expo-font` он не находится. Metro этот путь знает из конфига
+          // Expo, Vite — нет, поэтому указываем его явно.
+          {
+            find: /^expo-modules-core$/,
+            replacement: fileURLToPath(
+              new URL('../node_modules/expo/node_modules/expo-modules-core', import.meta.url),
+            ),
+          },
+          { find: /^react-native$/, replacement: fileURLToPath(new URL('./react-native-web-shim.ts', import.meta.url)) },
           { find: /^react-native\//, replacement: 'react-native-web/' },
         ],
       },
@@ -123,7 +139,20 @@ const config: StorybookConfig = {
         // это, поэтому подменяем точечно, а не шимим весь объект.
         'process.env.JEST': 'undefined',
       },
+      build: {
+        rolldownOptions: {
+          // В SDK 58 часть пакетов Expo импортирует имена, которых в вебе нет:
+          // объявления типов `expo-modules-core`, собранные в JS, и нативные
+          // классы. В браузере эти имена и так не существуют, поэтому вместо
+          // падения сборки — пустая подстановка. Для `react-native` нужные
+          // заглушки лежат в `react-native-web-shim.ts`: там значение
+          // читается при импорте, и пустышка уронила бы модуль.
+          shimMissingExports: true,
+        },
+      },
       optimizeDeps: {
+        // То же для пре-бандла зависимостей в dev-режиме — он собирается отдельно.
+        rolldownOptions: { shimMissingExports: true },
         include: [
           'react-native-web',
           // CommonJS-зависимости Skia: без пре-бандла именованный и дефолтный

@@ -104,7 +104,7 @@ export const ListSection = ({
             styles.header,
             {
               marginHorizontal: theme.spacing.lg + theme.spacing.xs,
-              marginBottom: theme.spacing.sm,
+              marginBottom: theme.spacing.md,
               gap: theme.spacing.sm,
             },
           ]}
@@ -133,7 +133,7 @@ export const ListSection = ({
               hitSlop={12}
               style={({ pressed }) => ({ opacity: pressed ? 0.4 : 1 })}
             >
-              <Symbol name={action.icon} size={19} color={theme.colors.accent} />
+              <Symbol name={action.icon} size={20} color={theme.colors.label} />
             </Pressable>
           ) : null}
         </View>
@@ -154,6 +154,9 @@ export const ListSection = ({
           stroke="card"
           tint={theme.tints.card}
           radius={theme.radius.md}
+          // Своими слоями, без системного стекла: жидкое стекло на чёрном
+          // светлеет до молочного, а группа строк должна оставаться прозрачной.
+          liquid={false}
           pointerEventsNone
           style={StyleSheet.absoluteFill}
         />
@@ -257,7 +260,7 @@ export const ListRow = ({
 }: ListRowProps) => {
   const theme = useTheme();
   const color: PaletteName = destructive ? 'systemRed' : titleColor ?? 'label';
-  const ref = useRef<View>(null);
+  const ref = useRef<React.ComponentRef<typeof View>>(null);
 
   const openMenu = menu
     ? () =>
@@ -272,9 +275,9 @@ export const ListRow = ({
         styles.row,
         {
           minHeight: subtitle ? theme.controlHeight.rowDetail : theme.controlHeight.row,
-          paddingHorizontal: theme.spacing.lg,
-          paddingVertical: theme.spacing.sm,
-          gap: theme.spacing.md,
+          paddingHorizontal: theme.spacing.xl,
+          paddingVertical: theme.spacing.md,
+          gap: theme.spacing.lg,
           opacity: disabled ? 0.35 : 1,
         },
       ]}
@@ -287,7 +290,9 @@ export const ListRow = ({
         iconBackground ? (
           <SymbolBadge name={icon} background={iconBackground} />
         ) : (
-          <Symbol name={icon} size={22} color={iconColor ?? theme.colors.accent} />
+          // Иконка строки — приглушённый белый: полный белый спорил с
+          // названием строки за первое прочтение.
+          <Symbol name={icon} size={22} color={iconColor ?? theme.colors.secondaryLabel} />
         )
       ) : null}
 
@@ -313,11 +318,11 @@ export const ListRow = ({
       {trailing}
 
       {accessory.type === 'disclosure' ? (
-        <Symbol name="chevron.right" size={14} color={theme.colors.tertiaryLabel} weight="semibold" />
+        <Symbol name="chevron.right" size={18} color={theme.colors.tertiaryLabel} />
       ) : null}
 
       {accessory.type === 'checkmark' && accessory.checked ? (
-        <Symbol name="checkmark" size={16} color={theme.colors.accent} weight="semibold" />
+        <Symbol name="checkmark" size={18} color={theme.colors.label} />
       ) : null}
 
       {accessory.type === 'switch' ? (
@@ -359,7 +364,9 @@ const styles = StyleSheet.create({
   grow: { flex: 1 },
   // Ширина как у глифа: с эмодзи и без него строки стоят в одну колонку.
   emoji: { width: 22, textAlign: 'center' },
-  group: { overflow: 'hidden', borderCurve: 'continuous' },
+  // Обрезка дугой, как у канта стекла под группой: суперэллипс срезал бы
+  // кант на углах ступенькой.
+  group: { overflow: 'hidden', borderCurve: 'circular' },
   row: { flexDirection: 'row', alignItems: 'center' },
   labels: { flex: 1, gap: 1 },
 });

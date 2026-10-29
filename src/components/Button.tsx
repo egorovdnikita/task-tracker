@@ -133,7 +133,8 @@ export const Button = ({
       style={({ pressed }) => [frame, { opacity: pressed && !inactive ? 0.82 : frame.opacity }, style]}
       {...rest}
     >
-      <View style={[styles.fill, { borderRadius, borderCurve: 'continuous' }]}>
+      {/* Обрезка дугой — по кривой канта стекла внутри, иначе края рвутся. */}
+      <View style={[styles.fill, { borderRadius, borderCurve: 'circular' }]}>
         {spec ? (
           <GlassSurface
             {...spec}
@@ -164,7 +165,7 @@ export const IconButton = ({
   name,
   accessibilityLabel,
   size = 22,
-  color = 'accent',
+  color = 'label',
   disabled,
   style,
   ...rest
@@ -200,15 +201,8 @@ export const IconButton = ({
 };
 
 /**
- * Группа кнопок в шапке.
- *
- * Обычный ряд без своего фона — и это принципиально. Стеклянную капсулу под
- * кнопками шапки iOS 26 рисует сама: на референсе переключатель вида и меню
- * стоят внутри общей пилюли, и та пилюля системная, а не нарисованная. Своё
- * стекло здесь дало бы стекло внутри стекла — двойную кромку и лишний вес.
- *
- * Роль компонента — только расстановка: одинаковый зазор между кнопками во
- * всех шапках приложения.
+ * Группа кнопок в шапке — расстановка с одинаковым зазором во всех шапках.
+ * Своего фона у неё нет: пилюлю под ней рисует `headerItems`.
  */
 export const HeaderCapsule = ({
   children,
@@ -221,6 +215,63 @@ export const HeaderCapsule = ({
 
   return <View style={[styles.capsule, { gap: theme.spacing.xs }, style]}>{children}</View>;
 };
+
+/**
+ * Пилюля под кнопками шапки — то же тонкое стекло Opal, что у поля поиска.
+ */
+const HeaderGlass = ({ children }: { children: React.ReactNode }) => {
+  const theme = useTheme();
+  const height = theme.controlHeight.buttonCompact;
+
+  return (
+    <View style={[styles.capsule, { height, minWidth: height, borderRadius: height / 2 }]}>
+      <GlassSurface
+        stroke="glass"
+        tint={theme.tints.control}
+        radius={height / 2}
+        liquid={false}
+        pointerEventsNone
+        style={StyleSheet.absoluteFill}
+      />
+      {children}
+    </View>
+  );
+};
+
+/**
+ * Кнопки шапки как один элемент со своей подложкой.
+ *
+ * Обычный `headerRight` iOS 26 сажает в системную стеклянную капсулу, а она
+ * на чёрном фоне выходит молочно-белой и прозрачность под неё не задать.
+ * Здесь элемент отдаётся как `custom` с `hidesSharedBackground` — системная
+ * капсула прячется, и под кнопками лежит наше стекло, прозрачное как
+ * остальные поверхности.
+ *
+ * Идёт в `unstable_headerRightItems` / `unstable_headerLeftItems`.
+ */
+export const headerItems =
+  (render: () => React.ReactElement | null) =>
+  () => {
+    const element = render();
+    if (!element) return [];
+    return [
+      {
+        type: 'custom' as const,
+        element: <HeaderGlass>{element}</HeaderGlass>,
+        hidesSharedBackground: true,
+      },
+    ];
+  };
+
+/**
+ * Кнопка «Назад» — одна на всё приложение: стеклянный круг с шевроном, без
+ * подписи. Системная кнопка рядом со своей несла название прошлого экрана и
+ * выглядела другим органом управления, хотя делает то же самое.
+ */
+export const backItem = (onPress: () => void) =>
+  headerItems(() => (
+    <IconButton name="chevron.left" size={22} accessibilityLabel="Назад" onPress={onPress} />
+  ));
 
 /** Подмешать альфу к hex или rgb-строке — для бледных акцентных заливок. */
 export const withAlpha = (color: string, alpha: number): string => {

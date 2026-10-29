@@ -127,7 +127,7 @@ export const MenuHost = () => {
   // числу строк, а не измеряется: меню должно встать сразу, без кадра, в
   // котором оно стоит не там.
   const height =
-    items.length * theme.controlHeight.row + (title ? theme.controlHeight.row : 0);
+    items.length * theme.controlHeight.menuRow + (title ? theme.controlHeight.menuRow : 0);
   const below = anchor.y + anchor.height + GAP;
   const dropsDown = below + height < screen.height - SCREEN_MARGIN;
   const top = dropsDown ? below : Math.max(SCREEN_MARGIN, anchor.y - GAP - height);
@@ -169,7 +169,7 @@ export const MenuHost = () => {
             <View
               style={[
                 styles.title,
-                { height: theme.controlHeight.row, paddingHorizontal: theme.spacing.lg },
+                { height: theme.controlHeight.menuRow, paddingHorizontal: theme.spacing.lg },
               ]}
             >
               <Text variant="footnote" color="secondaryLabel" numberOfLines={1}>
@@ -197,7 +197,7 @@ export const MenuHost = () => {
                 style={({ pressed }) => [
                   styles.item,
                   {
-                    height: theme.controlHeight.row,
+                    height: theme.controlHeight.menuRow,
                     paddingHorizontal: theme.spacing.lg,
                     gap: theme.spacing.md,
                     opacity: item.disabled ? 0.35 : 1,
@@ -218,7 +218,7 @@ export const MenuHost = () => {
                   <Symbol
                     name="checkmark"
                     size={15}
-                    color={theme.colors.accent}
+                    color={theme.colors.label}
                     weight="semibold"
                   />
                 ) : null}
@@ -262,7 +262,7 @@ export const MenuButton = ({
   accessibilityLabel,
   style,
 }: MenuButtonProps) => {
-  const ref = useRef<View>(null);
+  const ref = useRef<React.ComponentRef<typeof View>>(null);
 
   return (
     <Pressable

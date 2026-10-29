@@ -169,12 +169,31 @@ export const GlassSurface = ({
       }
     : null;
 
+  /*
+    Кривая обрезки обязана совпадать с кривой канта.
+
+    Кант — SVG-прямоугольник со скруглением дугой окружности, а
+    `borderCurve: 'continuous'` обрезает по суперэллипсу. На углах, и сильнее
+    всего у пилюль, эти кривые расходятся на пиксель-два, и обрезка срезала
+    кант ступенькой: край выглядел рваным и пиксельным. Поэтому там, где
+    кант рисуем мы, обрезка — тоже дугой; непрерывная кривая остаётся только
+    под системным стеклом, у которого кант свой.
+  */
+  const drawsStroke = Boolean(strokeSpec) && !useNativeGlass;
+
   return (
     <Surface
       {...surfaceProps}
       onLayout={onLayout}
       pointerEvents={pointerEventsNone ? 'none' : undefined}
-      style={[{ borderRadius: r, borderCurve: 'continuous', overflow: 'hidden' }, style]}
+      style={[
+        {
+          borderRadius: r,
+          borderCurve: drawsStroke ? 'circular' : 'continuous',
+          overflow: 'hidden',
+        },
+        style,
+      ]}
     >
       {/* Матовое стекло и подложку рисуем сами только там, где системного нет. */}
       {!useNativeGlass && blurIntensity != null ? (
@@ -237,7 +256,7 @@ export const GlassSurface = ({
             собственный световой кант, и вторая линия поверх читается
             как двойная рамка.
           */}
-          {strokeSpec && !useNativeGlass ? (
+          {strokeSpec && drawsStroke ? (
             <Rect
               x={strokeWidth / 2}
               y={strokeWidth / 2}

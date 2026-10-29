@@ -2,6 +2,8 @@ export { BottomBar, type BottomBarProps } from './BottomBar';
 export {
   Button,
   HeaderCapsule,
+  headerItems,
+  backItem,
   IconButton,
   withAlpha,
   type ButtonProps,

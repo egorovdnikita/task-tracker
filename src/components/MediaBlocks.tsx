@@ -6,6 +6,7 @@ import Svg, { Path } from 'react-native-svg';
 import { useTheme } from '../theme';
 import type { NoteBlock } from '../types';
 import { blockSummary, formatDuration } from '../utils/blocks';
+import { GlassSurface } from './GlassSurface';
 import { Symbol } from './Symbol';
 import { Text } from './Text';
 import { Waveform } from './Waveform';
@@ -44,12 +45,25 @@ const BlockShell = ({
     <View
       style={{
         borderRadius: theme.radius.lg,
-        borderCurve: 'continuous',
-        backgroundColor: theme.colors.secondarySystemGroupedBackground,
+        // Дуга, а не суперэллипс: кант подложки рисуется дугой, и разные
+        // кривые обрезали бы его на углах.
+        borderCurve: 'circular',
+        overflow: 'hidden',
         padding: theme.spacing.md,
         gap: theme.spacing.md,
       }}
     >
+      {/* Подложка карточки заметки, а не системная серая: та на чёрном
+          фоне Opal сливалась с ним, и блок висел без края. */}
+      <GlassSurface
+        mesh="card"
+        stroke="card"
+        tint={theme.tints.card}
+        radius={theme.radius.lg}
+        liquid={false}
+        pointerEventsNone
+        style={StyleSheet.absoluteFill}
+      />
       <View style={[styles.head, { gap: theme.spacing.sm }]}>
         <Symbol name={icon} size={16} color={theme.colors.secondaryLabel} />
 

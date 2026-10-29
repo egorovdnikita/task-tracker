@@ -3,7 +3,7 @@ import { PanResponder, Pressable, StyleSheet, View, type LayoutChangeEvent } fro
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
 
-import { Glass, IconButton, Text } from '../../src/components';
+import { Glass, IconButton, Text, headerItems } from '../../src/components';
 import { useTheme } from '../../src/theme';
 import { makeId, makeSketchBlock } from '../../src/utils/blocks';
 import type { SketchStroke } from '../../src/types';
@@ -122,10 +122,10 @@ export default function SketchCaptureScreen() {
       <Stack.Screen
         options={{
           title: existing ? 'Дорисовать' : 'Рисунок',
-          headerLeft: () => (
+          unstable_headerLeftItems: headerItems(() => (
             <IconButton name="xmark" accessibilityLabel="Отменить" onPress={() => router.back()} />
-          ),
-          headerRight: () => (
+          )),
+          unstable_headerRightItems: headerItems(() => (
             <View style={{ flexDirection: 'row', gap: theme.spacing.lg }}>
               <IconButton
                 name="arrow.uturn.backward"
@@ -140,7 +140,7 @@ export default function SketchCaptureScreen() {
                 onPress={finish}
               />
             </View>
-          ),
+          )),
         }}
       />
 
@@ -248,7 +248,7 @@ export default function SketchCaptureScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   canvas: { flex: 1 },
-  hint: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' },
+  hint: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
   tools: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' },
   group: { flexDirection: 'row', alignItems: 'center' },
 });

@@ -59,14 +59,14 @@ export const Chip = ({
       {icon ? (
         <Symbol
           name={icon}
-          size={13}
+          size={16}
           color={outlined ? theme.colors.secondaryLabel : accentHex}
           weight="semibold"
         />
       ) : null}
 
       <Text
-        variant="subheadline"
+        variant="callout"
         weight={selected ? 'semibold' : 'regular'}
         color={outlined ? 'label' : selected ? 'label' : 'secondaryLabel'}
         style={selected && accent && !outlined ? { color: accentHex } : undefined}
@@ -79,9 +79,9 @@ export const Chip = ({
 
   const shape: ViewStyle = {
     height: theme.controlHeight.segmented,
-    paddingLeft: theme.spacing.md,
-    paddingRight: onRemove ? theme.spacing.sm : theme.spacing.md,
-    gap: theme.spacing.xs,
+    paddingLeft: theme.spacing.lg,
+    paddingRight: onRemove ? theme.spacing.md : theme.spacing.lg,
+    gap: theme.spacing.sm,
     borderRadius: theme.radius.pill,
     backgroundColor: background,
     borderWidth: outlined ? theme.metrics.hairline * 2 : 0,

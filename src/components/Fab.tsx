@@ -37,7 +37,7 @@ export const Fab = ({
 }: FabProps) => {
   const theme = useTheme();
   const size = theme.controlHeight.fab;
-  const ref = useRef<View>(null);
+  const ref = useRef<React.ComponentRef<typeof View>>(null);
 
   return (
     <Pressable

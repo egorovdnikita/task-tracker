@@ -1,57 +1,67 @@
 import React from 'react';
-import { Icon, Label, NativeTabs } from 'expo-router/unstable-native-tabs';
-
-import { useTheme } from '../../src/theme';
+import { NativeTabs } from 'expo-router/native-tabs';
 
 /**
  * Панель вкладок — настоящий `UITabBarController`.
  *
  * `NativeTabs` рисует её через `react-native-screens`, а не своими вьюхами.
- * Отсюда всё системное поведение разом: жидкое стекло iOS 26, сворачивание
- * при прокрутке, Dynamic Type, VoiceOver, длинное нажатие на активную вкладку.
+ * Отсюда всё системное поведение разом: жидкое стекло iOS 26 с линзой под
+ * выбранной вкладкой, которую можно зажать и провести по панели,
+ * сворачивание при прокрутке, Dynamic Type, VoiceOver.
+ *
+ * Своя капсула здесь уже была — ради светлой плашки под выбранной вкладкой,
+ * которой у системной панели не настроить. Её вернули обратно: копия теряла
+ * системное стекло и линзу, а это дороже плашки.
  *
  * Фон панели не задаётся намеренно. Стоит указать `backgroundColor` — и стекло
- * заменяется плоской заливкой: панель перестаёт пропускать контент под собой
- * и превращается в полосу внизу экрана.
+ * заменяется плоской заливкой.
  *
- * Иконки — имена SF Symbols. Свои SVG здесь были бы единственными
- * несистемными элементами внутри системного контейнера.
- *
- * Вкладки поиска здесь нет намеренно. Поиск — не раздел, а действие над тем
- * списком, который человек уже видит; вкладка уводила его на пустой экран и
- * требовала принести список туда заново. Поле поиска теперь стоит у нижнего
- * края самого списка, вместе с кнопкой создания.
+ * Иконки — из box-ui, стиль `bold`. Панель нативная и SVG не принимает,
+ * поэтому глифы растрированы в PNG-шаблоны (`assets/tabs`, 24pt, @1x–@3x,
+ * белым на прозрачном). 24pt, а не 26: в капсуле фиксированной высоты меньший
+ * глиф оставляет воздух вокруг себя и подписи.
  */
 export default function TabsLayout() {
-  const theme = useTheme();
-
   return (
     <NativeTabs
-      tintColor={theme.hex.accent}
+      /*
+        Все вкладки белые, полужирной подписью; выбранную отличает линза
+        стекла под ней, а не цвет. Цвета заданы по состояниям: одного
+        `tintColor` стекло пропускает через свою вибрацию, и белый выходит
+        серым.
+      */
+      tintColor="#FFFFFF"
+      iconColor={{ default: '#FFFFFF', selected: '#FFFFFF' }}
+      // 12pt вместо системных 10: на чёрном стекле десятый кегль читался
+      // мелкой сноской под иконкой.
+      labelStyle={{
+        default: { color: '#FFFFFF', fontWeight: '600', fontSize: 12 },
+        selected: { color: '#FFFFFF', fontWeight: '600', fontSize: 12 },
+      }}
+      // Подпись ниже обычного — зазор между глифом и словом.
+      titlePositionAdjustment={{ vertical: 3 }}
       // Панель сворачивается, когда список едет вниз, и возвращается при
       // движении вверх — так контенту достаётся весь экран во время чтения.
       minimizeBehavior="onScrollDown"
     >
       <NativeTabs.Trigger name="notes">
-        <Icon sf={{ default: 'note.text', selected: 'note.text' }} />
-        <Label>Заметки</Label>
+        <NativeTabs.Trigger.Icon src={require('../../assets/tabs/notes.png')} renderingMode="template" />
+        <NativeTabs.Trigger.Label>Заметки</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="folders">
-        <Icon sf={{ default: 'folder', selected: 'folder.fill' }} />
-        <Label>Папки</Label>
+        <NativeTabs.Trigger.Icon src={require('../../assets/tabs/folder.png')} renderingMode="template" />
+        <NativeTabs.Trigger.Label>Папки</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
       {/*
         «Настройки», а не «Ещё». «Ещё» — не раздел, а признание, что для
-        содержимого не нашлось имени: за ним может оказаться что угодно, и
-        зайти туда можно только наугад. Внутри лежат оформление, порядок
-        сортировки, поведение списка и работа с данными — это настройки, так
-        вкладка и называется.
+        содержимого не нашлось имени. Внутри лежат сортировка, поведение
+        списка и работа с данными — это настройки, так вкладка и называется.
       */}
       <NativeTabs.Trigger name="more">
-        <Icon sf={{ default: 'gearshape', selected: 'gearshape.fill' }} />
-        <Label>Настройки</Label>
+        <NativeTabs.Trigger.Icon src={require('../../assets/tabs/settings.png')} renderingMode="template" />
+        <NativeTabs.Trigger.Label>Настройки</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
     </NativeTabs>
   );

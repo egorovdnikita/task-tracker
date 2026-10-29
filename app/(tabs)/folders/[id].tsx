@@ -11,6 +11,7 @@ import {
   showMenu,
   type MenuAnchor,
   ScreenBackdrop,
+  headerItems,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { useNotesStore, activeNotes, searchNotes, sortNotes } from '../../../src/store/useNotesStore';
@@ -117,7 +118,7 @@ export default function FolderScreen() {
       <Stack.Screen
         options={{
           title: scope.title,
-          headerRight: () => (
+          unstable_headerRightItems: headerItems(() => (
             <HeaderCapsule>
               <IconButton
                 name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
@@ -126,7 +127,7 @@ export default function FolderScreen() {
                 onPress={() => setLayout(id ?? 'root', layout === 'list' ? 'grid' : 'list')}
               />
             </HeaderCapsule>
-          ),
+          )),
         }}
       />
 

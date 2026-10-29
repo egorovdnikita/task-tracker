@@ -15,6 +15,7 @@ import {
   showMenu,
   type MenuAnchor,
   ScreenBackdrop,
+  headerItems,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { BLOCK_LABELS } from '../../../src/types';
@@ -147,7 +148,7 @@ export default function NotesScreen() {
             под заголовком: её место рядом с переключателем вида, потому что
             обе меняют не содержимое списка, а его подачу.
           */
-          headerRight: () => (
+          unstable_headerRightItems: headerItems(() => (
             <HeaderCapsule>
               <IconButton
                 name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
@@ -174,10 +175,10 @@ export default function NotesScreen() {
                   opacity: pressed ? 0.4 : 1,
                 })}
               >
-                <Symbol name="arrow.up.arrow.down" size={19} color={theme.colors.accent} />
+                <Symbol name="arrow.up.arrow.down" size={20} color={theme.colors.label} />
               </MenuButton>
             </HeaderCapsule>
-          ),
+          )),
         }}
       />
 
@@ -204,7 +205,11 @@ export default function NotesScreen() {
         }
         ListHeaderComponent={
           !selection.active ? (
-            <View style={{ gap: theme.spacing.md, marginBottom: theme.spacing.xs }}>
+            <View
+              // Под сегментом — полный зазор секции: без него заголовок
+              // «Закреплено» и первая карточка прилипали к контролу.
+              style={{ gap: theme.spacing.md, marginBottom: theme.spacing.xl }}
+            >
               {/* Поиск сразу под заголовком: белой карточкой, в потоке
                   списка, а не плавающей капсулой у нижнего края. */}
               <SearchField

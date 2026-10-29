@@ -4,6 +4,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ReanimatedSwipeable, {
   type SwipeableMethods,
 } from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  type SharedValue,
+} from 'react-native-reanimated';
 
 import { useTheme } from '../theme';
 import type { LayoutMode, Note } from '../types';
@@ -108,8 +114,9 @@ export const NoteList = ({
         gap: theme.spacing.md,
         flexGrow: 1,
       }}
-      ListHeaderComponent={ListHeaderComponent}
-      ListEmptyComponent={ListEmptyComponent}
+      // `null` в RN 0.88 слоты списка больше не принимают — только «нет».
+      ListHeaderComponent={ListHeaderComponent ?? undefined}
+      ListEmptyComponent={ListEmptyComponent ?? undefined}
       // Клавиатура закрывается перетаскиванием списка — системное поведение
       // экранов с поиском.
       keyboardDismissMode="on-drag"
@@ -205,35 +212,24 @@ const SwipeRow = ({
   const methods = useRef<SwipeableMethods>(null);
 
   const action = (
+    progress: SharedValue<number>,
     label: string,
     icon: Parameters<typeof Symbol>[0]['name'],
     background: string,
     onPress: () => void,
     side: 'left' | 'right',
   ) => (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
+    <SwipeAction
+      progress={progress}
+      label={label}
+      icon={icon}
+      background={background}
+      side={side}
       onPress={() => {
         methods.current?.close();
         onPress();
       }}
-      style={({ pressed }) => [
-        styles.action,
-        {
-          backgroundColor: background,
-          borderRadius: theme.radius.lg,
-          marginLeft: side === 'right' ? theme.spacing.sm : 0,
-          marginRight: side === 'left' ? theme.spacing.sm : 0,
-          opacity: pressed ? 0.7 : 1,
-        },
-      ]}
-    >
-      <Symbol name={icon} size={20} color="#FFFFFF" weight="semibold" />
-      <Text variant="caption2" style={{ color: '#FFFFFF' }}>
-        {label}
-      </Text>
-    </Pressable>
+    />
   );
 
   return (
@@ -247,13 +243,15 @@ const SwipeRow = ({
       containerStyle={styles.cell}
       renderRightActions={
         onDelete
-          ? () => action('Удалить', 'trash.fill', theme.hex.systemRed, onDelete, 'right')
+          ? (progress) =>
+              action(progress, 'Удалить', 'trash.fill', theme.hex.systemRed, onDelete, 'right')
           : undefined
       }
       renderLeftActions={
         onTogglePin
-          ? () =>
+          ? (progress) =>
               action(
+                progress,
                 pinned ? 'Открепить' : 'Закрепить',
                 pinned ? 'pin.slash.fill' : 'pin.fill',
                 theme.hex.systemOrange,
@@ -268,11 +266,71 @@ const SwipeRow = ({
   );
 };
 
+/**
+ * Кнопка свайпа.
+ *
+ * В покое она лежит под карточкой, а карточка — прозрачное стекло: красная и
+ * оранжевая плашки просвечивали сквозь каждую заметку цветными пятнами.
+ * Поэтому кнопка проявляется вместе со свайпом и в покое невидима.
+ */
+const SwipeAction = ({
+  progress,
+  label,
+  icon,
+  background,
+  side,
+  onPress,
+}: {
+  progress: SharedValue<number>;
+  label: string;
+  icon: Parameters<typeof Symbol>[0]['name'];
+  background: string;
+  side: 'left' | 'right';
+  onPress: () => void;
+}) => {
+  const theme = useTheme();
+  const reveal = useAnimatedStyle(() => ({
+    opacity: interpolate(progress.value, [0.15, 0.85], [0, 1], Extrapolation.CLAMP),
+  }));
+
+  return (
+    <Animated.View
+      style={[
+        reveal,
+        {
+          marginLeft: side === 'right' ? theme.spacing.sm : 0,
+          marginRight: side === 'left' ? theme.spacing.sm : 0,
+        },
+      ]}
+    >
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        onPress={onPress}
+        style={({ pressed }) => [
+          styles.action,
+          {
+            backgroundColor: background,
+            borderRadius: theme.radius.lg,
+            opacity: pressed ? 0.7 : 1,
+          },
+        ]}
+      >
+        <Symbol name={icon} size={20} color="#FFFFFF" weight="semibold" />
+        <Text variant="caption2" style={{ color: '#FFFFFF' }}>
+          {label}
+        </Text>
+      </Pressable>
+    </Animated.View>
+  );
+};
+
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'stretch' },
   cell: { flex: 1 },
   sectionHeader: { flexDirection: 'row', alignItems: 'baseline' },
   action: {
+    flex: 1,
     width: 76,
     alignItems: 'center',
     justifyContent: 'center',

@@ -82,7 +82,6 @@ export default function MoreScreen() {
           />
           <ListRow
             title="Отмеченные вниз"
-            subtitle="Выполненные пункты уезжают в конец списка"
             icon="checklist"
             accessory={{
               type: 'switch',

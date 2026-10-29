@@ -44,7 +44,8 @@ export type GlassProps = ViewProps & {
  */
 export const Glass = ({
   material = 'regular',
-  variant = 'regular',
+  // `clear` по умолчанию: `regular` на чёрной подложке выходит молочным.
+  variant = 'clear',
   tintColor,
   interactive = false,
   radius,

@@ -8,10 +8,12 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
+import Animated, { SlideInDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { Chip, MenuButton, Separator, Symbol, Text } from '../src/components';
+import { Chip, GlassSurface, MenuButton, Separator, Symbol, Text } from '../src/components';
 import { useTheme } from '../src/theme';
 import { useKeyboardVisible } from '../src/utils/useKeyboardVisible';
 import { makeChecklistBlock, makeChecklistItem, makeTextBlock } from '../src/utils/blocks';
@@ -28,24 +30,21 @@ const parseTags = (text: string): { title: string; tags: string[] } => {
 };
 
 /**
- * Создание заметки — шит с поднятой клавиатурой.
+ * Создание заметки — панель на кромке клавиатуры.
  *
  * Заметка появляется в тот момент, когда в неё что-то попало, а не когда
- * открыли форму: закрытый без ввода шит не оставляет следов. Полный экран
+ * открыли форму: закрытая без ввода панель не оставляет следов. Полный экран
  * остаётся для существующей заметки — там, где есть что редактировать.
  *
- * Раскладка собрана по референсу и держится на одном правиле: у шита ровно
- * три этажа, и каждый знает свою высоту.
+ * У панели ровно три этажа, и высоту каждого задаёт его содержимое:
  *
- *  1. Текст — растёт и прокручивается, забирает всё свободное место.
+ *  1. Текст — заголовок и описание до пяти строк.
  *  2. Атрибуты — ряд чипов постоянной высоты.
  *  3. Строка отправки — назначение слева, запись и отправка справа.
  *
- * Прежняя версия этого не разделяла: прокрутка стояла в колонке без `flex`,
- * то есть без заданной высоты, и схлопывалась в ноль. Всё, что шло после неё,
- * наезжало на её содержимое — заголовок, описание, чипы и кнопки оказывались
- * в одной точке экрана. Отсюда `flex: 1` на прокрутке и `flexGrow: 0` на
- * обоих нижних этажах.
+ * Высота панели — сумма этажей, а не доля экрана. Прежний шит держался за
+ * детент 0.55: клавиатура перекрывала его низ, а над полем ввода оставалась
+ * пустая полоса.
  */
 export default function CreateScreen() {
   const { folder, tag, kind } = useLocalSearchParams<{
@@ -55,9 +54,9 @@ export default function CreateScreen() {
   }>();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  // Клавиатура убрана — под строкой отправки появляется домашний индикатор,
-  // и её нужно поднять над ним. Поднята — `KeyboardAvoidingView` уже отвёл
-  // ровно столько, сколько занимает клавиатура, и добавлять нечего.
+  // Клавиатура убрана — под панелью появляется домашний индикатор, и её
+  // нужно поднять над ним. Поднята — `KeyboardAvoidingView` уже отвёл ровно
+  // столько, сколько занимает клавиатура, и остаётся только зазор.
   const keyboard = useKeyboardVisible();
 
   const folders = useNotesStore((s) => s.folders);
@@ -109,163 +108,196 @@ export default function CreateScreen() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
 
-      {/* Клавиатура поднята с самого открытия, и нижние два этажа обязаны
-          остаться над ней: выбор срока и папки — часть той же строки ввода. */}
+      {/* Клавиатура поднята с самого открытия, и панель обязана стоять на её
+          кромке целиком: выбор срока и папки — часть той же строки ввода. */}
       <KeyboardAvoidingView
-        style={[styles.grow, { backgroundColor: theme.colors.systemGroupedBackground }]}
+        style={[styles.grow, styles.bottom]}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <ScrollView
-          style={styles.grow}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingHorizontal: theme.spacing.lg,
-            // Сверху — место под ручку шита: без неё первая строка текста
-            // упирается в кромку.
-            paddingTop: theme.spacing.xxl,
-            paddingBottom: theme.spacing.lg,
-            gap: theme.spacing.sm,
-          }}
-        >
-          {/*
-            Первое, что видно в шите, — собственный текст, а не подпись к
-            полю. Плейсхолдер при этом учит синтаксису вместо онбординга:
-            `#работа` в строке станет тегом, а не частью заголовка.
-          */}
-          <TextInput
-            autoFocus
-            value={text}
-            onChangeText={setText}
-            onSubmitEditing={submit}
-            placeholder="Например: Созвон по релизу #работа"
-            placeholderTextColor={theme.colors.placeholderText}
-            returnKeyType="next"
-            style={[
-              theme.text('title3', 'semibold'),
-              { color: theme.colors.label, padding: 0 },
-            ]}
-          />
-
-          <TextInput
-            value={description}
-            onChangeText={setDescription}
-            placeholder={checklist ? 'Первый пункт' : 'Описание'}
-            placeholderTextColor={theme.colors.placeholderText}
-            multiline
-            style={[
-              theme.text('body'),
-              { color: theme.colors.label, padding: 0, textAlignVertical: 'top' },
-            ]}
-          />
-        </ScrollView>
-
         {/*
-          Атрибуты — обводные чипы с иконкой и словом, а не ряд одних иконок:
-          у иконки без подписи угадывается «микрофон», но не «напоминание».
-          Каждый чип показывает своё значение, как только оно выбрано.
-
-          Теги здесь тоже чипы, и их три — заранее заданных. Раньше на их
-          месте стоял один чип «Тег», открывавший список; когда своих тегов
-          ещё не было, список оказывался пустым, и вместо выбора появлялся
-          алерт с текстом «наберите #тег прямо в строке» — то есть кнопка,
-          которая ничего не делает. Три готовых тега ставятся касанием.
+          Оверлей за панелью: список под ним виден, но приглушён — лёгкий
+          блюр и полупрозрачное затемнение. Сплошная заливка прятала контекст,
+          из которого человек пришёл. Касание по оверлею закрывает панель.
         */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-          // Высота задана явно, а не выведена из содержимого: у прокрутки в
-          // колонке своей высоты нет, и без числа этот этаж схлопнулся бы —
-          // ровно так и разъезжался прежний шит.
-          style={[styles.fixed, { height: theme.controlHeight.segmented + theme.spacing.xl }]}
-          contentContainerStyle={{
-            alignItems: 'center',
-            paddingHorizontal: theme.spacing.lg,
-            gap: theme.spacing.sm,
-          }}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Закрыть"
+          onPress={() => router.back()}
+          style={StyleSheet.absoluteFill}
         >
-          <Chip
-            label="Список задач"
-            icon="checklist"
-            outlined={!checklist}
-            selected={checklist}
-            onPress={() => setChecklist((value) => !value)}
-          />
+          <BlurView intensity={24} tint="dark" style={StyleSheet.absoluteFill} />
+          <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.3)' }]} />
+        </Pressable>
 
-          <ReminderChip value={remindAt} onChange={setRemindAt} />
-
-          {STATIC_TAGS.map((item) => (
-            <Chip
-              key={item.id}
-              label={item.label}
-              icon={item.icon}
-              accent={item.accent}
-              outlined={!tags.includes(item.id)}
-              selected={tags.includes(item.id)}
-              onPress={() => toggleTag(item.id)}
-            />
-          ))}
-        </ScrollView>
-
-        {/* Линия отделяет ввод от отправки: ниже неё ничего не набирают,
-            ниже неё только решают, куда это уйдёт. */}
-        <Separator />
-
-        <View
+        <Animated.View
+          entering={SlideInDown.duration(260)}
           style={[
-            styles.actions,
-            styles.fixed,
+            styles.panel,
             {
-              paddingHorizontal: theme.spacing.lg,
-              paddingTop: theme.spacing.md,
-              paddingBottom: keyboard ? theme.spacing.md : Math.max(theme.spacing.md, insets.bottom),
-              gap: theme.spacing.md,
+              marginHorizontal: theme.spacing.sm,
+              marginBottom: keyboard ? theme.spacing.sm : Math.max(theme.spacing.sm, insets.bottom),
+              borderRadius: theme.radius.xl,
             },
           ]}
         >
-          {/* Куда положить — до создания и одним касанием, а не отдельным
-              шитом переноса после. */}
-          <MenuButton
-            accessibilityLabel={`Куда положить: ${destination ?? 'Без папки'}`}
-            title="Куда положить"
-            items={() => [
-              {
-                title: 'Без папки',
-                icon: 'tray',
-                checked: folderId === null,
-                onPress: () => setFolderId(null),
-              },
-              ...roots.map((item) => ({
-                title: item.name,
-                icon: 'folder' as const,
-                checked: folderId === item.id,
-                onPress: () => setFolderId(item.id),
-              })),
-            ]}
-            style={({ pressed }) => [
-              styles.destination,
-              { opacity: pressed ? 0.5 : 1, gap: theme.spacing.xs },
-            ]}
-          >
-            <Symbol name="folder" size={15} color={theme.colors.secondaryLabel} />
-            <Text variant="subheadline" color="secondaryLabel" numberOfLines={1}>
-              {destination ?? 'Без папки'}
-            </Text>
-            <Symbol name="chevron.down" size={11} color={theme.colors.tertiaryLabel} />
-          </MenuButton>
-
-          {/* Голос — второй способ ввода после клавиатуры, а не пункт меню
-              наравне со сканом и рисунком. */}
-          <RoundButton
-            icon="waveform"
-            label="Записать голосом"
-            tone="muted"
-            onPress={() => router.replace('/capture/voice')}
+          <GlassSurface
+            mesh="card"
+            stroke="glass"
+            tint={theme.colors.elevated as string}
+            radius={theme.radius.xl}
+            liquid={false}
+            pointerEventsNone
+            style={StyleSheet.absoluteFill}
           />
 
-          <RoundButton icon="arrow.up" label="Создать" disabled={!ready} onPress={submit} />
-        </View>
+          <View
+            style={{
+              paddingHorizontal: theme.spacing.xl,
+              paddingTop: theme.spacing.xl,
+              paddingBottom: theme.spacing.md,
+              gap: theme.spacing.sm,
+            }}
+          >
+            {/*
+              Первое, что видно в панели, — собственный текст, а не подпись к
+              полю. Плейсхолдер при этом учит синтаксису вместо онбординга:
+              `#работа` в строке станет тегом, а не частью заголовка.
+            */}
+            <TextInput
+              autoFocus
+              value={text}
+              onChangeText={setText}
+              onSubmitEditing={submit}
+              placeholder="Например: Созвон по релизу #работа"
+              placeholderTextColor={theme.colors.placeholderText}
+              returnKeyType="next"
+              style={[
+                theme.text('title3', 'semibold'),
+                { color: theme.colors.label, padding: 0 },
+              ]}
+            />
+
+            {/* Описание растёт до пяти строк и дальше прокручивается само:
+                панель не должна выталкивать свой верх за край экрана. */}
+            <TextInput
+              value={description}
+              onChangeText={setDescription}
+              placeholder={checklist ? 'Первый пункт' : 'Описание'}
+              placeholderTextColor={theme.colors.placeholderText}
+              multiline
+              style={[
+                theme.text('body'),
+                {
+                  color: theme.colors.label,
+                  padding: 0,
+                  maxHeight: 22 * 5,
+                  textAlignVertical: 'top',
+                },
+              ]}
+            />
+          </View>
+
+          {/*
+            Атрибуты — обводные чипы с иконкой и словом, а не ряд одних иконок:
+            у иконки без подписи угадывается «микрофон», но не «напоминание».
+            Каждый чип показывает своё значение, как только оно выбрано.
+
+            Теги здесь тоже чипы, и их три — заранее заданных: ставятся
+            касанием, без списка, который мог оказаться пустым.
+          */}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            // Высота задана явно: у горизонтальной прокрутки в колонке своей
+            // высоты нет, и без числа ряд схлопнулся бы.
+            style={[styles.fixed, { height: theme.controlHeight.segmented + theme.spacing.lg }]}
+            contentContainerStyle={{
+              alignItems: 'center',
+              paddingHorizontal: theme.spacing.xl,
+              gap: theme.spacing.sm,
+            }}
+          >
+            <Chip
+              label="Список задач"
+              icon="checklist"
+              outlined={!checklist}
+              selected={checklist}
+              onPress={() => setChecklist((value) => !value)}
+            />
+
+            <ReminderChip value={remindAt} onChange={setRemindAt} />
+
+            {STATIC_TAGS.map((item) => (
+              <Chip
+                key={item.id}
+                label={item.label}
+                icon={item.icon}
+                accent={item.accent}
+                outlined={!tags.includes(item.id)}
+                selected={tags.includes(item.id)}
+                onPress={() => toggleTag(item.id)}
+              />
+            ))}
+          </ScrollView>
+
+          {/* Линия отделяет ввод от отправки: ниже неё ничего не набирают,
+              ниже неё только решают, куда это уйдёт. */}
+          <Separator />
+
+          <View
+            style={[
+              styles.actions,
+              {
+                paddingHorizontal: theme.spacing.xl,
+                paddingVertical: theme.spacing.md,
+                gap: theme.spacing.md,
+              },
+            ]}
+          >
+            {/* Куда положить — до создания и одним касанием, а не отдельным
+                шитом переноса после. */}
+            <MenuButton
+              accessibilityLabel={`Куда положить: ${destination ?? 'Без папки'}`}
+              title="Куда положить"
+              items={() => [
+                {
+                  title: 'Без папки',
+                  icon: 'tray',
+                  checked: folderId === null,
+                  onPress: () => setFolderId(null),
+                },
+                ...roots.map((item) => ({
+                  title: item.name,
+                  icon: 'folder' as const,
+                  checked: folderId === item.id,
+                  onPress: () => setFolderId(item.id),
+                })),
+              ]}
+              style={({ pressed }) => [
+                styles.destination,
+                { opacity: pressed ? 0.5 : 1, gap: theme.spacing.sm },
+              ]}
+            >
+              <Symbol name="folder" size={18} color={theme.colors.secondaryLabel} />
+              <Text variant="callout" color="secondaryLabel" numberOfLines={1}>
+                {destination ?? 'Без папки'}
+              </Text>
+              <Symbol name="chevron.down" size={16} color={theme.colors.tertiaryLabel} />
+            </MenuButton>
+
+            {/* Голос — второй способ ввода после клавиатуры, а не пункт меню
+                наравне со сканом и рисунком. */}
+            <RoundButton
+              icon="waveform"
+              label="Записать голосом"
+              tone="muted"
+              onPress={() => router.replace('/capture/voice')}
+            />
+
+            <RoundButton icon="arrow.up" label="Создать" disabled={!ready} onPress={submit} />
+          </View>
+        </Animated.View>
       </KeyboardAvoidingView>
     </>
   );
@@ -320,7 +352,7 @@ const RoundButton = ({
   tone?: 'accent' | 'muted';
 }) => {
   const theme = useTheme();
-  const size = theme.controlHeight.button;
+  const size = theme.controlHeight.buttonCompact;
 
   return (
     <Pressable
@@ -353,6 +385,9 @@ const RoundButton = ({
 
 const styles = StyleSheet.create({
   grow: { flex: 1 },
+  bottom: { justifyContent: 'flex-end' },
+  // Обрезка дугой — по кривой канта стекла, иначе углы рвутся.
+  panel: { overflow: 'hidden', borderCurve: 'circular' },
   // Этажи под прокруткой не растягиваются и не сжимаются: их высота задана
   // содержимым, и делить с прокруткой им нечего.
   fixed: { flexGrow: 0, flexShrink: 0 },

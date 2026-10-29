@@ -83,7 +83,6 @@ export default function MoveScreen() {
           <ListRow
             title="Новая папка…"
             icon="folder.badge.plus"
-            iconColor={theme.colors.accent}
             onPress={() =>
               promptForText('Новая папка', 'Как её назвать?', (name) => {
                 const folder = createFolder(

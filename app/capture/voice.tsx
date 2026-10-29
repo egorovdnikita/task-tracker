@@ -9,7 +9,7 @@ import {
   useAudioRecorderState,
 } from 'expo-audio';
 
-import { Button, IconButton, Text } from '../../src/components';
+import { Button, IconButton, Text, headerItems } from '../../src/components';
 import { Waveform } from '../../src/components/Waveform';
 import { useTheme } from '../../src/theme';
 import { persistMedia } from '../../src/features/media';
@@ -139,9 +139,9 @@ export default function VoiceCaptureScreen() {
       <Stack.Screen
         options={{
           title: 'Запись',
-          headerLeft: () => (
+          unstable_headerLeftItems: headerItems(() => (
             <IconButton name="xmark" accessibilityLabel="Отменить запись" onPress={cancel} />
-          ),
+          )),
         }}
       />
 

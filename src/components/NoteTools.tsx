@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
 import type { SFSymbol } from 'sf-symbols-typescript';
 
 import { useTheme } from '../theme';
-import { withAlpha } from './Button';
+import { GlassSurface } from './GlassSurface';
 import { Symbol } from './Symbol';
 import { Text } from './Text';
 
@@ -35,7 +35,7 @@ export type NoteToolsProps = {
  * текст, вызвать клавиатуру и лишь потом дотянуться до микрофона.
  *
  * Поэтому инструменты стоят в теле заметки, под её содержимым, и видны всегда.
- * Плитка — акцентный глиф на бледной акцентной заливке и слово под ним; вся
+ * Плитка — белый глиф на серой плашке и слово под ним; вся
  * плитка целиком и есть цель касания.
  */
 export const NoteTools = ({ tools, style }: NoteToolsProps) => {
@@ -52,12 +52,21 @@ export const NoteTools = ({ tools, style }: NoteToolsProps) => {
           styles.card,
           {
             borderRadius: theme.radius.lg,
-            backgroundColor: theme.colors.secondarySystemGroupedBackground,
             paddingVertical: theme.spacing.md,
             paddingHorizontal: theme.spacing.sm,
           },
         ]}
       >
+        {/* Подложка карточки заметки: системная серая на чёрном не видна. */}
+        <GlassSurface
+          mesh="card"
+          stroke="card"
+          tint={theme.tints.card}
+          radius={theme.radius.lg}
+          liquid={false}
+          pointerEventsNone
+          style={StyleSheet.absoluteFill}
+        />
         {tools.map((tool) => (
           <Tool key={tool.name} {...tool} />
         ))}
@@ -84,13 +93,13 @@ const Tool = ({ name, label, onPress }: NoteTool) => {
           styles.glyph,
           {
             borderRadius: theme.radius.md,
-            // Бледная акцентная заливка, а не сплошная: плиток пять, и пять
-            // насыщенных пятен подряд перетянули бы на себя всю страницу.
-            backgroundColor: withAlpha(theme.hex.accent, theme.scheme === 'dark' ? 0.22 : 0.12),
+            // Серая плашка, а не акцентная: фирменный цвет оставлен главным
+            // действиям, а пять цветных пятен подряд перетягивали страницу.
+            backgroundColor: theme.colors.secondarySystemFill,
           },
         ]}
       >
-        <Symbol name={name} size={24} color={theme.colors.accent} />
+        <Symbol name={name} size={24} color={theme.colors.label} />
       </View>
 
       <Text variant="caption2" color="secondaryLabel" numberOfLines={1}>
@@ -101,7 +110,7 @@ const Tool = ({ name, label, onPress }: NoteTool) => {
 };
 
 const styles = StyleSheet.create({
-  card: { flexDirection: 'row', borderCurve: 'continuous' },
+  card: { flexDirection: 'row', borderCurve: 'circular', overflow: 'hidden' },
   // Плитки делят ширину поровну: ряд остаётся рядом, а не сползает влево,
   // когда подписи разной длины.
   tool: { flex: 1, alignItems: 'center' },

@@ -60,7 +60,7 @@ export const NoteCard = ({
   const progress = checklistProgress(note);
   const preview = noteSubtitle(note);
   const accent = note.accent ? theme.accent(note.accent) : null;
-  const ref = useRef<View>(null);
+  const ref = useRef<React.ComponentRef<typeof View>>(null);
 
   return (
     <Pressable
@@ -104,6 +104,7 @@ export const NoteCard = ({
         stroke="card"
         tint={theme.tints.card}
         radius={theme.radius.lg}
+        liquid={false}
         pointerEventsNone
         style={StyleSheet.absoluteFill}
       />
@@ -138,12 +139,14 @@ export const NoteCard = ({
       </View>
 
       {progress ? (
-        <View style={[styles.head, { gap: theme.spacing.xs }]}>
-          <Symbol name="checklist" size={13} color={theme.colors.secondaryLabel} />
-          <Text variant="footnote" color="secondaryLabel">
-            {progress.done} из {progress.total}
-          </Text>
-        </View>
+        // Прогресс — та же пара «иконка + значение», что и в строке
+        // метаданных: один размер и один цвет. Раньше чек-лист и часы были
+        // разного кегля и тона и читались как два разных типа сведений.
+        <Meta
+          icon="checkmark.circle"
+          text={`${progress.done} из ${progress.total}`}
+          color="secondaryLabel"
+        />
       ) : preview ? (
         <Highlighted
           text={preview}
@@ -158,7 +161,7 @@ export const NoteCard = ({
         тем же фактом, хотя один из них про будущее, а другой про прошлое.
       */}
       <View style={[styles.head, { gap: theme.spacing.md, marginTop: theme.spacing.xxs }]}>
-        <Meta icon="clock" text={formatRelativeDate(note.updatedAt)} color="tertiaryLabel" />
+        <Meta icon="clock" text={formatRelativeDate(note.updatedAt)} color="secondaryLabel" />
 
         {note.remindAt ? (
           <Meta
@@ -170,7 +173,7 @@ export const NoteCard = ({
         ) : null}
 
         {note.tags.slice(0, layout === 'grid' ? 1 : 2).map((tag) => (
-          <Text key={tag} variant="caption1" color="tertiaryLabel" numberOfLines={1}>
+          <Text key={tag} variant="footnote" color="secondaryLabel" numberOfLines={1}>
             #{tag}
           </Text>
         ))}
@@ -197,11 +200,11 @@ const Meta = ({
     <View style={[styles.head, { gap: theme.spacing.xs }]}>
       <Symbol
         name={icon}
-        size={11}
+        size={14}
         color={theme.colors[color]}
         accessibilityLabel={accessibilityLabel}
       />
-      <Text variant="caption1" color={color}>
+      <Text variant="footnote" color={color}>
         {text}
       </Text>
     </View>

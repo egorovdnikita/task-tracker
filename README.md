@@ -23,7 +23,7 @@
 | Слой | Технологии |
 | --- | --- |
 | Язык | TypeScript 5.9 (strict) |
-| Мобильный рантайм | React Native 0.81, React 19.1, Expo SDK 54 (managed workflow), Metro |
+| Мобильный рантайм | React Native 0.88, React 19.3, Expo SDK 58 (managed workflow), Metro |
 | Навигация | `expo-router` 6 — файловые роуты в `app/`; вкладки нативные (`NativeTabs` поверх `UITabBarController`), шапки нативного стека |
 | Состояние | Zustand 5 + middleware `persist` |
 | Хранилище | `@react-native-async-storage/async-storage` (локально на устройстве) |
@@ -201,15 +201,16 @@ Expo Go», по нему и переходить.
 | `j` | Открыть отладчик |
 | `?` | Показать все команды |
 
-### Почему SDK 54
+### Почему SDK 58
 
-Проект намеренно остаётся на **SDK 54**: с мая 2026 Expo не публикует в App
-Store версии Expo Go для более новых SDK, и на устройстве работает только 54-я
-— см. [changelog Expo](https://expo.dev/changelog/expo-go-and-app-store-may-2026).
+Версию SDK диктует Expo Go из App Store: на iPhone он запускает ровно одну
+версию SDK. Сейчас это **58**. На проекте с другой версией Expo Go не
+показывает ошибку, а вылетает сразу после загрузки — проверить версию можно
+по полю `app_version` в отчёте о сбое (Настройки → Конфиденциальность →
+Аналитика → Данные аналитики → `Expo Go-….ips`).
 
-Из этого же следует, чего в приложении нет: `@expo/ui` (компоненты SwiftUI),
-`Speech`, `Vision` и `PencilKit` требуют dev-build, а dev-build на устройство —
-платного Apple Developer.
+Фреймворки `Speech`, `Vision` и `PencilKit` в Expo Go не входят и требуют
+dev-build.
 
 ## Сборка
 

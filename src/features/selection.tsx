@@ -32,9 +32,11 @@ export const useSelection = (): Selection => {
 
   const clear = useCallback(() => setIds([]), []);
 
+  const active = ids.length > 0;
+
   return useMemo(
-    () => ({ active: ids.length > 0, ids, toggle, clear }),
-    [ids, toggle, clear],
+    () => ({ active, ids, toggle, clear }),
+    [active, ids, toggle, clear],
   );
 };
 

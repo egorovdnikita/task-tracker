@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import {
@@ -16,12 +17,16 @@ import {
   Text,
   type MenuItem,
   ScreenBackdrop,
+  headerItems,
+  backItem,
+  Button,
 } from '../../src/components';
 import { useTheme, type PaletteName } from '../../src/theme';
 import { hasContent, makeChecklistBlock, makeTextBlock } from '../../src/utils/blocks';
 import { dueState, formatDateTime } from '../../src/utils/date';
 import { STATIC_TAGS, tagLabel } from '../../src/features/tags';
 import { notify } from '../../src/features/notify';
+import { useKeyboardVisible } from '../../src/utils/useKeyboardVisible';
 import { useNotesStore } from '../../src/store/useNotesStore';
 import type { NoteBlock } from '../../src/types';
 
@@ -44,18 +49,20 @@ const doneCount = (blocks: NoteBlock[]): number =>
 /**
  * Плиты 03.1–03.3 — редактор.
  *
- * Кнопки «Сохранить» здесь нет и быть не должно: каждое изменение уходит в
- * стор сразу, а стор пишется на диск. Кнопка появляется там, где сохранение
- * может не удаться, — а локальной записи не от чего падать.
+ * Каждое изменение уходит в стор сразу, а стор пишется на диск, поэтому в
+ * шапке — состояние: «Сохранение…» на время записи и «Сохранено» после неё.
  *
- * Поэтому в шапке стоит не действие, а состояние: «Сохранение…» на время
- * записи и «Сохранено» после неё. Дата изменения мелким серым под заголовком
- * этого не заменяла — она меняется молча, и подтверждения человек не получал.
+ * Кнопка «Сохранить» внизу при этом есть, и это не дубль автосохранения, а
+ * завершение правки: она подтверждает запись и закрывает заметку. Это
+ * главное действие экрана и единственное место на нём в фирменном цвете —
+ * остальная шапка и инструменты монохромные.
  */
 export default function NoteScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const theme = useTheme();
   const headerHeight = useHeaderHeight();
+  const insets = useSafeAreaInsets();
+  const keyboard = useKeyboardVisible();
 
   const notes = useNotesStore((s) => s.notes);
   const folders = useNotesStore((s) => s.folders);
@@ -167,9 +174,7 @@ export default function NoteScreen() {
       <Stack.Screen
         options={{
           title: status === 'saving' ? 'Сохранение…' : status === 'saved' ? 'Сохранено' : '',
-          headerLeft: () => (
-            <IconButton name="chevron.left" accessibilityLabel="Назад" onPress={leave} />
-          ),
+          unstable_headerLeftItems: backItem(leave),
           /*
             Обе кнопки рисуются всегда, меняется только символ закрепления.
             Раньше `headerRight` отдавал то один элемент, то два, и нативная
@@ -179,7 +184,7 @@ export default function NoteScreen() {
             Группа собрана в ту же стеклянную капсулу, что и на списках, —
             один и тот же орган управления выглядит одинаково везде.
           */
-          headerRight: () => (
+          unstable_headerRightItems: headerItems(() => (
             <HeaderCapsule>
               <IconButton
                 name={note.pinned ? 'pin.fill' : 'pin'}
@@ -199,10 +204,10 @@ export default function NoteScreen() {
                   opacity: pressed ? 0.4 : 1,
                 })}
               >
-                <Symbol name="ellipsis" size={19} color={theme.colors.accent} />
+                <Symbol name="ellipsis" size={20} color={theme.colors.label} />
               </MenuButton>
             </HeaderCapsule>
-          ),
+          )),
         }}
       />
 
@@ -367,6 +372,29 @@ export default function NoteScreen() {
             ]}
           />
         </ScrollView>
+
+        {/* Закреплена под прокруткой, а не в её конце: до конца длинной
+            заметки ещё нужно долистать, а закончить правку можно в любой
+            момент. Над клавиатурой её держит `KeyboardAvoidingView`. */}
+        {!note.deletedAt ? (
+          <View
+            style={{
+              paddingHorizontal: theme.spacing.lg,
+              paddingTop: theme.spacing.sm,
+              paddingBottom: keyboard ? theme.spacing.sm : Math.max(theme.spacing.lg, insets.bottom),
+            }}
+          >
+            <Button
+              title="Сохранить"
+              size="large"
+              fullWidth
+              onPress={() => {
+                notify('Заметка сохранена');
+                leave();
+              }}
+            />
+          </View>
+        ) : null}
       </KeyboardAvoidingView>
 
       <Confetti active={celebrating} onDone={() => setCelebrating(false)} />

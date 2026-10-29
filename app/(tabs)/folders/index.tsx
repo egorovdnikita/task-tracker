@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack, router } from 'expo-router';
 
-import { HeaderCapsule, IconButton, ListRow, ListSection, ScreenBackdrop } from '../../../src/components';
+import { HeaderCapsule, IconButton, ListRow, ListSection, ScreenBackdrop, headerItems } from '../../../src/components';
 import { accentNames, useTheme } from '../../../src/theme';
 import { STATIC_TAGS } from '../../../src/features/tags';
 import { splitEmoji } from '../../../src/utils/emoji';
@@ -17,12 +17,12 @@ import {
 } from '../../../src/store/useNotesStore';
 
 /**
- * Отбивка разделителя под глифом строки: поле экрана, ширина символа и зазор.
+ * Отбивка разделителя под глифом строки: поле строки (20), ширина символа и зазор (16).
  *
  * Считается от глифа в 22pt, а не от плашки в 29pt: плашки под иконками
  * больше нет — цвет папки живёт в самом символе.
  */
-const GLYPH_INSET = 16 + 22 + 12;
+const GLYPH_INSET = 20 + 22 + 16;
 
 /**
  * Плита 05.1 — папки и теги.
@@ -122,7 +122,7 @@ export default function FoldersScreen() {
       <Stack.Screen
         options={{
           title: 'Папки',
-          headerRight: () => (
+          unstable_headerRightItems: headerItems(() => (
             <HeaderCapsule>
               <IconButton
                 name="folder.badge.plus"
@@ -131,7 +131,7 @@ export default function FoldersScreen() {
                 onPress={() => addFolder(null)}
               />
             </HeaderCapsule>
-          ),
+          )),
         }}
       />
 

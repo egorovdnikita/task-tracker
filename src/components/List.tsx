@@ -18,10 +18,8 @@ import { Text } from './Text';
 /**
  * Разделитель строк.
  *
- * Толщина — половина точки, а не единица: на экране с плотностью 3x единица
- * даёт линию в три физических пикселя, и список выглядит расчерченным, а не
- * разделённым. Отступ слева выравнивает линию по началу текста, чтобы она
- * не пересекала иконку.
+ * Вне групп — тонкая линия в половину точки. Внутри группы строк — линия
+ * Opal: 1pt `#191919` с отступом и слева, и справа (см. `ListSection`).
  */
 export const Separator = ({ inset = 0, style }: { inset?: number; style?: ViewStyle }) => {
   const theme = useTheme();
@@ -39,23 +37,17 @@ export const Separator = ({ inset = 0, style }: { inset?: number; style?: ViewSt
 export type ListSectionProps = {
   /** Шапка секции. В системе — прописными и вторичным цветом. */
   header?: string;
-  /**
-   * Число в шапке — «Папки 8».
-   *
-   * Меняет и набор: с числом шапка перестаёт быть прописными и становится
-   * обычной строкой. Прописные вторичным читаются как служебная подпись, а
-   * когда в шапке важно количество, эта строгость мешает его увидеть.
-   */
-  count?: number;
   /** Пояснение под секцией: что произойдёт, а не что это такое. */
   footer?: string;
   /**
-   * Кнопка справа в шапке — «добавить в эту группу».
+   * Действие справа в шапке — «+ Новая папка».
    *
-   * Место действия рядом с названием группы, а не в шапке экрана: в шапке
-   * оно относилось бы ко всему экрану, а создаёт оно строку именно здесь.
+   * Как «+ New» у Opal: ссылка акцентом со знаком плюса, а не голая иконка.
+   * Место действия рядом с названием группы: создаёт оно строку именно здесь.
    */
   action?: { icon: SFSymbol; label: string; onPress: () => void };
+  /** На чём лежит группа: на экране или внутри шита — там она светлее. */
+  tone?: 'screen' | 'sheet';
   children: ReactNode;
   /** Отступ разделителя слева — под ширину иконки в строках этой секции. */
   separatorInset?: number;
@@ -70,14 +62,17 @@ export type ListSectionProps = {
  */
 export const ListSection = ({
   header,
-  count,
   footer,
   action,
   children,
-  separatorInset = 0,
+  separatorInset,
+  tone = 'screen',
   style,
 }: ListSectionProps) => {
   const theme = useTheme();
+  const inSheet = tone === 'sheet';
+  // Без явного отступа разделитель начинается там же, где текст строки.
+  const inset = separatorInset ?? theme.spacing.lg;
   const rows = Children.toArray(children).filter(Boolean);
 
   return (
@@ -86,44 +81,23 @@ export const ListSection = ({
     <View style={[{ marginBottom: theme.spacing.xxxl }, style]}>
       {header ? (
         /*
-          Шапка секции — одна строка на все случаи: название, при нужде число
-          рядом с ним и действие справа.
-
-          Набор не прописной. Прописные в 13pt — системный приём из «Настроек»
-          iOS, и он там уместен: разделов десятки, и шапка обязана быть
-          незаметнее любого из них. Здесь секций две-три, и шапка у них не
-          служебная подпись, а единственное, что объясняет группу. Прописные
-          её при этом ещё и растягивают: «МОИ ДАННЫЕ» занимает вдвое больше
-          места, чем читает глаз.
-
-          С числом шапка становится тёмной и крупнее: там, где важно
-          количество, вторичный серый прячет и его тоже.
+          Шапка секции — как у Opal: белая, 17 semibold, левый край на одной
+          линии с текстом строк. Счётчика нет — у Opal его нет нигде, а
+          количество и так видно по строкам.
         */
         <View
           style={[
             styles.header,
             {
-              marginHorizontal: theme.spacing.lg + theme.spacing.xs,
+              marginHorizontal: theme.spacing.lg + theme.spacing.lg,
               marginBottom: theme.spacing.md,
               gap: theme.spacing.sm,
             },
           ]}
         >
-          <Text
-            variant={count === undefined ? 'subheadline' : 'headline'}
-            weight="semibold"
-            color={count === undefined ? 'secondaryLabel' : 'label'}
-          >
+          <Text variant="headline" weight="semibold" color="label" style={styles.grow}>
             {header}
           </Text>
-
-          {count !== undefined ? (
-            <Text variant="headline" color="tertiaryLabel">
-              {count}
-            </Text>
-          ) : null}
-
-          <View style={styles.grow} />
 
           {action ? (
             <Pressable
@@ -131,38 +105,44 @@ export const ListSection = ({
               accessibilityLabel={action.label}
               onPress={action.onPress}
               hitSlop={12}
-              style={({ pressed }) => ({ opacity: pressed ? 0.4 : 1 })}
+              style={({ pressed }) => [styles.action, { gap: theme.spacing.xxs, opacity: pressed ? 0.4 : 1 }]}
             >
-              <Symbol name={action.icon} size={20} color={theme.colors.label} />
+              <Symbol name="plus" size={15} color={theme.colors.accent} />
+              <Text variant="subheadline" weight="medium" color="accent">
+                {action.label}
+              </Text>
             </Pressable>
           ) : null}
         </View>
       ) : null}
 
+      {/*
+        Группа строк — сплошная заливка без меша и канта, радиус 26 дугой:
+        замер Opal. Стеклянная карточка здесь была нашей выдумкой — у Opal
+        стекло только у плавающих элементов и шитов.
+      */}
       <View
         style={[
           styles.group,
           {
             marginHorizontal: theme.spacing.lg,
-            borderRadius: theme.radius.md,
+            borderRadius: theme.radius.group,
+            backgroundColor: inSheet ? theme.surfaces.groupInSheet : theme.surfaces.group,
           },
         ]}
       >
-        {/* Группа строк — та же стеклянная карточка Opal, что и заметка. */}
-        <GlassSurface
-          mesh="card"
-          stroke="card"
-          tint={theme.tints.card}
-          radius={theme.radius.md}
-          // Своими слоями, без системного стекла: жидкое стекло на чёрном
-          // светлеет до молочного, а группа строк должна оставаться прозрачной.
-          liquid={false}
-          pointerEventsNone
-          style={StyleSheet.absoluteFill}
-        />
         {rows.map((row, index) => (
           <Fragment key={index}>
-            {index > 0 ? <Separator inset={separatorInset} /> : null}
+            {index > 0 ? (
+              <View
+                style={{
+                  height: 1,
+                  marginLeft: inset,
+                  marginRight: theme.spacing.lg,
+                  backgroundColor: inSheet ? theme.surfaces.separatorInSheet : theme.surfaces.separator,
+                }}
+              />
+            ) : null}
             {row}
           </Fragment>
         ))}
@@ -173,8 +153,8 @@ export const ListSection = ({
           variant="footnote"
           color="secondaryLabel"
           style={{
-            marginHorizontal: theme.spacing.lg + theme.spacing.lg,
-            marginTop: theme.spacing.sm,
+            marginHorizontal: theme.spacing.lg + theme.spacing.md,
+            marginTop: theme.spacing.md,
           }}
         >
           {footer}
@@ -249,6 +229,12 @@ export type ListRowProps = {
   hint?: string;
 };
 
+/** Колонка иконки и зазор за ней: текст встаёт на 16 + 28 + 17 = 61 от края группы. */
+const GLYPH_COLUMN = 28;
+const ROW_GAP = 17;
+/** Отбивка разделителя под строки с иконкой — по началу текста. */
+export const GLYPH_SEPARATOR_INSET = 16 + GLYPH_COLUMN + ROW_GAP;
+
 /** Отступ одного уровня вложенности — ширина глифа и зазора за ним. */
 const LEVEL_INDENT = 24;
 
@@ -289,10 +275,12 @@ export const ListRow = ({
         styles.row,
         {
           minHeight: subtitle ? theme.controlHeight.rowDetail : theme.controlHeight.row,
-          paddingHorizontal: theme.spacing.xl,
-          paddingLeft: theme.spacing.xl + level * LEVEL_INDENT,
+          // Поля строки и зазоры — замер Opal: текст на 16 от края группы,
+          // с иконкой — на 61, иконка в колонке 28.
+          paddingHorizontal: theme.spacing.lg,
+          paddingLeft: theme.spacing.lg + level * LEVEL_INDENT,
           paddingVertical: theme.spacing.md,
-          gap: theme.spacing.lg,
+          gap: ROW_GAP,
           opacity: disabled ? 0.35 : 1,
         },
       ]}
@@ -307,25 +295,27 @@ export const ListRow = ({
         ) : (
           // Иконка строки — приглушённый белый: полный белый спорил с
           // названием строки за первое прочтение.
-          <Symbol name={icon} size={22} color={iconColor ?? theme.colors.secondaryLabel} />
+          <View style={styles.glyph}>
+            <Symbol name={icon} size={20} color={iconColor ?? theme.colors.secondaryLabel} />
+          </View>
         )
       ) : null}
 
       <View style={styles.labels}>
-        {/* Заголовок строки — Semibold: в списке он подписывает всё, что стоит
-            под ним и справа от него, и обычным весом теряется среди значений. */}
-        <Text variant="body" weight="semibold" color={color}>
+        {/* Заголовок строки — 17 regular, подпись — 15: замер Opal. Полужирный
+            заголовок был нашим решением и делал список тяжелее эталона. */}
+        <Text variant="body" color={color}>
           {title}
         </Text>
         {subtitle ? (
-          <Text variant="footnote" color="secondaryLabel">
+          <Text variant="subheadline" color="secondaryLabel">
             {subtitle}
           </Text>
         ) : null}
       </View>
 
       {value ? (
-        <Text variant="body" color="secondaryLabel" numberOfLines={1}>
+        <Text variant="subheadline" color="secondaryLabel" numberOfLines={1}>
           {value}
         </Text>
       ) : null}
@@ -333,11 +323,12 @@ export const ListRow = ({
       {trailing}
 
       {accessory.type === 'disclosure' ? (
-        <Symbol name="chevron.right" size={18} color={theme.colors.tertiaryLabel} />
+        <Symbol name="chevron.right" size={16} color={theme.colors.secondaryLabel} />
       ) : null}
 
       {accessory.type === 'checkmark' && accessory.checked ? (
-        <Symbol name="checkmark" size={18} color={theme.colors.label} />
+        // Галочка выбора — акцентом, как у Opal.
+        <Symbol name="checkmark" size={18} color={theme.colors.accent} />
       ) : null}
 
       {accessory.type === 'switch' ? (
@@ -347,6 +338,8 @@ export const ListRow = ({
           value={accessory.value}
           onValueChange={accessory.onValueChange}
           disabled={disabled}
+          // Цвет, а не замена контрола: включённый трек Opal — оливковый.
+          trackColor={{ true: theme.surfaces.switchOn }}
         />
       ) : null}
     </View>
@@ -379,7 +372,9 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center' },
   grow: { flex: 1 },
   // Ширина как у глифа: с эмодзи и без него строки стоят в одну колонку.
-  emoji: { width: 22, textAlign: 'center' },
+  emoji: { width: GLYPH_COLUMN, textAlign: 'center' },
+  glyph: { width: GLYPH_COLUMN, alignItems: 'center' },
+  action: { flexDirection: 'row', alignItems: 'center' },
   // Обрезка дугой, как у канта стекла под группой: суперэллипс срезал бы
   // кант на углах ступенькой.
   group: { overflow: 'hidden', borderCurve: 'circular' },

@@ -24,7 +24,6 @@ import {
   Symbol,
   Text,
   type MenuItem,
-  ScreenBackdrop,
   GlassSurface,
   headerItems,
   backItem,
@@ -232,7 +231,6 @@ export default function NoteScreen() {
 
   return (
     <>
-      <ScreenBackdrop name="editor" />
       <Stack.Screen
         options={{
           // Статус сохранения в заголовок не ставится: заголовок прыгал при

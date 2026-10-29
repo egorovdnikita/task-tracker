@@ -1,29 +1,23 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { backdrops, type BackdropName } from '../theme';
+import { backdrops } from '../theme';
 import { GlassSurface } from './GlassSurface';
 
-export type ScreenBackdropProps = {
-  /** Раскладка пятен под конкретный экран — см. `backdrops` в `theme/opal.ts`. */
-  name: BackdropName;
-};
-
 /**
- * Подсветка экрана: цветные пятна над чёрным фоном, позади содержимого.
+ * Подсветка корня вкладки: приглушённый серо-зелёный свет у верхней кромки.
  *
- * Нужна ради стекла. Полупрозрачная подложка карточки на чистом чёрном
- * неотличима от плоского серого прямоугольника — стекло появляется только там,
- * где сквозь него просвечивает цвет. Пятна и есть этот цвет.
+ * Только на корнях трёх вкладок — так у Opal. Вложенные экраны и шиты стоят
+ * на чистом чёрном; раньше пятна лайма и аквы лежали на каждом экране.
  *
  * Слой кладётся первым ребёнком экрана и растягивается на всё окно, включая
  * зону под прозрачной шапкой и статус-баром: свет в эталоне идёт из-за верхней
  * кромки телефона, и срезанный по шапке он оставлял бы чёрную полосу — шов
  * между системной зоной и приложением.
  */
-export const ScreenBackdrop = ({ name }: ScreenBackdropProps) => (
+export const ScreenBackdrop = () => (
   <GlassSurface
-    mesh={backdrops[name]}
+    mesh={backdrops.root}
     radius={0}
     liquid={false}
     pointerEventsNone

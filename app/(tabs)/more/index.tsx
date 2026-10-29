@@ -3,7 +3,14 @@ import { ScrollView, Share, View } from 'react-native';
 import Constants from 'expo-constants';
 import { Stack } from 'expo-router';
 
-import { ListRow, ListSection, MenuButton, Text, ScreenBackdrop } from '../../../src/components';
+import {
+  ListRow,
+  ListSection,
+  MenuButton,
+  RootHeader,
+  ScreenBackdrop,
+  Text,
+} from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import type { SortMode } from '../../../src/types';
 import { SORT_LABELS } from '../../../src/features/labels';
@@ -47,13 +54,17 @@ export default function MoreScreen() {
 
   return (
     <>
-      <ScreenBackdrop name="settings" />
-      <Stack.Screen options={{ title: 'Настройки' }} />
+      <ScreenBackdrop />
+      <Stack.Screen options={{ headerShown: false, title: 'Настройки' }} />
 
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingBottom: theme.metrics.tabBar + theme.spacing.xxxl }}
       >
+        <RootHeader
+          title="Настройки"
+          style={{ marginHorizontal: theme.spacing.lg, marginBottom: theme.spacing.lg }}
+        />
         {/*
           Иконки строк — акцентный контурный глиф, а не белый символ в цветном
           квадрате. Квадраты были системным приёмом из «Настроек» iOS, где ими

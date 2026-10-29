@@ -2,15 +2,14 @@ import React, { useMemo, useState } from 'react';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import {
-  BottomBar,
   EmptyState,
+  Fab,
   HeaderCapsule,
   IconButton,
   NoteList,
   SearchField,
   showMenu,
   type MenuAnchor,
-  ScreenBackdrop,
   headerItems,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
@@ -124,7 +123,6 @@ export default function FolderScreen() {
 
   return (
     <>
-      <ScreenBackdrop name="notes" />
       <Stack.Screen
         options={{
           title: scope.title,
@@ -159,6 +157,14 @@ export default function FolderScreen() {
                   />
                   <SortButton />
                 </HeaderCapsule>
+              ),
+              // Создание — лаймовый круг «+» в шапке, как у Opal на «Rules».
+              () => (
+                <Fab
+                  compact
+                  onPress={create}
+                  onLongPress={(anchor) => chooseNoteType(anchor, createScope)}
+                />
               )),
         }}
       />
@@ -179,7 +185,7 @@ export default function FolderScreen() {
         }
         onDelete={(noteId) => trashWithUndo([noteId])}
         onTogglePin={togglePinned}
-        contentInsetBottom={theme.metrics.tabBar + theme.spacing.xxl + (selection.active ? 64 : 0)}
+        contentInsetBottom={theme.metrics.tabBar + (selection.active ? 64 : 0)}
         ListHeaderComponent={
           !selection.active ? (
             // Поиск под заголовком, как в корневом списке: одно место на всех
@@ -213,12 +219,6 @@ export default function FolderScreen() {
             />
           )
         }
-      />
-
-      <BottomBar
-        hidden={selection.active}
-        onCreate={create}
-        onLongPressCreate={(anchor) => chooseNoteType(anchor, createScope)}
       />
 
       <SelectionBar

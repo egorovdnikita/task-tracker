@@ -78,7 +78,7 @@ export const Chip = ({
   );
 
   const shape: ViewStyle = {
-    height: theme.controlHeight.segmented,
+    height: theme.controlHeight.chip,
     paddingLeft: theme.spacing.lg,
     paddingRight: onRemove ? theme.spacing.md : theme.spacing.lg,
     gap: theme.spacing.sm,

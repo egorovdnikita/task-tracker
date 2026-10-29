@@ -24,7 +24,14 @@ import { Text } from './Text';
  * - `glass` / `glassProminent` — жидкое стекло. Только для кнопок, которые
  *   плавают над содержимым: на плоском фоне стекло не от чего преломлять.
  */
-export type ButtonVariant = 'filled' | 'tinted' | 'gray' | 'plain' | 'glass' | 'glassProminent';
+export type ButtonVariant =
+  | 'filled'
+  | 'white'
+  | 'tinted'
+  | 'gray'
+  | 'plain'
+  | 'glass'
+  | 'glassProminent';
 
 export type ButtonProps = Omit<PressableProps, 'style' | 'children'> & {
   title: string;
@@ -74,18 +81,39 @@ export const Button = ({
     - `tinted` и `gray` — стеклянная пилюля без меша; у первой подпись акцентом.
     - `plain` — только подпись.
   */
-  const label =
-    variant === 'filled' || variant === 'gray' || variant === 'glass'
-      ? theme.hex.label
-      : variant === 'glassProminent'
-        ? theme.hex.onAccent
-        : theme.hex[accent];
+  /*
+    Недоступная главная кнопка у Opal — тёмная пилюля с ободком и серой
+    подписью, а не та же кнопка на треть прозрачности: прозрачная стеклянная
+    кнопка на чёрном читалась как ещё одна активная.
+  */
+  const solidOff = inactive && !loading && (variant === 'filled' || variant === 'white');
+
+  const label = solidOff
+    ? theme.hex.tertiaryLabel
+    : variant === 'white'
+      ? '#000000'
+      : destructive && variant === 'tinted'
+        ? theme.surfaces.dangerLabel
+        : variant === 'filled' || variant === 'gray' || variant === 'glass'
+          ? theme.hex.label
+          : variant === 'glassProminent'
+            ? theme.hex.onAccent
+            : theme.hex[accent];
 
   const surface: Record<ButtonVariant, React.ComponentProps<typeof GlassSurface> | null> = {
     filled: destructive
       ? { mesh: 'danger', stroke: 'danger', tint: 'rgba(255,87,122,0.16)', liquid: false }
       : { mesh: 'cta', stroke: 'cta', tint: theme.tints.cta, liquid: false },
-    tinted: { stroke: 'subtle', tint: theme.tints.control, interactive: true },
+    /*
+      Белая пилюля — второй вид главной кнопки Opal: подтверждение в шите
+      («Edit Rule», «Confirm»). Сплошная белая, подпись чёрная.
+    */
+    white: { tint: theme.surfaces.white, liquid: false },
+    // Разрушающая `tinted` — пилюля Opal «Delete My Account»: почти чёрная
+    // с красным, подпись `#FD7490`.
+    tinted: destructive
+      ? { tint: theme.surfaces.danger, liquid: false }
+      : { stroke: 'subtle', tint: theme.tints.control, interactive: true },
     gray: { stroke: 'subtle', tint: theme.tints.control, interactive: true },
     plain: null,
     glass: { stroke: 'glass', tint: theme.tints.glass, interactive: true },
@@ -120,10 +148,16 @@ export const Button = ({
     borderRadius,
     borderCurve: 'continuous',
     alignSelf: fullWidth ? 'stretch' : 'flex-start',
-    opacity: inactive ? 0.35 : 1,
+    opacity: inactive && !solidOff ? 0.35 : 1,
   };
 
-  const spec = surface[variant];
+  const spec = solidOff
+    ? {
+        tint: theme.surfaces.disabled,
+        stroke: { from: theme.surfaces.disabledRim, to: theme.surfaces.disabledRim },
+        liquid: false,
+      }
+    : surface[variant];
 
   return (
     <Pressable
@@ -219,15 +253,16 @@ export const HeaderCapsule = ({
 /**
  * Пилюля под кнопками шапки — то же тонкое стекло Opal, что у поля поиска.
  */
-const HeaderGlass = ({ children }: { children: React.ReactNode }) => {
+export const HeaderGlass = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
   const height = theme.controlHeight.buttonCompact;
 
   return (
     <View style={[styles.capsule, { height, minWidth: height, borderRadius: height / 2 }]}>
+      {/* Замер «Назад» Opal: `#121212` и ровный ободок 1pt `#373737`. */}
       <GlassSurface
-        stroke="glass"
-        tint={theme.tints.control}
+        stroke="rim"
+        tint={theme.tints.header}
         radius={height / 2}
         liquid={false}
         pointerEventsNone
@@ -250,14 +285,25 @@ const HeaderGlass = ({ children }: { children: React.ReactNode }) => {
  * Идёт в `unstable_headerRightItems` / `unstable_headerLeftItems`.
  */
 export const headerItems =
-  (render: () => React.ReactElement | null) =>
+  (render: () => React.ReactElement | null, trailing?: () => React.ReactElement | null) =>
   () => {
     const element = render();
-    if (!element) return [];
+    const extra = trailing?.() ?? null;
+    if (!element && !extra) return [];
     return [
       {
         type: 'custom' as const,
-        element: <HeaderGlass>{element}</HeaderGlass>,
+        // Хвост — элемент без стеклянной подложки (круг «+» Opal) в той же
+        // строке: одним элементом, чтобы порядок не зависел от того, как
+        // система расставляет несколько кнопок справа.
+        element: extra ? (
+          <View style={[styles.capsule, { gap: 8 }]}>
+            {element ? <HeaderGlass>{element}</HeaderGlass> : null}
+            {extra}
+          </View>
+        ) : (
+          <HeaderGlass>{element}</HeaderGlass>
+        ),
         hidesSharedBackground: true,
       },
     ];

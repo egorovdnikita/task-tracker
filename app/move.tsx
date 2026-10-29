@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { ListRow, ListSection, ScreenBackdrop } from '../src/components';
+import { ListRow, ListSection } from '../src/components';
 import { accentNames, useTheme } from '../src/theme';
 import { splitEmoji } from '../src/utils/emoji';
 import { promptForFolderName } from '../src/features/folders';
@@ -32,7 +32,6 @@ export default function MoveScreen() {
 
   return (
     <>
-      <ScreenBackdrop name="folders" />
       <Stack.Screen
         options={{
           title: targets.length > 1 ? `Переместить: ${targets.length}` : 'Переместить',

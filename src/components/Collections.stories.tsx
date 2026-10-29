@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { EmptyState } from './EmptyState';
-import { ListRow, ListSection, Separator } from './List';
+import { GLYPH_SEPARATOR_INSET, ListRow, ListSection, Separator } from './List';
 import { NoteCard } from './NoteCard';
 import { Text } from './Text';
 import { Toast } from './Notifications';
@@ -32,7 +32,7 @@ export const Список: Story = {
 
     return (
       <ScrollView>
-        <ListSection header="Вид" separatorInset={theme.metrics.separatorInset + 22 + theme.spacing.md}>
+        <ListSection header="Вид" separatorInset={GLYPH_SEPARATOR_INSET}>
           <ListRow
             title="Оформление"
             icon="circle.lefthalf.filled"
@@ -50,9 +50,8 @@ export const Список: Story = {
 
         <ListSection
           header="Папки"
-          count={2}
           action={{ icon: 'plus', label: 'Новая папка', onPress: () => {} }}
-          separatorInset={theme.metrics.separatorInset + 22 + theme.spacing.md}
+          separatorInset={GLYPH_SEPARATOR_INSET}
         >
           <ListRow title="Работа" icon="folder.fill" value="12" accessory={{ type: 'disclosure' }} onPress={() => {}} />
           <ListRow title="Личное" icon="folder.fill" value="4" accessory={{ type: 'disclosure' }} onPress={() => {}} />

@@ -147,7 +147,7 @@ const opalPalette = {
   elevated: dark('#141416'),
 
   /** Семантика эталона: разрушающее и «готово». */
-  systemRed: dark('#FF577A'),
+  systemRed: dark('#FC6578'),
   systemGreen: dark('#05D6B4'),
 } as const;
 

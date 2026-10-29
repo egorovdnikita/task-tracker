@@ -15,6 +15,11 @@ export type FabProps = {
   onLongPress?: (anchor: MenuAnchor) => void;
   accessibilityLabel?: string;
   accessibilityHint?: string;
+  /**
+   * Круг 44 в шапке — как «+» у Opal на экране «Rules»: тот же лаймовый меш,
+   * без свечения. Плавающей кнопки у Opal нет, создание живёт в шапке.
+   */
+  compact?: boolean;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -33,10 +38,11 @@ export const Fab = ({
   onLongPress,
   accessibilityLabel = 'Новая заметка',
   accessibilityHint = 'Долгое нажатие — выбрать тип заметки',
+  compact = false,
   style,
 }: FabProps) => {
   const theme = useTheme();
-  const size = theme.controlHeight.fab;
+  const size = compact ? theme.controlHeight.buttonCompact : theme.controlHeight.fab;
   const ref = useRef<React.ComponentRef<typeof View>>(null);
 
   return (
@@ -55,7 +61,7 @@ export const Fab = ({
           : undefined
       }
       style={({ pressed }) => [
-        styles.glow,
+        compact ? null : styles.glow,
         { width: size, height: size, borderRadius: size / 2 },
         { transform: [{ scale: pressed ? 0.94 : 1 }] },
         style,
@@ -68,7 +74,7 @@ export const Fab = ({
         tint={theme.hex.accent}
         style={[styles.root, { width: size, height: size }]}
       >
-        <Symbol name="plus" size={26} color={theme.hex.onAccent} weight="semibold" />
+        <Symbol name="plus" size={compact ? 22 : 26} color={theme.hex.onAccent} weight="semibold" />
       </GlassSurface>
     </Pressable>
   );

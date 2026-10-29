@@ -46,9 +46,9 @@ export const NotificationHost = () => {
         position: 'absolute',
         left: theme.spacing.lg,
         right: theme.spacing.lg,
-        // Над кнопкой создания, а не рядом с ней.
-        bottom:
-          insets.bottom + theme.metrics.tabBar / 2 + theme.controlHeight.fab + theme.spacing.md,
+        // Над панелью вкладок: плавающей кнопки создания больше нет, круг
+        // «+» живёт в шапке.
+        bottom: insets.bottom + theme.metrics.tabBar + theme.spacing.md,
       }}
     >
       <Toast key={toast?.id} message={toast?.message ?? null} onUndo={toast?.undo} onHide={hide} />

@@ -9,7 +9,6 @@ import {
   ListRow,
   ListSection,
   Text,
-  ScreenBackdrop,
 } from '../src/components';
 import { useTheme } from '../src/theme';
 import { formatDateTime } from '../src/utils/date';
@@ -66,7 +65,6 @@ export default function ReminderScreen() {
 
   return (
     <>
-      <ScreenBackdrop name="editor" />
       <Stack.Screen options={{ title: 'Напоминание' }} />
 
       {/* Без системной поправки на инсеты блок «Уведомления выключены»

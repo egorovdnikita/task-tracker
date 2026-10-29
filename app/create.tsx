@@ -279,7 +279,7 @@ export default function CreateScreen() {
             // Нижняя граница высоты задана явно: у горизонтальной прокрутки в
             // колонке своей высоты нет, и без числа ряд схлопнулся бы. Именно
             // граница, а не высота — при крупном тексте чип растёт.
-            style={[styles.fixed, { minHeight: theme.controlHeight.segmented + theme.spacing.lg }]}
+            style={[styles.fixed, { minHeight: theme.controlHeight.chip + theme.spacing.lg }]}
             contentContainerStyle={{
               alignItems: 'center',
               paddingHorizontal: theme.spacing.xl,

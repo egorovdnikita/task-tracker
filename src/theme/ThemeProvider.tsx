@@ -11,7 +11,7 @@ import {
   type ResolvedPalette,
 } from './colors';
 import { controlHeight, metrics, radius, spacing } from './metrics';
-import { backdrops, meshes, strokes, tints } from './opal';
+import { backdrops, meshes, strokes, surfaces, tints } from './opal';
 import { headerTextStyle, textStyle, type TextStyleName, type WeightName } from './typography';
 
 /** Что выбрано в настройках приложения. `system` — следовать за системой. */
@@ -34,6 +34,7 @@ export type Theme = {
   meshes: typeof meshes;
   strokes: typeof strokes;
   tints: typeof tints;
+  surfaces: typeof surfaces;
   backdrops: typeof backdrops;
 };
 
@@ -51,6 +52,7 @@ const makeTheme = (scheme: ColorScheme): Theme => ({
   meshes,
   strokes,
   tints,
+  surfaces,
   backdrops,
 });
 

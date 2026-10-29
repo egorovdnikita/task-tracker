@@ -2,7 +2,14 @@ import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack, router } from 'expo-router';
 
-import { HeaderCapsule, IconButton, ListRow, ListSection, ScreenBackdrop, headerItems } from '../../../src/components';
+import {
+  GLYPH_SEPARATOR_INSET,
+  Fab,
+  ListRow,
+  ListSection,
+  RootHeader,
+  ScreenBackdrop,
+} from '../../../src/components';
 import { accentNames, useTheme } from '../../../src/theme';
 import { STATIC_TAGS } from '../../../src/features/tags';
 import { splitEmoji } from '../../../src/utils/emoji';
@@ -16,14 +23,6 @@ import {
   trashedNotes,
   useNotesStore,
 } from '../../../src/store/useNotesStore';
-
-/**
- * Отбивка разделителя под глифом строки: поле строки (20), ширина символа и зазор (16).
- *
- * Считается от глифа в 22pt, а не от плашки в 29pt: плашки под иконками
- * больше нет — цвет папки живёт в самом символе.
- */
-const GLYPH_INSET = 20 + 22 + 16;
 
 /**
  * Плита 05.1 — папки и теги.
@@ -113,28 +112,27 @@ export default function FoldersScreen() {
 
   return (
     <>
-      <ScreenBackdrop name="folders" />
-      <Stack.Screen
-        options={{
-          title: 'Папки',
-          unstable_headerRightItems: headerItems(() => (
-            <HeaderCapsule>
-              <IconButton
-                name="folder.badge.plus"
-                size={19}
-                accessibilityLabel="Новая папка"
-                onPress={() => addFolder(null)}
-              />
-            </HeaderCapsule>
-          )),
-        }}
-      />
+      <ScreenBackdrop />
+      {/* Корень вкладки — крупный заголовок слева и круг «+» справа. */}
+      <Stack.Screen options={{ headerShown: false, title: 'Папки' }} />
 
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingBottom: theme.metrics.tabBar + theme.spacing.xxxl }}
       >
-        <ListSection separatorInset={GLYPH_INSET}>
+        <RootHeader
+          title="Папки"
+          style={{ marginHorizontal: theme.spacing.lg, marginBottom: theme.spacing.lg }}
+          right={
+            <Fab
+              compact
+              accessibilityLabel="Новая папка"
+              onPress={() => addFolder(null)}
+            />
+          }
+        />
+
+        <ListSection separatorInset={GLYPH_SEPARATOR_INSET}>
           {/* «Все заметки» здесь больше нет: строка перекидывала на соседнюю
               вкладку и уводила из стека «Папок», а все заметки — это и есть
               вкладка «Заметки». */}
@@ -150,9 +148,8 @@ export default function FoldersScreen() {
         {roots.length > 0 ? (
           <ListSection
             header="Папки"
-            count={roots.length}
-            action={{ icon: 'plus', label: 'Новая папка', onPress: () => addFolder(null) }}
-            separatorInset={GLYPH_INSET}
+            action={{ icon: 'plus', label: 'Новая', onPress: () => addFolder(null) }}
+            separatorInset={GLYPH_SEPARATOR_INSET}
           >
             {roots.flatMap((folder) => [
               <ListRow
@@ -203,7 +200,7 @@ export default function FoldersScreen() {
           то нет, приходится каждый раз искать заново; постоянный со счётчиком
           «0» ещё и говорит, что тег свободен.
         */}
-        <ListSection header="Теги" count={STATIC_TAGS.length} separatorInset={GLYPH_INSET}>
+        <ListSection header="Теги" separatorInset={GLYPH_SEPARATOR_INSET}>
           {STATIC_TAGS.map((tag) => (
             <ListRow
               key={tag.id}
@@ -219,7 +216,7 @@ export default function FoldersScreen() {
           ))}
         </ListSection>
 
-        <ListSection separatorInset={GLYPH_INSET}>
+        <ListSection separatorInset={GLYPH_SEPARATOR_INSET}>
           <ListRow
             title="Корзина"
             icon="trash"

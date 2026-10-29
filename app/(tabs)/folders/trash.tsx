@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack, router } from 'expo-router';
 
-import { EmptyState, ListRow, ListSection, ScreenBackdrop } from '../../../src/components';
+import { EmptyState, ListRow, ListSection } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { noteTitle } from '../../../src/utils/blocks';
 import { confirmDestructive } from '../../../src/utils/actionSheet';
@@ -41,7 +41,6 @@ export default function TrashScreen() {
 
   return (
     <>
-      <ScreenBackdrop name="folders" />
       <Stack.Screen options={{ title: 'Корзина' }} />
 
       {trashed.length === 0 ? (
@@ -60,7 +59,6 @@ export default function TrashScreen() {
         >
           <ListSection
             header="В корзине"
-            count={trashed.length}
             footer="Нажмите на заметку, чтобы посмотреть её. Долгое нажатие — восстановить или удалить сразу."
           >
             {trashed.map((note) => (

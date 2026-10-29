@@ -2,6 +2,7 @@ export { BottomBar, type BottomBarProps } from './BottomBar';
 export {
   Button,
   HeaderCapsule,
+  HeaderGlass,
   headerItems,
   backItem,
   IconButton,
@@ -17,8 +18,9 @@ export { EmptyState, type EmptyStateProps } from './EmptyState';
 export { Fab, type FabProps } from './Fab';
 export { Glass, GlassGroup, type GlassGroupProps, type GlassProps } from './Glass';
 export { GlassSurface, type GlassSurfaceProps } from './GlassSurface';
-export { ScreenBackdrop, type ScreenBackdropProps } from './ScreenBackdrop';
+export { ScreenBackdrop } from './ScreenBackdrop';
 export {
+  GLYPH_SEPARATOR_INSET,
   ListRow,
   ListSection,
   Separator,
@@ -50,3 +52,4 @@ export { Symbol, SymbolBadge, type SymbolBadgeProps, type SymbolProps } from './
 export { Text, type TextProps } from './Text';
 export { ThinkingOrb, type OrbState, type ThinkingOrbProps } from './ThinkingOrb';
 export { TextField, type TextFieldProps } from './TextField';
+export { RootHeader, type RootHeaderProps } from './RootHeader';

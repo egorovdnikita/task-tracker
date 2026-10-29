@@ -3,8 +3,10 @@ import { View } from 'react-native';
 import { Stack, router } from 'expo-router';
 
 import {
-  BottomBar,
   EmptyState,
+  Fab,
+  HeaderGlass,
+  RootHeader,
   HeaderCapsule,
   IconButton,
   NoteList,
@@ -13,7 +15,6 @@ import {
   showMenu,
   type MenuAnchor,
   ScreenBackdrop,
-  headerItems,
 } from '../../../src/components';
 import { useTheme } from '../../../src/theme';
 import { pluralNotes } from '../../../src/utils/date';
@@ -106,53 +107,57 @@ export default function NotesScreen() {
     );
   };
 
+  /**
+   * Строка заголовка корня: имя раздела слева, справа — капсула подачи
+   * списка и лаймовый круг «+». Круг — как у Opal на «Rules»: плавающей
+   * кнопки создания у Opal нет. В режиме выбора на месте капсулы
+   * «Выбрать все».
+   */
+  const allSelected = visible.length > 0 && visible.every((n) => selection.ids.includes(n.id));
+
+  const header = (
+    <RootHeader
+      title="Заметки"
+      right={
+        selection.active ? (
+          <HeaderGlass>
+            <IconButton
+              name={allSelected ? 'checkmark.circle.fill' : 'checkmark.circle'}
+              size={19}
+              accessibilityLabel={allSelected ? 'Снять отметку со всех' : 'Выбрать все'}
+              onPress={() => selection.toggleAll(visible.map((n) => n.id))}
+            />
+          </HeaderGlass>
+        ) : (
+          <>
+            <HeaderGlass>
+              <HeaderCapsule>
+                <IconButton
+                  name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
+                  size={19}
+                  accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
+                  onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
+                />
+                <SortButton />
+              </HeaderCapsule>
+            </HeaderGlass>
+            <Fab
+              compact
+              onPress={() => router.push('/create')}
+              onLongPress={(anchor) => chooseNoteType(anchor)}
+            />
+          </>
+        )
+      }
+    />
+  );
+
   return (
     <>
-      <ScreenBackdrop name="notes" />
-      <Stack.Screen
-        options={{
-          title: 'Заметки',
-          /*
-            Обе кнопки управления списком — в одной стеклянной капсуле справа,
-            в одну строку с заголовком. Сортировка вернулась сюда из пилюли
-            под заголовком: её место рядом с переключателем вида, потому что
-            обе меняют не содержимое списка, а его подачу.
-          */
-          // В режиме выбора управление подачей списка не нужно — на его месте
-          // «Выбрать все»; снять выбор можно крестиком на нижней панели.
-          unstable_headerRightItems: selection.active
-            ? headerItems(() => (
-                <HeaderCapsule>
-                  <IconButton
-                    name={
-                      visible.every((n) => selection.ids.includes(n.id))
-                        ? 'checkmark.circle.fill'
-                        : 'checkmark.circle'
-                    }
-                    size={19}
-                    accessibilityLabel={
-                      visible.every((n) => selection.ids.includes(n.id))
-                        ? 'Снять отметку со всех'
-                        : 'Выбрать все'
-                    }
-                    onPress={() => selection.toggleAll(visible.map((n) => n.id))}
-                  />
-                </HeaderCapsule>
-              ))
-            : headerItems(() => (
-                <HeaderCapsule>
-                  <IconButton
-                    name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
-                    size={19}
-                    accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
-                    onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
-                  />
-
-                  <SortButton />
-                </HeaderCapsule>
-              )),
-        }}
-      />
+      <ScreenBackdrop />
+      {/* Системная шапка у корня скрыта: заголовок и кнопки — строкой
+          `RootHeader` в начале списка, как у Opal. */}
+      <Stack.Screen options={{ headerShown: false, title: 'Заметки' }} />
 
       <NoteList
         notes={visible}
@@ -170,9 +175,9 @@ export default function NotesScreen() {
         }
         onDelete={(id) => trashWithUndo([id])}
         onTogglePin={togglePinned}
-        // Место под кнопку создания в ряду панели вкладок — последняя карточка
-        // не должна прятаться под ней.
-        contentInsetBottom={theme.metrics.tabBar + theme.spacing.xxl + (selection.active ? 64 : 0)}
+        // Место под панель вкладок — последняя карточка не должна прятаться
+        // под ней.
+        contentInsetBottom={theme.metrics.tabBar + (selection.active ? 64 : 0)}
         ListHeaderComponent={
           !selection.active ? (
             <View
@@ -180,6 +185,8 @@ export default function NotesScreen() {
               // «Закреплено» и первая карточка прилипали к контролу.
               style={{ gap: theme.spacing.md, marginBottom: theme.spacing.xl }}
             >
+              {header}
+
               {/* Поиск сразу под заголовком: белой карточкой, в потоке
                   списка, а не плавающей капсулой у нижнего края. */}
               <SearchField value={query} onChangeText={setQuery} placeholder="Поиск по заметкам" />
@@ -200,7 +207,9 @@ export default function NotesScreen() {
                 onChange={setTag}
               />
             </View>
-          ) : null
+          ) : (
+            <View style={{ marginBottom: theme.spacing.md }}>{header}</View>
+          )
         }
         ListEmptyComponent={
           searching ? (
@@ -241,12 +250,6 @@ export default function NotesScreen() {
             />
           )
         }
-      />
-
-      <BottomBar
-        hidden={selection.active}
-        onCreate={() => router.push('/create')}
-        onLongPressCreate={(anchor) => chooseNoteType(anchor)}
       />
 
       <SelectionBar

@@ -34,25 +34,24 @@ export type NoteToolsProps = {
  * набирать не собираются: чтобы записать голос, приходилось сначала ткнуть в
  * текст, вызвать клавиатуру и лишь потом дотянуться до микрофона.
  *
- * Поэтому инструменты стоят в теле заметки, под её содержимым, и видны всегда.
- * Плитка — белый глиф на серой плашке и слово под ним; вся
- * плитка целиком и есть цель касания.
+ * Поэтому инструменты видны всегда: рядом у нижнего края редактора, не
+ * завися от клавиатуры. Сначала они стояли в конце прокрутки, но в длинной
+ * заметке до них приходилось долистывать. Плитка — глиф на прозрачной
+ * плашке и слово под ним; вся плитка целиком и есть цель касания.
  */
 export const NoteTools = ({ tools, style }: NoteToolsProps) => {
   const theme = useTheme();
 
   return (
-    <View style={[{ gap: theme.spacing.sm }, style]}>
-      <Text variant="footnote" color="secondaryLabel">
-        Добавить в заметку
-      </Text>
-
+    // Подпись «Добавить в заметку» над рядом снята: у нижнего края она
+    // съедала высоту, а слова под глифами и так говорят, что вставится.
+    <View accessibilityRole="toolbar" accessibilityLabel="Добавить в заметку" style={style}>
       <View
         style={[
           styles.card,
           {
             borderRadius: theme.radius.lg,
-            paddingVertical: theme.spacing.md,
+            paddingVertical: theme.spacing.sm,
             paddingHorizontal: theme.spacing.sm,
           },
         ]}
@@ -93,9 +92,11 @@ const Tool = ({ name, label, onPress }: NoteTool) => {
           styles.glyph,
           {
             borderRadius: theme.radius.md,
-            // Серая плашка, а не акцентная: фирменный цвет оставлен главным
-            // действиям, а пять цветных пятен подряд перетягивали страницу.
-            backgroundColor: theme.colors.secondarySystemFill,
+            // Не акцентная: фирменный цвет оставлен главным действиям, а пять
+            // цветных пятен подряд перетягивали страницу. И не серая: серая
+            // заливка гасит подсветку Opal — прозрачное белое, как у кнопок
+            // шапки.
+            backgroundColor: theme.tints.control,
           },
         ]}
       >
@@ -114,9 +115,11 @@ const styles = StyleSheet.create({
   // Плитки делят ширину поровну: ряд остаётся рядом, а не сползает влево,
   // когда подписи разной длины.
   tool: { flex: 1, alignItems: 'center' },
+  // 40pt, а не 48: ряд закреплён у края и не должен отнимать у заметки
+  // высоту. Цель касания — вся плитка вместе со словом, она выше 44pt.
   glyph: {
-    width: 48,
-    height: 48,
+    width: 40,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
     borderCurve: 'continuous',

@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
+import type { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams, useNavigation } from 'expo-router';
 
 import {
   BlockEditor,
@@ -19,7 +20,6 @@ import {
   ScreenBackdrop,
   headerItems,
   backItem,
-  Button,
 } from '../../src/components';
 import { useTheme, type PaletteName } from '../../src/theme';
 import { hasContent, makeChecklistBlock, makeTextBlock } from '../../src/utils/blocks';
@@ -48,22 +48,20 @@ const DUE_COLOR: Record<ReturnType<typeof dueState>, PaletteName> = {
 const doneCount = (blocks: NoteBlock[]): number =>
   blocks.reduce(
     (total, block) =>
-      block.type === 'checklist'
-        ? total + block.items.filter((item) => item.done).length
-        : total,
+      block.type === 'checklist' ? total + block.items.filter((item) => item.done).length : total,
     0,
   );
 
 /**
  * Плиты 03.1–03.3 — редактор.
  *
- * Каждое изменение уходит в стор сразу, а стор пишется на диск, поэтому в
- * шапке — состояние: «Сохранение…» на время записи и «Сохранено» после неё.
+ * Каждое изменение уходит в стор сразу, а стор пишется на диск, поэтому под
+ * заголовком, рядом с датой, на мгновение появляется «Сохранено».
  *
- * Кнопка «Сохранить» внизу при этом есть, и это не дубль автосохранения, а
- * завершение правки: она подтверждает запись и закрывает заметку. Это
- * главное действие экрана и единственное место на нём в фирменном цвете —
- * остальная шапка и инструменты монохромные.
+ * Кнопки «Сохранить» нет. Она обещала то, что уже произошло: без неё правки
+ * будто бы пропадали, и человек боялся уйти жестом «назад». Её место у
+ * нижнего края заняли инструменты добавления — они нужны из любой точки
+ * длинной заметки, а не только из её конца.
  */
 export default function NoteScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -80,7 +78,6 @@ export default function NoteScreen() {
   const setBlocks = useNotesStore((s) => s.setBlocks);
   const togglePinned = useNotesStore((s) => s.togglePinned);
   const trashNotes = useNotesStore((s) => s.trashNotes);
-  const deleteForever = useNotesStore((s) => s.deleteForever);
   const restoreNotes = useNotesStore((s) => s.restoreNotes);
 
   const note = useMemo(() => notes.find((n) => n.id === id) ?? null, [notes, id]);
@@ -96,14 +93,41 @@ export default function NoteScreen() {
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
   const [celebrating, setCelebrating] = useState(false);
   const lastSaved = useRef(note?.updatedAt);
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
+  // Подтверждение гаснет само: висящее «Сохранено» перестаёт что-либо значить.
   useEffect(() => {
     if (!note || note.updatedAt === lastSaved.current) return;
     lastSaved.current = note.updatedAt;
     setStatus('saving');
-    const timer = setTimeout(() => setStatus('saved'), 500);
-    return () => clearTimeout(timer);
+    const saved = setTimeout(() => setStatus('saved'), 500);
+    const idle = setTimeout(() => setStatus('idle'), 2000);
+    return () => {
+      clearTimeout(saved);
+      clearTimeout(idle);
+    };
   }, [note]);
+
+  /**
+   * Пустая заметка при выходе не остаётся — и не уезжает в корзину.
+   *
+   * В корзину попадает то, что было содержимым: оттуда его можно вернуть, и
+   * оно лежит там со своим сроком. Заметка, в которую не написали ни строчки,
+   * содержимым не была никогда — от неё в корзине оставались записи «Без
+   * заголовка», которые нечего восстанавливать.
+   *
+   * Проверка висит на `beforeRemove`, а не на нашей кнопке «Назад»: системный
+   * жест от левого края кнопку не нажимает, и пустая заметка оставалась.
+   */
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', () => {
+        const current = useNotesStore.getState().notes.find((n) => n.id === id);
+        if (current && !current.title.trim() && !hasContent(current.blocks))
+          useNotesStore.getState().deleteForever([current.id]);
+      }),
+    [navigation, id],
+  );
 
   if (!note) {
     return (
@@ -115,18 +139,7 @@ export default function NoteScreen() {
 
   const folder = note.folderId ? folders.find((f) => f.id === note.folderId) : null;
 
-  /**
-   * Пустая заметка при выходе не остаётся — и не уезжает в корзину.
-   *
-   * В корзину попадает то, что было содержимым: оттуда его можно вернуть, и
-   * оно лежит там со своим сроком. Заметка, в которую не написали ни строчки,
-   * содержимым не была никогда — от неё в корзине оставались записи «Без
-   * заголовка», которые нечего восстанавливать.
-   */
-  const leave = () => {
-    if (!note.title.trim() && !hasContent(note.blocks)) deleteForever([note.id]);
-    router.back();
-  };
+  const leave = () => router.back();
 
   /**
    * Первое выполненное дело замечается один раз.
@@ -163,8 +176,11 @@ export default function NoteScreen() {
       title: 'Удалить',
       icon: 'trash' as const,
       destructive: true,
+      // Отмена та же, что при удалении из списка: место удаления не должно
+      // менять, можно ли его отменить.
       onPress: () => {
         trashNotes([note.id]);
+        offerUndo('Заметка в корзине', () => restoreNotes([note.id]));
         router.back();
       },
     },
@@ -181,7 +197,9 @@ export default function NoteScreen() {
       <ScreenBackdrop name="editor" />
       <Stack.Screen
         options={{
-          title: status === 'saving' ? 'Сохранение…' : status === 'saved' ? 'Сохранено' : '',
+          // Статус сохранения в заголовок не ставится: заголовок прыгал при
+          // каждом символе. Он стоит строкой метаданных под заголовком.
+          title: '',
           unstable_headerLeftItems: backItem(leave),
           /*
             Обе кнопки рисуются всегда, меняется только символ закрепления.
@@ -277,6 +295,7 @@ export default function NoteScreen() {
             <Text variant="caption1" color="tertiaryLabel">
               {formatDateTime(note.updatedAt)}
               {folder ? ` · ${folder.name}` : ''}
+              {status === 'saving' ? ' · Сохранение…' : status === 'saved' ? ' · Сохранено' : ''}
             </Text>
 
             {note.remindAt ? (
@@ -357,60 +376,54 @@ export default function NoteScreen() {
                 ))}
             </ChipWrap>
           </View>
-
-          {/* Плита 04: запись, скан и рисунок — такие же блоки в потоке, как
-              текст и список, поэтому и вставляются одним рядом. */}
-          <NoteTools
-            tools={[
-              {
-                name: 'checklist',
-                label: 'Список',
-                onPress: () => setBlocks(note.id, [...note.blocks, makeChecklistBlock()]),
-              },
-              {
-                name: 'text.alignleft',
-                label: 'Текст',
-                onPress: () => setBlocks(note.id, [...note.blocks, makeTextBlock()]),
-              },
-              {
-                name: 'mic',
-                label: 'Запись',
-                onPress: () => router.push({ pathname: '/capture/voice', params: { id: note.id } }),
-              },
-              {
-                name: 'doc.text.viewfinder',
-                label: 'Скан',
-                onPress: () => router.push({ pathname: '/capture/scan', params: { id: note.id } }),
-              },
-              {
-                name: 'scribble',
-                label: 'Рисунок',
-                onPress: () =>
-                  router.push({ pathname: '/capture/sketch', params: { id: note.id } }),
-              },
-            ]}
-          />
         </ScrollView>
 
-        {/* Закреплена под прокруткой, а не в её конце: до конца длинной
-            заметки ещё нужно долистать, а закончить правку можно в любой
-            момент. Над клавиатурой её держит `KeyboardAvoidingView`. */}
+        {/* Плита 04: чем дополнить заметку — рядом у нижнего края, а не в
+            конце прокрутки: в длинной заметке до конца ещё нужно долистать.
+            Запись, скан и рисунок — такие же блоки в потоке, как текст и
+            список, поэтому вставляются одним рядом. Над клавиатурой ряд
+            держит `KeyboardAvoidingView`. */}
         {!note.deletedAt ? (
           <View
             style={{
               paddingHorizontal: theme.spacing.lg,
               paddingTop: theme.spacing.sm,
-              paddingBottom: keyboard ? theme.spacing.sm : Math.max(theme.spacing.lg, insets.bottom),
+              paddingBottom: keyboard
+                ? theme.spacing.sm
+                : Math.max(theme.spacing.lg, insets.bottom),
             }}
           >
-            <Button
-              title="Сохранить"
-              size="large"
-              fullWidth
-              onPress={() => {
-                notify('Заметка сохранена');
-                leave();
-              }}
+            <NoteTools
+              tools={[
+                {
+                  name: 'checklist',
+                  label: 'Список',
+                  onPress: () => setBlocks(note.id, [...note.blocks, makeChecklistBlock()]),
+                },
+                {
+                  name: 'text.alignleft',
+                  label: 'Текст',
+                  onPress: () => setBlocks(note.id, [...note.blocks, makeTextBlock()]),
+                },
+                {
+                  name: 'mic',
+                  label: 'Запись',
+                  onPress: () =>
+                    router.push({ pathname: '/capture/voice', params: { id: note.id } }),
+                },
+                {
+                  name: 'doc.text.viewfinder',
+                  label: 'Скан',
+                  onPress: () =>
+                    router.push({ pathname: '/capture/scan', params: { id: note.id } }),
+                },
+                {
+                  name: 'scribble',
+                  label: 'Рисунок',
+                  onPress: () =>
+                    router.push({ pathname: '/capture/sketch', params: { id: note.id } }),
+                },
+              ]}
             />
           </View>
         ) : null}

@@ -13,8 +13,23 @@ import {
   type SortMode,
 } from '../types';
 import { makeId, makeTextBlock, noteText } from '../utils/blocks';
+import { cancelReminder, scheduleReminder } from '../features/reminders';
 
 const DAY = 86_400_000;
+
+/**
+ * Напоминание живёт, пока жива заметка. Удалённая в корзину заметка молчит —
+ * иначе пуш вёл бы в заметку, которой нет ни в одном списке, — а
+ * восстановленная снова напоминает, если срок ещё впереди.
+ */
+const silence = (notes: Note[]) => {
+  for (const note of notes) if (note.remindAt) void cancelReminder(note.id);
+};
+
+const revive = (notes: Note[]) => {
+  for (const note of notes)
+    if (note.remindAt && note.remindAt > Date.now()) void scheduleReminder(note, note.remindAt);
+};
 
 export type NoteInput = {
   title?: string;
@@ -135,21 +150,31 @@ export const useNotesStore = create<NotesState>()(
 
       // Удаление отложенное: заметка уезжает в корзину и живёт там срок из
       // TRASH_RETENTION_DAYS. Мгновенное удаление есть только в самой корзине.
-      trashNotes: (ids) =>
+      trashNotes: (ids) => {
+        silence(get().notes.filter((n) => ids.includes(n.id)));
         set({
           notes: get().notes.map((n) =>
             ids.includes(n.id) ? { ...n, deletedAt: Date.now(), pinned: false } : n,
           ),
-        }),
+        });
+      },
 
-      restoreNotes: (ids) =>
+      restoreNotes: (ids) => {
         set({
           notes: get().notes.map((n) => (ids.includes(n.id) ? { ...n, deletedAt: null } : n)),
-        }),
+        });
+        revive(get().notes.filter((n) => ids.includes(n.id)));
+      },
 
-      deleteForever: (ids) => set({ notes: get().notes.filter((n) => !ids.includes(n.id)) }),
+      deleteForever: (ids) => {
+        silence(get().notes.filter((n) => ids.includes(n.id)));
+        set({ notes: get().notes.filter((n) => !ids.includes(n.id)) });
+      },
 
-      emptyTrash: () => set({ notes: get().notes.filter((n) => n.deletedAt === null) }),
+      emptyTrash: () => {
+        silence(get().notes.filter((n) => n.deletedAt !== null));
+        set({ notes: get().notes.filter((n) => n.deletedAt === null) });
+      },
 
       /** Чистка просроченных. Вызывается при запуске, а не по таймеру. */
       purgeExpired: () => {
@@ -176,6 +201,9 @@ export const useNotesStore = create<NotesState>()(
         const nested = get().folders.filter((f) => f.parentId === id).map((f) => f.id);
         const doomed = [id, ...nested];
         const now = Date.now();
+
+        if (contents === 'trash')
+          silence(get().notes.filter((n) => n.folderId && doomed.includes(n.folderId)));
 
         set({
           folders: get().folders.filter((f) => !doomed.includes(f.id)),

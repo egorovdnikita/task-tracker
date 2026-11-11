@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Task Tracker Notes",
+    "name": "task-tracker",
     "slug": "task-tracker",
     "version": "1.0.0",
     "scheme": "tasktracker",

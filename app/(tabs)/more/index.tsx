@@ -142,7 +142,7 @@ export default function MoreScreen() {
           color="secondaryLabel"
           style={{ textAlign: 'center', paddingHorizontal: theme.spacing.xxl }}
         >
-          {Constants.expoConfig?.name ?? 'Task Tracker Notes'} ·{' '}
+          {Constants.expoConfig?.name ?? 'task-tracker'} ·{' '}
           v{Constants.expoConfig?.version ?? '1.0.0'}
         </Text>
       </ScrollView>

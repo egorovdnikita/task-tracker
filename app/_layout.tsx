@@ -50,7 +50,6 @@ const RootStack = () => {
   return (
     <Stack
       screenOptions={{
-        statusBarStyle: 'light',
         header: props => <FinchHeader {...props} />,
         // Шапка монохромная: фирменный цвет остаётся главным действиям экрана.
         headerTintColor: theme.hex.onBackdrop,

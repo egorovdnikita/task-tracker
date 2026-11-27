@@ -24,7 +24,6 @@ export default function NotesLayout() {
   return (
     <Stack
       screenOptions={({ navigation, route }) => ({
-        statusBarStyle: 'light',
         header: props => <FinchHeader {...props} />,
         headerLargeTitle: false,
         // «Назад» — та же кнопка, что на экране заметки. На корневом экране

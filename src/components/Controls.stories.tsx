@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -18,11 +19,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Row = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <View style={{ gap: 8, marginBottom: 24 }}>
+  <View style={{ gap: boxPrimitives.spacing['8'], marginBottom: boxPrimitives.spacing['24'] }}>
     <Text variant="footnote" color="secondaryLabel" style={{ textTransform: 'uppercase' }}>
       {title}
     </Text>
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: boxPrimitives.spacing['12'], alignItems: 'center' }}>
       {children}
     </View>
   </View>
@@ -75,7 +76,7 @@ export const Чипы: Story = {
       setSelected((s) => (s.includes(tag) ? s.filter((t) => t !== tag) : [...s, tag]));
 
     return (
-      <View style={{ gap: 24 }}>
+      <View style={{ gap: boxPrimitives.spacing['24'] }}>
         <ChipWrap>
           {['Работа', 'Идеи', 'Личное', 'Покупки'].map((tag) => (
             <Chip
@@ -121,7 +122,7 @@ export const Поля: Story = {
     const [name, setName] = useState('');
 
     return (
-      <View style={{ gap: 24 }}>
+      <View style={{ gap: boxPrimitives.spacing['24'] }}>
         <TextField label="Имя папки" value={name} onChangeText={setName} placeholder="Например, Работа" />
         <TextField
           label="Имя папки"
@@ -154,7 +155,7 @@ const SearchFieldExample = () => {
  */
 export const Создание: Story = {
   render: () => (
-    <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
+    <View style={{ flexDirection: 'row', gap: boxPrimitives.spacing['16'], alignItems: 'center' }}>
       <Fab onPress={() => {}} />
       <Text variant="footnote" color="secondaryLabel">
         Долгое нажатие — выбор типа заметки

@@ -1,3 +1,5 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
+import { localColors } from '../theme/localColors';
 import React, { useEffect, useRef } from 'react';
 import { Animated, Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -122,9 +124,9 @@ const styles = StyleSheet.create({
   shrink: { flexShrink: 1 },
   action: { justifyContent: 'center' },
   shadow: {
-    shadowColor: '#000',
+    shadowColor: localColors.black,
     shadowOpacity: 0.16,
     shadowRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: boxPrimitives.size['4'] },
   },
 });

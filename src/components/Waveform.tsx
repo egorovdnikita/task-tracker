@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
 
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 2,
+    gap: boxPrimitives.spacing['2'],
   },
-  marker: { position: 'absolute', top: 0, bottom: 0, width: 2, borderRadius: 1 },
+  marker: { position: 'absolute', top: 0, bottom: 0, width: boxPrimitives.size['2'], borderRadius: 1 },
 });

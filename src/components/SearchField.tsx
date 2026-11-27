@@ -1,3 +1,5 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
+import { localColors } from '../theme/localColors';
 import React, { useEffect, useRef, useState } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Pressable, StyleSheet, TextInput, View, type StyleProp, type ViewStyle } from 'react-native';
@@ -187,9 +189,9 @@ const styles = StyleSheet.create({
   slot: { flexDirection: 'row', justifyContent: 'flex-end', overflow: 'hidden' },
   close: { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   shadow: {
-    shadowColor: '#000',
+    shadowColor: localColors.black,
     shadowOpacity: 0.12,
     shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: boxPrimitives.size['4'] },
   },
 });

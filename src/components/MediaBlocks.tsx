@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
@@ -214,7 +215,7 @@ export const ScanBlockView = ({
     >
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: theme.spacing.sm }}>
         {block.pages.map((page, index) => (
-          <View key={page.id} style={{ gap: 4 }}>
+          <View key={page.id} style={{ gap: boxPrimitives.spacing['4'] }}>
             <Image
               source={{ uri: page.uri }}
               accessibilityLabel={`Страница ${index + 1}`}
@@ -292,7 +293,7 @@ const styles = StyleSheet.create({
   grow: { flex: 1 },
   center: { textAlign: 'center' },
   markers: { flexDirection: 'row', flexWrap: 'wrap' },
-  marker: { paddingHorizontal: 10, paddingVertical: 4 },
-  page: { width: 92, height: 124, borderWidth: 1 },
+  marker: { paddingHorizontal: boxPrimitives.spacing['10'], paddingVertical: boxPrimitives.spacing['4'] },
+  page: { width: boxPrimitives.size['92'], height: 124, borderWidth: 1 },
   sketch: { height: 160, overflow: 'hidden' },
 });

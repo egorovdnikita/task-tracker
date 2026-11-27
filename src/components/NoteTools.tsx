@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React from 'react';
 import { Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
 import type { SFSymbol } from 'sf-symbols-typescript';
@@ -118,8 +119,8 @@ const styles = StyleSheet.create({
   // 40pt, а не 48: ряд закреплён у края и не должен отнимать у заметки
   // высоту. Цель касания — вся плитка вместе со словом, она выше 44pt.
   glyph: {
-    width: 40,
-    height: 40,
+    width: boxPrimitives.size['40'],
+    height: boxPrimitives.size['40'],
     alignItems: 'center',
     justifyContent: 'center',
     borderCurve: 'continuous',

@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
 
@@ -25,7 +26,7 @@ export const RootHeader = ({ title, right, style }: RootHeaderProps) => {
   const theme = useTheme();
 
   return (
-    <View style={[styles.row, { minHeight: 52, gap: theme.spacing.sm }, style]}>
+    <View style={[styles.row, { minHeight: boxPrimitives.size['52'], gap: theme.spacing.sm }, style]}>
       <Text variant="largeTitle" weight="bold" numberOfLines={1} style={styles.title} accessibilityRole="header">
         {title}
       </Text>

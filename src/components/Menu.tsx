@@ -1,3 +1,5 @@
+import { localColors } from '../theme/localColors';
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React, { useEffect, useRef } from 'react';
 import {
   Animated,
@@ -151,7 +153,7 @@ export const MenuHost = () => {
             top,
             left,
             width: MENU_WIDTH,
-            borderRadius: 14,
+            borderRadius: boxPrimitives.rounding['14'],
             opacity: enter,
             transformOrigin: origin,
             transform: reduceMotion
@@ -285,9 +287,9 @@ const styles = StyleSheet.create({
   item: { flexDirection: 'row', alignItems: 'center' },
   title: { justifyContent: 'center' },
   shadow: {
-    shadowColor: '#000',
+    shadowColor: localColors.black,
     shadowOpacity: 0.24,
     shadowRadius: 24,
-    shadowOffset: { width: 0, height: 10 },
+    shadowOffset: { width: 0, height: boxPrimitives.size['10'] },
   },
 });

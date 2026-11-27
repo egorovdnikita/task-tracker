@@ -1,3 +1,5 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
+import { localColors } from '../theme/localColors';
 import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -90,10 +92,10 @@ export const Fab = ({
 const styles = StyleSheet.create({
   root: { alignItems: 'center', justifyContent: 'center' },
   glow: {
-    shadowColor: '#DCFEAA',
+    shadowColor: localColors.accent,
     shadowOpacity: 0.28,
     shadowRadius: 20,
-    shadowOffset: { width: 0, height: 8 },
+    shadowOffset: { width: 0, height: boxPrimitives.size['8'] },
     elevation: 8,
   },
 });

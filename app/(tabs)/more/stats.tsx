@@ -1,3 +1,5 @@
+import { localColors } from '../../../src/theme/localColors';
+import { boxPrimitives } from '../../../src/vendor/box-ui/primitives';
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Stack, router } from 'expo-router';
@@ -79,8 +81,8 @@ export default function StatsScreen() {
                   style={{
                     width: '100%',
                     height: Math.max(4, (count / peak) * 88),
-                    borderRadius: 6,
-                    backgroundColor: i === 6 ? theme.colors.accent : '#2B2F2C',
+                    borderRadius: boxPrimitives.rounding['6'],
+                    backgroundColor: i === 6 ? theme.colors.accent : localColors.chartTrack,
                   }}
                 />
                 <Text variant="caption1" color={i === 6 ? 'label' : 'secondaryLabel'}>
@@ -127,7 +129,7 @@ const compact = (n: number): string =>
   n >= 10_000 ? `${(n / 1000).toFixed(n >= 100_000 ? 0 : 1).replace('.', ',')}к` : String(n);
 
 const styles = StyleSheet.create({
-  score: { color: '#FFFFFF', fontSize: 64, lineHeight: 72, fontWeight: '600', fontVariant: ['tabular-nums'] },
+  score: { color: localColors.white, fontSize: 64, lineHeight: 72, fontWeight: '600', fontVariant: ['tabular-nums'] },
   rings: { flexDirection: 'row', justifyContent: 'space-evenly' },
   chart: { flexDirection: 'row', alignItems: 'flex-end', height: 132 },
   bar: { flex: 1, alignItems: 'center', justifyContent: 'flex-end' },

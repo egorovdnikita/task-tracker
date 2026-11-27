@@ -1,3 +1,4 @@
+import { localColors } from '../src/theme/localColors';
 import React, { useMemo, useRef, useState } from 'react';
 import {
   Keyboard,
@@ -191,7 +192,7 @@ export default function CreateScreen() {
           style={StyleSheet.absoluteFill}
         >
           <BlurView intensity={24} tint="dark" style={StyleSheet.absoluteFill} />
-          <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.3)' }]} />
+          <View style={[StyleSheet.absoluteFill, { backgroundColor: localColors.creationScrim }]} />
         </Pressable>
 
         <Animated.View

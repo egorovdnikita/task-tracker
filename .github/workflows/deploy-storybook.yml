@@ -27,6 +27,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Check token inventory
+        run: node scripts/token-inventory.mjs --check && npm run tokens:test
+
       - name: Typecheck
         run: npm run typecheck
 

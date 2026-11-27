@@ -1,3 +1,4 @@
+import { localColors } from '../theme/localColors';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
@@ -32,11 +33,11 @@ export const StatRing = ({ value, label, progress = 1 }: StatRingProps) => {
         <Svg width={SIZE} height={SIZE}>
           <Defs>
             <LinearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0" stopColor="#DCFEAA" />
-              <Stop offset="1" stopColor="#BBFBE7" />
+              <Stop offset="0" stopColor={localColors.accent} />
+              <Stop offset="1" stopColor={localColors.accentAqua} />
             </LinearGradient>
           </Defs>
-          <Circle cx={SIZE / 2} cy={SIZE / 2} r={r} stroke="#2B2F2C" strokeWidth={STROKE} fill="none" />
+          <Circle cx={SIZE / 2} cy={SIZE / 2} r={r} stroke={localColors.chartTrack} strokeWidth={STROKE} fill="none" />
           <Circle
             cx={SIZE / 2}
             cy={SIZE / 2}

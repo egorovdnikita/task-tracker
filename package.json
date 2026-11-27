@@ -56,7 +56,11 @@
     "web": "expo start --web",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "tokens:sync": "node scripts/sync-box-tokens.mjs",
+    "tokens:check": "node scripts/sync-box-tokens.mjs --check && node scripts/token-inventory.mjs --check",
+    "tokens:inventory": "node scripts/token-inventory.mjs",
+    "tokens:test": "node --test scripts/sync-box-tokens.test.mjs"
   },
   "private": true
 }

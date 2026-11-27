@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -44,8 +45,8 @@ const Swatch = ({ name }: { name: PaletteName }) => {
     <View style={[styles.row, { gap: theme.spacing.md }]}>
       <View
         style={{
-          width: 44,
-          height: 44,
+          width: boxPrimitives.size['44'],
+          height: boxPrimitives.size['44'],
           borderRadius: theme.radius.sm,
           borderCurve: 'continuous',
           backgroundColor: theme.colors[name],
@@ -123,7 +124,7 @@ const AccentSwatch = ({ accent }: { accent: (typeof accentNames)[number] }) => {
 
   return (
     <View style={[styles.row, { gap: theme.spacing.md }]}>
-      <View style={{ width: 44, height: 44, borderRadius: 999, backgroundColor: value }} />
+      <View style={{ width: boxPrimitives.size['44'], height: boxPrimitives.size['44'], borderRadius: 999, backgroundColor: value }} />
       <View style={styles.grow}>
         <Text variant="subheadline">{accentLabels[accent]}</Text>
         <Text variant="caption1" color="tertiaryLabel">
@@ -144,7 +145,7 @@ export const Типографика: Story = {
   render: () => (
     <ScrollView>
       {textStyleNames.map((name) => (
-        <View key={name} style={{ marginBottom: 20, gap: 2 }}>
+        <View key={name} style={{ marginBottom: boxPrimitives.spacing['20'], gap: boxPrimitives.spacing['2'] }}>
           <Text variant="caption2" color="tertiaryLabel">
             {name} · {textStyles[name].fontSize}/{textStyles[name].lineHeight} · вес{' '}
             {textStyles[name].fontWeight} · трекинг {textStyles[name].letterSpacing}
@@ -160,11 +161,11 @@ export const Типографика: Story = {
 export const Метрики: Story = {
   render: () => {
     const Bar = ({ label, size }: { label: string; size: number }) => (
-      <View style={[styles.row, { gap: 12, marginBottom: 8 }]}>
+      <View style={[styles.row, { gap: boxPrimitives.spacing['12'], marginBottom: boxPrimitives.spacing['8'] }]}>
         <Text variant="caption1" color="secondaryLabel" style={{ width: 108 }}>
           {label}
         </Text>
-        <View style={{ height: 16, width: size, borderRadius: 3, backgroundColor: '#0A84FF' }} />
+        <View style={{ height: boxPrimitives.size['16'], width: size, borderRadius: 3, backgroundColor: '#0A84FF' }} />
         <Text variant="caption1" color="tertiaryLabel">
           {size}
         </Text>
@@ -180,13 +181,13 @@ export const Метрики: Story = {
         </Group>
 
         <Group title="Радиусы">
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: boxPrimitives.spacing['12'] }}>
             {Object.entries(radius).map(([name, value]) => (
-              <View key={name} style={{ alignItems: 'center', gap: 6 }}>
+              <View key={name} style={{ alignItems: 'center', gap: boxPrimitives.spacing['6'] }}>
                 <View
                   style={{
-                    width: 64,
-                    height: 64,
+                    width: boxPrimitives.size['64'],
+                    height: boxPrimitives.size['64'],
                     borderRadius: Math.min(value, 32),
                     borderCurve: 'continuous',
                     backgroundColor: '#8E8E93',

@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Animated, Dimensions, Easing, StyleSheet, View } from 'react-native';
 
@@ -74,7 +75,7 @@ export const Confetti = ({ active, onDone, count = 28 }: ConfettiProps) => {
             left: particle.left * width,
             width: particle.size,
             height: particle.size * 1.6,
-            borderRadius: 2,
+            borderRadius: boxPrimitives.rounding['2'],
             backgroundColor: theme.accent(particle.color),
             opacity: progress.interpolate({
               inputRange: [0, 0.8, 1],

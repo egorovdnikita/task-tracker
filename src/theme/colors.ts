@@ -1,3 +1,4 @@
+import { localColors } from './localColors';
 import { Platform, type ColorValue } from 'react-native';
 // Именованный импорт `PlatformColor` здесь недопустим: на вебе примитивы даёт
 // react-native-web, а он такого экспорта не имеет — сборка витрины упала бы на
@@ -48,17 +49,17 @@ const systemPalette = {
 
   // ── Фоны ──────────────────────────────────────────────────────────────────
   /** Экран без группировки: списки заметок, редактор. */
-  systemBackground: pair('#FFFFFF', '#000000'),
+  systemBackground: pair(localColors.white, localColors.black),
   secondarySystemBackground: pair('#F2F2F7', '#1C1C1E'),
-  tertiarySystemBackground: pair('#FFFFFF', '#2C2C2E'),
+  tertiarySystemBackground: pair(localColors.white, '#2C2C2E'),
 
   /**
    * Экран с инсет-группами: настройки, папки. В тёмной схеме фон группового
    * экрана чёрный, а карточки групп — светлее; в светлой наоборот. Поэтому
    * два набора, а не один с оттенками.
    */
-  systemGroupedBackground: pair('#F2F2F7', '#000000'),
-  secondarySystemGroupedBackground: pair('#FFFFFF', '#1C1C1E'),
+  systemGroupedBackground: pair('#F2F2F7', localColors.black),
+  secondarySystemGroupedBackground: pair(localColors.white, '#1C1C1E'),
   tertiarySystemGroupedBackground: pair('#F2F2F7', '#2C2C2E'),
 
   // ── Текст ─────────────────────────────────────────────────────────────────
@@ -67,7 +68,7 @@ const systemPalette = {
    * стекло и фотография, и только полупрозрачный текст держит контраст с любой
    * подложкой. Это же правило у самой системы.
    */
-  label: pair('#000000', '#FFFFFF'),
+  label: pair(localColors.black, localColors.white),
   secondaryLabel: pair('rgba(60,60,67,0.6)', 'rgba(235,235,245,0.6)'),
   tertiaryLabel: pair('rgba(60,60,67,0.3)', 'rgba(235,235,245,0.3)'),
   quaternaryLabel: pair('rgba(60,60,67,0.18)', 'rgba(235,235,245,0.16)'),
@@ -109,15 +110,15 @@ const systemPalette = {
 const dark = (value: string): ColorPair => pair(value, value);
 
 const opalPalette = {
-  systemBackground: dark('#000000'),
+  systemBackground: dark(localColors.black),
   secondarySystemBackground: dark('rgba(255,255,255,0.04)'),
   tertiarySystemBackground: dark('rgba(255,255,255,0.08)'),
 
-  systemGroupedBackground: dark('#000000'),
+  systemGroupedBackground: dark(localColors.black),
   secondarySystemGroupedBackground: dark('rgba(255,255,255,0.045)'),
   tertiarySystemGroupedBackground: dark('rgba(255,255,255,0.08)'),
 
-  label: dark('#FFFFFF'),
+  label: dark(localColors.white),
   secondaryLabel: dark('rgba(255,255,255,0.66)'),
   tertiaryLabel: dark('rgba(255,255,255,0.42)'),
   quaternaryLabel: dark('rgba(255,255,255,0.22)'),
@@ -132,12 +133,12 @@ const opalPalette = {
   quaternarySystemFill: dark('rgba(255,255,255,0.04)'),
 
   /** Главный акцент — лайм. Тратится скупо: создание, активная вкладка, ссылки. */
-  accent: dark('#DCFEAA'),
+  accent: dark(localColors.accent),
   accentMint: dark('#D7FEC0'),
-  accentAqua: dark('#BBFBE7'),
+  accentAqua: dark(localColors.accentAqua),
   /** Глиф и подпись поверх акцентной заливки. */
-  onAccent: dark('#000000'),
-  link: dark('#BBFBE7'),
+  onAccent: dark(localColors.black),
+  link: dark(localColors.accentAqua),
 
   /**
    * Плотная приподнятая поверхность — для того, что всплывает поверх

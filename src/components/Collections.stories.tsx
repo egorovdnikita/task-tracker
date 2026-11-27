@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -72,7 +73,7 @@ export const Список: Story = {
           <ListRow title="Очистить корзину" destructive onPress={() => {}} />
         </ListSection>
 
-        <View style={{ gap: 8 }}>
+        <View style={{ gap: boxPrimitives.spacing['8'] }}>
           <Text variant="footnote" color="secondaryLabel">
             Разделитель отдельно
           </Text>
@@ -87,7 +88,7 @@ export const Список: Story = {
 /** Карточка заметки. Превью зависит от содержимого, а не от типа. */
 export const Карточки: Story = {
   render: () => (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: boxPrimitives.spacing['12'] }}>
       <NoteCard note={mockNote} />
       <NoteCard note={mockChecklistNote} />
       <NoteCard note={mockNotes[2]} />
@@ -100,7 +101,7 @@ export const Карточки: Story = {
 /** Сетка: карточки одной высоты, как в системной галерее «Заметок». */
 export const Сетка: Story = {
   render: () => (
-    <View style={{ flexDirection: 'row', gap: 12 }}>
+    <View style={{ flexDirection: 'row', gap: boxPrimitives.spacing['12'] }}>
       <NoteCard note={mockNote} layout="grid" style={{ flex: 1, height: 140 }} />
       <NoteCard note={mockChecklistNote} layout="grid" style={{ flex: 1, height: 140 }} />
     </View>
@@ -135,7 +136,7 @@ export const Тост: Story = {
     const [shown, setShown] = useState(true);
 
     return (
-      <View style={{ gap: 16 }}>
+      <View style={{ gap: boxPrimitives.spacing['16'] }}>
         <Toast message="Заметка добавлена" duration={100000} onHide={() => {}} />
         <Toast
           message={shown ? 'Заметка в корзине' : null}

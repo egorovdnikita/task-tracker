@@ -1,3 +1,5 @@
+import { localColors } from '../../src/theme/localColors';
+import { boxPrimitives } from '../../src/vendor/box-ui/primitives';
 import React, { useRef, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -125,7 +127,7 @@ export default function ScanCaptureScreen() {
 
         {/* Рамка кадра — подсказка, куда класть лист, а не результат распознавания. */}
         <View pointerEvents="none" style={styles.frame}>
-          <View style={[styles.guide, { borderColor: 'rgba(255,255,255,0.7)' }]} />
+          <View style={[styles.guide, { borderColor: localColors.scanGuide }]} />
         </View>
 
         <Glass
@@ -185,7 +187,7 @@ export default function ScanCaptureScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#000' },
+  root: { flex: 1, backgroundColor: localColors.black },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   middle: { textAlign: 'center' },
   frame: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
@@ -193,7 +195,7 @@ const styles = StyleSheet.create({
     width: '82%',
     aspectRatio: 0.72,
     borderWidth: 2,
-    borderRadius: 12,
+    borderRadius: boxPrimitives.rounding['12'],
     borderStyle: 'dashed',
   },
   bar: {
@@ -206,9 +208,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   thumb: {
-    width: 52,
-    height: 52,
-    borderRadius: 10,
+    width: boxPrimitives.size['52'],
+    height: boxPrimitives.size['52'],
+    borderRadius: boxPrimitives.rounding['10'],
     borderWidth: 1,
     overflow: 'hidden',
     alignItems: 'center',
@@ -216,13 +218,13 @@ const styles = StyleSheet.create({
   },
   thumbImage: { width: '100%', height: '100%' },
   shutter: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
+    width: boxPrimitives.size['72'],
+    height: boxPrimitives.size['72'],
+    borderRadius: boxPrimitives.rounding['36'],
     borderWidth: 3,
     alignItems: 'center',
     justifyContent: 'center',
   },
   shutterCore: { width: 58, height: 58, borderRadius: 29 },
-  counter: { width: 52, alignItems: 'center' },
+  counter: { width: boxPrimitives.size['52'], alignItems: 'center' },
 });

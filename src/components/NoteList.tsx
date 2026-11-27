@@ -1,3 +1,5 @@
+import { localColors } from '../theme/localColors';
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React, { useMemo, useRef } from 'react';
 import {
   Pressable,
@@ -329,8 +331,8 @@ const SwipeAction = ({
           },
         ]}
       >
-        <Symbol name={icon} size={20} color="#FFFFFF" weight="semibold" />
-        <Text variant="caption2" style={{ color: '#FFFFFF' }}>
+        <Symbol name={icon} size={20} color={localColors.white} weight="semibold" />
+        <Text variant="caption2" style={{ color: localColors.white }}>
           {label}
         </Text>
       </Pressable>
@@ -344,10 +346,10 @@ const styles = StyleSheet.create({
   sectionHeader: { flexDirection: 'row', alignItems: 'baseline' },
   action: {
     flex: 1,
-    width: 76,
+    width: boxPrimitives.size['76'],
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 4,
+    gap: boxPrimitives.spacing['4'],
     borderCurve: 'continuous',
   },
 });

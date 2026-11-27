@@ -1,3 +1,4 @@
+import { localColors } from '../src/theme/localColors';
 import React from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -43,7 +44,7 @@ export default function RootLayout() {
  * Подложка шитов — замер Opal: `#1F1F1F`–`#202020`. Шит на ступень светлее
  * экрана, а группы строк внутри — ещё на ступень (`ListSection tone="sheet"`).
  */
-const SHEET = { backgroundColor: '#1F1F1F' };
+const SHEET = { backgroundColor: localColors.sheet };
 
 const RootStack = () => {
   const theme = useTheme();
@@ -162,15 +163,15 @@ const RootStack = () => {
       */}
       <Stack.Screen
         name="capture/voice"
-        options={{ presentation: 'modal', headerTransparent: false, headerStyle: { backgroundColor: '#000000' } }}
+        options={{ presentation: 'modal', headerTransparent: false, headerStyle: { backgroundColor: localColors.black } }}
       />
       <Stack.Screen
         name="capture/scan"
-        options={{ presentation: 'fullScreenModal', headerTransparent: false, headerStyle: { backgroundColor: '#000000' } }}
+        options={{ presentation: 'fullScreenModal', headerTransparent: false, headerStyle: { backgroundColor: localColors.black } }}
       />
       <Stack.Screen
         name="capture/sketch"
-        options={{ presentation: 'modal', headerTransparent: false, headerStyle: { backgroundColor: '#000000' } }}
+        options={{ presentation: 'modal', headerTransparent: false, headerStyle: { backgroundColor: localColors.black } }}
       />
 
       <Stack.Screen

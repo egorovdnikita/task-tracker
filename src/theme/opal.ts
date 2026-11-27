@@ -1,3 +1,4 @@
+import { localColors } from './localColors';
 /**
  * Визуальный слой Opal: меши, обводки, подложки стекла и подсветка экранов.
  *
@@ -27,12 +28,12 @@ export const meshes = {
     { x: 0.572, y: 1.95, rx: 1.012, ry: 2.24, color: '#DFFFE5', opacity: 0.16 },
   ],
   fab: [
-    { x: 0.28, y: 0.1, rx: 1.15, ry: 1.15, color: '#DCFEAA', opacity: 1 },
-    { x: 0.88, y: 1.0, rx: 1.05, ry: 1.05, color: '#BBFBE7', opacity: 1 },
+    { x: 0.28, y: 0.1, rx: 1.15, ry: 1.15, color: localColors.accent, opacity: 1 },
+    { x: 0.88, y: 1.0, rx: 1.05, ry: 1.05, color: localColors.accentAqua, opacity: 1 },
   ],
   card: [
-    { x: 0.92, y: -0.18, rx: 0.7, ry: 1.0, color: '#DCFEAA', opacity: 0.035 },
-    { x: 0.05, y: 1.18, rx: 0.6, ry: 0.9, color: '#BBFBE7', opacity: 0.025 },
+    { x: 0.92, y: -0.18, rx: 0.7, ry: 1.0, color: localColors.accent, opacity: 0.035 },
+    { x: 0.05, y: 1.18, rx: 0.6, ry: 0.9, color: localColors.accentAqua, opacity: 0.025 },
   ],
   /** Разрушающая кнопка: тот же профиль света, что у CTA, но по красной оси. */
   danger: [
@@ -90,7 +91,7 @@ export const tints = {
    * заливкой, а на 5,5% поле и кнопки читались контуром без тела. Ориентир
    * — серые контролы шапки Telegram на тёмной теме.
    */
-  control: 'rgba(255,255,255,0.12)',
+  control: localColors.folderBorder,
   /** Шиты и плавающие панели: прозрачнее карточек — под ними виден экран. */
   glass: 'rgba(8,8,10,0.28)',
   /** Кнопки шапки — замер «Назад» в Opal: `#121212` поверх чёрного. */
@@ -112,7 +113,7 @@ export const surfaces = {
   /** Разделитель в группе на шите. */
   separatorInSheet: '#383838',
   /** Белая главная кнопка подтверждения. */
-  white: '#FFFFFF',
+  white: localColors.white,
   /** Опасное действие: почти чёрная пилюля с красным. */
   danger: '#18080B',
   dangerLabel: '#FD7490',

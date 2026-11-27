@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 /**
  * Метрики раскладки iOS.
  *
@@ -7,15 +8,15 @@
  */
 
 export const spacing = {
-  xxs: 2,
-  xs: 4,
-  sm: 8,
-  md: 12,
+  xxs: boxPrimitives.spacing['2'],
+  xs: boxPrimitives.spacing['4'],
+  sm: boxPrimitives.spacing['8'],
+  md: boxPrimitives.spacing['12'],
   /** Поле экрана и внутренний отступ строки списка. */
-  lg: 16,
-  xl: 20,
-  xxl: 24,
-  xxxl: 32,
+  lg: boxPrimitives.spacing['16'],
+  xl: boxPrimitives.spacing['20'],
+  xxl: boxPrimitives.spacing['24'],
+  xxxl: boxPrimitives.spacing['32'],
 } as const;
 
 export type SpacingName = keyof typeof spacing;
@@ -27,19 +28,19 @@ export type SpacingName = keyof typeof spacing;
  */
 export const radius = {
   /** Мелкие метки и плашки символов. */
-  xs: 8,
+  xs: boxPrimitives.rounding['8'],
   /** Поле ввода, мелкий контрол — замер эталона. */
-  sm: 12,
+  sm: boxPrimitives.rounding['12'],
   /** Медиа-блок. */
-  md: 24,
+  md: boxPrimitives.rounding['24'],
   /** Группа строк — замер Opal, дуга окружности. */
   group: 26,
   /** Карточка-контейнер: замер эталона дал 29–30pt. */
-  lg: 28,
+  lg: boxPrimitives.rounding['28'],
   /** Шит и крупная карточка. */
-  xl: 32,
+  xl: boxPrimitives.rounding['32'],
   /** Модальный лист, поднятый над экраном. */
-  xxl: 32,
+  xxl: boxPrimitives.rounding['32'],
   pill: 999,
 } as const;
 
@@ -55,13 +56,13 @@ export const concentricRadius = (outer: number, inset: number): number =>
 
 export const metrics = {
   /** Минимальная цель касания. Ниже неё контрол не опускается никогда. */
-  hitSlop: 44,
+  hitSlop: boxPrimitives.size['44'],
   /** Толщина разделителя: физический пиксель, а не логическая точка. */
   hairline: 0.5,
   /** Отбивка разделителя от левого края строки — по началу текста. */
-  separatorInset: 16,
+  separatorInset: boxPrimitives.spacing['16'],
   /** Поле экрана. */
-  screenMargin: 16,
+  screenMargin: boxPrimitives.spacing['16'],
   /**
    * Высота плавающей панели вкладок iOS 26 над безопасной зоной.
    *
@@ -85,21 +86,21 @@ export const controlHeight = {
   /** Строка с заголовком и пояснением — замер Opal. */
   rowDetail: 74,
   /** Пункт выпадающего меню — системная высота `UIMenu`, меню остаётся плотным. */
-  menuRow: 44,
+  menuRow: boxPrimitives.size['44'],
   /** Крупная кнопка на всю ширину. */
-  button: 56,
+  button: boxPrimitives.size['56'],
   /** Кнопка внутри строки или шапки — полная цель касания. */
-  buttonCompact: 44,
+  buttonCompact: boxPrimitives.size['44'],
   /** Поле поиска в шапке. */
-  searchField: 44,
+  searchField: boxPrimitives.size['44'],
   /** Поле поиска в потоке списка — замер Opal ≈47pt. */
-  searchFieldBottom: 48,
+  searchFieldBottom: boxPrimitives.size['48'],
   /** Сегмент-контрол — трек Opal 32pt. */
-  segmented: 32,
+  segmented: boxPrimitives.size['32'],
   /** Чип. */
-  chip: 40,
+  chip: boxPrimitives.size['40'],
   /** Плавающая круглая кнопка. */
-  fab: 60,
+  fab: boxPrimitives.size['60'],
 } as const;
 
 export type ControlHeightName = keyof typeof controlHeight;

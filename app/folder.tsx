@@ -1,3 +1,5 @@
+import { localColors } from '../src/theme/localColors';
+import { boxPrimitives } from '../src/vendor/box-ui/primitives';
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -114,10 +116,10 @@ export default function FolderSheet() {
               styles.field,
               {
                 color: theme.colors.label,
-                height: 52,
+                height: boxPrimitives.size['52'],
                 paddingHorizontal: theme.spacing.lg + theme.spacing.xs,
                 backgroundColor: theme.surfaces.groupInSheet,
-                borderColor: taken ? theme.colors.systemRed : 'rgba(255,255,255,0.12)',
+                borderColor: taken ? theme.colors.systemRed : localColors.folderBorder,
               },
             ]}
           />
@@ -152,7 +154,7 @@ export default function FolderSheet() {
                   style={({ pressed }) => [
                     styles.swatch,
                     {
-                      borderColor: selected ? '#FFFFFF' : 'transparent',
+                      borderColor: selected ? localColors.white : 'transparent',
                       opacity: pressed ? 0.6 : 1,
                     },
                   ]}
@@ -205,14 +207,14 @@ const styles = StyleSheet.create({
   field: { borderRadius: 999, borderWidth: 1, borderCurve: 'circular' },
   swatches: { flexDirection: 'row', flexWrap: 'wrap' },
   swatch: {
-    width: 44,
-    height: 44,
+    width: boxPrimitives.size['44'],
+    height: boxPrimitives.size['44'],
     borderRadius: 22,
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  dot: { width: 32, height: 32, borderRadius: 16 },
+  dot: { width: boxPrimitives.size['32'], height: boxPrimitives.size['32'], borderRadius: boxPrimitives.rounding['16'] },
   preview: { flexDirection: 'row', alignItems: 'center' },
-  glyph: { width: 28, alignItems: 'center', textAlign: 'center' },
+  glyph: { width: boxPrimitives.size['28'], alignItems: 'center', textAlign: 'center' },
 });

@@ -1,3 +1,4 @@
+import { localColors } from '../../src/theme/localColors';
 import React from 'react';
 import { NativeTabs } from 'expo-router/native-tabs';
 
@@ -30,13 +31,13 @@ export default function TabsLayout() {
         `tintColor` стекло пропускает через свою вибрацию, и белый выходит
         серым.
       */
-      tintColor="#FFFFFF"
-      iconColor={{ default: '#FFFFFF', selected: '#FFFFFF' }}
+      tintColor={localColors.white}
+      iconColor={{ default: localColors.white, selected: localColors.white }}
       // 12pt вместо системных 10: на чёрном стекле десятый кегль читался
       // мелкой сноской под иконкой.
       labelStyle={{
-        default: { color: '#FFFFFF', fontWeight: '600', fontSize: 12 },
-        selected: { color: '#FFFFFF', fontWeight: '600', fontSize: 12 },
+        default: { color: localColors.white, fontWeight: '600', fontSize: 12 },
+        selected: { color: localColors.white, fontWeight: '600', fontSize: 12 },
       }}
       // Подпись ниже обычного — зазор между глифом и словом.
       titlePositionAdjustment={{ vertical: 3 }}

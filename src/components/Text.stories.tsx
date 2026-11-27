@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -32,7 +33,7 @@ export const Стиль: Story = {};
  */
 export const Иерархия: Story = {
   render: () => (
-    <View style={{ gap: 4 }}>
+    <View style={{ gap: boxPrimitives.spacing['4'] }}>
       <Text variant="largeTitle" weight="bold">
         Заметки
       </Text>

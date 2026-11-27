@@ -1,3 +1,4 @@
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -269,5 +270,5 @@ const styles = StyleSheet.create({
   card: { borderCurve: 'continuous' },
   head: { flexDirection: 'row', alignItems: 'center' },
   grow: { flex: 1 },
-  dot: { width: 8, height: 8 },
+  dot: { width: boxPrimitives.size['8'], height: boxPrimitives.size['8'] },
 });

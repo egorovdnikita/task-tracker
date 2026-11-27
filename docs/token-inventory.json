@@ -1,0 +1,6290 @@
+{
+  "files": 85,
+  "entries": [
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "width",
+      "value": "390"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "height",
+      "value": "844"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "width",
+      "value": "PHONE.width"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "height",
+      "value": "PHONE.height"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "insets",
+      "value": "{ top: 59, left: 0, right: 0, bottom: 34 }"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "top",
+      "value": "59"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "left",
+      "value": "0"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "right",
+      "value": "0"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "bottom",
+      "value": "34"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "width",
+      "value": "PHONE.width"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "height",
+      "value": "PHONE.height"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "insets",
+      "value": "{ top: 0, left: 0, right: 0, bottom: 0 }"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "top",
+      "value": "0"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "left",
+      "value": "0"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "right",
+      "value": "0"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "bottom",
+      "value": "0"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "color",
+      "value": "/(background|color)$/i"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "backgroundColor",
+      "value": "background"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "borderRadius",
+      "value": "device ? 32 : 16"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "borderWidth",
+      "value": "1"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "borderColor",
+      "value": "palette.separator.dark"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "padding",
+      "value": "device ? 0 : 20"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "width",
+      "value": "device ? PHONE.width : undefined"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "height",
+      "value": "device ? PHONE.height : undefined"
+    },
+    {
+      "file": ".storybook/preview.tsx",
+      "key": "minWidth",
+      "value": "device ? undefined : 320"
+    },
+    {
+      "file": "app/(tabs)/_layout.tsx",
+      "key": "tintColor",
+      "value": "{localColors.white}"
+    },
+    {
+      "file": "app/(tabs)/_layout.tsx",
+      "key": "iconColor",
+      "value": "{{ default: localColors.white, selected: localColors.white }}"
+    },
+    {
+      "file": "app/(tabs)/_layout.tsx",
+      "key": "color",
+      "value": "localColors.white"
+    },
+    {
+      "file": "app/(tabs)/_layout.tsx",
+      "key": "fontWeight",
+      "value": "'600'"
+    },
+    {
+      "file": "app/(tabs)/_layout.tsx",
+      "key": "fontSize",
+      "value": "12"
+    },
+    {
+      "file": "app/(tabs)/_layout.tsx",
+      "key": "color",
+      "value": "localColors.white"
+    },
+    {
+      "file": "app/(tabs)/_layout.tsx",
+      "key": "fontWeight",
+      "value": "'600'"
+    },
+    {
+      "file": "app/(tabs)/_layout.tsx",
+      "key": "fontSize",
+      "value": "12"
+    },
+    {
+      "file": "app/(tabs)/folders/[id].tsx",
+      "key": "size",
+      "value": "{19}"
+    },
+    {
+      "file": "app/(tabs)/folders/[id].tsx",
+      "key": "size",
+      "value": "{19}"
+    },
+    {
+      "file": "app/(tabs)/folders/[id].tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "app/(tabs)/folders/_layout.tsx",
+      "key": "headerTintColor",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "app/(tabs)/folders/_layout.tsx",
+      "key": "color",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "app/(tabs)/folders/_layout.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.systemGroupedBackground"
+    },
+    {
+      "file": "app/(tabs)/folders/index.tsx",
+      "key": "paddingBottom",
+      "value": "theme.metrics.tabBar + theme.spacing.xxxl"
+    },
+    {
+      "file": "app/(tabs)/folders/index.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/folders/index.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/folders/index.tsx",
+      "key": "right",
+      "value": "{\n            <Fab\n              compact\n              accessibilityLabel=\"Новая папка\"\n              onPress={() => addFolder(null)}\n            />\n          }"
+    },
+    {
+      "file": "app/(tabs)/folders/index.tsx",
+      "key": "iconColor",
+      "value": "{theme.accent(folder.accent)}"
+    },
+    {
+      "file": "app/(tabs)/folders/index.tsx",
+      "key": "iconColor",
+      "value": "{theme.accent(child.accent)}"
+    },
+    {
+      "file": "app/(tabs)/folders/index.tsx",
+      "key": "iconColor",
+      "value": "{theme.accent(tag.accent)}"
+    },
+    {
+      "file": "app/(tabs)/folders/trash.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/(tabs)/folders/trash.tsx",
+      "key": "paddingBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/(tabs)/more/_layout.tsx",
+      "key": "headerTintColor",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "app/(tabs)/more/_layout.tsx",
+      "key": "color",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "app/(tabs)/more/_layout.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.systemGroupedBackground"
+    },
+    {
+      "file": "app/(tabs)/more/index.tsx",
+      "key": "paddingBottom",
+      "value": "theme.metrics.tabBar + theme.spacing.xxxl"
+    },
+    {
+      "file": "app/(tabs)/more/index.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/more/index.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/more/index.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.5 : 1"
+    },
+    {
+      "file": "app/(tabs)/more/index.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/(tabs)/more/index.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.xxl"
+    },
+    {
+      "file": "app/(tabs)/more/notifications.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/more/notifications.tsx",
+      "key": "paddingBottom",
+      "value": "theme.metrics.tabBar + theme.spacing.xxxl"
+    },
+    {
+      "file": "app/(tabs)/more/notifications.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/more/notifications.tsx",
+      "key": "marginTop",
+      "value": "-theme.spacing.md"
+    },
+    {
+      "file": "app/(tabs)/more/notifications.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/(tabs)/more/notifications.tsx",
+      "key": "size",
+      "value": "\"large\""
+    },
+    {
+      "file": "app/(tabs)/more/notifications.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/(tabs)/more/notifications.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.xxl"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "paddingBottom",
+      "value": "theme.metrics.tabBar + theme.spacing.xxxl"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xxs"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "marginVertical",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "padding",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "gap",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.group"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "backgroundColor",
+      "value": "theme.surfaces.group"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "width",
+      "value": "'100%'"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "height",
+      "value": "Math.max(4, (count / peak) * 88)"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "borderRadius",
+      "value": "boxPrimitives.rounding['6']"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "backgroundColor",
+      "value": "i === 6 ? theme.colors.accent : localColors.chartTrack"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "color",
+      "value": "{i === 6 ? 'label' : 'secondaryLabel'}"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "color",
+      "value": "localColors.white"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "fontSize",
+      "value": "64"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "lineHeight",
+      "value": "72"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "fontWeight",
+      "value": "'600'"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "fontVariant",
+      "value": "['tabular-nums']"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "height",
+      "value": "132"
+    },
+    {
+      "file": "app/(tabs)/notes/_layout.tsx",
+      "key": "headerTintColor",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "app/(tabs)/notes/_layout.tsx",
+      "key": "color",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "app/(tabs)/notes/_layout.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.systemGroupedBackground"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "right",
+      "value": "{\n        selection.active ? (\n          <HeaderGlass>\n            <IconButton\n              name={allSelected ? 'checkmark.circle.fill' : 'checkmark.circle'}\n              size={19}\n              accessibilityLabel={allSelected ? 'Снять отметку со всех' : 'Выбрать все'}\n              onPress={() => selection.toggleAll(visible.map((n) => n.id))}\n            />\n          </HeaderGlass>\n        ) : (\n          <>\n            <HeaderGlass>\n              <HeaderCapsule>\n                <IconButton\n                  name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}\n                  size={19}\n                  accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}\n                  onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}\n                />\n                <SortButton />\n              </HeaderCapsule>\n            </HeaderGlass>\n            <Fab\n              compact\n              onPress={() => router.push('/create')}\n              onLongPress={(anchor) => chooseNoteType(anchor)}\n            />\n          </>\n        )\n      }"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "size",
+      "value": "{19}"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "size",
+      "value": "{19}"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/_layout.tsx",
+      "key": "backgroundColor",
+      "value": "localColors.sheet"
+    },
+    {
+      "file": "app/_layout.tsx",
+      "key": "headerTintColor",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "app/_layout.tsx",
+      "key": "color",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "app/_layout.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.systemGroupedBackground"
+    },
+    {
+      "file": "app/_layout.tsx",
+      "key": "backgroundColor",
+      "value": "'transparent'"
+    },
+    {
+      "file": "app/_layout.tsx",
+      "key": "backgroundColor",
+      "value": "localColors.black"
+    },
+    {
+      "file": "app/_layout.tsx",
+      "key": "backgroundColor",
+      "value": "localColors.black"
+    },
+    {
+      "file": "app/_layout.tsx",
+      "key": "backgroundColor",
+      "value": "localColors.black"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "width",
+      "value": "shot.width"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "height",
+      "value": "shot.height"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "padding",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "size",
+      "value": "{52}"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "color",
+      "value": "{theme.colors.quaternaryLabel}"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderColor",
+      "value": "localColors.scanGuide"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "padding",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.sm"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderColor",
+      "value": "theme.colors.separator"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "opacity",
+      "value": "pages.length === 0 ? 0.3 : 1"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "color",
+      "value": "{theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderColor",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "opacity",
+      "value": "pressed || busy ? 0.5 : 1"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "backgroundColor",
+      "value": "localColors.black"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "width",
+      "value": "'82%'"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderWidth",
+      "value": "2"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderRadius",
+      "value": "boxPrimitives.rounding['12']"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderStyle",
+      "value": "'dashed'"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "left",
+      "value": "0"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "right",
+      "value": "0"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "bottom",
+      "value": "0"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['52']"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['52']"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderRadius",
+      "value": "boxPrimitives.rounding['10']"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderWidth",
+      "value": "1"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "width",
+      "value": "'100%'"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "height",
+      "value": "'100%'"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['72']"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['72']"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderRadius",
+      "value": "boxPrimitives.rounding['36']"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderWidth",
+      "value": "3"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "width",
+      "value": "58"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "height",
+      "value": "58"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderRadius",
+      "value": "29"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['52']"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "width",
+      "value": "existing?.width ?? 0"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "height",
+      "value": "existing?.height ?? 0"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "color",
+      "value": "theme.accent(accent)"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "color",
+      "value": "theme.accent(accent)"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "color",
+      "value": "pen.current.color"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "width",
+      "value": "pen.current.width"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "width",
+      "value": "w"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "height",
+      "value": "h"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "gap",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.secondarySystemGroupedBackground"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "stroke",
+      "value": "{stroke.color}"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "strokeWidth",
+      "value": "{stroke.width}"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "fill",
+      "value": "\"none\""
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "stroke",
+      "value": "{theme.accent(accent)}"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "strokeWidth",
+      "value": "{width}"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "fill",
+      "value": "\"none\""
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "color",
+      "value": "\"tertiaryLabel\""
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "padding",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "width",
+      "value": "26"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "height",
+      "value": "26"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "borderRadius",
+      "value": "13"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "backgroundColor",
+      "value": "width === value ? theme.colors.systemFill : 'transparent'"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "width",
+      "value": "value + 4"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "height",
+      "value": "value + 4"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "borderRadius",
+      "value": "(value + 4) / 2"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "width",
+      "value": "26"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "height",
+      "value": "26"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "borderRadius",
+      "value": "13"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "backgroundColor",
+      "value": "theme.accent(name)"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "borderWidth",
+      "value": "accent === name ? 3 : 0"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "borderColor",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "padding",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "padding",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xxl"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "size",
+      "value": "\"large\""
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xxl"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "size",
+      "value": "\"large\""
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "intensity",
+      "value": "{24}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "backgroundColor",
+      "value": "localColors.creationScrim"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "marginBottom",
+      "value": "keyboard ? theme.spacing.sm : Math.max(theme.spacing.sm, insets.bottom)"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.xl"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "stroke",
+      "value": "\"glass\""
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "paddingBottom",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "placeholderTextColor",
+      "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "color",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "padding",
+      "value": "0"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "placeholderTextColor",
+      "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "color",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "padding",
+      "value": "0"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "maxHeight",
+      "value": "22 * 5"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "minHeight",
+      "value": "theme.controlHeight.chip + theme.spacing.lg"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "paddingVertical",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.5 : 1"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "size",
+      "value": "{18}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "color",
+      "value": "{theme.colors.secondaryLabel}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "size",
+      "value": "{16}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "color",
+      "value": "{theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "width",
+      "value": "size"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "height",
+      "value": "size"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "borderRadius",
+      "value": "size / 2"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "backgroundColor",
+      "value": "tone === 'accent' ? theme.colors.accent : theme.tints.control"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "opacity",
+      "value": "disabled ? 0.35 : pressed ? 0.7 : 1"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "size",
+      "value": "{22}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "color",
+      "value": "{tone === 'accent' ? theme.hex.onAccent : theme.colors.label}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "bottom",
+      "value": "{ justifyContent: 'flex-end' }"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "borderCurve",
+      "value": "'circular'"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "padding",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "placeholderTextColor",
+      "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "color",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['52']"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg + theme.spacing.xs"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "backgroundColor",
+      "value": "theme.surfaces.groupInSheet"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderColor",
+      "value": "taken ? theme.colors.systemRed : localColors.folderBorder"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "color",
+      "value": "\"systemRed\""
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderColor",
+      "value": "selected ? localColors.white : 'transparent'"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.6 : 1"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "backgroundColor",
+      "value": "theme.accent(item)"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "backgroundColor",
+      "value": "theme.surfaces.groupInSheet"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.group"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "minHeight",
+      "value": "theme.controlHeight.row"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "gap",
+      "value": "17"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "color",
+      "value": "{theme.accent(accent)}"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "size",
+      "value": "{16}"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "color",
+      "value": "{theme.colors.secondaryLabel}"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderRadius",
+      "value": "999"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderWidth",
+      "value": "1"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderCurve",
+      "value": "'circular'"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderRadius",
+      "value": "22"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderWidth",
+      "value": "2"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['32']"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['32']"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderRadius",
+      "value": "boxPrimitives.rounding['16']"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['28']"
+    },
+    {
+      "file": "app/move.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "app/move.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/move.tsx",
+      "key": "paddingBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/move.tsx",
+      "key": "iconColor",
+      "value": "{theme.colors.secondaryLabel}"
+    },
+    {
+      "file": "app/move.tsx",
+      "key": "iconColor",
+      "value": "{theme.accent(folder.accent)}"
+    },
+    {
+      "file": "app/move.tsx",
+      "key": "iconColor",
+      "value": "{theme.accent(child.accent)}"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "paddingBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "marginVertical",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "size",
+      "value": "\"large\""
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "size",
+      "value": "{19}"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "width",
+      "value": "theme.controlHeight.buttonCompact"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "height",
+      "value": "theme.controlHeight.buttonCompact"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.4 : 1"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "color",
+      "value": "{theme.colors.label}"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "paddingTop",
+      "value": "headerHeight"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "paddingVertical",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.md"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "borderCurve",
+      "value": "'circular'"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "stroke",
+      "value": "\"card\""
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "color",
+      "value": "\"accent\""
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "padding",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "gap",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "paddingBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "placeholderTextColor",
+      "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "color",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "padding",
+      "value": "0"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "size",
+      "value": "{11}"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "color",
+      "value": "{theme.colors[DUE_COLOR[dueState(note.remindAt)]]}"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "color",
+      "value": "{DUE_COLOR[dueState(note.remindAt)]}"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "gap",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "paddingBottom",
+      "value": "keyboard\n                ? theme.spacing.sm\n                : Math.max(theme.spacing.lg, insets.bottom)"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "paddingBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "padding",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.md"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "borderCurve",
+      "value": "'circular'"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "stroke",
+      "value": "\"card\""
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "paddingVertical",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/reminders.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/reminders.tsx",
+      "key": "paddingBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/reminders.tsx",
+      "key": "iconColor",
+      "value": "{group.state === 'overdue' ? theme.colors.systemRed : undefined}"
+    },
+    {
+      "file": "src/components/BottomBar.tsx",
+      "key": "right",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "stroke",
+      "value": "'danger'"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "stroke",
+      "value": "'cta'"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "stroke",
+      "value": "'subtle'"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "stroke",
+      "value": "'subtle'"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "stroke",
+      "value": "'glass'"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "opacity",
+      "value": "loading ? 0 : 1"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "size",
+      "value": "{17}"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "color",
+      "value": "{label}"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "color",
+      "value": "label"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "color",
+      "value": "{label}"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "opacity",
+      "value": "inactive && !solidOff ? 0.35 : 1"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "stroke",
+      "value": "{ from: theme.surfaces.disabledRim, to: theme.surfaces.disabledRim }"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "opacity",
+      "value": "pressed && !inactive ? 0.82 : frame.opacity"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "borderCurve",
+      "value": "'circular'"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "width",
+      "value": "frame"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "height",
+      "value": "frame"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "opacity",
+      "value": "disabled ? 0.35 : pressed ? 0.4 : 1"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "size",
+      "value": "{size}"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "color",
+      "value": "{theme.colors[color]}"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "minWidth",
+      "value": "height"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "borderRadius",
+      "value": "height / 2"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "stroke",
+      "value": "\"rim\""
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['8']"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "size",
+      "value": "{22}"
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "key": "fill",
+      "value": "{ flex: 1, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }"
+    },
+    {
+      "file": "src/components/Checkbox.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.4 : 1"
+    },
+    {
+      "file": "src/components/Checkbox.tsx",
+      "key": "size",
+      "value": "{size}"
+    },
+    {
+      "file": "src/components/Checkbox.tsx",
+      "key": "color",
+      "value": "{checked ? theme.colors.accent : theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "size",
+      "value": "{16}"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "color",
+      "value": "{outlined ? theme.colors.secondaryLabel : accentHex}"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "color",
+      "value": "{outlined ? 'label' : selected ? 'label' : 'secondaryLabel'}"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "color",
+      "value": "accentHex"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "height",
+      "value": "theme.controlHeight.chip"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "paddingLeft",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "paddingRight",
+      "value": "onRemove ? theme.spacing.md : theme.spacing.lg"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.pill"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "backgroundColor",
+      "value": "background"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "borderWidth",
+      "value": "outlined ? theme.metrics.hairline * 2 : 0"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "borderColor",
+      "value": "theme.colors.separator"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.6 : 1"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.4 : 1"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "size",
+      "value": "{15}"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "color",
+      "value": "{theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.6 : 1"
+    },
+    {
+      "file": "src/components/Chip.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['8']"
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "inset",
+      "value": "{32}"
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['12']"
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['12']"
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "height",
+      "value": "140"
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "height",
+      "value": "140"
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "height",
+      "value": "420"
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['16']"
+    },
+    {
+      "file": "src/components/Collections.stories.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "left",
+      "value": "Math.random()"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "size",
+      "value": "6 + Math.random() * 6"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "color",
+      "value": "PALETTE[index % PALETTE.length]"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "top",
+      "value": "-20"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "left",
+      "value": "particle.left * width"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "width",
+      "value": "particle.size"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "height",
+      "value": "particle.size * 1.6"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "borderRadius",
+      "value": "boxPrimitives.rounding['2']"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "backgroundColor",
+      "value": "theme.accent(particle.color)"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "opacity",
+      "value": "progress.interpolate({\n              inputRange: [0, 0.8, 1],\n              outputRange: [1, 1, 0],\n            })"
+    },
+    {
+      "file": "src/components/Confetti.tsx",
+      "key": "transform",
+      "value": "[\n              {\n                translateY: progress.interpolate({\n                  inputRange: [0, 1],\n                  outputRange: [0, height + 40],\n                }),\n              },\n              {\n                translateX: progress.interpolate({\n                  inputRange: [0, 1],\n                  outputRange: [0, particle.drift],\n                }),\n              },\n              {\n                rotate: progress.interpolate({\n                  inputRange: [0, 1],\n                  outputRange: ['0rad', `${particle.spin}rad`],\n                }),\n              },\n            ]"
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['8']"
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "marginBottom",
+      "value": "boxPrimitives.spacing['24']"
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['12']"
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "size",
+      "value": "\"regular\""
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "size",
+      "value": "\"large\""
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "size",
+      "value": "\"large\""
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['24']"
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['24']"
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['16']"
+    },
+    {
+      "file": "src/components/Controls.stories.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "padding",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "size",
+      "value": "{64}"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "marginTop",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "maxWidth",
+      "value": "280"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "width",
+      "value": "size"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "height",
+      "value": "size"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "borderRadius",
+      "value": "size / 2"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "transform",
+      "value": "[{ scale: pressed ? 0.94 : 1 }]"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "opacity",
+      "value": "disabled ? 0.35 : 1"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "width",
+      "value": "size"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "height",
+      "value": "size"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "size",
+      "value": "{compact ? 22 : 26}"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "color",
+      "value": "{theme.hex.onAccent}"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "shadowColor",
+      "value": "localColors.accent"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "shadowOpacity",
+      "value": "0.28"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "shadowRadius",
+      "value": "20"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "shadowOffset",
+      "value": "{ width: 0, height: boxPrimitives.size['8'] }"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "width",
+      "value": "0"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['8']"
+    },
+    {
+      "file": "src/components/Fab.tsx",
+      "key": "elevation",
+      "value": "8"
+    },
+    {
+      "file": "src/components/Glass.tsx",
+      "key": "borderRadius",
+      "value": "radius"
+    },
+    {
+      "file": "src/components/Glass.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/components/Glass.tsx",
+      "key": "stroke",
+      "value": "\"glass\""
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "color",
+      "value": "value"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "opacity",
+      "value": "1"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "color",
+      "value": "`rgb(${m[1]}, ${m[2]}, ${m[3]})`"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "opacity",
+      "value": "m[4] === undefined ? 1 : Number(m[4])"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "width",
+      "value": "0"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "height",
+      "value": "0"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "tintColor",
+      "value": "tint"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "borderRadius",
+      "value": "r"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "borderCurve",
+      "value": "drawsStroke ? 'circular' : 'continuous'"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "intensity",
+      "value": "{blurIntensity}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "backgroundColor",
+      "value": "tint"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "width",
+      "value": "{size.width}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "height",
+      "value": "{size.height}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "stopColor",
+      "value": "{splitAlpha(blob.color).color}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "stopOpacity",
+      "value": "{splitAlpha(blob.color).opacity * (blob.opacity ?? 1) * k}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "stopColor",
+      "value": "{splitAlpha(strokeSpec.from).color}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "stopOpacity",
+      "value": "{splitAlpha(strokeSpec.from).opacity}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "stopColor",
+      "value": "{splitAlpha(strokeSpec.to).color}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "stopOpacity",
+      "value": "{splitAlpha(strokeSpec.to).opacity}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "fill",
+      "value": "{`url(#${uid}-blob${i})`}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "width",
+      "value": "{Math.max(size.width - strokeWidth, 0)}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "height",
+      "value": "{Math.max(size.height - strokeWidth, 0)}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "fill",
+      "value": "\"none\""
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "stroke",
+      "value": "{`url(#${uid}-edge)`}"
+    },
+    {
+      "file": "src/components/GlassSurface.tsx",
+      "key": "strokeWidth",
+      "value": "{strokeWidth}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "height",
+      "value": "theme.metrics.hairline"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.separator"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "marginLeft",
+      "value": "inset"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg + theme.spacing.lg"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "\"label\""
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xxs"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.4 : 1"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "size",
+      "value": "{15}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "{theme.colors.accent}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "\"accent\""
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.group"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "backgroundColor",
+      "value": "inSheet ? theme.surfaces.groupInSheet : theme.surfaces.group"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "height",
+      "value": "1"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "marginLeft",
+      "value": "inset"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "marginRight",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "backgroundColor",
+      "value": "inSheet ? theme.surfaces.separatorInSheet : theme.surfaces.separator"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg + theme.spacing.md"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "marginTop",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "minHeight",
+      "value": "subtitle ? theme.controlHeight.rowDetail : theme.controlHeight.row"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "paddingLeft",
+      "value": "theme.spacing.lg + level * LEVEL_INDENT"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "paddingVertical",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "gap",
+      "value": "ROW_GAP"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "opacity",
+      "value": "disabled ? 0.35 : 1"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "background",
+      "value": "{iconBackground}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "{iconColor ?? theme.colors.secondaryLabel}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "{color}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "size",
+      "value": "{16}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "{theme.colors.secondaryLabel}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "size",
+      "value": "{18}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "color",
+      "value": "{theme.colors.accent}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "trackColor",
+      "value": "{{ true: theme.surfaces.switchOn }}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "backgroundColor",
+      "value": "pressed ? theme.colors.systemFill : 'transparent'"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "width",
+      "value": "GLYPH_COLUMN"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "width",
+      "value": "GLYPH_COLUMN"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "borderCurve",
+      "value": "'circular'"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "gap",
+      "value": "1"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.lg"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "borderCurve",
+      "value": "'circular'"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "padding",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "stroke",
+      "value": "\"card\""
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "size",
+      "value": "{16}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "color",
+      "value": "{theme.colors.secondaryLabel}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "placeholderTextColor",
+      "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "color",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "padding",
+      "value": "0"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.4 : 1"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "size",
+      "value": "{18}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "color",
+      "value": "{theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.5 : 1"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "size",
+      "value": "{38}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "color",
+      "value": "{theme.colors.accent}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "height",
+      "value": "{40}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.pill"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.tertiarySystemFill"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.5 : 1"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['4']"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.sm"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "borderColor",
+      "value": "theme.colors.separator"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "color",
+      "value": "\"tertiaryLabel\""
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.sm"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.tertiarySystemFill"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.6 : 1"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "width",
+      "value": "\"100%\""
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "height",
+      "value": "\"100%\""
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "stroke",
+      "value": "{stroke.color}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "strokeWidth",
+      "value": "{stroke.width}"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "fill",
+      "value": "\"none\""
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "paddingHorizontal",
+      "value": "boxPrimitives.spacing['10']"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "paddingVertical",
+      "value": "boxPrimitives.spacing['4']"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['92']"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "height",
+      "value": "124"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "borderWidth",
+      "value": "1"
+    },
+    {
+      "file": "src/components/MediaBlocks.tsx",
+      "key": "height",
+      "value": "160"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "width",
+      "value": "MENU_WIDTH"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "borderRadius",
+      "value": "boxPrimitives.rounding['14']"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "opacity",
+      "value": "enter"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "transform",
+      "value": "reduceMotion\n              ? undefined\n              : [{ scale: enter.interpolate({ inputRange: [0, 1], outputRange: [0.86, 1] }) }]"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "height",
+      "value": "theme.controlHeight.menuRow"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "height",
+      "value": "theme.metrics.hairline"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.separator"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "height",
+      "value": "theme.controlHeight.menuRow"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "opacity",
+      "value": "item.disabled ? 0.35 : 1"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "backgroundColor",
+      "value": "pressed ? theme.colors.systemFill : 'transparent'"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "color",
+      "value": "{item.destructive ? 'systemRed' : 'label'}"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "size",
+      "value": "{15}"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "color",
+      "value": "{theme.colors.label}"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "size",
+      "value": "{18}"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "color",
+      "value": "{item.destructive ? theme.colors.systemRed : theme.colors.label}"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "fill",
+      "value": "{ overflow: 'hidden' }"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "shadow",
+      "value": "{\n    shadowColor: localColors.black,\n    shadowOpacity: 0.24,\n    shadowRadius: 24,\n    shadowOffset: { width: 0, height: boxPrimitives.size['10'] },\n  }"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "shadowColor",
+      "value": "localColors.black"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "shadowOpacity",
+      "value": "0.24"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "shadowRadius",
+      "value": "24"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "shadowOffset",
+      "value": "{ width: 0, height: boxPrimitives.size['10'] }"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "width",
+      "value": "0"
+    },
+    {
+      "file": "src/components/Menu.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['10']"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "gap",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "placeholderTextColor",
+      "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "color",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "minHeight",
+      "value": "theme.controlHeight.row"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "placeholderTextColor",
+      "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "color",
+      "value": "item.done ? theme.colors.secondaryLabel : theme.colors.label"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.4 : 1"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "size",
+      "value": "{18}"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "color",
+      "value": "{theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.5 : 1"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "size",
+      "value": "{22}"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "color",
+      "value": "{theme.colors.secondaryLabel}"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "color",
+      "value": "\"accent\""
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "padding",
+      "value": "0"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "padding",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.lg"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.85 : 1"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "borderWidth",
+      "value": "1.5"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "borderColor",
+      "value": "theme.colors.accent"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "accent"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "opacity",
+      "value": "NOTE_GLOW_OPACITY"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "stroke",
+      "value": "\"card\""
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "{selected ? theme.colors.accent : theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "backgroundColor",
+      "value": "accent"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.pill"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "size",
+      "value": "{13}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "{theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "marginTop",
+      "value": "theme.spacing.xxs"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "{DUE_COLOR[dueState(note.remindAt)]}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "size",
+      "value": "{14}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "{theme.colors[color]}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "{color}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "theme.hex.accent"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['8']"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['8']"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "paddingBottom",
+      "value": "insets.bottom + contentInsetBottom + theme.spacing.xxxl"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "marginTop",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "color",
+      "value": "\"tertiaryLabel\""
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "height",
+      "value": "Math.round(140 * Math.min(fontScale, 2))"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "background",
+      "value": "{background}"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "opacity",
+      "value": "interpolate(progress.value, [0.15, 0.85], [0, 1], Extrapolation.CLAMP)"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "marginLeft",
+      "value": "side === 'right' ? theme.spacing.sm : 0"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "marginRight",
+      "value": "side === 'left' ? theme.spacing.sm : 0"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "backgroundColor",
+      "value": "background"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.lg"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.7 : 1"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "color",
+      "value": "{localColors.white}"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "color",
+      "value": "localColors.white"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['76']"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['4']"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.lg"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "paddingVertical",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "stroke",
+      "value": "\"card\""
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.5 : 1"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.md"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "backgroundColor",
+      "value": "theme.tints.control"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "size",
+      "value": "{24}"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "color",
+      "value": "{theme.colors.label}"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "borderCurve",
+      "value": "'circular'"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['40']"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['40']"
+    },
+    {
+      "file": "src/components/NoteTools.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "paddingLeft",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "paddingRight",
+      "value": "onUndo ? theme.spacing.xs : theme.spacing.lg"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "minHeight",
+      "value": "theme.controlHeight.buttonCompact"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.pill"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.elevated"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "borderWidth",
+      "value": "theme.metrics.hairline * 2"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "borderColor",
+      "value": "theme.colors.separator"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "opacity",
+      "value": "enter"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "transform",
+      "value": "[\n            { translateY: enter.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) },\n          ]"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "height",
+      "value": "theme.controlHeight.buttonCompact"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.5 : 1"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "color",
+      "value": "\"accent\""
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "maxWidth",
+      "value": "'100%'"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "shadow",
+      "value": "{\n    shadowColor: localColors.black,\n    shadowOpacity: 0.16,\n    shadowRadius: 12,\n    shadowOffset: { width: 0, height: boxPrimitives.size['4'] },\n  }"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "shadowColor",
+      "value": "localColors.black"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "shadowOpacity",
+      "value": "0.16"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "shadowRadius",
+      "value": "12"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "shadowOffset",
+      "value": "{ width: 0, height: boxPrimitives.size['4'] }"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "width",
+      "value": "0"
+    },
+    {
+      "file": "src/components/Notifications.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['4']"
+    },
+    {
+      "file": "src/components/RootHeader.tsx",
+      "key": "minHeight",
+      "value": "boxPrimitives.size['52']"
+    },
+    {
+      "file": "src/components/RootHeader.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/RootHeader.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "width",
+      "value": "Math.max(0, progress.value) * (height + gap)"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "opacity",
+      "value": "p"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "transform",
+      "value": "[{ scale: 0.6 + 0.4 * p }]"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "color",
+      "value": "{theme.colors.secondaryLabel}"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "placeholderTextColor",
+      "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "color",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.4 : 1"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "size",
+      "value": "{18}"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "color",
+      "value": "{theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.pill"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "stroke",
+      "value": "\"glass\""
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "width",
+      "value": "height"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "borderRadius",
+      "value": "height / 2"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.6 : 1"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "stroke",
+      "value": "\"glass\""
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "size",
+      "value": "{24}"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "color",
+      "value": "{theme.colors.label}"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "padding",
+      "value": "0"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "shadow",
+      "value": "{\n    shadowColor: localColors.black,\n    shadowOpacity: 0.12,\n    shadowRadius: 10,\n    shadowOffset: { width: 0, height: boxPrimitives.size['4'] },\n  }"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "shadowColor",
+      "value": "localColors.black"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "shadowOpacity",
+      "value": "0.12"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "shadowRadius",
+      "value": "10"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "shadowOffset",
+      "value": "{ width: 0, height: boxPrimitives.size['4'] }"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "width",
+      "value": "0"
+    },
+    {
+      "file": "src/components/SearchField.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['4']"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "fontStyle",
+      "value": "{{\n        fontFamily: Platform.OS === 'ios' ? undefined : 'System',\n        color: theme.hex.secondaryLabel,\n        fontSize: 15,\n      }}"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "fontFamily",
+      "value": "Platform.OS === 'ios' ? undefined : 'System'"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "color",
+      "value": "theme.hex.secondaryLabel"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "fontSize",
+      "value": "15"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "color",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "fontWeight",
+      "value": "'600'"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "height",
+      "value": "theme.controlHeight.segmented"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "width",
+      "value": "SIZE"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "height",
+      "value": "SIZE"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "width",
+      "value": "{SIZE}"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "height",
+      "value": "{SIZE}"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "stopColor",
+      "value": "{localColors.accent}"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "stopColor",
+      "value": "{localColors.accentAqua}"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "stroke",
+      "value": "{localColors.chartTrack}"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "strokeWidth",
+      "value": "{STROKE}"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "fill",
+      "value": "\"none\""
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "stroke",
+      "value": "\"url(#ring)\""
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "strokeWidth",
+      "value": "{STROKE}"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "fill",
+      "value": "\"none\""
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "transform",
+      "value": "{`rotate(-90 ${SIZE / 2} ${SIZE / 2})`}"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "fontVariant",
+      "value": "['tabular-nums']"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/Text.stories.tsx",
+      "key": "color",
+      "value": "{\n      control: 'select',\n      options: ['label', 'secondaryLabel', 'tertiaryLabel', 'systemBlue', 'systemRed'],\n    }"
+    },
+    {
+      "file": "src/components/Text.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['4']"
+    },
+    {
+      "file": "src/components/Text.stories.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/Text.stories.tsx",
+      "key": "color",
+      "value": "\"tertiaryLabel\""
+    },
+    {
+      "file": "src/components/Text.tsx",
+      "key": "color",
+      "value": "theme.colors[color]"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xs"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "placeholderTextColor",
+      "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "color",
+      "value": "theme.colors.label"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "minHeight",
+      "value": "theme.controlHeight.row"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "paddingVertical",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.sm"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.tertiarySystemFill"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "borderWidth",
+      "value": "invalid ? 1 : 0"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "borderColor",
+      "value": "theme.colors.systemRed"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "color",
+      "value": "{invalid ? 'systemRed' : 'secondaryLabel'}"
+    },
+    {
+      "file": "src/components/TextField.tsx",
+      "key": "padding",
+      "value": "0"
+    },
+    {
+      "file": "src/components/ThinkingOrb.tsx",
+      "key": "width",
+      "value": "size"
+    },
+    {
+      "file": "src/components/ThinkingOrb.tsx",
+      "key": "height",
+      "value": "size"
+    },
+    {
+      "file": "src/components/ThinkingOrb.tsx",
+      "key": "width",
+      "value": "size"
+    },
+    {
+      "file": "src/components/ThinkingOrb.tsx",
+      "key": "height",
+      "value": "size"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "height",
+      "value": "Math.max(2, level * height)"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.pill"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "backgroundColor",
+      "value": "progress === undefined || played\n                    ? theme.colors.accent\n                    : theme.colors.quaternaryLabel"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "left",
+      "value": "`${Math.min(100, (at / durationMs) * 100)}%`"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.systemOrange"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['2']"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "top",
+      "value": "0"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "bottom",
+      "value": "0"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['2']"
+    },
+    {
+      "file": "src/components/Waveform.tsx",
+      "key": "borderRadius",
+      "value": "1"
+    },
+    {
+      "file": "src/features/notify.tsx",
+      "key": "left",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/features/notify.tsx",
+      "key": "right",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/features/notify.tsx",
+      "key": "bottom",
+      "value": "insets.bottom + theme.metrics.tabBar + theme.spacing.md"
+    },
+    {
+      "file": "src/features/selection.tsx",
+      "key": "paddingBottom",
+      "value": "insets.bottom || theme.spacing.md"
+    },
+    {
+      "file": "src/features/selection.tsx",
+      "key": "paddingTop",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/features/selection.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "src/features/selection.tsx",
+      "key": "gap",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "src/features/selection.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/features/selection.tsx",
+      "key": "color",
+      "value": "\"systemRed\""
+    },
+    {
+      "file": "src/features/selection.tsx",
+      "key": "left",
+      "value": "0"
+    },
+    {
+      "file": "src/features/selection.tsx",
+      "key": "right",
+      "value": "0"
+    },
+    {
+      "file": "src/features/selection.tsx",
+      "key": "bottom",
+      "value": "0"
+    },
+    {
+      "file": "src/features/sort.tsx",
+      "key": "width",
+      "value": "theme.controlHeight.buttonCompact"
+    },
+    {
+      "file": "src/features/sort.tsx",
+      "key": "height",
+      "value": "theme.controlHeight.buttonCompact"
+    },
+    {
+      "file": "src/features/sort.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.4 : 1"
+    },
+    {
+      "file": "src/features/sort.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "src/features/sort.tsx",
+      "key": "color",
+      "value": "{theme.colors.label}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "'Основы/Токены'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "parameters",
+      "value": "{ layout: 'padded', grouped: true }"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "layout",
+      "value": "'padded'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "grouped",
+      "value": "true"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{ gap: theme.spacing.md, marginBottom: theme.spacing.xxl }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "marginBottom",
+      "value": "theme.spacing.xxl"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"footnote\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{ textTransform: 'uppercase' }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "textTransform",
+      "value": "'uppercase'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{[styles.row, { gap: theme.spacing.md }]}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{\n          width: boxPrimitives.size['44'],\n          height: boxPrimitives.size['44'],\n          borderRadius: theme.radius.sm,\n          borderCurve: 'continuous',\n          backgroundColor: theme.colors[name],\n          borderWidth: theme.metrics.hairline,\n          borderColor: theme.colors.separator,\n        }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.sm"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors[name]"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderWidth",
+      "value": "theme.metrics.hairline"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderColor",
+      "value": "theme.colors.separator"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{styles.grow}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"subheadline\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"caption1\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "color",
+      "value": "\"tertiaryLabel\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "render",
+      "value": "() => (\n    <ScrollView>\n      {/*\n        Продуктовый слой стоит первым: это те три значения, которыми продукт\n        отличается от iOS по умолчанию. Всё, что ниже, — системное.\n      */}\n      <Group title=\"Продукт\">\n        <Swatch name=\"accent\" />\n        <Swatch name=\"systemBackground\" />\n        <Swatch name=\"secondarySystemGroupedBackground\" />\n      </Group>\n\n      <Group title=\"Фоны\">\n        {(['systemBackground', 'secondarySystemBackground', 'tertiarySystemBackground',\n           'systemGroupedBackground', 'secondarySystemGroupedBackground',\n           'tertiarySystemGroupedBackground'] as PaletteName[]).map((name) => (\n          <Swatch key={name} name={name} />\n        ))}\n      </Group>\n\n      <Group title=\"Текст\">\n        {(['label', 'secondaryLabel', 'tertiaryLabel', 'quaternaryLabel', 'placeholderText'] as PaletteName[]).map(\n          (name) => <Swatch key={name} name={name} />,\n        )}\n      </Group>\n\n      <Group title=\"Разделители и заливки\">\n        {(['separator', 'opaqueSeparator', 'systemFill', 'secondarySystemFill',\n           'tertiarySystemFill', 'quaternarySystemFill'] as PaletteName[]).map((name) => (\n          <Swatch key={name} name={name} />\n        ))}\n      </Group>\n\n      <Group title=\"Акценты\">\n        {accentNames.map((accent) => (\n          <AccentSwatch key={accent} accent={accent} />\n        ))}\n      </Group>\n\n      <Group title=\"Серые\">\n        {(['systemGray', 'systemGray2', 'systemGray3', 'systemGray4', 'systemGray5',\n           'systemGray6'] as PaletteName[]).map((name) => <Swatch key={name} name={name} />)}\n      </Group>\n    </ScrollView>\n  )"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "\"Продукт\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "name",
+      "value": "\"accent\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "name",
+      "value": "\"systemBackground\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "name",
+      "value": "\"secondarySystemGroupedBackground\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "\"Фоны\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "name",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "\"Текст\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "name",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "\"Разделители и заливки\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "name",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "\"Акценты\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{accent}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "accent",
+      "value": "{accent}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "\"Серые\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "name",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{[styles.row, { gap: theme.spacing.md }]}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{ width: boxPrimitives.size['44'], height: boxPrimitives.size['44'], borderRadius: 999, backgroundColor: value }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderRadius",
+      "value": "999"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "backgroundColor",
+      "value": "value"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{styles.grow}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"subheadline\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"caption1\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "color",
+      "value": "\"tertiaryLabel\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "render",
+      "value": "() => (\n    <ScrollView>\n      {textStyleNames.map((name) => (\n        <View key={name} style={{ marginBottom: boxPrimitives.spacing['20'], gap: boxPrimitives.spacing['2'] }}>\n          <Text variant=\"caption2\" color=\"tertiaryLabel\">\n            {name} · {textStyles[name].fontSize}/{textStyles[name].lineHeight} · вес{' '}\n            {textStyles[name].fontWeight} · трекинг {textStyles[name].letterSpacing}\n          </Text>\n          <Text variant={name}>Съешь ещё этих мягких булок</Text>\n        </View>\n      ))}\n    </ScrollView>\n  )"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{ marginBottom: boxPrimitives.spacing['20'], gap: boxPrimitives.spacing['2'] }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "marginBottom",
+      "value": "boxPrimitives.spacing['20']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['2']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"caption2\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "color",
+      "value": "\"tertiaryLabel\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "render",
+      "value": "() => {\n    const Bar = ({ label, size }: { label: string; size: number }) => (\n      <View style={[styles.row, { gap: boxPrimitives.spacing['12'], marginBottom: boxPrimitives.spacing['8'] }]}>\n        <Text variant=\"caption1\" color=\"secondaryLabel\" style={{ width: 108 }}>\n          {label}\n        </Text>\n        <View style={{ height: boxPrimitives.size['16'], width: size, borderRadius: 3, backgroundColor: '#0A84FF' }} />\n        <Text variant=\"caption1\" color=\"tertiaryLabel\">\n          {size}\n        </Text>\n      </View>\n    );\n\n    return (\n      <ScrollView>\n        <Group title=\"Отступы\">\n          {Object.entries(spacing).map(([name, value]) => (\n            <Bar key={name} label={name} size={value} />\n          ))}\n        </Group>\n\n        <Group title=\"Радиусы\">\n          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: boxPrimitives.spacing['12'] }}>\n            {Object.entries(radius).map(([name, value]) => (\n              <View key={name} style={{ alignItems: 'center', gap: boxPrimitives.spacing['6'] }}>\n                <View\n                  style={{\n                    width: boxPrimitives.size['64'],\n                    height: boxPrimitives.size['64'],\n                    borderRadius: Math.min(value, 32),\n                    borderCurve: 'continuous',\n                    backgroundColor: '#8E8E93',\n                  }}\n                />\n                <Text variant=\"caption2\" color=\"tertiaryLabel\">\n                  {name} · {value}\n                </Text>\n              </View>\n            ))}\n          </View>\n        </Group>\n\n        <Group title=\"Высоты контролов\">\n          {Object.entries(controlHeight).map(([name, value]) => (\n            <Bar key={name} label={name} size={value} />\n          ))}\n        </Group>\n      </ScrollView>\n    );\n  }"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{[styles.row, { gap: boxPrimitives.spacing['12'], marginBottom: boxPrimitives.spacing['8'] }]}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['12']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "marginBottom",
+      "value": "boxPrimitives.spacing['8']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"caption1\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{ width: 108 }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "width",
+      "value": "108"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{ height: boxPrimitives.size['16'], width: size, borderRadius: 3, backgroundColor: '#0A84FF' }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['16']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "width",
+      "value": "size"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderRadius",
+      "value": "3"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "backgroundColor",
+      "value": "'#0A84FF'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"caption1\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "color",
+      "value": "\"tertiaryLabel\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "\"Отступы\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "label",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "size",
+      "value": "{value}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "\"Радиусы\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{ flexDirection: 'row', flexWrap: 'wrap', gap: boxPrimitives.spacing['12'] }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "flexDirection",
+      "value": "'row'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "flexWrap",
+      "value": "'wrap'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['12']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{ alignItems: 'center', gap: boxPrimitives.spacing['6'] }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "alignItems",
+      "value": "'center'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "gap",
+      "value": "boxPrimitives.spacing['6']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{\n                    width: boxPrimitives.size['64'],\n                    height: boxPrimitives.size['64'],\n                    borderRadius: Math.min(value, 32),\n                    borderCurve: 'continuous',\n                    backgroundColor: '#8E8E93',\n                  }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "width",
+      "value": "boxPrimitives.size['64']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "height",
+      "value": "boxPrimitives.size['64']"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderRadius",
+      "value": "Math.min(value, 32)"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "backgroundColor",
+      "value": "'#8E8E93'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"caption2\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "color",
+      "value": "\"tertiaryLabel\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "title",
+      "value": "\"Высоты контролов\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "label",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "size",
+      "value": "{value}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "render",
+      "value": "() => {\n    const theme = useTheme();\n\n    return (\n      <View style={{ gap: theme.spacing.md }}>\n        <Text variant=\"footnote\" color=\"secondaryLabel\">\n          Ниже — запасной уровень: плотная заливка без размытия.\n        </Text>\n        {materialNames.map((name) => (\n          <View\n            key={name}\n            style={{\n              padding: theme.spacing.lg,\n              borderRadius: theme.radius.lg,\n              borderCurve: 'continuous',\n              backgroundColor: theme.colors.tertiarySystemFill,\n            }}\n          >\n            <Text variant=\"subheadline\" weight=\"semibold\">\n              {name}\n            </Text>\n            <Text variant=\"caption1\" color=\"secondaryLabel\">\n              {name === 'ultraThin'\n                ? 'Поверх фотографии — максимум просвечивает'\n                : name === 'chrome'\n                  ? 'Под панелью навигации — сквозь стекло виден только факт содержимого'\n                  : 'Плавающие панели и шиты'}\n            </Text>\n          </View>\n        ))}\n      </View>\n    );\n  }"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{ gap: theme.spacing.md }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"footnote\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "key",
+      "value": "{name}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "style",
+      "value": "{{\n              padding: theme.spacing.lg,\n              borderRadius: theme.radius.lg,\n              borderCurve: 'continuous',\n              backgroundColor: theme.colors.tertiarySystemFill,\n            }}"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "padding",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.lg"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "borderCurve",
+      "value": "'continuous'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "backgroundColor",
+      "value": "theme.colors.tertiarySystemFill"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"subheadline\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "weight",
+      "value": "\"semibold\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "variant",
+      "value": "\"caption1\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "color",
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "row",
+      "value": "{ flexDirection: 'row', alignItems: 'center' }"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "flexDirection",
+      "value": "'row'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "alignItems",
+      "value": "'center'"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "grow",
+      "value": "{ flex: 1 }"
+    },
+    {
+      "file": "src/theme/Foundations.stories.tsx",
+      "key": "flex",
+      "value": "1"
+    },
+    {
+      "file": "src/theme/ThemeProvider.tsx",
+      "key": "colors",
+      "value": "buildPalette(scheme)"
+    },
+    {
+      "file": "src/theme/ThemeProvider.tsx",
+      "key": "hex",
+      "value": "resolvePalette(scheme)"
+    },
+    {
+      "file": "src/theme/ThemeProvider.tsx",
+      "key": "accent",
+      "value": "(name) => accentColor(name, scheme)"
+    },
+    {
+      "file": "src/theme/ThemeProvider.tsx",
+      "key": "text",
+      "value": "textStyle"
+    },
+    {
+      "file": "src/theme/ThemeProvider.tsx",
+      "key": "headerText",
+      "value": "headerTextStyle"
+    },
+    {
+      "file": "src/theme/ThemeProvider.tsx",
+      "key": "value",
+      "value": "{DARK}"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemRed",
+      "value": "pair('#FF3B30', '#FF453A')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemOrange",
+      "value": "pair('#FF9500', '#FF9F0A')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemYellow",
+      "value": "pair('#FFCC00', '#FFD60A')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGreen",
+      "value": "pair('#34C759', '#30D158')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemMint",
+      "value": "pair('#00C7BE', '#63E6E2')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemTeal",
+      "value": "pair('#30B0C7', '#40C8E0')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemCyan",
+      "value": "pair('#32ADE6', '#64D2FF')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemBlue",
+      "value": "pair('#007AFF', '#0A84FF')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemIndigo",
+      "value": "pair('#5856D6', '#5E5CE6')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemPurple",
+      "value": "pair('#AF52DE', '#BF5AF2')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemPink",
+      "value": "pair('#FF2D55', '#FF375F')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemBrown",
+      "value": "pair('#A2845E', '#AC8E68')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGray",
+      "value": "pair('#8E8E93', '#8E8E93')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGray2",
+      "value": "pair('#AEAEB2', '#636366')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGray3",
+      "value": "pair('#C7C7CC', '#48484A')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGray4",
+      "value": "pair('#D1D1D6', '#3A3A3C')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGray5",
+      "value": "pair('#E5E5EA', '#2C2C2E')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGray6",
+      "value": "pair('#F2F2F7', '#1C1C1E')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemBackground",
+      "value": "pair(localColors.white, localColors.black)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondarySystemBackground",
+      "value": "pair('#F2F2F7', '#1C1C1E')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiarySystemBackground",
+      "value": "pair(localColors.white, '#2C2C2E')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGroupedBackground",
+      "value": "pair('#F2F2F7', localColors.black)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondarySystemGroupedBackground",
+      "value": "pair(localColors.white, '#1C1C1E')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiarySystemGroupedBackground",
+      "value": "pair('#F2F2F7', '#2C2C2E')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "label",
+      "value": "pair(localColors.black, localColors.white)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondaryLabel",
+      "value": "pair('rgba(60,60,67,0.6)', 'rgba(235,235,245,0.6)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiaryLabel",
+      "value": "pair('rgba(60,60,67,0.3)', 'rgba(235,235,245,0.3)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "quaternaryLabel",
+      "value": "pair('rgba(60,60,67,0.18)', 'rgba(235,235,245,0.16)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "placeholderText",
+      "value": "pair('rgba(60,60,67,0.3)', 'rgba(235,235,245,0.3)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "separator",
+      "value": "pair('rgba(60,60,67,0.29)', 'rgba(84,84,88,0.65)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "opaqueSeparator",
+      "value": "pair('#C6C6C8', '#38383A')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemFill",
+      "value": "pair('rgba(120,120,128,0.2)', 'rgba(120,120,128,0.36)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondarySystemFill",
+      "value": "pair('rgba(120,120,128,0.16)', 'rgba(120,120,128,0.32)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiarySystemFill",
+      "value": "pair('rgba(118,118,128,0.12)', 'rgba(118,118,128,0.24)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "quaternarySystemFill",
+      "value": "pair('rgba(116,116,128,0.08)', 'rgba(118,118,128,0.18)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "link",
+      "value": "pair('#007AFF', '#0A84FF')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemBackground",
+      "value": "dark(localColors.black)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondarySystemBackground",
+      "value": "dark('rgba(255,255,255,0.04)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiarySystemBackground",
+      "value": "dark('rgba(255,255,255,0.08)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGroupedBackground",
+      "value": "dark(localColors.black)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondarySystemGroupedBackground",
+      "value": "dark('rgba(255,255,255,0.045)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiarySystemGroupedBackground",
+      "value": "dark('rgba(255,255,255,0.08)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "label",
+      "value": "dark(localColors.white)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondaryLabel",
+      "value": "dark('rgba(255,255,255,0.66)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiaryLabel",
+      "value": "dark('rgba(255,255,255,0.42)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "quaternaryLabel",
+      "value": "dark('rgba(255,255,255,0.22)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "placeholderText",
+      "value": "dark('rgba(255,255,255,0.42)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "separator",
+      "value": "dark('rgba(255,255,255,0.10)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "opaqueSeparator",
+      "value": "dark('rgba(255,255,255,0.18)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemFill",
+      "value": "dark('rgba(255,255,255,0.14)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondarySystemFill",
+      "value": "dark('rgba(255,255,255,0.10)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiarySystemFill",
+      "value": "dark('rgba(255,255,255,0.07)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "quaternarySystemFill",
+      "value": "dark('rgba(255,255,255,0.04)')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "accent",
+      "value": "dark(localColors.accent)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "accentMint",
+      "value": "dark('#D7FEC0')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "accentAqua",
+      "value": "dark(localColors.accentAqua)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "onAccent",
+      "value": "dark(localColors.black)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "link",
+      "value": "dark(localColors.accentAqua)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "elevated",
+      "value": "dark('#141416')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemRed",
+      "value": "dark('#FC6578')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemGreen",
+      "value": "dark('#05D6B4')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "systemFill",
+      "value": "'systemFillColor'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondarySystemFill",
+      "value": "'secondarySystemFillColor'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiarySystemFill",
+      "value": "'tertiarySystemFillColor'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "quaternarySystemFill",
+      "value": "'quaternarySystemFillColor'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "red",
+      "value": "'systemRed'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "orange",
+      "value": "'systemOrange'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "yellow",
+      "value": "'systemYellow'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "green",
+      "value": "'systemGreen'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "mint",
+      "value": "'systemMint'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "blue",
+      "value": "'systemBlue'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "indigo",
+      "value": "'systemIndigo'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "purple",
+      "value": "'systemPurple'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "pink",
+      "value": "'systemPink'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "gray",
+      "value": "'systemGray'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "red",
+      "value": "'Красный'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "orange",
+      "value": "'Оранжевый'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "yellow",
+      "value": "'Жёлтый'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "green",
+      "value": "'Зелёный'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "mint",
+      "value": "'Мятный'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "blue",
+      "value": "'Синий'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "indigo",
+      "value": "'Индиго'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "purple",
+      "value": "'Фиолетовый'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "pink",
+      "value": "'Розовый'"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "gray",
+      "value": "'Серый'"
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "black",
+      "value": "boxPrimitives.achromatic.black"
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "white",
+      "value": "boxPrimitives.achromatic.white"
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "accent",
+      "value": "\"#DCFEAA\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "accentAqua",
+      "value": "\"#BBFBE7\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "chartTrack",
+      "value": "\"#2B2F2C\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "sheet",
+      "value": "\"#1F1F1F\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "creationScrim",
+      "value": "\"rgba(0,0,0,0.3)\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "folderBorder",
+      "value": "\"rgba(255,255,255,0.12)\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "scanGuide",
+      "value": "\"rgba(255,255,255,0.7)\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "dangerTint",
+      "value": "\"rgba(255,87,122,0.16)\""
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "ultraThin",
+      "value": "'systemUltraThinMaterial'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "thin",
+      "value": "'systemThinMaterial'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "regular",
+      "value": "'systemMaterial'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "thick",
+      "value": "'systemThickMaterial'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "chrome",
+      "value": "'systemChromeMaterial'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "ultraThin",
+      "value": "24"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "thin",
+      "value": "40"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "regular",
+      "value": "60"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "thick",
+      "value": "80"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "chrome",
+      "value": "92"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "ultraThin",
+      "value": "{ light: 'rgba(255,255,255,0.68)', dark: 'rgba(30,30,32,0.68)' }"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "light",
+      "value": "'rgba(255,255,255,0.68)'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "dark",
+      "value": "'rgba(30,30,32,0.68)'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "thin",
+      "value": "{ light: 'rgba(255,255,255,0.78)', dark: 'rgba(30,30,32,0.78)' }"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "light",
+      "value": "'rgba(255,255,255,0.78)'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "dark",
+      "value": "'rgba(30,30,32,0.78)'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "regular",
+      "value": "{ light: 'rgba(249,249,251,0.86)', dark: 'rgba(28,28,30,0.86)' }"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "light",
+      "value": "'rgba(249,249,251,0.86)'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "dark",
+      "value": "'rgba(28,28,30,0.86)'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "thick",
+      "value": "{ light: 'rgba(247,247,249,0.94)', dark: 'rgba(24,24,26,0.94)' }"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "light",
+      "value": "'rgba(247,247,249,0.94)'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "dark",
+      "value": "'rgba(24,24,26,0.94)'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "chrome",
+      "value": "{ light: 'rgba(246,246,248,0.97)', dark: 'rgba(20,20,22,0.97)' }"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "light",
+      "value": "'rgba(246,246,248,0.97)'"
+    },
+    {
+      "file": "src/theme/materials.ts",
+      "key": "dark",
+      "value": "'rgba(20,20,22,0.97)'"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "xxs",
+      "value": "boxPrimitives.spacing['2']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "xs",
+      "value": "boxPrimitives.spacing['4']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "sm",
+      "value": "boxPrimitives.spacing['8']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "md",
+      "value": "boxPrimitives.spacing['12']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "lg",
+      "value": "boxPrimitives.spacing['16']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "xl",
+      "value": "boxPrimitives.spacing['20']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "xxl",
+      "value": "boxPrimitives.spacing['24']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "xxxl",
+      "value": "boxPrimitives.spacing['32']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "xs",
+      "value": "boxPrimitives.rounding['8']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "sm",
+      "value": "boxPrimitives.rounding['12']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "md",
+      "value": "boxPrimitives.rounding['24']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "group",
+      "value": "26"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "lg",
+      "value": "boxPrimitives.rounding['28']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "xl",
+      "value": "boxPrimitives.rounding['32']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "xxl",
+      "value": "boxPrimitives.rounding['32']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "pill",
+      "value": "999"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "hitSlop",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "hairline",
+      "value": "0.5"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "separatorInset",
+      "value": "boxPrimitives.spacing['16']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "screenMargin",
+      "value": "boxPrimitives.spacing['16']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "tabBar",
+      "value": "54"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "row",
+      "value": "62"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "rowDetail",
+      "value": "74"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "menuRow",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "button",
+      "value": "boxPrimitives.size['56']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "buttonCompact",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "searchField",
+      "value": "boxPrimitives.size['44']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "searchFieldBottom",
+      "value": "boxPrimitives.size['48']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "segmented",
+      "value": "boxPrimitives.size['32']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "chip",
+      "value": "boxPrimitives.size['40']"
+    },
+    {
+      "file": "src/theme/metrics.ts",
+      "key": "fab",
+      "value": "boxPrimitives.size['60']"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "cta",
+      "value": "[\n    { x: 0.368, y: 1.51, rx: 0.882, ry: 1.74, color: '#E0FEB5', opacity: 0.42 },\n    { x: 0.832, y: 1.54, rx: 1.062, ry: 1.54, color: '#8CFEFD', opacity: 0.28 },\n    { x: 0.572, y: 1.95, rx: 1.012, ry: 2.24, color: '#DFFFE5', opacity: 0.16 },\n  ]"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.368"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "1.51"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "0.882"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "1.74"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "'#E0FEB5'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "0.42"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.832"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "1.54"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "1.062"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "1.54"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "'#8CFEFD'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "0.28"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.572"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "1.95"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "1.012"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "2.24"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "'#DFFFE5'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "0.16"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "fab",
+      "value": "[\n    { x: 0.28, y: 0.1, rx: 1.15, ry: 1.15, color: localColors.accent, opacity: 1 },\n    { x: 0.88, y: 1.0, rx: 1.05, ry: 1.05, color: localColors.accentAqua, opacity: 1 },\n  ]"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.28"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "0.1"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "1.15"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "1.15"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "localColors.accent"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "1"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.88"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "1.0"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "1.05"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "1.05"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "localColors.accentAqua"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "1"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "card",
+      "value": "[\n    { x: 0.92, y: -0.18, rx: 0.7, ry: 1.0, color: localColors.accent, opacity: 0.035 },\n    { x: 0.05, y: 1.18, rx: 0.6, ry: 0.9, color: localColors.accentAqua, opacity: 0.025 },\n  ]"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.92"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "-0.18"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "0.7"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "1.0"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "localColors.accent"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "0.035"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.05"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "1.18"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "0.6"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "0.9"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "localColors.accentAqua"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "0.025"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "danger",
+      "value": "[\n    { x: 0.3, y: 1.5, rx: 0.9, ry: 1.7, color: '#FF577A', opacity: 0.5 },\n    { x: 0.85, y: 1.5, rx: 1.0, ry: 1.5, color: '#FF8A5B', opacity: 0.3 },\n  ]"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.3"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "1.5"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "0.9"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "1.7"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "'#FF577A'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "0.5"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.85"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "1.5"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "1.0"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "1.5"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "'#FF8A5B'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "0.3"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "root",
+      "value": "[{ x: 0.5, y: 0, rx: 0.77, ry: 0.21, color: '#344439', opacity: 1 }]"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "x",
+      "value": "0.5"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "y",
+      "value": "0"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rx",
+      "value": "0.77"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "ry",
+      "value": "0.21"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "color",
+      "value": "'#344439'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "opacity",
+      "value": "1"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "cta",
+      "value": "{ from: 'rgba(255,255,255,0.10)', to: 'rgba(255,255,255,0.42)' }"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "from",
+      "value": "'rgba(255,255,255,0.10)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "to",
+      "value": "'rgba(255,255,255,0.42)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "danger",
+      "value": "{ from: 'rgba(255,180,190,0.16)', to: 'rgba(255,180,190,0.46)' }"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "from",
+      "value": "'rgba(255,180,190,0.16)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "to",
+      "value": "'rgba(255,180,190,0.46)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "card",
+      "value": "{ from: 'rgba(255,255,255,0.13)', to: 'rgba(255,255,255,0.035)' }"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "from",
+      "value": "'rgba(255,255,255,0.13)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "to",
+      "value": "'rgba(255,255,255,0.035)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "glass",
+      "value": "{ from: 'rgba(255,255,255,0.15)', to: 'rgba(255,255,255,0.04)' }"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "from",
+      "value": "'rgba(255,255,255,0.15)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "to",
+      "value": "'rgba(255,255,255,0.04)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "rim",
+      "value": "{ from: 'rgba(255,255,255,0.2)', to: 'rgba(255,255,255,0.2)' }"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "from",
+      "value": "'rgba(255,255,255,0.2)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "to",
+      "value": "'rgba(255,255,255,0.2)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "subtle",
+      "value": "{ from: 'rgba(255,255,255,0.07)', to: 'rgba(255,255,255,0.02)' }"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "from",
+      "value": "'rgba(255,255,255,0.07)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "to",
+      "value": "'rgba(255,255,255,0.02)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "cta",
+      "value": "'rgba(255,255,255,0.14)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "card",
+      "value": "'rgba(255,255,255,0.05)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "control",
+      "value": "localColors.folderBorder"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "glass",
+      "value": "'rgba(8,8,10,0.28)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "header",
+      "value": "'rgba(255,255,255,0.07)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "group",
+      "value": "'#0C0C0C'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "groupInSheet",
+      "value": "'#2B2B2B'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "separator",
+      "value": "'#191919'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "separatorInSheet",
+      "value": "'#383838'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "white",
+      "value": "localColors.white"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "danger",
+      "value": "'#18080B'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "dangerLabel",
+      "value": "'#FD7490'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "disabled",
+      "value": "'#111119'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "disabledRim",
+      "value": "'#302F34'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "switchOn",
+      "value": "'#579901'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "ios",
+      "value": "'System'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "default",
+      "value": "'-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"SF Pro Display\", \"Helvetica Neue\", Arial, sans-serif'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "largeTitle",
+      "value": "{ fontSize: 34, lineHeight: 41, letterSpacing: 0.37, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "34"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "41"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "0.37"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "title1",
+      "value": "{ fontSize: 28, lineHeight: 34, letterSpacing: 0.36, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "28"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "34"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "0.36"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "title2",
+      "value": "{ fontSize: 22, lineHeight: 28, letterSpacing: 0.35, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "22"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "28"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "0.35"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "title3",
+      "value": "{ fontSize: 20, lineHeight: 25, letterSpacing: 0.38, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "20"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "25"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "0.38"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "headline",
+      "value": "{ fontSize: 17, lineHeight: 22, letterSpacing: -0.41, fontWeight: '500' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "17"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "22"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "-0.41"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'500'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "body",
+      "value": "{ fontSize: 17, lineHeight: 22, letterSpacing: -0.41, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "17"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "22"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "-0.41"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "callout",
+      "value": "{ fontSize: 16, lineHeight: 21, letterSpacing: -0.32, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "16"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "21"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "-0.32"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "subheadline",
+      "value": "{ fontSize: 15, lineHeight: 20, letterSpacing: -0.24, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "15"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "20"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "-0.24"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "footnote",
+      "value": "{ fontSize: 13, lineHeight: 18, letterSpacing: -0.08, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "13"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "18"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "-0.08"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "caption1",
+      "value": "{ fontSize: 12, lineHeight: 16, letterSpacing: 0, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "12"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "16"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "0"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "caption2",
+      "value": "{ fontSize: 11, lineHeight: 13, letterSpacing: 0.07, fontWeight: '400' }"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "11"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "13"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "0.07"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "regular",
+      "value": "'400'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "medium",
+      "value": "'500'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "semibold",
+      "value": "'600'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "bold",
+      "value": "'700'"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "base.fontSize"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "lineHeight",
+      "value": "base.lineHeight"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "letterSpacing",
+      "value": "base.letterSpacing"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "weight ? weights[weight] : base.fontWeight"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontSize",
+      "value": "textStyles[name].fontSize"
+    },
+    {
+      "file": "src/theme/typography.ts",
+      "key": "fontWeight",
+      "value": "weight ? weights[weight] : textStyles[name].fontWeight"
+    }
+  ]
+}

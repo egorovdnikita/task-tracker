@@ -1,3 +1,5 @@
+import { localColors } from '../theme/localColors';
+import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -91,7 +93,7 @@ export const Button = ({
   const label = solidOff
     ? theme.hex.tertiaryLabel
     : variant === 'white'
-      ? '#000000'
+      ? localColors.black
       : destructive && variant === 'tinted'
         ? theme.surfaces.dangerLabel
         : variant === 'filled' || variant === 'gray' || variant === 'glass'
@@ -102,7 +104,7 @@ export const Button = ({
 
   const surface: Record<ButtonVariant, React.ComponentProps<typeof GlassSurface> | null> = {
     filled: destructive
-      ? { mesh: 'danger', stroke: 'danger', tint: 'rgba(255,87,122,0.16)', liquid: false }
+      ? { mesh: 'danger', stroke: 'danger', tint: localColors.dangerTint, liquid: false }
       : { mesh: 'cta', stroke: 'cta', tint: theme.tints.cta, liquid: false },
     /*
       Белая пилюля — второй вид главной кнопки Opal: подтверждение в шите
@@ -297,7 +299,7 @@ export const headerItems =
         // строке: одним элементом, чтобы порядок не зависел от того, как
         // система расставляет несколько кнопок справа.
         element: extra ? (
-          <View style={[styles.capsule, { gap: 8 }]}>
+          <View style={[styles.capsule, { gap: boxPrimitives.spacing['8'] }]}>
             {element ? <HeaderGlass>{element}</HeaderGlass> : null}
             {extra}
           </View>

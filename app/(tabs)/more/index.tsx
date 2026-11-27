@@ -139,7 +139,7 @@ export default function MoreScreen() {
 
         <Text
           variant="footnote"
-          color="secondaryLabel"
+          color="secondaryOnBackdrop"
           style={{ textAlign: 'center', paddingHorizontal: theme.spacing.xxl }}
         >
           {Constants.expoConfig?.name ?? 'task-tracker'} ·{' '}

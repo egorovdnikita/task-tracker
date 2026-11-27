@@ -151,7 +151,7 @@ export const ListSection = ({
       {footer ? (
         <Text
           variant="footnote"
-          color="secondaryLabel"
+          color="secondaryOnBackdrop"
           style={{
             marginHorizontal: theme.spacing.lg + theme.spacing.md,
             marginTop: theme.spacing.md,

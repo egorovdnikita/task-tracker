@@ -63,7 +63,7 @@ export default function StatsScreen() {
           style={{
             marginHorizontal: theme.spacing.lg,
             marginBottom: theme.spacing.xxxl,
-            padding: theme.spacing.lg,
+            padding: theme.spacing.xl,
             gap: theme.spacing.lg,
             borderRadius: theme.radius.group,
             backgroundColor: theme.surfaces.group,
@@ -133,7 +133,7 @@ const compact = (n: number): string =>
 
 const styles = StyleSheet.create({
   score: { color: localColors.white, fontSize: 64, lineHeight: 72, fontWeight: '600', fontVariant: ['tabular-nums'] },
-  rings: { flexDirection: 'row', justifyContent: 'space-evenly' },
-  chart: { flexDirection: 'row', alignItems: 'flex-end', height: 132 },
+  rings: { flexDirection: 'row', gap: 12, justifyContent: 'space-between' },
+  chart: { flexDirection: 'row', alignItems: 'flex-end', height: 108 },
   bar: { flex: 1, alignItems: 'center', justifyContent: 'flex-end' },
 });

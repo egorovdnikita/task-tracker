@@ -1,6 +1,6 @@
 import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import React, { useMemo } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import { IconButton, ListRow, ListSection, headerItems } from '../src/components';
@@ -30,7 +30,7 @@ export default function MoveScreen() {
   };
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <ScreenBackdrop />
       <Stack.Screen
         options={{
@@ -46,6 +46,8 @@ export default function MoveScreen() {
       {/* Шапка шита прозрачная, и без системной поправки на инсеты первая
           строка списка встаёт под неё. */}
       <ScrollView
+        style={{ flex: 1 }}
+        automaticallyAdjustKeyboardInsets
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
@@ -95,6 +97,6 @@ export default function MoveScreen() {
           />
         </ListSection>
       </ScrollView>
-    </>
+    </View>
   );
 }

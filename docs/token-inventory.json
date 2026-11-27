@@ -1,5 +1,5 @@
 {
-  "files": 87,
+  "files": 88,
   "entries": [
     {
       "file": ".storybook/preview.tsx",
@@ -279,7 +279,7 @@
     {
       "file": "app/(tabs)/more/index.tsx",
       "key": "color",
-      "value": "\"secondaryLabel\""
+      "value": "\"secondaryOnBackdrop\""
     },
     {
       "file": "app/(tabs)/more/index.tsx",
@@ -319,7 +319,7 @@
     {
       "file": "app/(tabs)/more/notifications.tsx",
       "key": "color",
-      "value": "\"secondaryLabel\""
+      "value": "\"secondaryOnBackdrop\""
     },
     {
       "file": "app/(tabs)/more/notifications.tsx",
@@ -374,7 +374,7 @@
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "padding",
-      "value": "theme.spacing.lg"
+      "value": "theme.spacing.xl"
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
@@ -458,8 +458,13 @@
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
+      "key": "gap",
+      "value": "12"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
       "key": "height",
-      "value": "132"
+      "value": "108"
     },
     {
       "file": "app/(tabs)/notes/_layout.tsx",
@@ -490,11 +495,6 @@
       "file": "app/(tabs)/notes/index.tsx",
       "key": "gap",
       "value": "theme.spacing.md"
-    },
-    {
-      "file": "app/(tabs)/notes/index.tsx",
-      "key": "marginBottom",
-      "value": "theme.spacing.xl"
     },
     {
       "file": "app/(tabs)/notes/index.tsx",
@@ -1208,8 +1208,33 @@
     },
     {
       "file": "app/folder.tsx",
+      "key": "paddingTop",
+      "value": "headerHeight + theme.spacing.md"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "paddingBottom",
+      "value": "theme.spacing.xxxl"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "padding",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/folder.tsx",
       "key": "gap",
-      "value": "theme.spacing.xl"
+      "value": "10"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.xl"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
     },
     {
       "file": "app/folder.tsx",
@@ -1244,7 +1269,7 @@
     {
       "file": "app/folder.tsx",
       "key": "backgroundColor",
-      "value": "theme.surfaces.groupInSheet"
+      "value": "theme.hex.systemFill"
     },
     {
       "file": "app/folder.tsx",
@@ -1279,7 +1304,7 @@
     {
       "file": "app/folder.tsx",
       "key": "color",
-      "value": "\"onBackdrop\""
+      "value": "\"label\""
     },
     {
       "file": "app/folder.tsx",
@@ -1319,7 +1344,7 @@
     {
       "file": "app/folder.tsx",
       "key": "color",
-      "value": "\"onBackdrop\""
+      "value": "\"label\""
     },
     {
       "file": "app/folder.tsx",
@@ -1329,7 +1354,7 @@
     {
       "file": "app/folder.tsx",
       "key": "backgroundColor",
-      "value": "theme.surfaces.groupInSheet"
+      "value": "theme.hex.systemFill"
     },
     {
       "file": "app/folder.tsx",
@@ -1370,6 +1395,11 @@
       "file": "app/folder.tsx",
       "key": "color",
       "value": "{theme.colors.secondaryLabel}"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "size",
+      "value": "\"large\""
     },
     {
       "file": "app/folder.tsx",
@@ -2402,6 +2432,31 @@
       "value": "100"
     },
     {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "color",
+      "value": "\"onBackdrop\""
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "top",
+      "value": "90"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "padding",
+      "value": "16"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "paddingTop",
+      "value": "150"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "gap",
+      "value": "12"
+    },
+    {
       "file": "src/components/Glass.tsx",
       "key": "borderRadius",
       "value": "radius"
@@ -2644,7 +2699,7 @@
     {
       "file": "src/components/List.tsx",
       "key": "color",
-      "value": "\"secondaryLabel\""
+      "value": "\"secondaryOnBackdrop\""
     },
     {
       "file": "src/components/List.tsx",
@@ -3358,6 +3413,36 @@
     },
     {
       "file": "src/components/NoteCard.tsx",
+      "key": "width",
+      "value": "40"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "height",
+      "value": "40"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "borderRadius",
+      "value": "20"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.systemFill"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "{theme.colors.label}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
       "key": "size",
       "value": "{20}"
     },
@@ -3415,6 +3500,71 @@
       "file": "src/components/NoteCard.tsx",
       "key": "color",
       "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "paddingBottom",
+      "value": "26"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "left",
+      "value": "24"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "right",
+      "value": "24"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "bottom",
+      "value": "0"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "height",
+      "value": "88"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "borderRadius",
+      "value": "28"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "backgroundColor",
+      "value": "'rgba(255,255,255,0.6)'"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "left",
+      "value": "12"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "right",
+      "value": "12"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "bottom",
+      "value": "8"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "height",
+      "value": "88"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "borderRadius",
+      "value": "28"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "backgroundColor",
+      "value": "'rgba(255,255,255,0.8)'"
     },
     {
       "file": "src/components/NoteCard.tsx",
@@ -3500,11 +3650,6 @@
       "file": "src/components/NoteList.tsx",
       "key": "gap",
       "value": "theme.spacing.sm"
-    },
-    {
-      "file": "src/components/NoteList.tsx",
-      "key": "marginTop",
-      "value": "theme.spacing.lg"
     },
     {
       "file": "src/components/NoteList.tsx",
@@ -3874,7 +4019,7 @@
     {
       "file": "src/components/ScreenBackdrop.tsx",
       "key": "stopOpacity",
-      "value": "\".6\""
+      "value": "{0.6}"
     },
     {
       "file": "src/components/ScreenBackdrop.tsx",
@@ -3894,7 +4039,7 @@
     {
       "file": "src/components/ScreenBackdrop.tsx",
       "key": "stopOpacity",
-      "value": "\".85\""
+      "value": "{0.85}"
     },
     {
       "file": "src/components/ScreenBackdrop.tsx",
@@ -3904,7 +4049,7 @@
     {
       "file": "src/components/ScreenBackdrop.tsx",
       "key": "stopOpacity",
-      "value": "\".35\""
+      "value": "{0.35}"
     },
     {
       "file": "src/components/ScreenBackdrop.tsx",
@@ -3924,7 +4069,7 @@
     {
       "file": "src/components/ScreenBackdrop.tsx",
       "key": "stopOpacity",
-      "value": "\".85\""
+      "value": "{0.85}"
     },
     {
       "file": "src/components/ScreenBackdrop.tsx",
@@ -3934,7 +4079,7 @@
     {
       "file": "src/components/ScreenBackdrop.tsx",
       "key": "stopOpacity",
-      "value": "\".4\""
+      "value": "{0.4}"
     },
     {
       "file": "src/components/ScreenBackdrop.tsx",
@@ -3954,7 +4099,7 @@
     {
       "file": "src/components/ScreenBackdrop.tsx",
       "key": "stopOpacity",
-      "value": "\".22\""
+      "value": "{0.22}"
     },
     {
       "file": "src/components/ScreenBackdrop.tsx",
@@ -3969,17 +4114,37 @@
     {
       "file": "src/components/ScreenBackdrop.tsx",
       "key": "width",
-      "value": "\"1\""
+      "value": "\"390\""
     },
     {
       "file": "src/components/ScreenBackdrop.tsx",
       "key": "height",
-      "value": "\"1\""
+      "value": "\"844\""
     },
     {
       "file": "src/components/ScreenBackdrop.tsx",
       "key": "fill",
       "value": "{`url(#${id}${layer})`}"
+    },
+    {
+      "file": "src/components/ScreenEmptyState.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "src/components/ScreenEmptyState.tsx",
+      "key": "paddingTop",
+      "value": "header + theme.spacing.md"
+    },
+    {
+      "file": "src/components/ScreenEmptyState.tsx",
+      "key": "paddingBottom",
+      "value": "insets.bottom + (tabbed ? theme.metrics.tabBar : 0) + theme.spacing.lg"
+    },
+    {
+      "file": "src/components/ScreenEmptyState.tsx",
+      "key": "marginVertical",
+      "value": "0"
     },
     {
       "file": "src/components/SearchField.tsx",
@@ -4124,7 +4289,7 @@
     {
       "file": "src/components/SegmentedControl.tsx",
       "key": "fontStyle",
-      "value": "{{\n        fontFamily: Platform.OS === 'ios' ? undefined : 'System',\n        color: theme.hex.secondaryLabel,\n        fontSize: 15,\n      }}"
+      "value": "{{\n        fontFamily: Platform.OS === 'ios' ? undefined : 'System',\n        color: theme.hex.onBackdrop,\n        fontSize: 15,\n      }}"
     },
     {
       "file": "src/components/SegmentedControl.tsx",
@@ -4134,7 +4299,7 @@
     {
       "file": "src/components/SegmentedControl.tsx",
       "key": "color",
-      "value": "theme.hex.secondaryLabel"
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "src/components/SegmentedControl.tsx",
@@ -4158,18 +4323,28 @@
     },
     {
       "file": "src/components/StatRing.tsx",
+      "key": "maxWidth",
+      "value": "102"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
       "key": "minWidth",
       "value": "0"
     },
     {
       "file": "src/components/StatRing.tsx",
+      "key": "minHeight",
+      "value": "102"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
       "key": "padding",
-      "value": "16"
+      "value": "8"
     },
     {
       "file": "src/components/StatRing.tsx",
       "key": "gap",
-      "value": "8"
+      "value": "2"
     },
     {
       "file": "src/components/StatRing.tsx",
@@ -4449,7 +4624,7 @@
     {
       "file": "src/features/sort.tsx",
       "key": "color",
-      "value": "{theme.colors.label}"
+      "value": "{theme.colors.onBackdrop}"
     },
     {
       "file": "src/theme/Foundations.stories.tsx",

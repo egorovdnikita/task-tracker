@@ -1,3 +1,4 @@
+import { ScreenEmptyState } from '../../../src/components/ScreenEmptyState';
 import { ScreenBackdrop } from '../../../src/components/ScreenBackdrop';
 import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
@@ -46,7 +47,7 @@ export default function TrashScreen() {
       <Stack.Screen options={{ title: 'Корзина' }} />
 
       {trashed.length === 0 ? (
-        <EmptyState
+        <ScreenEmptyState tabbed
           icon="trash"
           title="Корзина пуста"
           description="Удалённые заметки лежат здесь 30 дней, а потом исчезают навсегда."

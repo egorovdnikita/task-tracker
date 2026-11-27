@@ -108,7 +108,7 @@ export default function NotificationsScreen() {
 
         <Text
           variant="footnote"
-          color="secondaryLabel"
+          color="secondaryOnBackdrop"
           style={{ textAlign: 'center', paddingHorizontal: theme.spacing.xxl }}
         >
           Уведомления локальные: их ставит само устройство, без сервера.

@@ -58,9 +58,9 @@
     "build-storybook": "storybook build -o storybook-static",
     "typecheck": "tsc --noEmit",
     "tokens:sync": "node scripts/sync-box-tokens.mjs",
-    "tokens:check": "node scripts/sync-box-tokens.mjs --check && node scripts/token-inventory.mjs --check",
+    "tokens:check": "node scripts/sync-box-tokens.mjs --check && node scripts/token-inventory.mjs --check && node scripts/check-svg-gradients.mjs",
     "tokens:inventory": "node scripts/token-inventory.mjs",
-    "tokens:test": "node --test scripts/sync-box-tokens.test.mjs"
+    "tokens:test": "node --test scripts/sync-box-tokens.test.mjs scripts/check-svg-gradients.test.mjs"
   },
   "private": true
 }

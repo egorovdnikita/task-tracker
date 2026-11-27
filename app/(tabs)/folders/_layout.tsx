@@ -11,6 +11,7 @@ export default function FoldersLayout() {
   return (
     <Stack
       screenOptions={({ navigation, route }) => ({
+        statusBarStyle: 'light',
         headerLargeTitle: false,
         // «Назад» — та же кнопка, что на экране заметки. На корневом экране
         // вкладки возвращаться некуда, там её нет.

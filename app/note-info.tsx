@@ -38,7 +38,7 @@ export default function NoteInfoSheet() {
   ].filter(Boolean);
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <ScreenBackdrop />
       <Stack.Screen
         options={{
@@ -49,6 +49,8 @@ export default function NoteInfoSheet() {
       />
 
       <ScrollView
+        style={{ flex: 1 }}
+        automaticallyAdjustKeyboardInsets
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.sm, paddingBottom: theme.spacing.xxxl }}
       >
@@ -104,6 +106,6 @@ export default function NoteInfoSheet() {
           <Button title="Готово" variant="white" size="large" fullWidth onPress={() => router.back()} />
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 }

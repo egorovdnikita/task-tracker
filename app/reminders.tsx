@@ -1,3 +1,4 @@
+import { ScreenEmptyState } from '../src/components/ScreenEmptyState';
 import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
@@ -60,7 +61,7 @@ export default function RemindersScreen() {
       <Stack.Screen options={{ unstable_headerLeftItems: backItem(() => router.back()) }} />
 
       {groups.length === 0 ? (
-        <EmptyState
+        <ScreenEmptyState
           icon="bell"
           title="Напоминаний нет"
           description="Срок ставится в самой заметке: меню «⋯» → «Напомнить»."

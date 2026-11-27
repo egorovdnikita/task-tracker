@@ -1,3 +1,6 @@
+import { HeaderHeightContext } from '@react-navigation/elements';
+import { ScreenEmptyState } from './ScreenEmptyState';
+import { StatRing } from './StatRing';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -29,4 +32,12 @@ export const Пусто: Story = { render: () => <View style={{ flex: 1, padding
 </View> };
 export const Группа: Story = { render: () => <View style={{ flex: 1, paddingTop: 100 }}>
   <ScreenBackdrop /><ListSection header="Настройки"><ListRow title="Уведомления" icon="bell" accessory={{ type: 'disclosure' }} /><ListRow title="Статистика" icon="chart.bar" value="6" /></ListSection>
+</View> };
+
+export const ПустойЭкран: Story = { render: () => <HeaderHeightContext.Provider value={127}><View style={{ flex: 1 }}>
+  <ScreenBackdrop /><Text color="onBackdrop" style={{ position: 'absolute', top: 90, alignSelf: 'center' }}>Корзина</Text>
+  <ScreenEmptyState tabbed icon="trash" title="Корзина пуста" description="Удалённые заметки лежат здесь 30 дней, а потом исчезают навсегда." />
+</View></HeaderHeightContext.Provider> };
+export const Показатели: Story = { render: () => <View style={{ flex: 1, padding: 16, paddingTop: 150 }}>
+  <ScreenBackdrop /><View style={{ flexDirection: 'row', gap: 12 }}><StatRing value="0" label="Выполнено, %" /><StatRing value="14" label="Слов" /><StatRing value="0" label="За неделю" /></View>
 </View> };

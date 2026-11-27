@@ -67,7 +67,7 @@ export default function ReminderScreen() {
   };
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <ScreenBackdrop />
       <Stack.Screen
         options={{
@@ -83,6 +83,8 @@ export default function ReminderScreen() {
       {/* Без системной поправки на инсеты блок «Уведомления выключены»
           заезжал под заголовок шита и первая строка была перекрыта. */}
       <ScrollView
+        style={{ flex: 1 }}
+        automaticallyAdjustKeyboardInsets
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
       >
@@ -169,6 +171,6 @@ export default function ReminderScreen() {
           </ListSection>
         ) : null}
       </ScrollView>
-    </>
+    </View>
   );
 }

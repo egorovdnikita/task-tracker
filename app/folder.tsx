@@ -1,3 +1,4 @@
+import { useHeaderHeight } from '@react-navigation/elements';
 import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import { localColors } from '../src/theme/localColors';
 import { boxPrimitives } from '../src/vendor/box-ui/primitives';
@@ -5,7 +6,7 @@ import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { Fab, IconButton, Symbol, Text, headerItems } from '../src/components';
+import { Button, IconButton, Symbol, Text, headerItems } from '../src/components';
 import { accentLabels, accentNames, useTheme, type AccentName } from '../src/theme';
 import { folderNameTaken } from '../src/features/folders';
 import { splitEmoji } from '../src/utils/emoji';
@@ -27,6 +28,7 @@ import { useNotesStore } from '../src/store/useNotesStore';
 export default function FolderSheet() {
   const { id, parent, move } = useLocalSearchParams<{ id?: string; parent?: string; move?: string }>();
   const theme = useTheme();
+  const headerHeight = useHeaderHeight();
   const folders = useNotesStore((s) => s.folders);
   const createFolder = useNotesStore((s) => s.createFolder);
   const updateFolder = useNotesStore((s) => s.updateFolder);
@@ -67,7 +69,7 @@ export default function FolderSheet() {
   const title = existing ? 'Папка' : parentId ? 'Вложенная папка' : 'Новая папка';
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <ScreenBackdrop />
       <Stack.Screen
         options={{
@@ -75,26 +77,18 @@ export default function FolderSheet() {
           unstable_headerLeftItems: headerItems(() => (
             <IconButton name="xmark" size={20} accessibilityLabel="Закрыть" onPress={() => router.back()} />
           )),
-          unstable_headerRightItems: headerItems(
-            () => null,
-            () => (
-              <Fab
-                compact
-                icon="checkmark"
-                accessibilityLabel={existing ? 'Сохранить папку' : 'Создать папку'}
-                disabled={!ready}
-                onPress={save}
-              />
-            ),
-          ),
+
         }}
       />
 
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
+        style={{ flex: 1 }}
+        automaticallyAdjustKeyboardInsets
+        contentInsetAdjustmentBehavior="never"
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ padding: theme.spacing.lg, gap: theme.spacing.xl }}
+        contentContainerStyle={{ padding: theme.spacing.lg, paddingTop: headerHeight + theme.spacing.md, paddingBottom: theme.spacing.xxxl }}
       >
+        <View style={{ padding: theme.spacing.lg, gap: 10, borderRadius: theme.radius.xl, backgroundColor: theme.hex.secondarySystemBackground }}>
         {parentName ? (
           <Text variant="subheadline" color="secondaryLabel" style={{ textAlign: 'center' }}>
             Внутри «{splitEmoji(parentName).rest}»
@@ -120,7 +114,7 @@ export default function FolderSheet() {
                 color: theme.colors.label,
                 height: boxPrimitives.size['52'],
                 paddingHorizontal: theme.spacing.lg + theme.spacing.xs,
-                backgroundColor: theme.surfaces.groupInSheet,
+                backgroundColor: theme.hex.systemFill,
                 borderColor: taken ? theme.colors.systemRed : localColors.folderBorder,
               },
             ]}
@@ -138,7 +132,7 @@ export default function FolderSheet() {
         </View>
 
         <View style={{ gap: theme.spacing.md }}>
-          <Text variant="headline" weight="medium" color="onBackdrop" style={{ marginHorizontal: theme.spacing.lg }}>
+          <Text variant="headline" weight="medium" color="label" style={{ marginHorizontal: theme.spacing.lg }}>
             Цвет
           </Text>
           {/* Круги 36 — как дни недели в правиле Opal: выбранный белый ободок. */}
@@ -170,14 +164,14 @@ export default function FolderSheet() {
 
         {/* Превью — строка, какой папка встанет в список «Папки». */}
         <View style={{ gap: theme.spacing.md }}>
-          <Text variant="headline" weight="medium" color="onBackdrop" style={{ marginHorizontal: theme.spacing.lg }}>
+          <Text variant="headline" weight="medium" color="label" style={{ marginHorizontal: theme.spacing.lg }}>
             В списке
           </Text>
           <View
             style={[
               styles.preview,
               {
-                backgroundColor: theme.surfaces.groupInSheet,
+                backgroundColor: theme.hex.systemFill,
                 borderRadius: theme.radius.group,
                 minHeight: theme.controlHeight.row,
                 paddingHorizontal: theme.spacing.lg,
@@ -200,8 +194,10 @@ export default function FolderSheet() {
             <Symbol name="chevron.right" size={16} color={theme.colors.secondaryLabel} />
           </View>
         </View>
+          <Button title="Готово" size="large" fullWidth disabled={!ready} onPress={save} />
+        </View>
       </ScrollView>
-    </>
+    </View>
   );
 }
 

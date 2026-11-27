@@ -178,7 +178,7 @@ export default function NotesScreen() {
             <View
               // Под сегментом — полный зазор секции: без него заголовок
               // «Закреплено» и первая карточка прилипали к контролу.
-              style={{ gap: theme.spacing.md, marginBottom: theme.spacing.xl }}
+              style={{ gap: theme.spacing.md }}
             >
               {header}
 

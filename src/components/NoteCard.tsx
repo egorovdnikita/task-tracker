@@ -65,7 +65,7 @@ export const NoteCard = ({
   const pill = layout === 'list' && !note.pinned;
   const ref = useRef<React.ComponentRef<typeof View>>(null);
 
-  return (
+  const card = (
     <Pressable
       ref={ref}
       accessibilityRole="button"
@@ -109,6 +109,7 @@ export const NoteCard = ({
         </View>
       ) : <>
       <View style={[styles.head, { gap: theme.spacing.sm }]}>
+        {note.pinned ? <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: theme.hex.systemFill, alignItems: 'center', justifyContent: 'center' }}><Symbol name={progress ? 'checklist' : 'note.text'} size={20} color={theme.colors.label} /></View> : null}
         {selectable ? (
           <Symbol
             name={selected ? 'checkmark.circle.fill' : 'circle'}
@@ -181,6 +182,12 @@ export const NoteCard = ({
       </>}
     </Pressable>
   );
+  if (!note.pinned || layout !== 'list') return card;
+  return <View style={[{ flex: 1, paddingBottom: 26 }, style]}>
+    <View pointerEvents="none" style={{ position: 'absolute', left: 24, right: 24, bottom: 0, height: 88, borderRadius: 28, backgroundColor: 'rgba(255,255,255,0.6)' }} />
+    <View pointerEvents="none" style={{ position: 'absolute', left: 12, right: 12, bottom: 8, height: 88, borderRadius: 28, backgroundColor: 'rgba(255,255,255,0.8)' }} />
+    {card}
+  </View>;
 };
 
 /** Пара «иконка + значение» одного цвета. Из таких собрана строка метаданных. */

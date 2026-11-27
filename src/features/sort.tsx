@@ -36,7 +36,7 @@ export const SortButton = () => {
         opacity: pressed ? 0.4 : 1,
       })}
     >
-      <Symbol name="arrow.up.arrow.down" size={20} color={theme.colors.label} />
+      <Symbol name="arrow.up.arrow.down" size={20} color={theme.colors.onBackdrop} />
     </MenuButton>
   );
 };

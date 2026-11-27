@@ -52,6 +52,7 @@ const RootStack = () => {
   return (
     <Stack
       screenOptions={{
+        statusBarStyle: 'light',
         // Шапка монохромная: фирменный цвет остаётся главным действиям экрана.
         headerTintColor: theme.hex.onBackdrop,
         // Заголовок белый, а не акцентный: без явного цвета нативная шапка

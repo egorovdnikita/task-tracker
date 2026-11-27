@@ -75,7 +75,7 @@ export const SegmentedControl = <T extends string>({
       appearance={theme.scheme}
       fontStyle={{
         fontFamily: Platform.OS === 'ios' ? undefined : 'System',
-        color: theme.hex.secondaryLabel,
+        color: theme.hex.onBackdrop,
         fontSize: 15,
       }}
       activeFontStyle={{ color: theme.hex.label, fontWeight: '600' }}

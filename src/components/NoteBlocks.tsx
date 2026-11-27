@@ -148,7 +148,7 @@ const ChecklistBlockEditor = ({
     : block.items;
 
   return (
-    <View style={{ gap: theme.spacing.sm }}>
+    <View style={{ gap: theme.spacing.lg }}>
       {total > 0 ? (
         <Text variant="footnote" color="secondaryLabel">
           {done} из {total}
@@ -179,7 +179,7 @@ const ChecklistBlockEditor = ({
               styles.grow,
               {
                 color: item.done ? theme.colors.secondaryLabel : theme.colors.label,
-                textDecorationLine: item.done ? 'line-through' : 'none',
+                textDecorationLine: 'none',
               },
             ]}
           />

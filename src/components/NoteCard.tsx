@@ -27,6 +27,7 @@ const DUE_COLOR: Record<ReturnType<typeof dueState>, PaletteName> = {
 export type NoteCardProps = {
   note: Note;
   layout?: LayoutMode;
+  compact?: boolean;
   onPress?: () => void;
   /**
    * Долгое нажатие. Прямоугольник карточки в координатах окна передаётся
@@ -52,6 +53,7 @@ export type NoteCardProps = {
 export const NoteCard = ({
   note,
   layout = 'list',
+  compact = false,
   onPress,
   onLongPress,
   selectable = false,
@@ -63,7 +65,7 @@ export const NoteCard = ({
   const progress = checklistProgress(note);
   const preview = noteSubtitle(note);
   const accent = note.accent ? theme.accent(note.accent) : null;
-  const pill = layout === 'list' && !note.pinned;
+  const pill = layout === 'list' && (compact || !note.pinned);
   const ref = useRef<React.ComponentRef<typeof View>>(null);
 
   const card = (
@@ -177,7 +179,7 @@ export const NoteCard = ({
       </>}
     </Pressable>
   );
-  if (!note.pinned || layout !== 'list') return card;
+  if (pill || !note.pinned || layout !== 'list') return card;
   return <View style={[{ flex: 1, paddingBottom: 26 }, style]}>
     <View pointerEvents="none" style={{ position: 'absolute', left: 24, right: 24, bottom: 0, height: 88, borderRadius: 28, backgroundColor: 'rgba(255,255,255,0.6)' }} />
     <View pointerEvents="none" style={{ position: 'absolute', left: 12, right: 12, bottom: 8, height: 88, borderRadius: 28, backgroundColor: 'rgba(255,255,255,0.8)' }} />

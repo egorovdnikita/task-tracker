@@ -32,6 +32,7 @@ import { Text } from './Text';
 export type NoteListProps = {
   notes: Note[];
   layout?: LayoutMode;
+  groupPinned?: boolean;
   onOpen?: (id: string) => void;
   /** Долгое нажатие вместе с прямоугольником карточки — под меню на месте. */
   onLongPress?: (id: string, anchor: { x: number; y: number; width: number; height: number }) => void;
@@ -65,6 +66,7 @@ type Section = { title: string | null; data: Note[][] };
 export const NoteList = ({
   notes,
   layout = 'list',
+  groupPinned = true,
   onOpen,
   onLongPress,
   onDelete,
@@ -88,9 +90,9 @@ export const NoteList = ({
   const columns = layout === 'grid' && notes.length > 1 ? 2 : 1;
   const swipeable = layout === 'list' && !selectable && Boolean(onDelete || onTogglePin);
 
-  const sections = useMemo<Section[]>(() => noteSections(notes, columns), [notes, columns]);
+  const sections = useMemo<Section[]>(() => groupPinned ? noteSections(notes, columns) : [{ title: null, data: Array.from({ length: Math.ceil(notes.length / columns) }, (_, i) => notes.slice(i * columns, (i + 1) * columns)) }], [notes, columns, groupPinned]);
 
-  const compact = layout === 'list' && notes.some(note => note.pinned);
+  const compact = groupPinned && layout === 'list' && notes.some(note => note.pinned);
   const contentStyle = {
     paddingHorizontal: theme.spacing.lg,
     paddingTop: Math.max(header, insets.top) + (header ? 12 : 0),
@@ -98,13 +100,13 @@ export const NoteList = ({
     gap: compact ? 8 : 16,
     flexGrow: 1,
   };
-  if (!notes.length) return <ScrollView style={style} contentInsetAdjustmentBehavior="never" automaticallyAdjustContentInsets={false} contentContainerStyle={contentStyle} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">
+  if (!notes.length) return <ScrollView style={[{ flex: 1 }, !header && { marginBottom: insets.bottom + 66 }, style]} contentInsetAdjustmentBehavior="never" automaticallyAdjustContentInsets={false} contentContainerStyle={contentStyle} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">
     {ListHeaderComponent}
     <View style={{ flex: 1, justifyContent: 'center' }}>{ListEmptyComponent}</View>
   </ScrollView>;
   return (
     <SectionList
-      style={style}
+      style={[{ flex: 1 }, !header && { marginBottom: insets.bottom + 66 }, style]}
       sections={sections}
       keyExtractor={(row) => row.map((n) => n.id).join('+')}
       stickySectionHeadersEnabled={false}
@@ -141,6 +143,7 @@ export const NoteList = ({
             const card = (
               <NoteCard
                 note={note}
+                compact={!groupPinned && layout === 'list'}
                 layout={layout}
                 highlight={highlight}
                 selectable={selectable}
@@ -167,7 +170,7 @@ export const NoteList = ({
 
           {/* Добивка последней неполной строки: без неё одинокая карточка
               растянулась бы на всю ширину и выпала из сетки. */}
-          {!row[0]?.pinned && row.length < columns
+          {!(groupPinned && row[0]?.pinned) && row.length < columns
             ? Array.from({ length: columns - row.length }, (_, i) => (
                 <View key={`gap-${i}`} style={styles.cell} />
               ))

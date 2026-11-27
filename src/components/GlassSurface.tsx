@@ -1,3 +1,4 @@
+import { splitAlpha } from '../utils/paintAlpha';
 import React, { useId, useState } from 'react';
 import {
   StyleSheet,
@@ -90,16 +91,6 @@ const resolveStroke = (stroke: GlassSurfaceProps['stroke']) => {
  * на устройстве превращался в сплошной белый — отсюда и жирные контуры
  * вокруг карточек, чипов и круглых кнопок, которых нет в витрине.
  */
-const RGBA = /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/i;
-
-const splitAlpha = (value: string): { color: string; opacity: number } => {
-  const m = value.match(RGBA);
-  if (!m) return { color: value, opacity: 1 };
-  return {
-    color: `rgb(${m[1]}, ${m[2]}, ${m[3]})`,
-    opacity: m[4] === undefined ? 1 : Number(m[4]),
-  };
-};
 
 /**
  * Базовая поверхность новой системы: матовое стекло + меш из размытых эллипсов

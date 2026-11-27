@@ -105,17 +105,17 @@ export default function FoldersScreen() {
       {/* Корень вкладки — крупный заголовок слева и круг «+» справа. */}
       <Stack.Screen options={{ headerShown: false, title: 'Папки' }} />
 
-      <ScrollView
+      <ScrollView tabbed
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingBottom: theme.metrics.tabBar + theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingBottom: 16 }}
       >
         <RootHeader
           title="Папки"
-          style={{ marginHorizontal: theme.spacing.lg, marginBottom: theme.spacing.lg }}
+          style={{ marginHorizontal: theme.spacing.lg, marginBottom: 12 }}
 
         />
 
-        <ListSection separatorInset={GLYPH_SEPARATOR_INSET}>
+        <ListSection header="Папки" separatorInset={GLYPH_SEPARATOR_INSET}>
           {/* «Все заметки» здесь больше нет: строка перекидывала на соседнюю
               вкладку и уводила из стека «Папок», а все заметки — это и есть
               вкладка «Заметки». */}
@@ -127,7 +127,7 @@ export default function FoldersScreen() {
             onPress={() => router.push({ pathname: '/folders/[id]', params: { id: 'root' } })}
           />
         </ListSection>
-        <View style={{ marginHorizontal: theme.spacing.lg, marginBottom: 28 }}><Button title="Новая папка" size="large" fullWidth onPress={() => addFolder(null)} /></View>
+        <View style={{ marginHorizontal: theme.spacing.lg, marginBottom: 16 }}><Button title="Новая папка" size="large" fullWidth onPress={() => addFolder(null)} /></View>
 
         {roots.length > 0 ? (
           <ListSection
@@ -172,11 +172,7 @@ export default function FoldersScreen() {
               )),
             ])}
           </ListSection>
-        ) : (
-          <ListSection footer="Папка — место хранения. Создайте её, когда заметок станет больше, чем помещается в голове.">
-            <ListRow title="Создать папку" icon="folder.badge.plus" onPress={() => addFolder(null)} />
-          </ListSection>
-        )}
+        ) : null}
 
         {/*
           Теги — те же три, что в фильтре списка, и стоят они здесь всегда,

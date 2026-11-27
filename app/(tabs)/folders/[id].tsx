@@ -4,7 +4,9 @@ import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import {
   EmptyState,
-  Fab,
+  HeaderGlass,
+  MenuButton,
+  Symbol,
   HeaderCapsule,
   IconButton,
   NoteList,
@@ -24,8 +26,8 @@ import {
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 import { offerUndo } from '../../../src/features/notify';
 import { tagLabel } from '../../../src/features/tags';
-import { chooseNoteType, type CreateScope } from '../../../src/features/create';
-import { SortButton } from '../../../src/features/sort';
+import { type CreateScope } from '../../../src/features/create';
+import { SORT_LABELS } from '../../../src/features/labels';
 import { pluralNotes } from '../../../src/utils/date';
 
 /**
@@ -44,6 +46,7 @@ export default function FolderScreen() {
   const folders = useNotesStore((s) => s.folders);
   const settings = useNotesStore((s) => s.settings);
   const setLayout = useNotesStore((s) => s.setLayout);
+  const updateSettings = useNotesStore((s) => s.updateSettings);
   const trashNotes = useNotesStore((s) => s.trashNotes);
   const restoreNotes = useNotesStore((s) => s.restoreNotes);
   const togglePinned = useNotesStore((s) => s.togglePinned);
@@ -150,29 +153,22 @@ export default function FolderScreen() {
                 </HeaderCapsule>
               ))
             : headerItems(() => (
-                <HeaderCapsule>
-                  <IconButton
-                    name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
-                    size={19}
-                    accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
-                    onPress={() => setLayout(id ?? 'root', layout === 'list' ? 'grid' : 'list')}
-                  />
-                  <SortButton />
-                </HeaderCapsule>
-              ),
-              // Создание — лаймовый круг «+» в шапке, как у Opal на «Rules».
-              () => (
-                <Fab
-                  compact
-                  onPress={create}
-                  onLongPress={(anchor) => chooseNoteType(anchor, createScope)}
-                />
+                <HeaderGlass><MenuButton accessibilityLabel="Действия с папкой" items={() => [
+                  { title: 'Новая заметка', icon: 'plus', onPress: create },
+                  { title: layout === 'list' ? 'Показать сеткой' : 'Показать списком', icon: layout === 'list' ? 'square.grid.2x2' : 'list.bullet', onPress: () => setLayout(id ?? 'root', layout === 'list' ? 'grid' : 'list') },
+                  ...Object.entries(SORT_LABELS).map(([mode, title]) => ({ title, checked: settings.sort === mode, onPress: () => updateSettings({ sort: mode as typeof settings.sort }) })),
+                  { title: 'Новый список', icon: 'checklist', onPress: () => router.push({ pathname: '/create', params: { ...createScope, kind: 'checklist' } }) },
+                  { title: 'Записать голос', icon: 'mic', onPress: () => router.push({ pathname: '/capture/voice', params: createScope }) },
+                  { title: 'Сканировать', icon: 'camera', onPress: () => router.push({ pathname: '/capture/scan', params: createScope }) },
+                  { title: 'Нарисовать', icon: 'scribble', onPress: () => router.push({ pathname: '/capture/sketch', params: createScope }) },
+                ]} style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}><Symbol name="ellipsis" size={20} color={theme.colors.onBackdrop} /></MenuButton></HeaderGlass>
               )),
         }}
       />
 
       <NoteList
         notes={visible}
+        groupPinned={false}
         layout={layout}
         highlight={searching ? query : undefined}
         selectable={selection.active}
@@ -196,7 +192,6 @@ export default function FolderScreen() {
               value={query}
               onChangeText={setQuery}
               placeholder={`Поиск: ${scope.title}`}
-              style={{ marginBottom: theme.spacing.xs }}
             />
           ) : null
         }

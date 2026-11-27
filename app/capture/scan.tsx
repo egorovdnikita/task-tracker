@@ -7,7 +7,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 
-import { Button, Glass, IconButton, Symbol, Text, EmptyState, headerItems } from '../../src/components';
+import { Button, Glass, HeaderGlass, IconButton, Symbol, Text, EmptyState, headerItems } from '../../src/components';
 import { useTheme } from '../../src/theme';
 import { persistMedia } from '../../src/features/media';
 import { makeId, makeScanBlock } from '../../src/utils/blocks';
@@ -103,7 +103,7 @@ export default function ScanCaptureScreen() {
         options={{
           title: pages.length > 0 ? `Страниц: ${pages.length}` : 'Скан',
           unstable_headerLeftItems: headerItems(() => (
-            <IconButton name="xmark" accessibilityLabel="Отменить" onPress={() => router.back()} />
+            <HeaderGlass><IconButton name="chevron.left" accessibilityLabel="Назад" onPress={() => router.back()} /></HeaderGlass>
           )),
           unstable_headerRightItems: headerItems(() =>
             pages.length > 0 ? (

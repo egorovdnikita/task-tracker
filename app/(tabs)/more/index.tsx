@@ -59,13 +59,13 @@ export default function MoreScreen() {
       <ScreenBackdrop />
       <Stack.Screen options={{ headerShown: false, title: 'Настройки' }} />
 
-      <ScrollView
+      <ScrollView tabbed
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingBottom: theme.metrics.tabBar + theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingBottom: 16 }}
       >
         <RootHeader
           title="Настройки"
-          style={{ marginHorizontal: theme.spacing.lg, marginBottom: theme.spacing.lg }}
+          style={{ marginHorizontal: theme.spacing.lg, marginBottom: 12 }}
         />
         {/*
           Иконки строк — акцентный контурный глиф, а не белый символ в цветном
@@ -114,14 +114,12 @@ export default function MoreScreen() {
         <ListSection separatorInset={GLYPH_SEPARATOR_INSET} header="Обзор">
           <ListRow
             title="Статистика"
-            subtitle="Сколько заметок, слов и выполненных пунктов"
             icon="chart.bar"
             accessory={{ type: 'disclosure' }}
             onPress={() => router.push('/more/stats')}
           />
           <ListRow
             title="Уведомления"
-            subtitle="Разрешение, все сроки и готовые варианты"
             icon="bell"
             accessory={{ type: 'disclosure' }}
             onPress={() => router.push('/more/notifications')}
@@ -141,7 +139,7 @@ export default function MoreScreen() {
         <Text
           variant="footnote"
           color="secondaryOnBackdrop"
-          style={{ textAlign: 'center', paddingHorizontal: theme.spacing.xxl }}
+          style={{ paddingHorizontal: theme.spacing.lg }}
         >
           {Constants.expoConfig?.name ?? 'task-tracker'} ·{' '}
           v{Constants.expoConfig?.version ?? '1.0.0'}

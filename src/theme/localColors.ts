@@ -6,6 +6,7 @@ export const localColors = {
   "soft": "#F2F2F3",
   "black": boxPrimitives.achromatic.black,
   "white": boxPrimitives.achromatic.white,
+  "switchOn": "#30D158",
   "accent": "#C4FB6F",
   "accentAqua": "#C4FB6F",
   "chartTrack": "#F2F2F3",

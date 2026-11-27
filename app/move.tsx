@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { IconButton, ListRow, ListSection, headerItems } from '../src/components';
+import { HeaderGlass, IconButton, ListRow, ListSection, headerItems } from '../src/components';
 import { useTheme } from '../src/theme';
 import { splitEmoji } from '../src/utils/emoji';
 import { childFolders, rootFolders, useNotesStore } from '../src/store/useNotesStore';
@@ -39,7 +39,7 @@ export default function MoveScreen() {
           // Закрыть — круг с крестиком слева, как в шитах Opal: свайпа вниз
           // не видно, а кнопка — видна.
           unstable_headerLeftItems: headerItems(() => (
-            <IconButton name="xmark" size={20} accessibilityLabel="Закрыть" onPress={() => router.back()} />
+            <HeaderGlass><IconButton name="xmark" size={20} accessibilityLabel="Закрыть" onPress={() => router.back()} /></HeaderGlass>
           )),
         }}
       />

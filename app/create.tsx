@@ -275,7 +275,7 @@ export default function CreateScreen() {
             причина, по которой фильтр на «Заметках» стал сегментом.
           */}
           <View style={{ paddingHorizontal: 20, paddingBottom: 20, gap: 16 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
             <MenuButton
               accessibilityLabel={`Куда положить: ${destination ?? 'Без папки'}`}
               title="Куда положить"
@@ -294,26 +294,26 @@ export default function CreateScreen() {
                 })),
               ]}
               style={({ pressed }) => [
-                styles.destination, { flex: 0, minHeight: 40, borderRadius: 20, paddingHorizontal: 12, backgroundColor: theme.hex.systemFill },
+                styles.destination, { minHeight: 40, borderRadius: 20, paddingHorizontal: 12, backgroundColor: theme.hex.systemFill },
                 { opacity: pressed ? 0.5 : 1, gap: theme.spacing.sm },
               ]}
             >
-              <Symbol name="folder" size={18} color={theme.colors.secondaryLabel} />
-              <Text variant="footnote" color="secondaryLabel" numberOfLines={1}>
+              <Symbol name="folder" size={16} color={theme.colors.label} />
+              <Text variant="footnote" color="label" numberOfLines={1}>
                 {destination ?? 'Без папки'}
               </Text>
-              <Symbol name="chevron.down" size={16} color={theme.colors.tertiaryLabel} />
             </MenuButton>
               <TagChip value={tags} onToggle={toggleTag} />
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-              <View style={{ flex: 1 }}><ReminderChip value={remindAt} onChange={setRemindAt} /></View>
+              <View><ReminderChip value={remindAt} onChange={setRemindAt} /></View>
               <RoundButton icon="arrow.up" label="Создать" disabled={!ready} onPress={submit} />
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              <Chip label="Список" icon="checklist" selected={checklist} onPress={() => setChecklist(value => !value)} />
-              <Chip label="Голос" icon="mic" onPress={() => capture('/capture/voice')} />
-              <MenuButton accessibilityLabel="Добавить скан или рисунок" items={() => [{ title: 'Скан', icon: 'doc.text.viewfinder', onPress: () => capture('/capture/scan') }, { title: 'Рисунок', icon: 'scribble', onPress: () => capture('/capture/sketch') }]}><View pointerEvents="none"><Chip label="Скан" icon="camera" /></View></MenuButton>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+              <RoundButton label="Список" icon="checklist" tone={checklist ? 'accent' : 'muted'} onPress={() => setChecklist(value => !value)} />
+              <RoundButton label="Голос" icon="mic" tone="muted" onPress={() => capture('/capture/voice')} />
+              <RoundButton label="Скан" icon="camera" tone="muted" onPress={() => capture('/capture/scan')} />
+              <RoundButton label="Рисунок" icon="scribble" tone="muted" onPress={() => capture('/capture/sketch')} />
             </View>
           </View>
         </Animated.View>
@@ -350,7 +350,6 @@ const TagChip = ({ value, onToggle }: { value: string[]; onToggle: (id: string) 
           label={label}
           icon={single?.icon ?? 'tag'}
           accent={single?.accent}
-          outlined={value.length === 0}
           selected={value.length > 0}
         />
       </View>
@@ -386,7 +385,6 @@ const ReminderChip = ({
       <Chip
         label={value ? formatDateTime(value) : 'Напомнить'}
         icon="bell"
-        outlined={!value}
         selected={Boolean(value)}
       />
     </View>
@@ -449,6 +447,6 @@ const styles = StyleSheet.create({
   // содержимым, и делить с прокруткой им нечего.
   fixed: { flexGrow: 0, flexShrink: 0 },
   actions: { flexDirection: 'row', alignItems: 'center' },
-  destination: { flex: 1, flexDirection: 'row', alignItems: 'center' },
+  destination: { flexDirection: 'row', alignItems: 'center' },
   round: { alignItems: 'center', justifyContent: 'center' },
 });

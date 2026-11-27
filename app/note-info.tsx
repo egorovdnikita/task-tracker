@@ -4,7 +4,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { Button, IconButton, ListRow, ListSection, StatRing, Text, headerItems } from '../src/components';
+import { Button, HeaderGlass, IconButton, ListRow, ListSection, StatRing, Text, headerItems } from '../src/components';
 import { useTheme } from '../src/theme';
 import { formatDateTime } from '../src/utils/date';
 import { formatDuration, noteTitle } from '../src/utils/blocks';
@@ -44,7 +44,7 @@ export default function NoteInfoSheet() {
       <Stack.Screen
         options={{
           unstable_headerLeftItems: headerItems(() => (
-            <IconButton name="xmark" size={20} accessibilityLabel="Закрыть" onPress={() => router.back()} />
+            <HeaderGlass><IconButton name="xmark" size={20} accessibilityLabel="Закрыть" onPress={() => router.back()} /></HeaderGlass>
           )),
         }}
       />
@@ -59,7 +59,7 @@ export default function NoteInfoSheet() {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-evenly',
+            justifyContent: 'space-between',
             marginBottom: theme.spacing.lg,
             marginHorizontal: theme.spacing.lg, gap: theme.spacing.md,
           }}

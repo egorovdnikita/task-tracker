@@ -10,6 +10,7 @@ import { Text } from './Text';
 export type ChipProps = {
   label: string;
   selected?: boolean;
+  neutral?: boolean;
   icon?: SFSymbol;
   /** Цвет метки — тега или папки. Без него чип нейтральный. */
   accent?: AccentName;
@@ -36,6 +37,7 @@ export type ChipProps = {
 export const Chip = ({
   label,
   selected = false,
+  neutral = false,
   icon,
   accent,
   onRemove,
@@ -46,7 +48,7 @@ export const Chip = ({
   const theme = useTheme();
   const accentHex = accent ? theme.accent(accent) : theme.hex.label;
 
-  const background = outlined
+  const background = neutral ? theme.colors.systemFill : outlined
     ? 'transparent'
     : selected
       ? accent
@@ -68,8 +70,8 @@ export const Chip = ({
       <Text
         variant="footnote"
         weight="regular"
-        color={outlined ? 'label' : selected ? 'label' : 'secondaryLabel'}
-        style={selected && accent && !outlined ? { color: accentHex } : undefined}
+        color="label"
+        style={selected && accent && !outlined && !neutral ? { color: accentHex } : undefined}
         numberOfLines={1}
       >
         {label}
@@ -79,8 +81,8 @@ export const Chip = ({
 
   const shape: ViewStyle = {
     height: theme.controlHeight.chip,
-    paddingLeft: theme.spacing.lg,
-    paddingRight: onRemove ? theme.spacing.md : theme.spacing.lg,
+    paddingLeft: 12,
+    paddingRight: onRemove ? theme.spacing.md : 12,
     gap: theme.spacing.sm,
     borderRadius: theme.radius.pill,
     backgroundColor: background,
@@ -123,6 +125,8 @@ export const Chip = ({
       </View>
     );
   }
+
+  if (!onPress) return <View style={[styles.chip, shape, style]}>{body}</View>;
 
   return (
     <Pressable

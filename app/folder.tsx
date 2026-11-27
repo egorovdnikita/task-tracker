@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
-import { Button, IconButton, Symbol, Text, headerItems } from '../src/components';
+import { Button, HeaderGlass, IconButton, Symbol, Text, headerItems } from '../src/components';
 import { accentLabels, accentNames, useTheme, type AccentName } from '../src/theme';
 import { folderNameTaken } from '../src/features/folders';
 import { splitEmoji } from '../src/utils/emoji';
@@ -75,7 +75,7 @@ export default function FolderSheet() {
         options={{
           title,
           unstable_headerLeftItems: headerItems(() => (
-            <IconButton name="xmark" size={20} accessibilityLabel="Закрыть" onPress={() => router.back()} />
+            <HeaderGlass><IconButton name="xmark" size={20} accessibilityLabel="Закрыть" onPress={() => router.back()} /></HeaderGlass>
           )),
 
         }}

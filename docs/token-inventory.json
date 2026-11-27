@@ -1,5 +1,5 @@
 {
-  "files": 94,
+  "files": 95,
   "entries": [
     {
       "file": ".storybook/preview.tsx",
@@ -138,13 +138,23 @@
     },
     {
       "file": "app/(tabs)/folders/[id].tsx",
-      "key": "size",
-      "value": "{19}"
+      "key": "width",
+      "value": "44"
     },
     {
       "file": "app/(tabs)/folders/[id].tsx",
-      "key": "marginBottom",
-      "value": "theme.spacing.xs"
+      "key": "height",
+      "value": "44"
+    },
+    {
+      "file": "app/(tabs)/folders/[id].tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "app/(tabs)/folders/[id].tsx",
+      "key": "color",
+      "value": "{theme.colors.onBackdrop}"
     },
     {
       "file": "app/(tabs)/folders/_layout.tsx",
@@ -164,7 +174,7 @@
     {
       "file": "app/(tabs)/folders/index.tsx",
       "key": "paddingBottom",
-      "value": "theme.metrics.tabBar + theme.spacing.xxxl"
+      "value": "16"
     },
     {
       "file": "app/(tabs)/folders/index.tsx",
@@ -174,7 +184,7 @@
     {
       "file": "app/(tabs)/folders/index.tsx",
       "key": "marginBottom",
-      "value": "theme.spacing.lg"
+      "value": "12"
     },
     {
       "file": "app/(tabs)/folders/index.tsx",
@@ -184,7 +194,7 @@
     {
       "file": "app/(tabs)/folders/index.tsx",
       "key": "marginBottom",
-      "value": "28"
+      "value": "16"
     },
     {
       "file": "app/(tabs)/folders/index.tsx",
@@ -234,7 +244,7 @@
     {
       "file": "app/(tabs)/more/index.tsx",
       "key": "paddingBottom",
-      "value": "theme.metrics.tabBar + theme.spacing.xxxl"
+      "value": "16"
     },
     {
       "file": "app/(tabs)/more/index.tsx",
@@ -244,7 +254,7 @@
     {
       "file": "app/(tabs)/more/index.tsx",
       "key": "marginBottom",
-      "value": "theme.spacing.lg"
+      "value": "12"
     },
     {
       "file": "app/(tabs)/more/index.tsx",
@@ -259,12 +269,12 @@
     {
       "file": "app/(tabs)/more/index.tsx",
       "key": "paddingHorizontal",
-      "value": "theme.spacing.xxl"
+      "value": "theme.spacing.lg"
     },
     {
       "file": "app/(tabs)/more/notifications.tsx",
       "key": "paddingTop",
-      "value": "theme.spacing.lg"
+      "value": "theme.spacing.md"
     },
     {
       "file": "app/(tabs)/more/notifications.tsx",
@@ -763,11 +773,6 @@
     },
     {
       "file": "app/capture/sketch.tsx",
-      "key": "gap",
-      "value": "theme.spacing.lg"
-    },
-    {
-      "file": "app/capture/sketch.tsx",
       "key": "paddingHorizontal",
       "value": "16"
     },
@@ -1104,7 +1109,7 @@
     {
       "file": "app/create.tsx",
       "key": "gap",
-      "value": "8"
+      "value": "16"
     },
     {
       "file": "app/create.tsx",
@@ -1139,27 +1144,17 @@
     {
       "file": "app/create.tsx",
       "key": "size",
-      "value": "{18}"
-    },
-    {
-      "file": "app/create.tsx",
-      "key": "color",
-      "value": "{theme.colors.secondaryLabel}"
-    },
-    {
-      "file": "app/create.tsx",
-      "key": "color",
-      "value": "\"secondaryLabel\""
-    },
-    {
-      "file": "app/create.tsx",
-      "key": "size",
       "value": "{16}"
     },
     {
       "file": "app/create.tsx",
       "key": "color",
-      "value": "{theme.colors.tertiaryLabel}"
+      "value": "{theme.colors.label}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "color",
+      "value": "\"label\""
     },
     {
       "file": "app/create.tsx",
@@ -1169,7 +1164,7 @@
     {
       "file": "app/create.tsx",
       "key": "gap",
-      "value": "8"
+      "value": "16"
     },
     {
       "file": "app/create.tsx",
@@ -2019,7 +2014,7 @@
     {
       "file": "src/components/Chip.tsx",
       "key": "color",
-      "value": "{outlined ? 'label' : selected ? 'label' : 'secondaryLabel'}"
+      "value": "\"label\""
     },
     {
       "file": "src/components/Chip.tsx",
@@ -2034,12 +2029,12 @@
     {
       "file": "src/components/Chip.tsx",
       "key": "paddingLeft",
-      "value": "theme.spacing.lg"
+      "value": "12"
     },
     {
       "file": "src/components/Chip.tsx",
       "key": "paddingRight",
-      "value": "onRemove ? theme.spacing.md : theme.spacing.lg"
+      "value": "onRemove ? theme.spacing.md : 12"
     },
     {
       "file": "src/components/Chip.tsx",
@@ -2584,7 +2579,7 @@
     {
       "file": "src/components/FinchSwitch.tsx",
       "key": "backgroundColor",
-      "value": "value ? theme.hex.accent : theme.hex.systemFill"
+      "value": "value ? localColors.switchOn : theme.hex.systemFill"
     },
     {
       "file": "src/components/FinchSwitch.tsx",
@@ -2594,17 +2589,17 @@
     {
       "file": "src/components/FinchSwitch.tsx",
       "key": "width",
-      "value": "27"
+      "value": "39"
     },
     {
       "file": "src/components/FinchSwitch.tsx",
       "key": "height",
-      "value": "27"
+      "value": "24"
     },
     {
       "file": "src/components/FinchSwitch.tsx",
       "key": "borderRadius",
-      "value": "14"
+      "value": "12"
     },
     {
       "file": "src/components/FinchSwitch.tsx",
@@ -2750,26 +2745,6 @@
       "file": "src/components/Glass.tsx",
       "key": "stroke",
       "value": "\"glass\""
-    },
-    {
-      "file": "src/components/GlassSurface.tsx",
-      "key": "color",
-      "value": "value"
-    },
-    {
-      "file": "src/components/GlassSurface.tsx",
-      "key": "opacity",
-      "value": "1"
-    },
-    {
-      "file": "src/components/GlassSurface.tsx",
-      "key": "color",
-      "value": "`rgb(${m[1]}, ${m[2]}, ${m[3]})`"
-    },
-    {
-      "file": "src/components/GlassSurface.tsx",
-      "key": "opacity",
-      "value": "m[4] === undefined ? 1 : Number(m[4])"
     },
     {
       "file": "src/components/GlassSurface.tsx",
@@ -3484,7 +3459,7 @@
     {
       "file": "src/components/NoteBlocks.tsx",
       "key": "gap",
-      "value": "theme.spacing.sm"
+      "value": "theme.spacing.lg"
     },
     {
       "file": "src/components/NoteBlocks.tsx",
@@ -3920,6 +3895,16 @@
       "file": "src/components/NoteList.tsx",
       "key": "gap",
       "value": "compact ? 8 : 16"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "marginBottom",
+      "value": "insets.bottom + 66"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "marginBottom",
+      "value": "insets.bottom + 66"
     },
     {
       "file": "src/components/NoteList.tsx",
@@ -4430,6 +4415,11 @@
       "file": "src/components/ScreenEmptyState.tsx",
       "key": "marginVertical",
       "value": "0"
+    },
+    {
+      "file": "src/components/ScreenScrollView.tsx",
+      "key": "marginBottom",
+      "value": "insets.bottom + 66"
     },
     {
       "file": "src/components/ScreenScrollView.tsx",
@@ -6038,6 +6028,11 @@
     },
     {
       "file": "src/theme/localColors.ts",
+      "key": "switchOn",
+      "value": "\"#30D158\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
       "key": "accent",
       "value": "\"#C4FB6F\""
     },
@@ -6845,6 +6840,36 @@
       "file": "src/theme/typography.ts",
       "key": "fontWeight",
       "value": "weight ? weights[weight] : textStyles[name].fontWeight"
+    },
+    {
+      "file": "src/utils/paintAlpha.ts",
+      "key": "color",
+      "value": "'rgb(0, 0, 0)'"
+    },
+    {
+      "file": "src/utils/paintAlpha.ts",
+      "key": "opacity",
+      "value": "0"
+    },
+    {
+      "file": "src/utils/paintAlpha.ts",
+      "key": "color",
+      "value": "value"
+    },
+    {
+      "file": "src/utils/paintAlpha.ts",
+      "key": "opacity",
+      "value": "1"
+    },
+    {
+      "file": "src/utils/paintAlpha.ts",
+      "key": "color",
+      "value": "`rgb(${m[1]}, ${m[2]}, ${m[3]})`"
+    },
+    {
+      "file": "src/utils/paintAlpha.ts",
+      "key": "opacity",
+      "value": "m[4] === undefined ? 1 : Number(m[4])"
     }
   ]
 }

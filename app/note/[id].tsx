@@ -410,7 +410,7 @@ export default function NoteScreen() {
           */}
             <View style={{ gap: theme.spacing.sm }}>
               <ChipWrap>
-                {STATIC_TAGS.filter(tag => note.tags.includes(tag.id)).map(tag => <Chip key={tag.id} label={tag.label} icon={tag.icon} selected onPress={() => toggleTag(tag.id)} />)}
+                {STATIC_TAGS.filter(tag => note.tags.includes(tag.id)).map(tag => <Chip key={tag.id} label={tag.label} icon={tag.icon} selected neutral onPress={() => toggleTag(tag.id)} />)}
 
                 {/* Теги из прежних версий не исчезают: их нельзя поставить
                   заново, но снять можно — иначе они остались бы навсегда. */}
@@ -421,7 +421,7 @@ export default function NoteScreen() {
                       key={tag}
                       label={tagLabel(tag)}
                       icon="tag"
-                      selected
+                      selected neutral
                       onRemove={() =>
                         updateNote(note.id, { tags: note.tags.filter((t) => t !== tag) })
                       }

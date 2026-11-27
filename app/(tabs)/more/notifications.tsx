@@ -60,7 +60,7 @@ export default function NotificationsScreen() {
 
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.metrics.tabBar + theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingTop: theme.spacing.md, paddingBottom: theme.metrics.tabBar + theme.spacing.xxxl }}
       >
         <ListSection separatorInset={GLYPH_SEPARATOR_INSET} header="Доступ"
           footer={
@@ -103,7 +103,7 @@ export default function NotificationsScreen() {
           footer="Так срабатывают варианты в меню «Напомнить». Точное время ставится в самой заметке."
         >
           {presets.map((preset) => (
-            <ListRow key={preset.key} title={preset.label} value={formatDateTime(preset.at)} />
+            <ListRow key={preset.key} title={preset.label} icon="clock" value={formatDateTime(preset.at)} />
           ))}
         </ListSection>
 

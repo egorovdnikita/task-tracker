@@ -153,24 +153,9 @@ export default function SketchCaptureScreen() {
         options={{
           title: existing ? 'Дорисовать' : 'Рисунок',
           unstable_headerLeftItems: headerItems(() => (
-            <IconButton name="xmark" accessibilityLabel="Отменить" onPress={() => router.back()} />
+            <HeaderGlass><IconButton name="chevron.left" accessibilityLabel="Назад" onPress={() => router.back()} /></HeaderGlass>
           )),
-          unstable_headerRightItems: headerItems(() => (
-            <View style={{ flexDirection: 'row', gap: theme.spacing.lg }}>
-              <IconButton
-                name="arrow.uturn.backward"
-                accessibilityLabel="Отменить штрих"
-                disabled={strokes.length === 0}
-                onPress={() => setStrokes((s) => s.slice(0, -1))}
-              />
-              <IconButton
-                name="checkmark"
-                accessibilityLabel="Готово"
-                disabled={strokes.length === 0}
-                onPress={finish}
-              />
-            </View>
-          )),
+
         }}
       />
 
@@ -218,7 +203,7 @@ export default function SketchCaptureScreen() {
         </View>
 
         <View style={styles.tools}>
-          <HeaderGlass><MenuButton accessibilityLabel="Толщина пера" items={() => WIDTHS.map(value => ({ title: `Толщина ${value}`, checked: width === value, onPress: () => setWidth(value) }))} style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}><Symbol name="pencil" size={22} color={theme.colors.onBackdrop} /></MenuButton></HeaderGlass>
+          <HeaderGlass><MenuButton accessibilityLabel="Толщина пера" items={() => [{ title: 'Отменить штрих', icon: 'arrow.uturn.backward', disabled: strokes.length === 0, onPress: () => setStrokes(s => s.slice(0, -1)) }, ...WIDTHS.map(value => ({ title: `Толщина ${value}`, checked: width === value, onPress: () => setWidth(value) }))]} style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}><Symbol name="pencil" size={22} color={theme.colors.onBackdrop} /></MenuButton></HeaderGlass>
           <HeaderGlass><MenuButton accessibilityLabel="Цвет пера" items={() => PEN_ACCENTS.map(name => ({ title: name === 'blue' ? 'Синий' : name === 'red' ? 'Красный' : name === 'orange' ? 'Оранжевый' : name === 'green' ? 'Зелёный' : 'Фиолетовый', checked: accent === name, onPress: () => setAccent(name) }))} style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}><Symbol name="scribble" size={22} color={theme.colors.onBackdrop} /></MenuButton></HeaderGlass>
           <HeaderGlass><IconButton name="trash" accessibilityLabel="Очистить рисунок" disabled={!strokes.length} onPress={() => confirmDestructive('Очистить рисунок?', 'Штрихи в текущем черновике будут удалены.', 'Очистить', () => setStrokes([]))} /></HeaderGlass>
           <Fab compact icon="checkmark" accessibilityLabel="Готово" disabled={!strokes.length} onPress={finish} />

@@ -174,7 +174,7 @@ const ChecklistBlockEditor = ({
             blurOnSubmit={false}
             onSubmitEditing={() => setItems([...block.items, makeChecklistItem()])}
             style={[
-              theme.text('body'),
+              { ...theme.text('callout'), lineHeight: 20 },
               styles.text,
               styles.grow,
               {
@@ -205,7 +205,7 @@ const ChecklistBlockEditor = ({
         ]}
       >
         <Symbol name="plus.circle" size={22} color={theme.colors.secondaryLabel} />
-        <Text variant="body" color="accent">
+        <Text variant="callout" color="label">
           Добавить пункт
         </Text>
       </Pressable>
@@ -215,6 +215,6 @@ const ChecklistBlockEditor = ({
 
 const styles = StyleSheet.create({
   text: { padding: 0 },
-  item: { flexDirection: 'row', alignItems: 'center' },
+  item: { minHeight: 40, flexDirection: 'row', alignItems: 'center' },
   grow: { flex: 1 },
 });

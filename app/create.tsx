@@ -200,7 +200,7 @@ export default function CreateScreen() {
           style={[
             styles.panel,
             {
-              marginHorizontal: theme.spacing.sm,
+              marginHorizontal: theme.spacing.lg,
               marginBottom: keyboard ? theme.spacing.sm : Math.max(theme.spacing.sm, insets.bottom),
               borderRadius: theme.radius.xl,
             },
@@ -237,10 +237,11 @@ export default function CreateScreen() {
               // кнопка, и подпись клавиши не должна обещать другое действие.
               onSubmitEditing={() => details.current?.focus()}
               submitBehavior="submit"
+              multiline
               placeholder="Например: Созвон по релизу #работа"
               placeholderTextColor={theme.colors.placeholderText}
               returnKeyType="next"
-              style={[theme.text('title3', 'semibold'), { color: theme.colors.label, padding: 0 }]}
+              style={[theme.text('title3', 'medium'), { color: theme.colors.label, padding: 0, maxHeight: 50 }]}
             />
 
             {/* Описание растёт до пяти строк и дальше прокручивается само:
@@ -273,49 +274,8 @@ export default function CreateScreen() {
             тега — не помещались по ширине, и ряд уезжал за край: та же
             причина, по которой фильтр на «Заметках» стал сегментом.
           */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
-            // Нижняя граница высоты задана явно: у горизонтальной прокрутки в
-            // колонке своей высоты нет, и без числа ряд схлопнулся бы. Именно
-            // граница, а не высота — при крупном тексте чип растёт.
-            style={[styles.fixed, { minHeight: theme.controlHeight.chip + theme.spacing.lg }]}
-            contentContainerStyle={{
-              alignItems: 'center',
-              paddingHorizontal: theme.spacing.xl,
-              gap: theme.spacing.sm,
-            }}
-          >
-            <Chip
-              label="Список"
-              icon="checklist"
-              outlined={!checklist}
-              selected={checklist}
-              onPress={() => setChecklist((value) => !value)}
-            />
-
-            <ReminderChip value={remindAt} onChange={setRemindAt} />
-
-            <TagChip value={tags} onToggle={toggleTag} />
-          </ScrollView>
-
-          {/* Линия отделяет ввод от отправки: ниже неё ничего не набирают,
-              ниже неё только решают, куда это уйдёт. */}
-          <Separator />
-
-          <View
-            style={[
-              styles.actions,
-              {
-                paddingHorizontal: theme.spacing.xl,
-                paddingVertical: theme.spacing.md,
-                gap: theme.spacing.md,
-              },
-            ]}
-          >
-            {/* Куда положить — до создания и одним касанием, а не отдельным
-                шитом переноса после. */}
+          <View style={{ paddingHorizontal: 20, paddingBottom: 20, gap: 16 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
             <MenuButton
               accessibilityLabel={`Куда положить: ${destination ?? 'Без папки'}`}
               title="Куда положить"
@@ -334,44 +294,27 @@ export default function CreateScreen() {
                 })),
               ]}
               style={({ pressed }) => [
-                styles.destination,
+                styles.destination, { flex: 0, minHeight: 40, borderRadius: 20, paddingHorizontal: 12, backgroundColor: theme.hex.systemFill },
                 { opacity: pressed ? 0.5 : 1, gap: theme.spacing.sm },
               ]}
             >
               <Symbol name="folder" size={18} color={theme.colors.secondaryLabel} />
-              <Text variant="callout" color="secondaryLabel" numberOfLines={1}>
+              <Text variant="footnote" color="secondaryLabel" numberOfLines={1}>
                 {destination ?? 'Без папки'}
               </Text>
               <Symbol name="chevron.down" size={16} color={theme.colors.tertiaryLabel} />
             </MenuButton>
-
-            {/* Голос — второй способ ввода после клавиатуры, поэтому своя
-                кнопка. Скан и рисунок реже — они в меню рядом, а не только
-                в долгом нажатии на кнопку создания, о котором никто не знает. */}
-            <MenuButton
-              accessibilityLabel="Добавить скан или рисунок"
-              items={() => [
-                {
-                  title: 'Скан',
-                  icon: 'doc.text.viewfinder',
-                  onPress: () => capture('/capture/scan'),
-                },
-                { title: 'Рисунок', icon: 'scribble', onPress: () => capture('/capture/sketch') },
-              ]}
-            >
-              <View pointerEvents="none">
-                <RoundButton icon="plus" label="Добавить" tone="muted" onPress={() => {}} />
-              </View>
-            </MenuButton>
-
-            <RoundButton
-              icon="waveform"
-              label="Записать голосом"
-              tone="muted"
-              onPress={() => capture('/capture/voice')}
-            />
-
-            <RoundButton icon="arrow.up" label="Создать" disabled={!ready} onPress={submit} />
+              <TagChip value={tags} onToggle={toggleTag} />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+              <View style={{ flex: 1 }}><ReminderChip value={remindAt} onChange={setRemindAt} /></View>
+              <RoundButton icon="arrow.up" label="Создать" disabled={!ready} onPress={submit} />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <Chip label="Список" icon="checklist" selected={checklist} onPress={() => setChecklist(value => !value)} />
+              <Chip label="Голос" icon="mic" onPress={() => capture('/capture/voice')} />
+              <MenuButton accessibilityLabel="Добавить скан или рисунок" items={() => [{ title: 'Скан', icon: 'doc.text.viewfinder', onPress: () => capture('/capture/scan') }, { title: 'Рисунок', icon: 'scribble', onPress: () => capture('/capture/sketch') }]}><View pointerEvents="none"><Chip label="Скан" icon="camera" /></View></MenuButton>
+            </View>
           </View>
         </Animated.View>
       </KeyboardAvoidingView>

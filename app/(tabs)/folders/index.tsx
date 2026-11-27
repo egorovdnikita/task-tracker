@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Stack, router } from 'expo-router';
 
 import {
   GLYPH_SEPARATOR_INSET,
-  Fab,
+  Button,
   ListRow,
   ListSection,
   RootHeader,
@@ -111,13 +111,7 @@ export default function FoldersScreen() {
         <RootHeader
           title="Папки"
           style={{ marginHorizontal: theme.spacing.lg, marginBottom: theme.spacing.lg }}
-          right={
-            <Fab
-              compact
-              accessibilityLabel="Новая папка"
-              onPress={() => addFolder(null)}
-            />
-          }
+
         />
 
         <ListSection separatorInset={GLYPH_SEPARATOR_INSET}>
@@ -132,6 +126,7 @@ export default function FoldersScreen() {
             onPress={() => router.push({ pathname: '/folders/[id]', params: { id: 'root' } })}
           />
         </ListSection>
+        <View style={{ marginHorizontal: theme.spacing.lg, marginBottom: 28 }}><Button title="Новая папка" size="large" fullWidth onPress={() => addFolder(null)} /></View>
 
         {roots.length > 0 ? (
           <ListSection

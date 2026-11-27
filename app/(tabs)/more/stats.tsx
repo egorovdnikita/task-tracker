@@ -38,17 +38,17 @@ export default function StatsScreen() {
 
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.metrics.tabBar + theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingTop: theme.spacing.md, paddingBottom: theme.metrics.tabBar + theme.spacing.xxxl }}
       >
         {/* Главное число — как «Score 81» у Opal: подпись над ним, крупно. */}
-        <View style={{ alignItems: 'center', gap: theme.spacing.xxs }}>
-          <Text variant="subheadline" weight="medium" color="secondaryOnBackdrop">
+        <View style={{ alignItems: 'center', gap: 0 }}>
+          <Text variant="subheadline" weight="regular" color="onBackdrop">
             Заметок
           </Text>
           <NumberText style={{ color: theme.hex.onBackdrop }}>{stats.notes}</NumberText>
         </View>
 
-        <View style={[styles.rings, { marginVertical: theme.spacing.xl, marginHorizontal: theme.spacing.lg }]}>
+        <View style={[styles.rings, { marginVertical: theme.spacing.lg, marginHorizontal: theme.spacing.lg }]}>
           <StatRing
             value={stats.itemsTotal > 0 ? `${Math.round((stats.itemsDone / stats.itemsTotal) * 100)}` : '—'}
             label="Выполнено, %"
@@ -62,7 +62,7 @@ export default function StatsScreen() {
         <View
           style={{
             marginHorizontal: theme.spacing.lg,
-            marginBottom: theme.spacing.xxxl,
+            marginBottom: theme.spacing.lg,
             padding: theme.spacing.xl,
             gap: theme.spacing.lg,
             borderRadius: theme.radius.group,
@@ -71,10 +71,10 @@ export default function StatsScreen() {
           accessible
           accessibilityLabel={`Новые заметки за неделю: ${stats.week.join(', ')}`}
         >
-          <Text variant="headline" weight="semibold">
+          <Text variant="headline" weight="medium">
             Новые заметки
           </Text>
-          <View style={[styles.chart, { gap: theme.spacing.sm }]}>
+          <View style={[styles.chart, { gap: theme.spacing.md }]}>
             {stats.week.map((count, i) => (
               <View key={i} style={[styles.bar, { gap: theme.spacing.xs }]}>
                 <Text variant="caption1" color="secondaryLabel">
@@ -84,7 +84,7 @@ export default function StatsScreen() {
                   style={{
                     width: '100%',
                     height: Math.max(4, (count / peak) * 88),
-                    borderRadius: boxPrimitives.rounding['6'],
+                    borderRadius: boxPrimitives.rounding['4'],
                     backgroundColor: i === 6 ? theme.colors.accent : localColors.chartTrack,
                   }}
                 />
@@ -135,5 +135,5 @@ const styles = StyleSheet.create({
   score: { color: localColors.white, fontSize: 64, lineHeight: 72, fontWeight: '600', fontVariant: ['tabular-nums'] },
   rings: { flexDirection: 'row', gap: 12, justifyContent: 'space-between' },
   chart: { flexDirection: 'row', alignItems: 'flex-end', height: 108 },
-  bar: { flex: 1, alignItems: 'center', justifyContent: 'flex-end' },
+  bar: { width: 34, alignItems: 'center', justifyContent: 'flex-end' },
 });

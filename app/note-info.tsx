@@ -54,21 +54,13 @@ export default function NoteInfoSheet() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.sm, paddingBottom: theme.spacing.xxxl }}
       >
-        <View style={{ alignItems: 'center', gap: theme.spacing.xs, paddingHorizontal: theme.spacing.xl }}>
-          <Text variant="footnote" color="secondaryOnBackdrop">
-            Изменена {formatDateTime(note.updatedAt)}
-          </Text>
-          <Text variant="title2" weight="medium" color="onBackdrop" numberOfLines={2} style={{ textAlign: 'center' }}>
-            {noteTitle(note)}
-          </Text>
-        </View>
 
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-evenly',
-            marginVertical: theme.spacing.xl,
-            marginHorizontal: theme.spacing.lg, gap: theme.spacing.sm,
+            marginBottom: theme.spacing.lg,
+            marginHorizontal: theme.spacing.lg, gap: theme.spacing.md,
           }}
         >
           <StatRing value={String(stats.words)} label="Слов" />

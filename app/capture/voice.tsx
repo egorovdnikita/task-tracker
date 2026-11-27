@@ -1,3 +1,5 @@
+import { useHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NumberText } from '../../src/components/NumberText';
 import { ScreenBackdrop } from '../../src/components/ScreenBackdrop';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -34,6 +36,8 @@ export default function VoiceCaptureScreen() {
     tag?: string;
   }>();
   const theme = useTheme();
+  const headerHeight = useHeaderHeight();
+  const insets = useSafeAreaInsets();
 
   const notes = useNotesStore((s) => s.notes);
   const setBlocks = useNotesStore((s) => s.setBlocks);
@@ -183,17 +187,18 @@ export default function VoiceCaptureScreen() {
         }}
       />
 
-      <View style={[styles.root, { padding: theme.spacing.xl, gap: theme.spacing.xxl }]}>
-        <View style={{ gap: theme.spacing.sm, alignItems: 'center' }}>
-          <NumberText style={{ color: theme.hex.onBackdrop }}>
+      <View style={[styles.root, { paddingHorizontal: theme.spacing.lg, paddingTop: headerHeight + theme.spacing.md, paddingBottom: insets.bottom + theme.spacing.lg }]}>
+        <View style={{ paddingTop: 40, paddingBottom: 32, paddingHorizontal: 20, gap: 16, borderRadius: 32, backgroundColor: theme.hex.secondarySystemBackground }}>
+        <View style={{ gap: 4, alignItems: 'center' }}>
+          <NumberText style={{ color: theme.hex.label }}>
             {formatDuration(duration)}
           </NumberText>
-          <Text variant="footnote" color="secondaryOnBackdrop">
+          <Text variant="footnote" color="secondaryLabel">
             {!begun ? 'Готово к записи' : state.isRecording ? 'Идёт запись' : 'Пауза'}
           </Text>
         </View>
 
-        <Waveform levels={levels} markers={markers.map((m) => m.atMs)} durationMs={duration} />
+        <Waveform height={100} levels={levels} markers={markers.map((m) => m.atMs)} durationMs={duration} />
 
         {!begun ? (
           <Button
@@ -239,6 +244,7 @@ export default function VoiceCaptureScreen() {
             />
           </>
         )}
+        </View>
       </View>
     </>
   );

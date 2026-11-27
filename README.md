@@ -72,3 +72,5 @@ npm run storybook
 MIT — [LICENSE](LICENSE).
 
 Текущий перенос макетов и проверенный объём: [docs/FINCH_IMPLEMENTATION.md](docs/FINCH_IMPLEMENTATION.md).
+
+Подача списка и сортировка — нажатие на название «Заметки». В редакторе добавление блоков и выбор тегов находятся в меню «⋯».

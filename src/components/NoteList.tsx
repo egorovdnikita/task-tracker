@@ -1,3 +1,4 @@
+import { noteSections } from '../utils/noteSections';
 import { localColors } from '../theme/localColors';
 import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React, { useMemo, useRef } from 'react';
@@ -84,29 +85,7 @@ export const NoteList = ({
   const columns = layout === 'grid' && notes.length > 1 ? 2 : 1;
   const swipeable = layout === 'list' && !selectable && Boolean(onDelete || onTogglePin);
 
-  const sections = useMemo<Section[]>(() => {
-    const chunk = (items: Note[]): Note[][] => {
-      const rows: Note[][] = [];
-      for (let i = 0; i < items.length; i += columns) rows.push(items.slice(i, i + columns));
-      return rows;
-    };
-
-    // Пустой список не даёт ни одной секции. Секция с пустым `data` кажется
-    // `SectionList` содержимым, и `ListEmptyComponent` не рендерится вовсе —
-    // именно так экран без заметок оказывался пустым насовсем.
-    if (notes.length === 0) return [];
-
-    const pinned = notes.filter((n) => n.pinned);
-    const rest = notes.filter((n) => !n.pinned);
-
-    // Заголовок «Закреплено» появляется только когда есть что закрепить,
-    // и вместе с ним появляется «Ранее» — одна шапка без второй бессмысленна.
-    if (pinned.length === 0) return [{ title: null, data: chunk(rest) }];
-    return [
-      { title: 'Закреплено', data: chunk(pinned) },
-      { title: 'Ранее', data: chunk(rest) },
-    ];
-  }, [notes, columns]);
+  const sections = useMemo<Section[]>(() => noteSections(notes, columns), [notes, columns]);
 
   return (
     <SectionList
@@ -141,10 +120,8 @@ export const NoteList = ({
               { gap: theme.spacing.sm },
             ]}
           >
-            <Text variant="headline" color="onBackdrop">{section.title}</Text>
-            <Text variant="headline" color="secondaryOnBackdrop">
-              {section.data.reduce((total, row) => total + row.length, 0)}
-            </Text>
+            <Text variant="headline" weight="regular" color="onBackdrop">{section.title}</Text>
+
           </View>
         ) : null
       }
@@ -160,15 +137,7 @@ export const NoteList = ({
                 selected={selectedIds.includes(note.id)}
                 onPress={() => onOpen?.(note.id)}
                 onLongPress={(anchor) => onLongPress?.(note.id, anchor)}
-                style={[
-                  styles.cell,
-                  // Карточка сетки — фиксированной высоты, чтобы строка была
-                  // одинаковой независимо от содержимого соседа.
-                  // Высота ячейки сетки растёт с размером текста: при крупном
-                  // Dynamic Type фиксированные 140pt обрезали заголовок и
-                  // превью. Потолок — двойная высота, дальше сетка теряет смысл.
-                  columns > 1 ? { height: Math.round(140 * Math.min(fontScale, 2)) } : null,
-                ]}
+                style={styles.cell}
               />
             );
 
@@ -188,7 +157,7 @@ export const NoteList = ({
 
           {/* Добивка последней неполной строки: без неё одинокая карточка
               растянулась бы на всю ширину и выпала из сетки. */}
-          {row.length < columns
+          {!row[0]?.pinned && row.length < columns
             ? Array.from({ length: columns - row.length }, (_, i) => (
                 <View key={`gap-${i}`} style={styles.cell} />
               ))
@@ -341,7 +310,7 @@ const SwipeAction = ({
 };
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'stretch' },
+  row: { flexDirection: 'row', alignItems: 'flex-start' },
   cell: { flex: 1 },
   sectionHeader: { flexDirection: 'row', alignItems: 'baseline' },
   action: {

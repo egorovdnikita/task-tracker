@@ -255,9 +255,9 @@ export const HeaderCapsule = ({
 /**
  * Пилюля под кнопками шапки — то же тонкое стекло Opal, что у поля поиска.
  */
-export const HeaderGlass = ({ children }: { children: React.ReactNode }) => {
+export const HeaderGlass = ({ children, diameter }: { children: React.ReactNode; diameter?: number }) => {
   const theme = useTheme();
-  const height = theme.controlHeight.buttonCompact;
+  const height = diameter ?? theme.controlHeight.buttonCompact;
 
   return (
     <View style={[styles.capsule, { height, minWidth: height, borderRadius: height / 2 }]}>

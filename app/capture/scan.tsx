@@ -1,3 +1,4 @@
+import { ScreenEmptyState } from '../../src/components/ScreenEmptyState';
 import { ScreenBackdrop } from '../../src/components/ScreenBackdrop';
 import { localColors } from '../../src/theme/localColors';
 import { boxPrimitives } from '../../src/vendor/box-ui/primitives';
@@ -6,7 +7,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 
-import { Button, Glass, IconButton, Symbol, Text, headerItems } from '../../src/components';
+import { Button, Glass, IconButton, Symbol, Text, EmptyState, headerItems } from '../../src/components';
 import { useTheme } from '../../src/theme';
 import { persistMedia } from '../../src/features/media';
 import { makeId, makeScanBlock } from '../../src/utils/blocks';
@@ -90,20 +91,7 @@ export default function ScanCaptureScreen() {
       <>
         <ScreenBackdrop />
         <Stack.Screen options={{ title: 'Скан' }} />
-        <View style={[styles.center, { padding: theme.spacing.xxxl, gap: theme.spacing.md, margin: theme.spacing.lg, backgroundColor: theme.hex.secondarySystemBackground, borderRadius: theme.radius.xl }]}>
-          <Symbol name="camera" size={52} color={theme.colors.quaternaryLabel} />
-          <Text variant="title3" weight="semibold" style={styles.middle}>
-            Нужен доступ к камере
-          </Text>
-          <Text variant="subheadline" color="secondaryLabel" style={styles.middle}>
-            Снимки остаются на устройстве: в фотоплёнку и никуда наружу они не попадают.
-          </Text>
-          <Button
-            title={permission.canAskAgain ? 'Разрешить' : 'Закрыть'}
-            variant="tinted"
-            onPress={() => (permission.canAskAgain ? requestPermission() : router.back())}
-          />
-        </View>
+        <ScreenEmptyState icon="camera" title="Нужен доступ к камере" description="Снимки остаются на устройстве: в фотоплёнку и никуда наружу они не попадают." actionTitle={permission.canAskAgain ? 'Разрешить' : 'Закрыть'} onAction={() => permission.canAskAgain ? void requestPermission() : router.back()} />
       </>
     );
   }

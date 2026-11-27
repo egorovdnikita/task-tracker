@@ -1,3 +1,5 @@
+import { NoteList } from './NoteList';
+import { SearchField } from './SearchField';
 import { HeaderHeightContext } from '@react-navigation/elements';
 import { ScreenEmptyState } from './ScreenEmptyState';
 import { StatRing } from './StatRing';
@@ -20,7 +22,7 @@ type Story = StoryObj<typeof meta>;
 export const Главная: Story = { render: () => <View style={{ flex: 1 }}>
   <ScreenBackdrop />
   <ScrollView contentContainerStyle={{ padding: 16, paddingTop: 59, gap: 16 }}>
-    <RootHeader title="Заметки" count={mockNotes.length} right={<><HeaderGlass><IconButton name="magnifyingglass" accessibilityLabel="Поиск" /></HeaderGlass><Fab compact onPress={() => {}} /></>} />
+    <RootHeader title="Заметки" count={mockNotes.length} right={<><HeaderGlass diameter={52}><IconButton style={{ width: 52, height: 52 }} name="magnifyingglass" accessibilityLabel="Поиск" /></HeaderGlass><Fab compact diameter={56} onPress={() => {}} /></>} />
     <Text color="onBackdrop" variant="headline">Закреплено</Text>
     <NoteCard note={{ ...mockNotes[0], pinned: true }} />
     <Text color="onBackdrop" variant="headline">Ранее</Text>
@@ -40,4 +42,8 @@ export const ПустойЭкран: Story = { render: () => <HeaderHeightContex
 </View></HeaderHeightContext.Provider> };
 export const Показатели: Story = { render: () => <View style={{ flex: 1, padding: 16, paddingTop: 150 }}>
   <ScreenBackdrop /><View style={{ flexDirection: 'row', gap: 12 }}><StatRing value="0" label="Выполнено, %" /><StatRing value="14" label="Слов" /><StatRing value="0" label="За неделю" /></View>
+</View> };
+
+export const Сетка: Story = { render: () => <View style={{ flex: 1, paddingTop: 59 }}>
+  <ScreenBackdrop /><NoteList layout="grid" notes={mockNotes} ListHeaderComponent={<View style={{ gap: 12 }}><RootHeader title="Заметки" /><SearchField value="" onChangeText={() => {}} /></View>} />
 </View> };

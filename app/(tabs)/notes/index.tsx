@@ -7,7 +7,6 @@ import {
   Fab,
   HeaderGlass,
   RootHeader,
-  HeaderCapsule,
   IconButton,
   NoteList,
   SearchField,
@@ -29,7 +28,7 @@ import {
 } from '../../../src/store/useNotesStore';
 import { SelectionBar, useSelection } from '../../../src/features/selection';
 import { chooseNoteType } from '../../../src/features/create';
-import { SortButton } from '../../../src/features/sort';
+import { SORT_LABELS } from '../../../src/features/labels';
 
 /** Фильтр по тегу. `all` — без фильтра, остальное — идентификатор своего тега. */
 const TAG_SEGMENTS = [
@@ -50,6 +49,7 @@ export default function NotesScreen() {
   const theme = useTheme();
   const notes = useNotesStore((s) => s.notes);
   const settings = useNotesStore((s) => s.settings);
+  const updateSettings = useNotesStore(s => s.updateSettings);
   const setLayout = useNotesStore((s) => s.setLayout);
   const togglePinned = useNotesStore((s) => s.togglePinned);
   const trashNotes = useNotesStore((s) => s.trashNotes);
@@ -119,7 +119,13 @@ export default function NotesScreen() {
   const header = (
     <RootHeader
       title="Заметки"
-      count={activeNotes(notes).length}
+      count={layout === 'list' && activeNotes(notes).length > 0 ? activeNotes(notes).length : undefined}
+      menuLabel="Подача и сортировка заметок"
+      menu={() => [
+        { title: 'Списком', checked: layout === 'list', icon: 'list.bullet', onPress: () => setLayout('root', 'list') },
+        { title: 'Сеткой', checked: layout === 'grid', icon: 'square.grid.2x2', onPress: () => setLayout('root', 'grid') },
+        ...(Object.keys(SORT_LABELS) as (keyof typeof SORT_LABELS)[]).map(mode => ({ title: SORT_LABELS[mode], checked: settings.sort === mode, onPress: () => updateSettings({ sort: mode }) })),
+      ]}
       right={
         selection.active ? (
           <HeaderGlass>
@@ -132,12 +138,12 @@ export default function NotesScreen() {
           </HeaderGlass>
         ) : (
           <>
-            <HeaderGlass>
-              <IconButton name="magnifyingglass" accessibilityLabel="Поиск по заметкам" onPress={() => setSearchOpen(open => !open)} />
-            </HeaderGlass>
+            {layout === 'list' && activeNotes(notes).length > 0 ? <HeaderGlass diameter={52}>
+              <IconButton style={{ width: 52, height: 52 }} name="magnifyingglass" accessibilityLabel="Поиск по заметкам" onPress={() => setSearchOpen(open => !open)} />
+            </HeaderGlass> : null}
             <Fab
               compact
-              diameter={56}
+              diameter={layout === 'list' && activeNotes(notes).length > 0 ? 56 : 44}
               onPress={() => router.push('/create')}
               onLongPress={(anchor) => chooseNoteType(anchor)}
             />
@@ -184,7 +190,7 @@ export default function NotesScreen() {
 
               {/* Поиск сразу под заголовком: белой карточкой, в потоке
                   списка, а не плавающей капсулой у нижнего края. */}
-              {searchOpen || searching ? <SearchField autoFocus value={query} onChangeText={setQuery} placeholder="Поиск по заметкам" /> : null}
+              {searchOpen || searching || layout === 'grid' || activeNotes(notes).length === 0 ? <SearchField autoFocus={searchOpen} value={query} onChangeText={setQuery} placeholder="Поиск по заметкам" /> : null}
 
               {/*
                 Срез — сегмент-контрол, а не ряд чипов.
@@ -195,26 +201,7 @@ export default function NotesScreen() {
                 с «Все» весь фильтр помещается в один системный контрол,
                 который сам знает про Dynamic Type и VoiceOver.
               */}
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
-              <SegmentedControl
-                style={{ flex: 1 }}
-                accessibilityLabel="Фильтр по тегу"
-                segments={TAG_SEGMENTS}
-                selected={tag}
-                onChange={setTag}
-              />
-            <HeaderGlass>
-              <HeaderCapsule>
-                <IconButton
-                  name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
-                  size={19}
-                  accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
-                  onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
-                />
-                <SortButton />
-              </HeaderCapsule>
-            </HeaderGlass>
-              </View>
+              <SegmentedControl accessibilityLabel="Фильтр по тегу" segments={TAG_SEGMENTS} selected={tag} onChange={setTag} />
             </View>
           ) : (
             <View style={{ marginBottom: theme.spacing.md }}>{header}</View>

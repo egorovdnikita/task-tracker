@@ -76,9 +76,9 @@ export const SegmentedControl = <T extends string>({
       fontStyle={{
         fontFamily: Platform.OS === 'ios' ? undefined : 'System',
         color: theme.hex.onBackdrop,
-        fontSize: 15,
+        fontSize: 13,
       }}
-      activeFontStyle={{ color: theme.hex.label, fontWeight: '600' }}
+      activeFontStyle={{ color: theme.hex.label, fontWeight: '500' }}
       // Высоту системному контролу можно задать только снаружи: свои 32pt
       // рядом с полем поиска в 52 выглядели мелкой приставкой к нему.
       style={{ height: theme.controlHeight.segmented, ...style }}

@@ -141,29 +141,12 @@ export default function ReminderScreen() {
           в нём уже есть, и повторять это своими барабанами незачем.
         */}
         <ListSection tone="sheet" header="Точное время">
-          <View
-            style={{
-              paddingHorizontal: theme.spacing.lg,
-              paddingVertical: theme.spacing.sm,
-              gap: theme.spacing.md,
-            }}
-          >
-            <DateTimePicker
-              value={exact}
-              mode="datetime"
-              display="compact"
-              minimumDate={new Date()}
-              locale="ru-RU"
-              onChange={(_, date) => date && setExact(date)}
-              accessibilityLabel="Дата и время напоминания"
-            />
-            <Button
-              title={`Напомнить ${formatDateTime(exact.getTime())}`}
-              variant="white"
-              onPress={() => choose(exact.getTime())}
-            />
-          </View>
+          {(['date', 'time'] as const).map((mode, index) => <View key={mode} style={{ minHeight: 62, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderTopWidth: index ? 1 : 0, borderTopColor: theme.hex.separator }}>
+            <Text variant="callout">{mode === 'date' ? 'Дата' : 'Время'}</Text>
+            <DateTimePicker value={exact} mode={mode} display="compact" minimumDate={mode === 'date' ? new Date() : undefined} locale="ru-RU" onChange={(_, date) => date && setExact(date)} accessibilityLabel={mode === 'date' ? 'Дата напоминания' : 'Время напоминания'} />
+          </View>)}
         </ListSection>
+        <View style={{ marginHorizontal: 16, marginBottom: 28 }}><Button title={`Напомнить ${formatDateTime(exact.getTime())}`} size="large" fullWidth onPress={() => choose(exact.getTime())} /></View>
 
         {note.remindAt ? (
           <ListSection tone="sheet" footer={`Сейчас стоит на ${formatDateTime(note.remindAt)}.`}>

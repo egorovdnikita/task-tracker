@@ -46,7 +46,7 @@ export const EmptyState = ({
   const theme = useTheme();
 
   return (
-    <View style={[styles.root, { backgroundColor: theme.hex.secondarySystemBackground, borderRadius: theme.radius.xl, padding: theme.spacing.xxxl, gap: theme.spacing.md }, style]}>
+    <View style={[styles.root, { backgroundColor: theme.hex.secondarySystemBackground, borderRadius: theme.radius.xl, paddingVertical: theme.spacing.xxxl, paddingHorizontal: theme.spacing.xl, gap: theme.spacing.lg }, style]}>
       <View style={{ width: 72, height: 72, borderRadius: 36, backgroundColor: theme.hex.systemFill, alignItems: 'center', justifyContent: 'center' }}>
         <Symbol name={icon ?? 'note.text'} size={34} color={theme.colors.label} />
       </View>
@@ -65,8 +65,10 @@ export const EmptyState = ({
         <Button
           title={actionTitle}
           variant="filled"
+          size="large"
+          fullWidth
           onPress={onAction}
-          style={{ marginTop: theme.spacing.sm, alignSelf: 'center' }}
+          style={{ alignSelf: 'stretch' }}
         />
       ) : null}
     </View>
@@ -76,5 +78,5 @@ export const EmptyState = ({
 const styles = StyleSheet.create({
   root: { flexGrow: 0, alignItems: 'center', justifyContent: 'center', marginVertical: 32 },
   center: { textAlign: 'center' },
-  measure: { maxWidth: 280 },
+  measure: { maxWidth: 286 },
 });

@@ -96,7 +96,7 @@ export default function FolderSheet() {
         ) : null}
 
         {/* Поле — пилюля Opal в шите: заливка на ступень светлее шита. */}
-        <View style={{ gap: theme.spacing.sm }}>
+        <View style={{ gap: 10 }}>
           <TextInput
             autoFocus
             value={name}
@@ -108,7 +108,7 @@ export default function FolderSheet() {
             maxLength={40}
             accessibilityLabel="Название папки"
             style={[
-              theme.text('body'),
+              { ...theme.text('callout'), lineHeight: 20 },
               styles.field,
               {
                 color: theme.colors.label,
@@ -121,22 +121,22 @@ export default function FolderSheet() {
           />
           {/* Ошибка — строкой под полем, а не вторым алертом после закрытия первого. */}
           {taken ? (
-            <Text variant="footnote" color="systemRed" style={{ marginHorizontal: theme.spacing.lg }}>
+            <Text variant="footnote" color="systemRed" style={{ marginHorizontal: 0 }}>
               Папка «{trimmed}» на этом уровне уже есть
             </Text>
           ) : (
-            <Text variant="footnote" color="secondaryLabel" style={{ marginHorizontal: theme.spacing.lg }}>
+            <Text variant="footnote" color="secondaryLabel" style={{ marginHorizontal: 0 }}>
               Эмодзи в начале имени встанет вместо иконки
             </Text>
           )}
         </View>
 
-        <View style={{ gap: theme.spacing.md }}>
-          <Text variant="headline" weight="medium" color="label" style={{ marginHorizontal: theme.spacing.lg }}>
+        <View style={{ gap: 10 }}>
+          <Text variant="headline" weight="medium" color="label">
             Цвет
           </Text>
           {/* Круги 36 — как дни недели в правиле Opal: выбранный белый ободок. */}
-          <View style={[styles.swatches, { gap: theme.spacing.md, paddingHorizontal: theme.spacing.xs }]}>
+          <View style={[styles.swatches, { columnGap: 16, rowGap: 8 }]}>
             {accentNames.map((item) => {
               const selected = item === accent;
               return (
@@ -150,12 +150,13 @@ export default function FolderSheet() {
                   style={({ pressed }) => [
                     styles.swatch,
                     {
-                      borderColor: selected ? localColors.white : 'transparent',
+                      borderColor: selected ? theme.hex.label : 'transparent',
+                      backgroundColor: theme.accent(item),
                       opacity: pressed ? 0.6 : 1,
                     },
                   ]}
                 >
-                  <View style={[styles.dot, { backgroundColor: theme.accent(item) }]} />
+
                 </Pressable>
               );
             })}
@@ -163,35 +164,33 @@ export default function FolderSheet() {
         </View>
 
         {/* Превью — строка, какой папка встанет в список «Папки». */}
-        <View style={{ gap: theme.spacing.md }}>
-          <Text variant="headline" weight="medium" color="label" style={{ marginHorizontal: theme.spacing.lg }}>
+        <View style={{ gap: 10 }}>
+          <Text variant="headline" weight="medium" color="label">
             В списке
           </Text>
           <View
             style={[
               styles.preview,
               {
-                backgroundColor: theme.hex.systemFill,
-                borderRadius: theme.radius.group,
-                minHeight: theme.controlHeight.row,
-                paddingHorizontal: theme.spacing.lg,
-                gap: 17,
+                backgroundColor: 'transparent',
+                minHeight: 20,
+                gap: theme.spacing.sm,
               },
             ]}
           >
             {preview.emoji ? (
-              <Text variant="title3" style={styles.glyph}>
+              <Text variant="title3">
                 {preview.emoji}
               </Text>
             ) : (
-              <View style={styles.glyph}>
+              <View>
                 <Symbol name="folder.fill" size={20} color={theme.accent(accent)} />
               </View>
             )}
-            <Text variant="body" numberOfLines={1} style={{ flex: 1 }}>
+            <Text variant="callout" numberOfLines={1} style={{ flex: 1, lineHeight: 20 }}>
               {preview.rest}
             </Text>
-            <Symbol name="chevron.right" size={16} color={theme.colors.secondaryLabel} />
+
           </View>
         </View>
           <Button title="Готово" size="large" fullWidth disabled={!ready} onPress={save} />
@@ -205,14 +204,14 @@ const styles = StyleSheet.create({
   field: { borderRadius: 999, borderWidth: 1, borderCurve: 'circular' },
   swatches: { flexDirection: 'row', flexWrap: 'wrap' },
   swatch: {
-    width: boxPrimitives.size['44'],
-    height: boxPrimitives.size['44'],
-    borderRadius: 22,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  dot: { width: boxPrimitives.size['32'], height: boxPrimitives.size['32'], borderRadius: boxPrimitives.rounding['16'] },
+  dot: { width: 36, height: 36, borderRadius: 18 },
   preview: { flexDirection: 'row', alignItems: 'center' },
   glyph: { width: boxPrimitives.size['28'], alignItems: 'center', textAlign: 'center' },
 });

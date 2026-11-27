@@ -195,6 +195,12 @@ export default function NoteScreen() {
   ];
 
   const menuItems = (): MenuItem[] => [
+    { title: 'Добавить список', icon: 'checklist', onPress: () => setBlocks(note.id, [...note.blocks, makeChecklistBlock()]) },
+    { title: 'Добавить текст', icon: 'text.alignleft', onPress: () => setBlocks(note.id, [...note.blocks, makeTextBlock()]) },
+    { title: 'Записать голос', icon: 'mic', onPress: () => router.push({ pathname: '/capture/voice', params: { id: note.id } }) },
+    { title: 'Скан', icon: 'doc.text.viewfinder', onPress: () => router.push({ pathname: '/capture/scan', params: { id: note.id } }) },
+    { title: 'Рисунок', icon: 'scribble', onPress: () => router.push({ pathname: '/capture/sketch', params: { id: note.id } }) },
+    ...STATIC_TAGS.map(tag => ({ title: `Тег: ${tag.label}`, icon: tag.icon, checked: note.tags.includes(tag.id), onPress: () => toggleTag(tag.id) })),
     {
       title: note.pinned ? 'Открепить' : 'Закрепить',
       icon: note.pinned ? 'pin.slash' : 'pin',
@@ -255,16 +261,6 @@ export default function NoteScreen() {
           */
           unstable_headerRightItems: headerItems(() => (
             <HeaderCapsule>
-              {/* В корзине закреплять нечего — там только меню восстановления. */}
-              {!trashed ? (
-                <IconButton
-                  name={note.pinned ? 'pin.fill' : 'pin'}
-                  size={19}
-                  accessibilityLabel={note.pinned ? 'Открепить' : 'Закрепить'}
-                  onPress={() => togglePinned(note.id)}
-                />
-              ) : null}
-
               <MenuButton
                 accessibilityLabel="Меню заметки"
                 items={trashed ? trashedMenu : menuItems}
@@ -276,7 +272,7 @@ export default function NoteScreen() {
                   opacity: pressed ? 0.4 : 1,
                 })}
               >
-                <Symbol name="ellipsis" size={20} color={theme.colors.label} />
+                <Symbol name="ellipsis" size={20} color={theme.colors.onBackdrop} />
               </MenuButton>
             </HeaderCapsule>
           )),
@@ -337,7 +333,8 @@ export default function NoteScreen() {
             borderRadius: theme.radius.xl,
             margin: theme.spacing.lg,
             gap: theme.spacing.lg,
-            paddingBottom: theme.spacing.xxxl,
+            paddingBottom: theme.spacing.xl,
+            minHeight: note.blocks.some(block => block.type === 'checklist') ? 554 : 390,
           }}
         >
           <TextInput
@@ -412,22 +409,8 @@ export default function NoteScreen() {
             заметку.
           */}
             <View style={{ gap: theme.spacing.sm }}>
-              <Text variant="footnote" color="secondaryLabel">
-                Теги
-              </Text>
-
               <ChipWrap>
-                {STATIC_TAGS.map((tag) => (
-                  <Chip
-                    key={tag.id}
-                    label={tag.label}
-                    icon={tag.icon}
-                    accent={tag.accent}
-                    outlined={!note.tags.includes(tag.id)}
-                    selected={note.tags.includes(tag.id)}
-                    onPress={() => toggleTag(tag.id)}
-                  />
-                ))}
+                {STATIC_TAGS.filter(tag => note.tags.includes(tag.id)).map(tag => <Chip key={tag.id} label={tag.label} icon={tag.icon} selected onPress={() => toggleTag(tag.id)} />)}
 
                 {/* Теги из прежних версий не исчезают: их нельзя поставить
                   заново, но снять можно — иначе они остались бы навсегда. */}
@@ -449,55 +432,6 @@ export default function NoteScreen() {
           </View>
         </ScrollView>
 
-        {/* Плита 04: чем дополнить заметку — рядом у нижнего края, а не в
-            конце прокрутки: в длинной заметке до конца ещё нужно долистать.
-            Запись, скан и рисунок — такие же блоки в потоке, как текст и
-            список, поэтому вставляются одним рядом. Над клавиатурой ряд
-            держит `KeyboardAvoidingView`. */}
-        {!note.deletedAt ? (
-          <View
-            style={{
-              paddingHorizontal: theme.spacing.lg,
-              paddingTop: theme.spacing.sm,
-              paddingBottom: keyboard
-                ? theme.spacing.sm
-                : Math.max(theme.spacing.lg, insets.bottom),
-            }}
-          >
-            <NoteTools
-              tools={[
-                {
-                  name: 'checklist',
-                  label: 'Список',
-                  onPress: () => setBlocks(note.id, [...note.blocks, makeChecklistBlock()]),
-                },
-                {
-                  name: 'text.alignleft',
-                  label: 'Текст',
-                  onPress: () => setBlocks(note.id, [...note.blocks, makeTextBlock()]),
-                },
-                {
-                  name: 'mic',
-                  label: 'Запись',
-                  onPress: () =>
-                    router.push({ pathname: '/capture/voice', params: { id: note.id } }),
-                },
-                {
-                  name: 'doc.text.viewfinder',
-                  label: 'Скан',
-                  onPress: () =>
-                    router.push({ pathname: '/capture/scan', params: { id: note.id } }),
-                },
-                {
-                  name: 'scribble',
-                  label: 'Рисунок',
-                  onPress: () =>
-                    router.push({ pathname: '/capture/sketch', params: { id: note.id } }),
-                },
-              ]}
-            />
-          </View>
-        ) : null}
       </KeyboardAvoidingView>
 
       <Confetti active={celebrating} onDone={() => setCelebrating(false)} />

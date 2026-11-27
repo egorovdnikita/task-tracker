@@ -1,3 +1,4 @@
+import { tagLabel } from '../features/tags';
 import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
@@ -83,10 +84,10 @@ export const NoteCard = ({
         styles.card,
         {
           padding: pill ? 6 : theme.spacing.xl,
-          minHeight: pill ? 72 : 172,
+          minHeight: pill ? 72 : layout === 'grid' ? 136 : 172,
           backgroundColor: theme.hex.secondarySystemBackground,
           shadowColor: '#7A3C3C', shadowOpacity: 0.1, shadowRadius: 16, shadowOffset: { width: 0, height: 12 },
-          gap: theme.spacing.xs,
+          gap: layout === 'grid' ? theme.spacing.sm : theme.spacing.lg,
           borderRadius: pill ? 36 : theme.radius.lg,
           opacity: pressed ? 0.85 : 1,
         },
@@ -102,14 +103,14 @@ export const NoteCard = ({
           <View style={{ flex: 1, gap: 4, paddingRight: theme.spacing.md }}>
             <Text variant="callout" weight="medium" numberOfLines={1}>{noteTitle(note)}</Text>
             <Text variant="footnote" color={note.remindAt && dueState(note.remindAt) === 'overdue' ? 'systemRed' : 'secondaryLabel'} numberOfLines={1}>
-              {note.remindAt ? formatShortDate(note.remindAt) : progress ? `${progress.done} из ${progress.total}` : formatRelativeDate(note.updatedAt)}
+              {[progress ? `${progress.done} из ${progress.total} выполнено` : note.remindAt ? formatShortDate(note.remindAt) : preview || formatRelativeDate(note.updatedAt), ...note.tags.slice(0, 1).map(tag => `#${tagLabel(tag)}`)].join(' · ')}
             </Text>
           </View>
-          {accent ? <View style={[styles.dot, { backgroundColor: accent, marginRight: 16, borderRadius: 4 }]} /> : null}
+
         </View>
       ) : <>
       <View style={[styles.head, { gap: theme.spacing.sm }]}>
-        {note.pinned ? <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: theme.hex.systemFill, alignItems: 'center', justifyContent: 'center' }}><Symbol name={progress ? 'checklist' : 'note.text'} size={20} color={theme.colors.label} /></View> : null}
+        {note.pinned && layout === 'list' ? <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: theme.hex.systemFill, alignItems: 'center', justifyContent: 'center' }}><Symbol name={progress ? 'checklist' : 'note.text'} size={20} color={theme.colors.label} /></View> : null}
         {selectable ? (
           <Symbol
             name={selected ? 'checkmark.circle.fill' : 'circle'}
@@ -118,22 +119,16 @@ export const NoteCard = ({
           />
         ) : null}
 
-        {accent ? (
-          <View
-            accessibilityElementsHidden
-            style={[styles.dot, { backgroundColor: accent, borderRadius: theme.radius.pill }]}
-          />
-        ) : null}
-
-        <Text variant="headline" numberOfLines={1} style={styles.grow}>
-          {noteTitle(note)}
-        </Text>
+        <View style={{ flex: 1, gap: 4 }}>
+          <Text variant="headline" numberOfLines={1}>{noteTitle(note)}</Text>
+          {note.pinned && layout === 'list' && note.tags.length ? <Text variant="footnote" color="secondaryLabel" numberOfLines={1}>{note.tags.map(tag => `#${tagLabel(tag)}`).join(' · ')}</Text> : null}
+        </View>
 
         {note.pinned ? (
           <Symbol
             name="pin.fill"
-            size={13}
-            color={theme.colors.tertiaryLabel}
+            size={16}
+            color={theme.colors.label}
             accessibilityLabel="Закреплено"
           />
         ) : null}
@@ -162,7 +157,7 @@ export const NoteCard = ({
         тем же фактом, хотя один из них про будущее, а другой про прошлое.
       */}
       <View style={[styles.head, { gap: theme.spacing.md, marginTop: theme.spacing.xxs, flexWrap: 'wrap' }]}>
-        <Meta icon="clock" text={formatRelativeDate(note.updatedAt)} color="secondaryLabel" />
+        {layout === 'grid' || !note.remindAt ? <Text variant="footnote" color="secondaryLabel">{formatRelativeDate(note.updatedAt)}</Text> : null}
 
         {note.remindAt ? (
           <Meta
@@ -173,9 +168,9 @@ export const NoteCard = ({
           />
         ) : null}
 
-        {note.tags.slice(0, layout === 'grid' ? 1 : 2).map((tag) => (
+        {(note.pinned && layout === 'list' ? [] : note.tags.slice(0, layout === 'grid' ? 1 : 2)).map((tag) => (
           <Text key={tag} variant="footnote" color="secondaryLabel" numberOfLines={1}>
-            #{tag}
+            #{tagLabel(tag)}
           </Text>
         ))}
       </View>

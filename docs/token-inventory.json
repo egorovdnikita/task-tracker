@@ -1,5 +1,5 @@
 {
-  "files": 88,
+  "files": 90,
   "entries": [
     {
       "file": ".storybook/preview.tsx",
@@ -213,8 +213,18 @@
     },
     {
       "file": "app/(tabs)/folders/index.tsx",
-      "key": "right",
-      "value": "{\n            <Fab\n              compact\n              accessibilityLabel=\"Новая папка\"\n              onPress={() => addFolder(null)}\n            />\n          }"
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/(tabs)/folders/index.tsx",
+      "key": "marginBottom",
+      "value": "28"
+    },
+    {
+      "file": "app/(tabs)/folders/index.tsx",
+      "key": "size",
+      "value": "\"large\""
     },
     {
       "file": "app/(tabs)/folders/index.tsx",
@@ -329,7 +339,7 @@
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "paddingTop",
-      "value": "theme.spacing.lg"
+      "value": "theme.spacing.md"
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
@@ -339,12 +349,12 @@
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "gap",
-      "value": "theme.spacing.xxs"
+      "value": "0"
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "color",
-      "value": "\"secondaryOnBackdrop\""
+      "value": "\"onBackdrop\""
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
@@ -354,7 +364,7 @@
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "marginVertical",
-      "value": "theme.spacing.xl"
+      "value": "theme.spacing.lg"
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
@@ -369,7 +379,7 @@
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "marginBottom",
-      "value": "theme.spacing.xxxl"
+      "value": "theme.spacing.lg"
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
@@ -394,7 +404,7 @@
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "gap",
-      "value": "theme.spacing.sm"
+      "value": "theme.spacing.md"
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
@@ -419,7 +429,7 @@
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "borderRadius",
-      "value": "boxPrimitives.rounding['6']"
+      "value": "boxPrimitives.rounding['4']"
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
@@ -467,6 +477,11 @@
       "value": "108"
     },
     {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "width",
+      "value": "34"
+    },
+    {
       "file": "app/(tabs)/notes/_layout.tsx",
       "key": "headerTintColor",
       "value": "theme.hex.onBackdrop"
@@ -484,27 +499,27 @@
     {
       "file": "app/(tabs)/notes/index.tsx",
       "key": "right",
-      "value": "{\n        selection.active ? (\n          <HeaderGlass>\n            <IconButton\n              name={allSelected ? 'checkmark.circle.fill' : 'checkmark.circle'}\n              size={19}\n              accessibilityLabel={allSelected ? 'Снять отметку со всех' : 'Выбрать все'}\n              onPress={() => selection.toggleAll(visible.map((n) => n.id))}\n            />\n          </HeaderGlass>\n        ) : (\n          <>\n            <HeaderGlass>\n              <IconButton name=\"magnifyingglass\" accessibilityLabel=\"Поиск по заметкам\" onPress={() => setSearchOpen(open => !open)} />\n            </HeaderGlass>\n            <Fab\n              compact\n              diameter={56}\n              onPress={() => router.push('/create')}\n              onLongPress={(anchor) => chooseNoteType(anchor)}\n            />\n          </>\n        )\n      }"
+      "value": "{\n        selection.active ? (\n          <HeaderGlass>\n            <IconButton\n              name={allSelected ? 'checkmark.circle.fill' : 'checkmark.circle'}\n              size={19}\n              accessibilityLabel={allSelected ? 'Снять отметку со всех' : 'Выбрать все'}\n              onPress={() => selection.toggleAll(visible.map((n) => n.id))}\n            />\n          </HeaderGlass>\n        ) : (\n          <>\n            {layout === 'list' && activeNotes(notes).length > 0 ? <HeaderGlass diameter={52}>\n              <IconButton style={{ width: 52, height: 52 }} name=\"magnifyingglass\" accessibilityLabel=\"Поиск по заметкам\" onPress={() => setSearchOpen(open => !open)} />\n            </HeaderGlass> : null}\n            <Fab\n              compact\n              diameter={layout === 'list' && activeNotes(notes).length > 0 ? 56 : 44}\n              onPress={() => router.push('/create')}\n              onLongPress={(anchor) => chooseNoteType(anchor)}\n            />\n          </>\n        )\n      }"
     },
     {
       "file": "app/(tabs)/notes/index.tsx",
       "key": "size",
       "value": "{19}"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "width",
+      "value": "52"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "height",
+      "value": "52"
     },
     {
       "file": "app/(tabs)/notes/index.tsx",
       "key": "gap",
       "value": "theme.spacing.md"
-    },
-    {
-      "file": "app/(tabs)/notes/index.tsx",
-      "key": "gap",
-      "value": "theme.spacing.sm"
-    },
-    {
-      "file": "app/(tabs)/notes/index.tsx",
-      "key": "size",
-      "value": "{19}"
     },
     {
       "file": "app/(tabs)/notes/index.tsx",
@@ -545,46 +560,6 @@
       "file": "app/capture/scan.tsx",
       "key": "height",
       "value": "shot.height"
-    },
-    {
-      "file": "app/capture/scan.tsx",
-      "key": "padding",
-      "value": "theme.spacing.xxxl"
-    },
-    {
-      "file": "app/capture/scan.tsx",
-      "key": "gap",
-      "value": "theme.spacing.md"
-    },
-    {
-      "file": "app/capture/scan.tsx",
-      "key": "margin",
-      "value": "theme.spacing.lg"
-    },
-    {
-      "file": "app/capture/scan.tsx",
-      "key": "backgroundColor",
-      "value": "theme.hex.secondarySystemBackground"
-    },
-    {
-      "file": "app/capture/scan.tsx",
-      "key": "borderRadius",
-      "value": "theme.radius.xl"
-    },
-    {
-      "file": "app/capture/scan.tsx",
-      "key": "size",
-      "value": "{52}"
-    },
-    {
-      "file": "app/capture/scan.tsx",
-      "key": "color",
-      "value": "{theme.colors.quaternaryLabel}"
-    },
-    {
-      "file": "app/capture/scan.tsx",
-      "key": "color",
-      "value": "\"secondaryLabel\""
     },
     {
       "file": "app/capture/scan.tsx",
@@ -778,6 +753,16 @@
     },
     {
       "file": "app/capture/sketch.tsx",
+      "key": "width",
+      "value": "0"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "height",
+      "value": "0"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
       "key": "color",
       "value": "pen.current.color"
     },
@@ -798,13 +783,48 @@
     },
     {
       "file": "app/capture/sketch.tsx",
+      "key": "width",
+      "value": "viewport.current.width"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "height",
+      "value": "viewport.current.height"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
       "key": "gap",
       "value": "theme.spacing.lg"
     },
     {
       "file": "app/capture/sketch.tsx",
+      "key": "paddingHorizontal",
+      "value": "16"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "paddingTop",
+      "value": "headerHeight + 12"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "paddingBottom",
+      "value": "insets.bottom + 16"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "gap",
+      "value": "16"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
       "key": "backgroundColor",
       "value": "theme.colors.secondarySystemGroupedBackground"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "borderRadius",
+      "value": "32"
     },
     {
       "file": "app/capture/sketch.tsx",
@@ -843,93 +863,58 @@
     },
     {
       "file": "app/capture/sketch.tsx",
-      "key": "padding",
-      "value": "theme.spacing.lg"
-    },
-    {
-      "file": "app/capture/sketch.tsx",
-      "key": "gap",
-      "value": "theme.spacing.xl"
-    },
-    {
-      "file": "app/capture/sketch.tsx",
-      "key": "gap",
-      "value": "theme.spacing.md"
-    },
-    {
-      "file": "app/capture/sketch.tsx",
       "key": "width",
-      "value": "26"
+      "value": "44"
     },
     {
       "file": "app/capture/sketch.tsx",
       "key": "height",
-      "value": "26"
+      "value": "44"
     },
     {
       "file": "app/capture/sketch.tsx",
-      "key": "borderRadius",
-      "value": "13"
+      "key": "size",
+      "value": "{22}"
     },
     {
       "file": "app/capture/sketch.tsx",
-      "key": "backgroundColor",
-      "value": "width === value ? theme.colors.systemFill : 'transparent'"
-    },
-    {
-      "file": "app/capture/sketch.tsx",
-      "key": "width",
-      "value": "value + 4"
-    },
-    {
-      "file": "app/capture/sketch.tsx",
-      "key": "height",
-      "value": "value + 4"
-    },
-    {
-      "file": "app/capture/sketch.tsx",
-      "key": "borderRadius",
-      "value": "(value + 4) / 2"
-    },
-    {
-      "file": "app/capture/sketch.tsx",
-      "key": "backgroundColor",
-      "value": "theme.colors.label"
-    },
-    {
-      "file": "app/capture/sketch.tsx",
-      "key": "gap",
-      "value": "theme.spacing.md"
+      "key": "color",
+      "value": "{theme.colors.onBackdrop}"
     },
     {
       "file": "app/capture/sketch.tsx",
       "key": "width",
-      "value": "26"
+      "value": "44"
     },
     {
       "file": "app/capture/sketch.tsx",
       "key": "height",
-      "value": "26"
+      "value": "44"
     },
     {
       "file": "app/capture/sketch.tsx",
-      "key": "borderRadius",
-      "value": "13"
+      "key": "size",
+      "value": "{22}"
     },
     {
       "file": "app/capture/sketch.tsx",
-      "key": "backgroundColor",
-      "value": "theme.accent(name)"
+      "key": "color",
+      "value": "{theme.colors.onBackdrop}"
     },
     {
       "file": "app/capture/sketch.tsx",
-      "key": "borderWidth",
-      "value": "accent === name ? 3 : 0"
+      "key": "left",
+      "value": "20"
     },
     {
       "file": "app/capture/sketch.tsx",
-      "key": "borderColor",
-      "value": "theme.colors.label"
+      "key": "right",
+      "value": "20"
+    },
+    {
+      "file": "app/capture/sketch.tsx",
+      "key": "top",
+      "value": "20"
     },
     {
       "file": "app/capture/voice.tsx",
@@ -963,28 +948,68 @@
     },
     {
       "file": "app/capture/voice.tsx",
-      "key": "padding",
-      "value": "theme.spacing.xl"
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "paddingTop",
+      "value": "headerHeight + theme.spacing.md"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "paddingBottom",
+      "value": "insets.bottom + theme.spacing.lg"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "paddingTop",
+      "value": "40"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "paddingBottom",
+      "value": "32"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "paddingHorizontal",
+      "value": "20"
     },
     {
       "file": "app/capture/voice.tsx",
       "key": "gap",
-      "value": "theme.spacing.xxl"
+      "value": "16"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "borderRadius",
+      "value": "32"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
     },
     {
       "file": "app/capture/voice.tsx",
       "key": "gap",
-      "value": "theme.spacing.sm"
+      "value": "4"
     },
     {
       "file": "app/capture/voice.tsx",
       "key": "color",
-      "value": "theme.hex.onBackdrop"
+      "value": "theme.hex.label"
     },
     {
       "file": "app/capture/voice.tsx",
       "key": "color",
-      "value": "\"secondaryOnBackdrop\""
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "height",
+      "value": "{100}"
     },
     {
       "file": "app/capture/voice.tsx",
@@ -1014,7 +1039,7 @@
     {
       "file": "app/create.tsx",
       "key": "marginHorizontal",
-      "value": "theme.spacing.sm"
+      "value": "theme.spacing.lg"
     },
     {
       "file": "app/create.tsx",
@@ -1068,6 +1093,11 @@
     },
     {
       "file": "app/create.tsx",
+      "key": "maxHeight",
+      "value": "50"
+    },
+    {
+      "file": "app/create.tsx",
       "key": "placeholderTextColor",
       "value": "{theme.colors.placeholderText}"
     },
@@ -1088,33 +1118,43 @@
     },
     {
       "file": "app/create.tsx",
+      "key": "paddingHorizontal",
+      "value": "20"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "paddingBottom",
+      "value": "20"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "gap",
+      "value": "16"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "gap",
+      "value": "8"
+    },
+    {
+      "file": "app/create.tsx",
       "key": "minHeight",
-      "value": "theme.controlHeight.chip + theme.spacing.lg"
+      "value": "40"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "borderRadius",
+      "value": "20"
     },
     {
       "file": "app/create.tsx",
       "key": "paddingHorizontal",
-      "value": "theme.spacing.xl"
+      "value": "12"
     },
     {
       "file": "app/create.tsx",
-      "key": "gap",
-      "value": "theme.spacing.sm"
-    },
-    {
-      "file": "app/create.tsx",
-      "key": "paddingHorizontal",
-      "value": "theme.spacing.xl"
-    },
-    {
-      "file": "app/create.tsx",
-      "key": "paddingVertical",
-      "value": "theme.spacing.md"
-    },
-    {
-      "file": "app/create.tsx",
-      "key": "gap",
-      "value": "theme.spacing.md"
+      "key": "backgroundColor",
+      "value": "theme.hex.systemFill"
     },
     {
       "file": "app/create.tsx",
@@ -1150,6 +1190,16 @@
       "file": "app/create.tsx",
       "key": "color",
       "value": "{theme.colors.tertiaryLabel}"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "gap",
+      "value": "8"
+    },
+    {
+      "file": "app/create.tsx",
+      "key": "gap",
+      "value": "8"
     },
     {
       "file": "app/create.tsx",
@@ -1244,12 +1294,17 @@
     {
       "file": "app/folder.tsx",
       "key": "gap",
-      "value": "theme.spacing.sm"
+      "value": "10"
     },
     {
       "file": "app/folder.tsx",
       "key": "placeholderTextColor",
       "value": "{theme.colors.placeholderText}"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "lineHeight",
+      "value": "20"
     },
     {
       "file": "app/folder.tsx",
@@ -1284,7 +1339,7 @@
     {
       "file": "app/folder.tsx",
       "key": "marginHorizontal",
-      "value": "theme.spacing.lg"
+      "value": "0"
     },
     {
       "file": "app/folder.tsx",
@@ -1294,12 +1349,12 @@
     {
       "file": "app/folder.tsx",
       "key": "marginHorizontal",
-      "value": "theme.spacing.lg"
+      "value": "0"
     },
     {
       "file": "app/folder.tsx",
       "key": "gap",
-      "value": "theme.spacing.md"
+      "value": "10"
     },
     {
       "file": "app/folder.tsx",
@@ -1308,28 +1363,18 @@
     },
     {
       "file": "app/folder.tsx",
-      "key": "marginHorizontal",
-      "value": "theme.spacing.lg"
+      "key": "columnGap",
+      "value": "16"
     },
     {
       "file": "app/folder.tsx",
-      "key": "gap",
-      "value": "theme.spacing.md"
-    },
-    {
-      "file": "app/folder.tsx",
-      "key": "paddingHorizontal",
-      "value": "theme.spacing.xs"
+      "key": "rowGap",
+      "value": "8"
     },
     {
       "file": "app/folder.tsx",
       "key": "borderColor",
-      "value": "selected ? localColors.white : 'transparent'"
-    },
-    {
-      "file": "app/folder.tsx",
-      "key": "opacity",
-      "value": "pressed ? 0.6 : 1"
+      "value": "selected ? theme.hex.label : 'transparent'"
     },
     {
       "file": "app/folder.tsx",
@@ -1338,8 +1383,13 @@
     },
     {
       "file": "app/folder.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.6 : 1"
+    },
+    {
+      "file": "app/folder.tsx",
       "key": "gap",
-      "value": "theme.spacing.md"
+      "value": "10"
     },
     {
       "file": "app/folder.tsx",
@@ -1348,33 +1398,18 @@
     },
     {
       "file": "app/folder.tsx",
-      "key": "marginHorizontal",
-      "value": "theme.spacing.lg"
-    },
-    {
-      "file": "app/folder.tsx",
       "key": "backgroundColor",
-      "value": "theme.hex.systemFill"
-    },
-    {
-      "file": "app/folder.tsx",
-      "key": "borderRadius",
-      "value": "theme.radius.group"
+      "value": "'transparent'"
     },
     {
       "file": "app/folder.tsx",
       "key": "minHeight",
-      "value": "theme.controlHeight.row"
-    },
-    {
-      "file": "app/folder.tsx",
-      "key": "paddingHorizontal",
-      "value": "theme.spacing.lg"
+      "value": "20"
     },
     {
       "file": "app/folder.tsx",
       "key": "gap",
-      "value": "17"
+      "value": "theme.spacing.sm"
     },
     {
       "file": "app/folder.tsx",
@@ -1388,13 +1423,8 @@
     },
     {
       "file": "app/folder.tsx",
-      "key": "size",
-      "value": "{16}"
-    },
-    {
-      "file": "app/folder.tsx",
-      "key": "color",
-      "value": "{theme.colors.secondaryLabel}"
+      "key": "lineHeight",
+      "value": "20"
     },
     {
       "file": "app/folder.tsx",
@@ -1419,17 +1449,17 @@
     {
       "file": "app/folder.tsx",
       "key": "width",
-      "value": "boxPrimitives.size['44']"
+      "value": "36"
     },
     {
       "file": "app/folder.tsx",
       "key": "height",
-      "value": "boxPrimitives.size['44']"
+      "value": "36"
     },
     {
       "file": "app/folder.tsx",
       "key": "borderRadius",
-      "value": "22"
+      "value": "18"
     },
     {
       "file": "app/folder.tsx",
@@ -1439,17 +1469,17 @@
     {
       "file": "app/folder.tsx",
       "key": "width",
-      "value": "boxPrimitives.size['32']"
+      "value": "36"
     },
     {
       "file": "app/folder.tsx",
       "key": "height",
-      "value": "boxPrimitives.size['32']"
+      "value": "36"
     },
     {
       "file": "app/folder.tsx",
       "key": "borderRadius",
-      "value": "boxPrimitives.rounding['16']"
+      "value": "18"
     },
     {
       "file": "app/folder.tsx",
@@ -1503,28 +1533,8 @@
     },
     {
       "file": "app/note-info.tsx",
-      "key": "gap",
-      "value": "theme.spacing.xs"
-    },
-    {
-      "file": "app/note-info.tsx",
-      "key": "paddingHorizontal",
-      "value": "theme.spacing.xl"
-    },
-    {
-      "file": "app/note-info.tsx",
-      "key": "color",
-      "value": "\"secondaryOnBackdrop\""
-    },
-    {
-      "file": "app/note-info.tsx",
-      "key": "color",
-      "value": "\"onBackdrop\""
-    },
-    {
-      "file": "app/note-info.tsx",
-      "key": "marginVertical",
-      "value": "theme.spacing.xl"
+      "key": "marginBottom",
+      "value": "theme.spacing.lg"
     },
     {
       "file": "app/note-info.tsx",
@@ -1534,7 +1544,7 @@
     {
       "file": "app/note-info.tsx",
       "key": "gap",
-      "value": "theme.spacing.sm"
+      "value": "theme.spacing.md"
     },
     {
       "file": "app/note-info.tsx",
@@ -1550,11 +1560,6 @@
       "file": "app/note/[id].tsx",
       "key": "color",
       "value": "\"secondaryLabel\""
-    },
-    {
-      "file": "app/note/[id].tsx",
-      "key": "size",
-      "value": "{19}"
     },
     {
       "file": "app/note/[id].tsx",
@@ -1579,7 +1584,7 @@
     {
       "file": "app/note/[id].tsx",
       "key": "color",
-      "value": "{theme.colors.label}"
+      "value": "{theme.colors.onBackdrop}"
     },
     {
       "file": "app/note/[id].tsx",
@@ -1659,7 +1664,12 @@
     {
       "file": "app/note/[id].tsx",
       "key": "paddingBottom",
-      "value": "theme.spacing.xxxl"
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "minHeight",
+      "value": "note.blocks.some(block => block.type === 'checklist') ? 554 : 390"
     },
     {
       "file": "app/note/[id].tsx",
@@ -1715,26 +1725,6 @@
       "file": "app/note/[id].tsx",
       "key": "gap",
       "value": "theme.spacing.sm"
-    },
-    {
-      "file": "app/note/[id].tsx",
-      "key": "color",
-      "value": "\"secondaryLabel\""
-    },
-    {
-      "file": "app/note/[id].tsx",
-      "key": "paddingHorizontal",
-      "value": "theme.spacing.lg"
-    },
-    {
-      "file": "app/note/[id].tsx",
-      "key": "paddingTop",
-      "value": "theme.spacing.sm"
-    },
-    {
-      "file": "app/note/[id].tsx",
-      "key": "paddingBottom",
-      "value": "keyboard\n                ? theme.spacing.sm\n                : Math.max(theme.spacing.lg, insets.bottom)"
     },
     {
       "file": "app/reminder.tsx",
@@ -1793,18 +1783,38 @@
     },
     {
       "file": "app/reminder.tsx",
+      "key": "minHeight",
+      "value": "62"
+    },
+    {
+      "file": "app/reminder.tsx",
       "key": "paddingHorizontal",
-      "value": "theme.spacing.lg"
+      "value": "16"
     },
     {
       "file": "app/reminder.tsx",
-      "key": "paddingVertical",
-      "value": "theme.spacing.sm"
+      "key": "borderTopWidth",
+      "value": "index ? 1 : 0"
     },
     {
       "file": "app/reminder.tsx",
-      "key": "gap",
-      "value": "theme.spacing.md"
+      "key": "borderTopColor",
+      "value": "theme.hex.separator"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "marginHorizontal",
+      "value": "16"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "marginBottom",
+      "value": "28"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "size",
+      "value": "\"large\""
     },
     {
       "file": "app/reminders.tsx",
@@ -1968,18 +1978,48 @@
     },
     {
       "file": "src/components/Checkbox.tsx",
+      "key": "width",
+      "value": "size"
+    },
+    {
+      "file": "src/components/Checkbox.tsx",
+      "key": "height",
+      "value": "size"
+    },
+    {
+      "file": "src/components/Checkbox.tsx",
+      "key": "borderRadius",
+      "value": "size / 2"
+    },
+    {
+      "file": "src/components/Checkbox.tsx",
+      "key": "borderWidth",
+      "value": "checked ? 0 : 1.5"
+    },
+    {
+      "file": "src/components/Checkbox.tsx",
+      "key": "borderColor",
+      "value": "theme.hex.secondaryLabel"
+    },
+    {
+      "file": "src/components/Checkbox.tsx",
+      "key": "backgroundColor",
+      "value": "checked ? theme.hex.accent : 'transparent'"
+    },
+    {
+      "file": "src/components/Checkbox.tsx",
       "key": "opacity",
       "value": "pressed ? 0.4 : 1"
     },
     {
       "file": "src/components/Checkbox.tsx",
       "key": "size",
-      "value": "{size}"
+      "value": "{16}"
     },
     {
       "file": "src/components/Checkbox.tsx",
       "key": "color",
-      "value": "{checked ? theme.colors.accent : theme.colors.tertiaryLabel}"
+      "value": "{theme.colors.label}"
     },
     {
       "file": "src/components/Chip.tsx",
@@ -2253,13 +2293,18 @@
     },
     {
       "file": "src/components/EmptyState.tsx",
-      "key": "padding",
+      "key": "paddingVertical",
       "value": "theme.spacing.xxxl"
     },
     {
       "file": "src/components/EmptyState.tsx",
+      "key": "paddingHorizontal",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
       "key": "gap",
-      "value": "theme.spacing.md"
+      "value": "theme.spacing.lg"
     },
     {
       "file": "src/components/EmptyState.tsx",
@@ -2298,8 +2343,8 @@
     },
     {
       "file": "src/components/EmptyState.tsx",
-      "key": "marginTop",
-      "value": "theme.spacing.sm"
+      "key": "size",
+      "value": "\"large\""
     },
     {
       "file": "src/components/EmptyState.tsx",
@@ -2309,7 +2354,7 @@
     {
       "file": "src/components/EmptyState.tsx",
       "key": "maxWidth",
-      "value": "280"
+      "value": "286"
     },
     {
       "file": "src/components/Fab.tsx",
@@ -2409,7 +2454,17 @@
     {
       "file": "src/components/Finch.stories.tsx",
       "key": "right",
-      "value": "{<><HeaderGlass><IconButton name=\"magnifyingglass\" accessibilityLabel=\"Поиск\" /></HeaderGlass><Fab compact onPress={() => {}} /></>}"
+      "value": "{<><HeaderGlass diameter={52}><IconButton style={{ width: 52, height: 52 }} name=\"magnifyingglass\" accessibilityLabel=\"Поиск\" /></HeaderGlass><Fab compact diameter={56} onPress={() => {}} /></>}"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "width",
+      "value": "52"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "height",
+      "value": "52"
     },
     {
       "file": "src/components/Finch.stories.tsx",
@@ -2450,6 +2505,16 @@
       "file": "src/components/Finch.stories.tsx",
       "key": "paddingTop",
       "value": "150"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "gap",
+      "value": "12"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "paddingTop",
+      "value": "59"
     },
     {
       "file": "src/components/Finch.stories.tsx",
@@ -2614,17 +2679,17 @@
     {
       "file": "src/components/List.tsx",
       "key": "marginBottom",
-      "value": "theme.spacing.xxxl"
+      "value": "28"
     },
     {
       "file": "src/components/List.tsx",
       "key": "marginHorizontal",
-      "value": "theme.spacing.lg + theme.spacing.lg"
+      "value": "theme.spacing.lg"
     },
     {
       "file": "src/components/List.tsx",
       "key": "marginBottom",
-      "value": "theme.spacing.md"
+      "value": "theme.spacing.sm"
     },
     {
       "file": "src/components/List.tsx",
@@ -2760,6 +2825,11 @@
       "file": "src/components/List.tsx",
       "key": "color",
       "value": "{color}"
+    },
+    {
+      "file": "src/components/List.tsx",
+      "key": "lineHeight",
+      "value": "20"
     },
     {
       "file": "src/components/List.tsx",
@@ -3223,6 +3293,11 @@
     },
     {
       "file": "src/components/NoteBlocks.tsx",
+      "key": "lineHeight",
+      "value": "20"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
       "key": "color",
       "value": "item.done ? theme.colors.secondaryLabel : theme.colors.label"
     },
@@ -3264,12 +3339,17 @@
     {
       "file": "src/components/NoteBlocks.tsx",
       "key": "color",
-      "value": "\"accent\""
+      "value": "\"label\""
     },
     {
       "file": "src/components/NoteBlocks.tsx",
       "key": "padding",
       "value": "0"
+    },
+    {
+      "file": "src/components/NoteBlocks.tsx",
+      "key": "minHeight",
+      "value": "40"
     },
     {
       "file": "src/components/NoteCard.tsx",
@@ -3279,7 +3359,7 @@
     {
       "file": "src/components/NoteCard.tsx",
       "key": "minHeight",
-      "value": "pill ? 72 : 172"
+      "value": "pill ? 72 : layout === 'grid' ? 136 : 172"
     },
     {
       "file": "src/components/NoteCard.tsx",
@@ -3319,7 +3399,7 @@
     {
       "file": "src/components/NoteCard.tsx",
       "key": "gap",
-      "value": "theme.spacing.xs"
+      "value": "layout === 'grid' ? theme.spacing.sm : theme.spacing.lg"
     },
     {
       "file": "src/components/NoteCard.tsx",
@@ -3393,21 +3473,6 @@
     },
     {
       "file": "src/components/NoteCard.tsx",
-      "key": "backgroundColor",
-      "value": "accent"
-    },
-    {
-      "file": "src/components/NoteCard.tsx",
-      "key": "marginRight",
-      "value": "16"
-    },
-    {
-      "file": "src/components/NoteCard.tsx",
-      "key": "borderRadius",
-      "value": "4"
-    },
-    {
-      "file": "src/components/NoteCard.tsx",
       "key": "gap",
       "value": "theme.spacing.sm"
     },
@@ -3453,23 +3518,23 @@
     },
     {
       "file": "src/components/NoteCard.tsx",
-      "key": "backgroundColor",
-      "value": "accent"
-    },
-    {
-      "file": "src/components/NoteCard.tsx",
-      "key": "borderRadius",
-      "value": "theme.radius.pill"
-    },
-    {
-      "file": "src/components/NoteCard.tsx",
-      "key": "size",
-      "value": "{13}"
+      "key": "gap",
+      "value": "4"
     },
     {
       "file": "src/components/NoteCard.tsx",
       "key": "color",
-      "value": "{theme.colors.tertiaryLabel}"
+      "value": "\"secondaryLabel\""
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "size",
+      "value": "{16}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "{theme.colors.label}"
     },
     {
       "file": "src/components/NoteCard.tsx",
@@ -3658,18 +3723,8 @@
     },
     {
       "file": "src/components/NoteList.tsx",
-      "key": "color",
-      "value": "\"secondaryOnBackdrop\""
-    },
-    {
-      "file": "src/components/NoteList.tsx",
       "key": "gap",
       "value": "theme.spacing.md"
-    },
-    {
-      "file": "src/components/NoteList.tsx",
-      "key": "height",
-      "value": "Math.round(140 * Math.min(fontScale, 2))"
     },
     {
       "file": "src/components/NoteList.tsx",
@@ -3944,12 +3999,22 @@
     {
       "file": "src/components/RootHeader.tsx",
       "key": "minHeight",
-      "value": "boxPrimitives.size['52']"
+      "value": "count === undefined ? 68 : 104"
     },
     {
       "file": "src/components/RootHeader.tsx",
       "key": "gap",
-      "value": "theme.spacing.sm"
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/RootHeader.tsx",
+      "key": "minHeight",
+      "value": "22"
+    },
+    {
+      "file": "src/components/RootHeader.tsx",
+      "key": "color",
+      "value": "\"onBackdrop\""
     },
     {
       "file": "src/components/RootHeader.tsx",
@@ -3974,7 +4039,7 @@
     {
       "file": "src/components/RootHeader.tsx",
       "key": "gap",
-      "value": "theme.spacing.sm"
+      "value": "theme.spacing.md"
     },
     {
       "file": "src/components/ScreenBackdrop.tsx",
@@ -4289,7 +4354,7 @@
     {
       "file": "src/components/SegmentedControl.tsx",
       "key": "fontStyle",
-      "value": "{{\n        fontFamily: Platform.OS === 'ios' ? undefined : 'System',\n        color: theme.hex.onBackdrop,\n        fontSize: 15,\n      }}"
+      "value": "{{\n        fontFamily: Platform.OS === 'ios' ? undefined : 'System',\n        color: theme.hex.onBackdrop,\n        fontSize: 13,\n      }}"
     },
     {
       "file": "src/components/SegmentedControl.tsx",
@@ -4304,7 +4369,7 @@
     {
       "file": "src/components/SegmentedControl.tsx",
       "key": "fontSize",
-      "value": "15"
+      "value": "13"
     },
     {
       "file": "src/components/SegmentedControl.tsx",
@@ -4314,7 +4379,7 @@
     {
       "file": "src/components/SegmentedControl.tsx",
       "key": "fontWeight",
-      "value": "'600'"
+      "value": "'500'"
     },
     {
       "file": "src/components/SegmentedControl.tsx",

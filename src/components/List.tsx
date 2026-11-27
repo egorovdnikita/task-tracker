@@ -78,7 +78,7 @@ export const ListSection = ({
   return (
     // Зазор между группами крупный: остров держится вместе не рамкой, а
     // воздухом вокруг. При тесной расстановке две группы читаются одной.
-    <View style={[{ marginBottom: theme.spacing.xxxl }, style]}>
+    <View style={[{ marginBottom: 28 }, style]}>
       {header ? (
         /*
           Шапка секции — как у Opal: белая, 17 semibold, левый край на одной
@@ -89,13 +89,13 @@ export const ListSection = ({
           style={[
             styles.header,
             {
-              marginHorizontal: theme.spacing.lg + theme.spacing.lg,
-              marginBottom: theme.spacing.md,
+              marginHorizontal: theme.spacing.lg,
+              marginBottom: theme.spacing.sm,
               gap: theme.spacing.sm,
             },
           ]}
         >
-          <Text variant="headline" weight="medium" color="onBackdrop" style={styles.grow}>
+          <Text variant="headline" weight="regular" color="onBackdrop" style={styles.grow}>
             {header}
           </Text>
 
@@ -304,7 +304,7 @@ export const ListRow = ({
       <View style={styles.labels}>
         {/* Заголовок строки — 17 regular, подпись — 15: замер Opal. Полужирный
             заголовок был нашим решением и делал список тяжелее эталона. */}
-        <Text variant="callout" color={color}>
+        <Text variant="callout" color={color} style={{ lineHeight: 20 }}>
           {title}
         </Text>
         {subtitle ? (
@@ -315,7 +315,7 @@ export const ListRow = ({
       </View>
 
       {value ? (
-        <Text variant="subheadline" color="secondaryLabel" numberOfLines={1}>
+        <Text variant="footnote" color="secondaryLabel" numberOfLines={1}>
           {value}
         </Text>
       ) : null}

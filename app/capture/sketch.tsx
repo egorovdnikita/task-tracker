@@ -1,10 +1,14 @@
+import { sketchViewport } from '../../src/utils/sketchViewport';
+import { useHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { confirmDestructive } from '../../src/utils/actionSheet';
 import { ScreenBackdrop } from '../../src/components/ScreenBackdrop';
 import React, { useMemo, useRef, useState } from 'react';
 import { PanResponder, Pressable, StyleSheet, View, type LayoutChangeEvent } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
 
-import { Glass, IconButton, Text, headerItems } from '../../src/components';
+import { Fab, HeaderGlass, MenuButton, Symbol, IconButton, Text, headerItems } from '../../src/components';
 import { useTheme } from '../../src/theme';
 import { makeId, makeSketchBlock } from '../../src/utils/blocks';
 import type { SketchStroke } from '../../src/types';
@@ -40,6 +44,8 @@ export default function SketchCaptureScreen() {
     tag?: string;
   }>();
   const theme = useTheme();
+  const headerHeight = useHeaderHeight();
+  const insets = useSafeAreaInsets();
 
   const notes = useNotesStore((s) => s.notes);
   const setBlocks = useNotesStore((s) => s.setBlocks);
@@ -66,6 +72,7 @@ export default function SketchCaptureScreen() {
   pen.current = { width, color: theme.accent(accent) };
 
   const path = useRef('');
+  const viewport = useRef(sketchViewport({ width: 0, height: 0 }, existing));
 
   const responder = useMemo(
     () =>
@@ -73,12 +80,14 @@ export default function SketchCaptureScreen() {
         onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: () => true,
         onPanResponderGrant: (event) => {
-          const { locationX, locationY } = event.nativeEvent;
+          const point = viewport.current.point(event.nativeEvent.locationX, event.nativeEvent.locationY);
+          const locationX = point.x, locationY = point.y;
           path.current = `M${locationX.toFixed(1)},${locationY.toFixed(1)}`;
           setCurrent(path.current);
         },
         onPanResponderMove: (event) => {
-          const { locationX, locationY } = event.nativeEvent;
+          const point = viewport.current.point(event.nativeEvent.locationX, event.nativeEvent.locationY);
+          const locationX = point.x, locationY = point.y;
           path.current += ` L${locationX.toFixed(1)},${locationY.toFixed(1)}`;
           setCurrent(path.current);
         },
@@ -100,7 +109,8 @@ export default function SketchCaptureScreen() {
 
   const measure = (event: LayoutChangeEvent) => {
     const { width: w, height: h } = event.nativeEvent.layout;
-    setCanvas({ width: w, height: h });
+    viewport.current = sketchViewport({ width: w, height: h }, existing);
+    setCanvas({ width: viewport.current.width, height: viewport.current.height });
   };
 
   const finish = () => {
@@ -164,16 +174,16 @@ export default function SketchCaptureScreen() {
         }}
       />
 
-      <View style={styles.root}>
+      <View style={[styles.root, { paddingHorizontal: 16, paddingTop: headerHeight + 12, paddingBottom: insets.bottom + 16, gap: 16 }]}>
         <View
           onLayout={measure}
           {...responder.panHandlers}
           style={[
             styles.canvas,
-            { backgroundColor: theme.colors.secondarySystemGroupedBackground },
+            { backgroundColor: theme.colors.secondarySystemGroupedBackground, borderRadius: 32, overflow: 'hidden' },
           ]}
         >
-          <Svg style={StyleSheet.absoluteFill}>
+          <Svg style={StyleSheet.absoluteFill} viewBox={`0 0 ${Math.max(1, canvas.width)} ${Math.max(1, canvas.height)}`} preserveAspectRatio="xMinYMin meet">
             {strokes.map((stroke) => (
               <Path
                 key={stroke.id}
@@ -207,62 +217,12 @@ export default function SketchCaptureScreen() {
           ) : null}
         </View>
 
-        <Glass
-          material="chrome"
-          variant="regular"
-          style={[styles.tools, { padding: theme.spacing.lg, gap: theme.spacing.xl }]}
-        >
-          <View style={[styles.group, { gap: theme.spacing.md }]}>
-            {WIDTHS.map((value) => (
-              <Pressable
-                key={value}
-                accessibilityRole="button"
-                accessibilityLabel={`Толщина ${value}`}
-                accessibilityState={{ selected: width === value }}
-                onPress={() => setWidth(value)}
-                hitSlop={8}
-                style={{
-                  width: 26,
-                  height: 26,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 13,
-                  backgroundColor: width === value ? theme.colors.systemFill : 'transparent',
-                }}
-              >
-                <View
-                  style={{
-                    width: value + 4,
-                    height: value + 4,
-                    borderRadius: (value + 4) / 2,
-                    backgroundColor: theme.colors.label,
-                  }}
-                />
-              </Pressable>
-            ))}
-          </View>
-
-          <View style={[styles.group, { gap: theme.spacing.md }]}>
-            {PEN_ACCENTS.map((name) => (
-              <Pressable
-                key={name}
-                accessibilityRole="button"
-                accessibilityLabel={`Цвет ${name}`}
-                accessibilityState={{ selected: accent === name }}
-                onPress={() => setAccent(name)}
-                hitSlop={8}
-                style={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: 13,
-                  backgroundColor: theme.accent(name),
-                  borderWidth: accent === name ? 3 : 0,
-                  borderColor: theme.colors.label,
-                }}
-              />
-            ))}
-          </View>
-        </Glass>
+        <View style={styles.tools}>
+          <HeaderGlass><MenuButton accessibilityLabel="Толщина пера" items={() => WIDTHS.map(value => ({ title: `Толщина ${value}`, checked: width === value, onPress: () => setWidth(value) }))} style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}><Symbol name="pencil" size={22} color={theme.colors.onBackdrop} /></MenuButton></HeaderGlass>
+          <HeaderGlass><MenuButton accessibilityLabel="Цвет пера" items={() => PEN_ACCENTS.map(name => ({ title: name === 'blue' ? 'Синий' : name === 'red' ? 'Красный' : name === 'orange' ? 'Оранжевый' : name === 'green' ? 'Зелёный' : 'Фиолетовый', checked: accent === name, onPress: () => setAccent(name) }))} style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}><Symbol name="scribble" size={22} color={theme.colors.onBackdrop} /></MenuButton></HeaderGlass>
+          <HeaderGlass><IconButton name="trash" accessibilityLabel="Очистить рисунок" disabled={!strokes.length} onPress={() => confirmDestructive('Очистить рисунок?', 'Штрихи в текущем черновике будут удалены.', 'Очистить', () => setStrokes([]))} /></HeaderGlass>
+          <Fab compact icon="checkmark" accessibilityLabel="Готово" disabled={!strokes.length} onPress={finish} />
+        </View>
       </View>
     </>
   );
@@ -271,7 +231,7 @@ export default function SketchCaptureScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   canvas: { flex: 1 },
-  hint: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
-  tools: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' },
+  hint: { position: 'absolute', left: 20, right: 20, top: 20, alignItems: 'center' },
+  tools: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   group: { flexDirection: 'row', alignItems: 'center' },
 });

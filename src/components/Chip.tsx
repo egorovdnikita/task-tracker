@@ -66,8 +66,8 @@ export const Chip = ({
       ) : null}
 
       <Text
-        variant="callout"
-        weight={selected ? 'semibold' : 'regular'}
+        variant="footnote"
+        weight="regular"
         color={outlined ? 'label' : selected ? 'label' : 'secondaryLabel'}
         style={selected && accent && !outlined ? { color: accentHex } : undefined}
         numberOfLines={1}

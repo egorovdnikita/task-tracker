@@ -28,7 +28,7 @@ export const Checkbox = ({
   checked,
   onChange,
   accessibilityLabel,
-  size = 22,
+  size = 24,
   disabled = false,
   style,
 }: CheckboxProps) => {
@@ -42,13 +42,9 @@ export const Checkbox = ({
       disabled={disabled}
       onPress={() => onChange(!checked)}
       hitSlop={Math.max(0, (theme.metrics.hitSlop - size) / 2)}
-      style={({ pressed }) => [{ opacity: pressed ? 0.4 : 1 }, style]}
+      style={({ pressed }) => [{ width: size, height: size, borderRadius: size / 2, alignItems: 'center', justifyContent: 'center', borderWidth: checked ? 0 : 1.5, borderColor: theme.hex.secondaryLabel, backgroundColor: checked ? theme.hex.accent : 'transparent', opacity: pressed ? 0.4 : 1 }, style]}
     >
-      <Symbol
-        name={checked ? 'checkmark.circle.fill' : 'circle'}
-        size={size}
-        color={checked ? theme.colors.accent : theme.colors.tertiaryLabel}
-      />
+      {checked ? <Symbol name="checkmark" size={16} color={theme.colors.label} /> : null}
     </Pressable>
   );
 };

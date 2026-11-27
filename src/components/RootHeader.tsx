@@ -1,3 +1,4 @@
+import { MenuButton, type MenuItem } from './Menu';
 import { NumberText } from './NumberText';
 import { localColors } from '../theme/localColors';
 import { boxPrimitives } from '../vendor/box-ui/primitives';
@@ -12,6 +13,8 @@ export type RootHeaderProps = {
   /** Кнопки справа в строке заголовка: капсула управления, круг «+». */
   right?: React.ReactNode;
   count?: number;
+  menu?: () => MenuItem[];
+  menuLabel?: string;
   style?: ViewStyle;
 };
 
@@ -25,19 +28,19 @@ export type RootHeaderProps = {
  * строкам. Шапка лежит первой строкой списка и уезжает вместе с ним; у
  * корней вкладок системная шапка скрыта.
  */
-export const RootHeader = ({ title, right, count, style }: RootHeaderProps) => {
+export const RootHeader = ({ title, right, count, menu, menuLabel, style }: RootHeaderProps) => {
   const theme = useTheme();
 
   return (
-    <View style={[styles.row, { minHeight: boxPrimitives.size['52'], gap: theme.spacing.sm }, style]}>
+    <View style={[styles.row, { minHeight: count === undefined ? 68 : 104, gap: theme.spacing.md }, style]}>
       <View style={styles.title}>
-        <Text variant={count === undefined ? 'title1' : 'body'} weight="medium" color="onBackdrop" numberOfLines={1} accessibilityRole="header">{title}</Text>
+        {menu ? <MenuButton accessibilityLabel={menuLabel ?? title} items={menu} style={{ minHeight: 22 }}><Text variant={count === undefined ? 'title1' : 'body'} weight={count === undefined ? 'medium' : 'regular'} color="onBackdrop" numberOfLines={1} accessibilityRole="header">{title}</Text></MenuButton> : <Text variant={count === undefined ? 'title1' : 'body'} weight={count === undefined ? 'medium' : 'regular'} color="onBackdrop" numberOfLines={1} accessibilityRole="header">{title}</Text>}
         {count === undefined ? null : <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: theme.spacing.sm }}>
           <NumberText style={{ color: localColors.white }}>{String(count).padStart(2, '0')}</NumberText>
           <Text variant="footnote" color="secondaryOnBackdrop">заметок</Text>
         </View>}
       </View>
-      {right ? <View style={[styles.row, { gap: theme.spacing.sm }]}>{right}</View> : null}
+      {right ? <View style={[styles.row, { gap: theme.spacing.md }]}>{right}</View> : null}
     </View>
   );
 };

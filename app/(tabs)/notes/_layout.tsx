@@ -38,7 +38,7 @@ export default function NotesLayout() {
         headerTintColor: theme.hex.onBackdrop,
         // Заголовок белый, а не акцентный: без явного цвета нативная шапка
         // красит его в `headerTintColor`, и название экрана спорило с кнопками.
-        headerTitleStyle: { ...theme.headerText('headline', 'semibold'), color: theme.hex.onBackdrop },
+        headerTitleStyle: { ...theme.headerText('headline', 'medium'), color: theme.hex.onBackdrop },
         contentStyle: { backgroundColor: theme.hex.systemGroupedBackground },
       })}
     />

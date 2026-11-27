@@ -61,7 +61,7 @@ export default function NotificationsScreen() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.metrics.tabBar + theme.spacing.xxxl }}
       >
-        <ListSection separatorInset={GLYPH_SEPARATOR_INSET}
+        <ListSection separatorInset={GLYPH_SEPARATOR_INSET} header="Доступ"
           footer={
             permission === 'granted'
               ? 'Напоминание приходит баннером, даже когда приложение открыто.'

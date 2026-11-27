@@ -1,6 +1,7 @@
+import { ScreenScrollView as ScrollView } from '../src/components/ScreenScrollView';
 import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import { Button, IconButton, ListRow, ListSection, StatRing, Text, headerItems } from '../src/components';
@@ -52,7 +53,7 @@ export default function NoteInfoSheet() {
         style={{ flex: 1 }}
         automaticallyAdjustKeyboardInsets
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingTop: theme.spacing.sm, paddingBottom: theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingTop: theme.spacing.md, paddingBottom: theme.spacing.xxxl }}
       >
 
         <View

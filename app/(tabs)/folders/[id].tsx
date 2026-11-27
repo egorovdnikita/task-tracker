@@ -187,7 +187,7 @@ export default function FolderScreen() {
         }
         onDelete={(noteId) => trashWithUndo([noteId])}
         onTogglePin={togglePinned}
-        contentInsetBottom={theme.metrics.tabBar + (selection.active ? 64 : 0)}
+        contentInsetBottom={selection.active ? 64 : 0}
         ListHeaderComponent={
           !selection.active ? (
             // Поиск под заголовком, как в корневом списке: одно место на всех

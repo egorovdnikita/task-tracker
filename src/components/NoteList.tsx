@@ -1,10 +1,12 @@
+import { HeaderHeightContext } from 'expo-router/react-navigation';
 import { noteSections } from '../utils/noteSections';
 import { localColors } from '../theme/localColors';
 import { boxPrimitives } from '../vendor/box-ui/primitives';
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useContext } from 'react';
 import {
   Pressable,
   SectionList,
+  ScrollView,
   StyleSheet,
   View,
   useWindowDimensions,
@@ -77,6 +79,7 @@ export const NoteList = ({
 }: NoteListProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const header = useContext(HeaderHeightContext) ?? 0;
   const { fontScale } = useWindowDimensions();
 
   // Одинокая карточка сеткой не выкладывается: половина ширины занята, вторая
@@ -87,6 +90,18 @@ export const NoteList = ({
 
   const sections = useMemo<Section[]>(() => noteSections(notes, columns), [notes, columns]);
 
+  const compact = layout === 'list' && notes.some(note => note.pinned);
+  const contentStyle = {
+    paddingHorizontal: theme.spacing.lg,
+    paddingTop: Math.max(header, insets.top) + (header ? 12 : 0),
+    paddingBottom: insets.bottom + contentInsetBottom + 12,
+    gap: compact ? 8 : 16,
+    flexGrow: 1,
+  };
+  if (!notes.length) return <ScrollView style={style} contentInsetAdjustmentBehavior="never" automaticallyAdjustContentInsets={false} contentContainerStyle={contentStyle} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">
+    {ListHeaderComponent}
+    <View style={{ flex: 1, justifyContent: 'center' }}>{ListEmptyComponent}</View>
+  </ScrollView>;
   return (
     <SectionList
       style={style}
@@ -95,16 +110,11 @@ export const NoteList = ({
       stickySectionHeadersEnabled={false}
       // Прозрачная шапка не занимает места в потоке: без этого первая строка
       // списка — ряд чипов или карточка — уезжает под размытие и статус-бар.
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={{
-        paddingHorizontal: theme.spacing.lg,
-        paddingTop: theme.spacing.sm,
-        paddingBottom: insets.bottom + contentInsetBottom + theme.spacing.xxxl,
-        gap: theme.spacing.md,
-        flexGrow: 1,
-      }}
+      contentInsetAdjustmentBehavior="never"
+      automaticallyAdjustContentInsets={false}
+      contentContainerStyle={contentStyle}
       // `null` в RN 0.88 слоты списка больше не принимают — только «нет».
-      ListHeaderComponent={ListHeaderComponent ?? undefined}
+      ListHeaderComponent={ListHeaderComponent ? <View style={{ marginBottom: compact ? 8 : 0 }}>{ListHeaderComponent}</View> : undefined}
       ListEmptyComponent={ListEmptyComponent ?? undefined}
       // Клавиатура закрывается перетаскиванием списка — системное поведение
       // экранов с поиском.
@@ -117,7 +127,7 @@ export const NoteList = ({
           <View
             style={[
               styles.sectionHeader,
-              { gap: theme.spacing.sm },
+              { gap: theme.spacing.sm, marginTop: compact && section.title === 'Ранее' ? 8 : 0 },
             ]}
           >
             <Text variant="headline" weight="regular" color="onBackdrop">{section.title}</Text>

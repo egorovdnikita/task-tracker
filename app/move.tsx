@@ -1,6 +1,7 @@
+import { ScreenScrollView as ScrollView } from '../src/components/ScreenScrollView';
 import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import React, { useMemo } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import { IconButton, ListRow, ListSection, headerItems } from '../src/components';
@@ -49,7 +50,7 @@ export default function MoveScreen() {
         style={{ flex: 1 }}
         automaticallyAdjustKeyboardInsets
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingTop: theme.spacing.md, paddingBottom: theme.spacing.xxxl }}
       >
         <ListSection tone="sheet">
           <ListRow

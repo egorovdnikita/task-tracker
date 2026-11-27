@@ -1,69 +1,31 @@
-import { localColors } from '../../src/theme/localColors';
 import React from 'react';
-import { NativeTabs } from 'expo-router/native-tabs';
+import { Tabs } from 'expo-router';
+import { getFocusedRouteNameFromRoute } from 'expo-router/react-navigation';
+import { FinchTabBar, FinchTabBarPosition, type FinchTab } from '../../src/components/FinchTabBar';
 
-/**
- * Панель вкладок — настоящий `UITabBarController`.
- *
- * `NativeTabs` рисует её через `react-native-screens`, а не своими вьюхами.
- * Отсюда всё системное поведение разом: жидкое стекло iOS 26 с линзой под
- * выбранной вкладкой, которую можно зажать и провести по панели,
- * сворачивание при прокрутке, Dynamic Type, VoiceOver.
- *
- * Своя капсула здесь уже была — ради светлой плашки под выбранной вкладкой,
- * которой у системной панели не настроить. Её вернули обратно: копия теряла
- * системное стекло и линзу, а это дороже плашки.
- *
- * Фон панели не задаётся намеренно. Стоит указать `backgroundColor` — и стекло
- * заменяется плоской заливкой.
- *
- * Иконки — из box-ui, стиль `bold`. Панель нативная и SVG не принимает,
- * поэтому глифы растрированы в PNG-шаблоны (`assets/tabs`, 24pt, @1x–@3x,
- * белым на прозрачном). 24pt, а не 26: в капсуле фиксированной высоты меньший
- * глиф оставляет воздух вокруг себя и подписи.
- */
+const TABS: FinchTab[] = [
+  { key: 'notes', label: 'Заметки', icon: 'note.text' },
+  { key: 'folders', label: 'Папки', icon: 'folder' },
+  { key: 'more', label: 'Настройки', icon: 'gearshape' },
+];
+/** Навигацией управляет React Navigation; геометрия панели — из Finch. */
 export default function TabsLayout() {
-  return (
-    <NativeTabs
-      /*
-        Все вкладки белые, полужирной подписью; выбранную отличает линза
-        стекла под ней, а не цвет. Цвета заданы по состояниям: одного
-        `tintColor` стекло пропускает через свою вибрацию, и белый выходит
-        серым.
-      */
-      tintColor={localColors.white}
-      iconColor={{ default: localColors.white, selected: localColors.ink }}
-      // 12pt вместо системных 10: на чёрном стекле десятый кегль читался
-      // мелкой сноской под иконкой.
-      labelStyle={{
-        default: { color: localColors.white, fontWeight: '600', fontSize: 12 },
-        selected: { color: localColors.ink, fontWeight: '600', fontSize: 12 },
-      }}
-      // Подпись ниже обычного — зазор между глифом и словом.
-      titlePositionAdjustment={{ vertical: 3 }}
-      // Панель сворачивается, когда список едет вниз, и возвращается при
-      // движении вверх — так контенту достаётся весь экран во время чтения.
-      minimizeBehavior="onScrollDown"
-    >
-      <NativeTabs.Trigger name="notes">
-        <NativeTabs.Trigger.Icon src={require('../../assets/tabs/notes.png')} renderingMode="template" />
-        <NativeTabs.Trigger.Label>Заметки</NativeTabs.Trigger.Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="folders">
-        <NativeTabs.Trigger.Icon src={require('../../assets/tabs/folder.png')} renderingMode="template" />
-        <NativeTabs.Trigger.Label>Папки</NativeTabs.Trigger.Label>
-      </NativeTabs.Trigger>
-
-      {/*
-        «Настройки», а не «Ещё». «Ещё» — не раздел, а признание, что для
-        содержимого не нашлось имени. Внутри лежат сортировка, поведение
-        списка и работа с данными — это настройки, так вкладка и называется.
-      */}
-      <NativeTabs.Trigger name="more">
-        <NativeTabs.Trigger.Icon src={require('../../assets/tabs/settings.png')} renderingMode="template" />
-        <NativeTabs.Trigger.Label>Настройки</NativeTabs.Trigger.Label>
-      </NativeTabs.Trigger>
-    </NativeTabs>
-  );
+  return <Tabs screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: 'transparent' } }} tabBar={({ state, emitter, navigateToTab }) => {
+    const route = state.routes[state.index];
+    const child = getFocusedRouteNameFromRoute(route);
+    if (child && child !== 'index') return null;
+    return <FinchTabBarPosition><FinchTabBar tabs={TABS} selected={route.name} onSelect={name => {
+      const target = state.routes.find(item => item.name === name);
+      if (!target) return;
+      const event = emitter.emit({ type: 'tabPress', target: target.key, canPreventDefault: true });
+      if (!event.defaultPrevented && route.key !== target.key) navigateToTab(target.key);
+    }} onLongPress={name => {
+      const target = state.routes.find(item => item.name === name);
+      if (target) emitter.emit({ type: 'tabLongPress', target: target.key });
+    }} /></FinchTabBarPosition>;
+  }}>
+    <Tabs.Screen name="notes" options={{ title: 'Заметки' }} />
+    <Tabs.Screen name="folders" options={{ title: 'Папки' }} />
+    <Tabs.Screen name="more" options={{ title: 'Настройки' }} />
+  </Tabs>;
 }

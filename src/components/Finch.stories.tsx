@@ -1,6 +1,9 @@
+import { FinchTabBar, FinchTabBarPosition } from './FinchTabBar';
+import { FinchSwitch } from './FinchSwitch';
+import { SegmentedControl } from './SegmentedControl';
 import { NoteList } from './NoteList';
 import { SearchField } from './SearchField';
-import { HeaderHeightContext } from '@react-navigation/elements';
+import { HeaderHeightContext } from 'expo-router/react-navigation';
 import { ScreenEmptyState } from './ScreenEmptyState';
 import { StatRing } from './StatRing';
 import React from 'react';
@@ -22,12 +25,15 @@ type Story = StoryObj<typeof meta>;
 export const Главная: Story = { render: () => <View style={{ flex: 1 }}>
   <ScreenBackdrop />
   <ScrollView contentContainerStyle={{ padding: 16, paddingTop: 59, gap: 16 }}>
+
     <RootHeader title="Заметки" count={mockNotes.length} right={<><HeaderGlass diameter={52}><IconButton style={{ width: 52, height: 52 }} name="magnifyingglass" accessibilityLabel="Поиск" /></HeaderGlass><Fab compact diameter={56} onPress={() => {}} /></>} />
+    <SegmentedControl segments={[{value:'all',label:'Все'},{value:'important',label:'Важное'},{value:'work',label:'Работа'},{value:'personal',label:'Личное'}]} selected="all" onChange={() => {}} />
     <Text color="onBackdrop" variant="headline">Закреплено</Text>
     <NoteCard note={{ ...mockNotes[0], pinned: true }} />
     <Text color="onBackdrop" variant="headline">Ранее</Text>
     {mockNotes.slice(1, 4).map(note => <NoteCard key={note.id} note={{ ...note, pinned: false }} />)}
   </ScrollView>
+  <FinchTabBarPosition><FinchTabBar tabs={[{ key:'notes', label:'Заметки', icon:'note.text' }, {key:'folders',label:'Папки',icon:'folder'}, {key:'more',label:'Настройки',icon:'gearshape'}]} selected="notes" onSelect={() => {}} /></FinchTabBarPosition>
 </View> };
 export const Пусто: Story = { render: () => <View style={{ flex: 1, padding: 16, justifyContent: 'center' }}>
   <ScreenBackdrop /><EmptyState icon="note.text" title="Здесь пока пусто" description="Первая заметка обычно самая короткая — так и надо." actionTitle="Новая заметка" onAction={() => {}} />
@@ -38,12 +44,14 @@ export const Группа: Story = { render: () => <View style={{ flex: 1, paddi
 
 export const ПустойЭкран: Story = { render: () => <HeaderHeightContext.Provider value={127}><View style={{ flex: 1 }}>
   <ScreenBackdrop /><Text color="onBackdrop" style={{ position: 'absolute', top: 90, alignSelf: 'center' }}>Корзина</Text>
-  <ScreenEmptyState tabbed icon="trash" title="Корзина пуста" description="Удалённые заметки лежат здесь 30 дней, а потом исчезают навсегда." />
+  <ScreenEmptyState icon="trash" title="Корзина пуста" description="Удалённые заметки лежат здесь 30 дней, а потом исчезают навсегда." />
 </View></HeaderHeightContext.Provider> };
 export const Показатели: Story = { render: () => <View style={{ flex: 1, padding: 16, paddingTop: 150 }}>
   <ScreenBackdrop /><View style={{ flexDirection: 'row', gap: 12 }}><StatRing value="0" label="Выполнено, %" /><StatRing value="14" label="Слов" /><StatRing value="0" label="За неделю" /></View>
 </View> };
 
-export const Сетка: Story = { render: () => <View style={{ flex: 1, paddingTop: 59 }}>
+export const Сетка: Story = { render: () => <View style={{ flex: 1 }}>
   <ScreenBackdrop /><NoteList layout="grid" notes={mockNotes} ListHeaderComponent={<View style={{ gap: 12 }}><RootHeader title="Заметки" /><SearchField value="" onChangeText={() => {}} /></View>} />
 </View> };
+
+export const Переключатель: Story = { render: () => { const [value, setValue] = React.useState(true); return <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 16 }}><ScreenBackdrop /><ListSection><ListRow title="Отмеченные вниз" trailing={<FinchSwitch value={value} onValueChange={setValue} accessibilityLabel="Отмеченные вниз" />} /></ListSection></View>; } };

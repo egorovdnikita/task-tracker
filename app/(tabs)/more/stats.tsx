@@ -1,9 +1,10 @@
+import { ScreenScrollView as ScrollView } from '../../../src/components/ScreenScrollView';
 import { NumberText } from '../../../src/components/NumberText';
 import { ScreenBackdrop } from '../../../src/components/ScreenBackdrop';
 import { localColors } from '../../../src/theme/localColors';
 import { boxPrimitives } from '../../../src/vendor/box-ui/primitives';
 import React, { useMemo } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Stack, router } from 'expo-router';
 
 import { GLYPH_SEPARATOR_INSET, ListRow, ListSection, StatRing, Text } from '../../../src/components';

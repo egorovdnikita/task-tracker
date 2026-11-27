@@ -187,7 +187,7 @@ export default function NotesScreen() {
               style={{ gap: theme.spacing.md }}
             >
               {header}
-
+              <View style={{ gap: 16 }}>
               {/* Поиск сразу под заголовком: белой карточкой, в потоке
                   списка, а не плавающей капсулой у нижнего края. */}
               {searchOpen || searching || layout === 'grid' || activeNotes(notes).length === 0 ? <SearchField autoFocus={searchOpen} value={query} onChangeText={setQuery} placeholder="Поиск по заметкам" /> : null}
@@ -202,6 +202,7 @@ export default function NotesScreen() {
                 который сам знает про Dynamic Type и VoiceOver.
               */}
               <SegmentedControl accessibilityLabel="Фильтр по тегу" segments={TAG_SEGMENTS} selected={tag} onChange={setTag} />
+              </View>
             </View>
           ) : (
             <View style={{ marginBottom: theme.spacing.md }}>{header}</View>

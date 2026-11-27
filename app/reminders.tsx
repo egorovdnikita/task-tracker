@@ -1,7 +1,7 @@
+import { ScreenScrollView as ScrollView } from '../src/components/ScreenScrollView';
 import { ScreenEmptyState } from '../src/components/ScreenEmptyState';
 import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import React, { useMemo } from 'react';
-import { ScrollView } from 'react-native';
 import { Stack, router } from 'expo-router';
 
 import { EmptyState, GLYPH_SEPARATOR_INSET, ListRow, ListSection, backItem } from '../src/components';
@@ -69,7 +69,7 @@ export default function RemindersScreen() {
       ) : (
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
-          contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
+          contentContainerStyle={{ paddingTop: theme.spacing.md, paddingBottom: theme.spacing.xxxl }}
         >
           {groups.map((group) => (
             <ListSection separatorInset={GLYPH_SEPARATOR_INSET} key={group.state} header={group.title}>

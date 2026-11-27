@@ -1,6 +1,7 @@
+import { ScreenScrollView as ScrollView } from '../../../src/components/ScreenScrollView';
 import { ScreenBackdrop } from '../../../src/components/ScreenBackdrop';
 import React, { useCallback, useMemo, useState } from 'react';
-import { AppState, Linking, ScrollView, View } from 'react-native';
+import { AppState, Linking, View } from 'react-native';
 import { Stack, router, useFocusEffect } from 'expo-router';
 
 import { Button, GLYPH_SEPARATOR_INSET, ListRow, ListSection, Text } from '../../../src/components';

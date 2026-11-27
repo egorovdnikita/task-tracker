@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import type { Preview } from '@storybook/react-vite';
 import { LoadSkiaWeb } from '@shopify/react-native-skia/lib/module/web';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaInsetsContext } from 'react-native-safe-area-context';
 
 import { ThemeProvider, palette } from '../src/theme';
 
@@ -86,7 +86,7 @@ const preview: Preview = {
                 minWidth: device ? undefined : 320,
               }}
             >
-              <Story />
+              <SafeAreaInsetsContext.Provider value={device ? PHONE_METRICS.insets : FLAT_METRICS.insets}><Story /></SafeAreaInsetsContext.Provider>
             </View>
           </ThemeProvider>
         </SafeAreaProvider>

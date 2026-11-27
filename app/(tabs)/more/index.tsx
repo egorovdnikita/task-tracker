@@ -1,5 +1,6 @@
+import { ScreenScrollView as ScrollView } from '../../../src/components/ScreenScrollView';
 import React, { useMemo } from 'react';
-import { ScrollView, Share, View } from 'react-native';
+import { Share, View } from 'react-native';
 import Constants from 'expo-constants';
 import { Stack, router } from 'expo-router';
 

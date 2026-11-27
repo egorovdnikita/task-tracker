@@ -8,7 +8,7 @@ export const backdrops = { root: empty };
 export type BackdropName = keyof typeof backdrops;
 const clear = { from: 'transparent', to: 'transparent' };
 const glass = { from: 'rgba(255,255,255,0.35)', to: 'rgba(255,255,255,0.25)' };
-export const strokes = { cta: clear, danger: clear, card: clear, glass, rim: glass, subtle: clear };
+export const strokes = { cta: clear, danger: clear, card: clear, glass, rim: { from: 'rgba(255,255,255,0.25)', to: 'rgba(255,255,255,0.25)' }, subtle: clear };
 export type StrokeName = keyof typeof strokes;
 export const tints = {
   cta: localColors.accent, card: localColors.white,

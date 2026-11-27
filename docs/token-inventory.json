@@ -1,5 +1,5 @@
 {
-  "files": 90,
+  "files": 94,
   "entries": [
     {
       "file": ".storybook/preview.tsx",
@@ -128,43 +128,8 @@
     },
     {
       "file": "app/(tabs)/_layout.tsx",
-      "key": "tintColor",
-      "value": "{localColors.white}"
-    },
-    {
-      "file": "app/(tabs)/_layout.tsx",
-      "key": "iconColor",
-      "value": "{{ default: localColors.white, selected: localColors.ink }}"
-    },
-    {
-      "file": "app/(tabs)/_layout.tsx",
-      "key": "color",
-      "value": "localColors.white"
-    },
-    {
-      "file": "app/(tabs)/_layout.tsx",
-      "key": "fontWeight",
-      "value": "'600'"
-    },
-    {
-      "file": "app/(tabs)/_layout.tsx",
-      "key": "fontSize",
-      "value": "12"
-    },
-    {
-      "file": "app/(tabs)/_layout.tsx",
-      "key": "color",
-      "value": "localColors.ink"
-    },
-    {
-      "file": "app/(tabs)/_layout.tsx",
-      "key": "fontWeight",
-      "value": "'600'"
-    },
-    {
-      "file": "app/(tabs)/_layout.tsx",
-      "key": "fontSize",
-      "value": "12"
+      "key": "backgroundColor",
+      "value": "'transparent'"
     },
     {
       "file": "app/(tabs)/folders/[id].tsx",
@@ -244,7 +209,7 @@
     {
       "file": "app/(tabs)/folders/trash.tsx",
       "key": "paddingTop",
-      "value": "theme.spacing.sm"
+      "value": "theme.spacing.md"
     },
     {
       "file": "app/(tabs)/folders/trash.tsx",
@@ -520,6 +485,11 @@
       "file": "app/(tabs)/notes/index.tsx",
       "key": "gap",
       "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "gap",
+      "value": "16"
     },
     {
       "file": "app/(tabs)/notes/index.tsx",
@@ -1494,7 +1464,7 @@
     {
       "file": "app/move.tsx",
       "key": "paddingTop",
-      "value": "theme.spacing.lg"
+      "value": "theme.spacing.md"
     },
     {
       "file": "app/move.tsx",
@@ -1524,7 +1494,7 @@
     {
       "file": "app/note-info.tsx",
       "key": "paddingTop",
-      "value": "theme.spacing.sm"
+      "value": "theme.spacing.md"
     },
     {
       "file": "app/note-info.tsx",
@@ -1734,7 +1704,7 @@
     {
       "file": "app/reminder.tsx",
       "key": "paddingTop",
-      "value": "theme.spacing.lg"
+      "value": "theme.spacing.md"
     },
     {
       "file": "app/reminder.tsx",
@@ -1783,26 +1753,6 @@
     },
     {
       "file": "app/reminder.tsx",
-      "key": "minHeight",
-      "value": "62"
-    },
-    {
-      "file": "app/reminder.tsx",
-      "key": "paddingHorizontal",
-      "value": "16"
-    },
-    {
-      "file": "app/reminder.tsx",
-      "key": "borderTopWidth",
-      "value": "index ? 1 : 0"
-    },
-    {
-      "file": "app/reminder.tsx",
-      "key": "borderTopColor",
-      "value": "theme.hex.separator"
-    },
-    {
-      "file": "app/reminder.tsx",
       "key": "marginHorizontal",
       "value": "16"
     },
@@ -1817,9 +1767,44 @@
       "value": "\"large\""
     },
     {
+      "file": "app/reminder.tsx",
+      "key": "paddingHorizontal",
+      "value": "16"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "backgroundColor",
+      "value": "'rgba(0,0,0,0.25)'"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "padding",
+      "value": "20"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "borderRadius",
+      "value": "32"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "gap",
+      "value": "16"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
+    },
+    {
+      "file": "app/reminder.tsx",
+      "key": "size",
+      "value": "\"large\""
+    },
+    {
       "file": "app/reminders.tsx",
       "key": "paddingTop",
-      "value": "theme.spacing.lg"
+      "value": "theme.spacing.md"
     },
     {
       "file": "app/reminders.tsx",
@@ -2513,13 +2498,243 @@
     },
     {
       "file": "src/components/Finch.stories.tsx",
-      "key": "paddingTop",
-      "value": "59"
+      "key": "gap",
+      "value": "12"
     },
     {
       "file": "src/components/Finch.stories.tsx",
+      "key": "paddingHorizontal",
+      "value": "16"
+    },
+    {
+      "file": "src/components/FinchHeader.tsx",
+      "key": "tintColor",
+      "value": "theme.hex.onBackdrop"
+    },
+    {
+      "file": "src/components/FinchHeader.tsx",
+      "key": "paddingTop",
+      "value": "insets.top + 8"
+    },
+    {
+      "file": "src/components/FinchHeader.tsx",
+      "key": "paddingBottom",
+      "value": "8"
+    },
+    {
+      "file": "src/components/FinchHeader.tsx",
+      "key": "paddingHorizontal",
+      "value": "16"
+    },
+    {
+      "file": "src/components/FinchHeader.tsx",
+      "key": "height",
+      "value": "52"
+    },
+    {
+      "file": "src/components/FinchHeader.tsx",
+      "key": "color",
+      "value": "\"onBackdrop\""
+    },
+    {
+      "file": "src/components/FinchHeader.tsx",
+      "key": "left",
+      "value": "56"
+    },
+    {
+      "file": "src/components/FinchHeader.tsx",
+      "key": "right",
+      "value": "56"
+    },
+    {
+      "file": "src/components/FinchHeader.tsx",
+      "key": "size",
+      "value": "{20}"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "top",
+      "value": "7"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "bottom",
+      "value": "6"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "width",
+      "value": "51"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "height",
+      "value": "31"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "borderRadius",
+      "value": "16"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "padding",
+      "value": "2"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "backgroundColor",
+      "value": "value ? theme.hex.accent : theme.hex.systemFill"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "opacity",
+      "value": "disabled ? 0.4 : pressed ? 0.75 : 1"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "width",
+      "value": "27"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "height",
+      "value": "27"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "borderRadius",
+      "value": "14"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "shadowColor",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "shadowOpacity",
+      "value": "0.12"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "shadowRadius",
+      "value": "2"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "shadowOffset",
+      "value": "{ width: 0, height: 1 }"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "width",
+      "value": "0"
+    },
+    {
+      "file": "src/components/FinchSwitch.tsx",
+      "key": "height",
+      "value": "1"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "backgroundColor",
+      "value": "selected === tab.key ? theme.hex.secondarySystemBackground : 'transparent'"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.65 : 1"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "size",
+      "value": "{22}"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "color",
+      "value": "{selected === tab.key ? theme.colors.label : theme.colors.onBackdrop}"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "bottom",
+      "value": "insets.bottom + 2"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "left",
+      "value": "0"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "right",
+      "value": "0"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "width",
+      "value": "204"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "height",
+      "value": "52"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "borderRadius",
+      "value": "26"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "padding",
+      "value": "4"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
       "key": "gap",
-      "value": "12"
+      "value": "32"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "backgroundColor",
+      "value": "'rgba(255,255,255,0.22)'"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "borderRadius",
+      "value": "26"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "borderWidth",
+      "value": "1"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "borderColor",
+      "value": "'rgba(255,255,255,0.4)'"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "width",
+      "value": "44"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "height",
+      "value": "44"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "borderRadius",
+      "value": "22"
     },
     {
       "file": "src/components/Glass.tsx",
@@ -2860,11 +3075,6 @@
       "file": "src/components/List.tsx",
       "key": "color",
       "value": "{theme.colors.label}"
-    },
-    {
-      "file": "src/components/List.tsx",
-      "key": "trackColor",
-      "value": "{{ true: theme.surfaces.switchOn }}"
     },
     {
       "file": "src/components/List.tsx",
@@ -3699,22 +3909,32 @@
     {
       "file": "src/components/NoteList.tsx",
       "key": "paddingTop",
-      "value": "theme.spacing.sm"
+      "value": "Math.max(header, insets.top) + (header ? 12 : 0)"
     },
     {
       "file": "src/components/NoteList.tsx",
       "key": "paddingBottom",
-      "value": "insets.bottom + contentInsetBottom + theme.spacing.xxxl"
+      "value": "insets.bottom + contentInsetBottom + 12"
     },
     {
       "file": "src/components/NoteList.tsx",
       "key": "gap",
-      "value": "theme.spacing.md"
+      "value": "compact ? 8 : 16"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "marginBottom",
+      "value": "compact ? 8 : 0"
     },
     {
       "file": "src/components/NoteList.tsx",
       "key": "gap",
       "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "marginTop",
+      "value": "compact && section.title === 'Ранее' ? 8 : 0"
     },
     {
       "file": "src/components/NoteList.tsx",
@@ -4212,6 +4432,11 @@
       "value": "0"
     },
     {
+      "file": "src/components/ScreenScrollView.tsx",
+      "key": "paddingTop",
+      "value": "Math.max(header, insets.top) + (typeof extra === 'number' ? extra : 0)"
+    },
+    {
       "file": "src/components/SearchField.tsx",
       "key": "width",
       "value": "Math.max(0, progress.value) * (height + gap)"
@@ -4353,38 +4578,58 @@
     },
     {
       "file": "src/components/SegmentedControl.tsx",
-      "key": "fontStyle",
-      "value": "{{\n        fontFamily: Platform.OS === 'ios' ? undefined : 'System',\n        color: theme.hex.onBackdrop,\n        fontSize: 13,\n      }}"
+      "key": "gap",
+      "value": "8"
     },
     {
       "file": "src/components/SegmentedControl.tsx",
-      "key": "fontFamily",
-      "value": "Platform.OS === 'ios' ? undefined : 'System'"
+      "key": "top",
+      "value": "6"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "bottom",
+      "value": "6"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "minHeight",
+      "value": "32"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "paddingHorizontal",
+      "value": "active ? 16 : 14"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "borderRadius",
+      "value": "16"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "backgroundColor",
+      "value": "active ? theme.hex.secondarySystemBackground : 'rgba(255,255,255,0.22)'"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "borderWidth",
+      "value": "active ? 0 : 1"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "borderColor",
+      "value": "'rgba(255,255,255,0.35)'"
+    },
+    {
+      "file": "src/components/SegmentedControl.tsx",
+      "key": "opacity",
+      "value": "pressed ? 0.65 : 1"
     },
     {
       "file": "src/components/SegmentedControl.tsx",
       "key": "color",
-      "value": "theme.hex.onBackdrop"
-    },
-    {
-      "file": "src/components/SegmentedControl.tsx",
-      "key": "fontSize",
-      "value": "13"
-    },
-    {
-      "file": "src/components/SegmentedControl.tsx",
-      "key": "color",
-      "value": "theme.hex.label"
-    },
-    {
-      "file": "src/components/SegmentedControl.tsx",
-      "key": "fontWeight",
-      "value": "'500'"
-    },
-    {
-      "file": "src/components/SegmentedControl.tsx",
-      "key": "height",
-      "value": "theme.controlHeight.segmented"
+      "value": "{active ? 'label' : 'onBackdrop'}"
     },
     {
       "file": "src/components/StatRing.tsx",
@@ -6174,7 +6419,17 @@
     {
       "file": "src/theme/opal.ts",
       "key": "rim",
-      "value": "glass"
+      "value": "{ from: 'rgba(255,255,255,0.25)', to: 'rgba(255,255,255,0.25)' }"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "from",
+      "value": "'rgba(255,255,255,0.25)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "to",
+      "value": "'rgba(255,255,255,0.25)'"
     },
     {
       "file": "src/theme/opal.ts",

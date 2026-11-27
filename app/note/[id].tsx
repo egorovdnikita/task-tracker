@@ -8,7 +8,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useHeaderHeight } from 'expo-router/react-navigation';
 import type { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Stack, router, useLocalSearchParams, useNavigation } from 'expo-router';
@@ -248,7 +248,7 @@ export default function NoteScreen() {
         options={{
           // Статус сохранения в заголовок не ставится: заголовок прыгал при
           // каждом символе. Он стоит строкой метаданных под заголовком.
-          title: '',
+          title: 'Заметка',
           unstable_headerLeftItems: backItem(leave),
           /*
             Обе кнопки рисуются всегда, меняется только символ закрепления.

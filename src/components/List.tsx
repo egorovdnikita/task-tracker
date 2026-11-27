@@ -1,3 +1,4 @@
+import { FinchSwitch } from './FinchSwitch';
 import React, { Children, Fragment, useRef, type ReactNode } from 'react';
 import {
   Pressable,
@@ -334,12 +335,12 @@ export const ListRow = ({
       {accessory.type === 'switch' ? (
         // Нативный Switch, а не своя анимация: у системного есть отдача,
         // поведение при «Уменьшении движения» и правильный отклик VoiceOver.
-        <Switch
+        <FinchSwitch
+          accessibilityLabel={title}
           value={accessory.value}
           onValueChange={accessory.onValueChange}
           disabled={disabled}
           // Цвет, а не замена контрола: включённый трек Opal — оливковый.
-          trackColor={{ true: theme.surfaces.switchOn }}
         />
       ) : null}
     </View>

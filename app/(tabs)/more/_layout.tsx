@@ -1,3 +1,4 @@
+import { FinchHeader } from '../../../src/components/FinchHeader';
 import React from 'react';
 import { Stack } from 'expo-router';
 
@@ -12,6 +13,7 @@ export default function MoreLayout() {
     <Stack
       screenOptions={({ navigation, route }) => ({
         statusBarStyle: 'light',
+        header: props => <FinchHeader {...props} />,
         headerLargeTitle: false,
         // «Назад» — та же кнопка, что на экране заметки. На корневом экране
         // вкладки возвращаться некуда, там её нет.

@@ -1,5 +1,5 @@
 import { sketchViewport } from '../../src/utils/sketchViewport';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useHeaderHeight } from 'expo-router/react-navigation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { confirmDestructive } from '../../src/utils/actionSheet';
 import { ScreenBackdrop } from '../../src/components/ScreenBackdrop';

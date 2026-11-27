@@ -1,3 +1,4 @@
+import { FinchHeader } from '../src/components/FinchHeader';
 import { localColors } from '../src/theme/localColors';
 import React from 'react';
 import { Stack } from 'expo-router';
@@ -40,10 +41,7 @@ export default function RootLayout() {
   );
 }
 
-/**
- * Подложка шитов — замер Opal: `#1F1F1F`–`#202020`. Шит на ступень светлее
- * экрана, а группы строк внутри — ещё на ступень (`ListSection tone="sheet"`).
- */
+/** Прозрачная подложка полноэкранных форм Finch. */
 const SHEET = { backgroundColor: 'transparent' };
 
 const RootStack = () => {
@@ -53,6 +51,7 @@ const RootStack = () => {
     <Stack
       screenOptions={{
         statusBarStyle: 'light',
+        header: props => <FinchHeader {...props} />,
         // Шапка монохромная: фирменный цвет остаётся главным действиям экрана.
         headerTintColor: theme.hex.onBackdrop,
         // Заголовок белый, а не акцентный: без явного цвета нативная шапка
@@ -79,15 +78,7 @@ const RootStack = () => {
         options={{ headerBackButtonDisplayMode: 'minimal', title: '' }}
       />
 
-      {/*
-        Шиты, а не экраны: создание, перенос, теги и напоминание — выбор внутри
-        контекста, и контекст должен остаться виден за ними. `formSheet` даёт
-        настоящий системный лист с ручкой, инерцией и закрытием свайпом.
-
-        Детенты подобраны под реальную высоту содержимого, а не назначены
-        одинаковыми: заниженный детент обрезал шит по нижнему краю — у тегов
-        за кромкой оставались и подсказки, и назначенные чипы.
-      */}
+      {/* Создание — панель над клавиатурой; остальные формы — весь экран. */}
       <Stack.Screen
         name="create"
         options={{
@@ -116,33 +107,24 @@ const RootStack = () => {
       <Stack.Screen
         name="move"
         options={{
-          presentation: 'formSheet',
-          sheetAllowedDetents: [0.6, 0.95],
-          sheetGrabberVisible: true,
-          sheetCornerRadius: theme.radius.xxl,
+          presentation: 'card',
           title: 'Переместить',
           contentStyle: SHEET,
         }}
       />
-      {/* Папка: имя, цвет и превью строки — шит вместо системного алерта. */}
+      {/* Папка: имя, цвет и превью строки в композиции Finch. */}
       <Stack.Screen
         name="folder"
         options={{
-          presentation: 'formSheet',
-          sheetAllowedDetents: [0.75, 0.95],
-          sheetGrabberVisible: true,
-          sheetCornerRadius: theme.radius.xxl,
+          presentation: 'card',
           contentStyle: SHEET,
         }}
       />
-      {/* Сведения о заметке — справка без правки, поэтому шит, а не экран. */}
+      {/* Сведения о заметке — полноэкранная справка без правки. */}
       <Stack.Screen
         name="note-info"
         options={{
-          presentation: 'formSheet',
-          sheetAllowedDetents: [0.75, 0.95],
-          sheetGrabberVisible: true,
-          sheetCornerRadius: theme.radius.xxl,
+          presentation: 'card',
           title: 'О заметке',
           contentStyle: SHEET,
         }}
@@ -164,27 +146,24 @@ const RootStack = () => {
       */}
       <Stack.Screen
         name="capture/voice"
-        options={{ presentation: 'modal', headerTransparent: true }}
+        options={{ presentation: 'card', headerTransparent: true }}
       />
       <Stack.Screen
         name="capture/scan"
-        options={{ presentation: 'fullScreenModal', headerTransparent: true }}
+        options={{ presentation: 'card', headerTransparent: true }}
       />
       <Stack.Screen
         name="capture/sketch"
-        options={{ presentation: 'modal', headerTransparent: true }}
+        options={{ presentation: 'card', headerTransparent: true }}
       />
 
       <Stack.Screen
         name="reminder"
         options={{
-          presentation: 'formSheet',
+          presentation: 'card',
           // Готовые сроки, точное время и предупреждение о выключенных
           // уведомлениях в половину экрана не помещались: первая строка
           // уезжала под заголовок шита.
-          sheetAllowedDetents: [0.8, 0.95],
-          sheetGrabberVisible: true,
-          sheetCornerRadius: theme.radius.xxl,
           title: 'Напоминание',
           contentStyle: SHEET,
         }}

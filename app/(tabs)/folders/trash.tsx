@@ -1,7 +1,7 @@
+import { ScreenScrollView as ScrollView } from '../../../src/components/ScreenScrollView';
 import { ScreenEmptyState } from '../../../src/components/ScreenEmptyState';
 import { ScreenBackdrop } from '../../../src/components/ScreenBackdrop';
 import React, { useMemo } from 'react';
-import { ScrollView } from 'react-native';
 import { Stack, router } from 'expo-router';
 
 import { EmptyState, ListRow, ListSection } from '../../../src/components';
@@ -47,7 +47,7 @@ export default function TrashScreen() {
       <Stack.Screen options={{ title: 'Корзина' }} />
 
       {trashed.length === 0 ? (
-        <ScreenEmptyState tabbed
+        <ScreenEmptyState
           icon="trash"
           title="Корзина пуста"
           description="Удалённые заметки лежат здесь 30 дней, а потом исчезают навсегда."
@@ -56,7 +56,7 @@ export default function TrashScreen() {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           contentContainerStyle={{
-            paddingTop: theme.spacing.sm,
+            paddingTop: theme.spacing.md,
             paddingBottom: theme.spacing.xxxl,
           }}
         >

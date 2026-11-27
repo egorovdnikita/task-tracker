@@ -1,6 +1,7 @@
+import { ScreenScrollView as ScrollView } from '../src/components/ScreenScrollView';
 import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import React, { useEffect, useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
@@ -38,6 +39,7 @@ export default function ReminderScreen() {
   const notes = useNotesStore((s) => s.notes);
   const setRemindAt = useNotesStore((s) => s.setRemindAt);
 
+  const [picker, setPicker] = useState<'date' | 'time' | null>(null);
   const [permission, setPermission] = useState<NotificationPermission>('undetermined');
   // Час вперёд — разумная отправная точка: ставить пикер на «сейчас» значит
   // предлагать напоминание, которое уже просрочено.
@@ -86,7 +88,7 @@ export default function ReminderScreen() {
         style={{ flex: 1 }}
         automaticallyAdjustKeyboardInsets
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingTop: theme.spacing.lg, paddingBottom: theme.spacing.xxxl }}
+        contentContainerStyle={{ paddingTop: theme.spacing.md, paddingBottom: theme.spacing.xxxl }}
       >
         {permission !== 'granted' ? (
           <View
@@ -141,10 +143,8 @@ export default function ReminderScreen() {
           в нём уже есть, и повторять это своими барабанами незачем.
         */}
         <ListSection tone="sheet" header="Точное время">
-          {(['date', 'time'] as const).map((mode, index) => <View key={mode} style={{ minHeight: 62, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderTopWidth: index ? 1 : 0, borderTopColor: theme.hex.separator }}>
-            <Text variant="callout">{mode === 'date' ? 'Дата' : 'Время'}</Text>
-            <DateTimePicker value={exact} mode={mode} display="compact" minimumDate={mode === 'date' ? new Date() : undefined} locale="ru-RU" onChange={(_, date) => date && setExact(date)} accessibilityLabel={mode === 'date' ? 'Дата напоминания' : 'Время напоминания'} />
-          </View>)}
+          <ListRow title="Дата" value={exact.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })} onPress={() => setPicker('date')} />
+          <ListRow title="Время" value={exact.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })} onPress={() => setPicker('time')} />
         </ListSection>
         <View style={{ marginHorizontal: 16, marginBottom: 28 }}><Button title={`Напомнить ${formatDateTime(exact.getTime())}`} size="large" fullWidth onPress={() => choose(exact.getTime())} /></View>
 
@@ -154,6 +154,16 @@ export default function ReminderScreen() {
           </ListSection>
         ) : null}
       </ScrollView>
+      <Modal visible={picker !== null} transparent animationType="fade" onRequestClose={() => setPicker(null)}>
+        <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 16 }}>
+          <Pressable accessibilityRole="button" accessibilityLabel="Закрыть выбор времени" onPress={() => setPicker(null)} style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.25)' }]} />
+          <View accessibilityViewIsModal style={{ padding: 20, borderRadius: 32, gap: 16, backgroundColor: theme.hex.secondarySystemBackground }}>
+            <Text variant="headline" weight="medium">{picker === 'date' ? 'Дата' : 'Время'}</Text>
+            {picker ? <DateTimePicker value={exact} mode={picker} display={picker === 'date' ? 'inline' : 'spinner'} themeVariant="light" minimumDate={picker === 'date' ? new Date() : undefined} locale="ru-RU" onChange={(_, date) => date && setExact(date)} /> : null}
+            <Button title="Готово" size="large" fullWidth onPress={() => setPicker(null)} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

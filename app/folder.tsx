@@ -1,4 +1,4 @@
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useHeaderHeight } from 'expo-router/react-navigation';
 import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import { localColors } from '../src/theme/localColors';
 import { boxPrimitives } from '../src/vendor/box-ui/primitives';

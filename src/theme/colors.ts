@@ -91,68 +91,36 @@ const systemPalette = {
   link: pair('#007AFF', '#0A84FF'),
 } as const;
 
-/**
- * Слой Opal поверх системного — тёмная система по эталону Opal.
- *
- * Схема одна, тёмная, поэтому значение светлой половины пары повторяет тёмное:
- * светлой схемы у продукта нет, и пара остаётся парой только ради общего
- * типа с системной палитрой.
- *
- * Поверхности — прозрачное белое, а не серые заливки. Глухой серый гасит
- * подсветку фона: карточка становится плоским пятном ровно там, где под ней
- * свет. Прозрачность пропускает свет и меняет тон вместе с фоном. По той же
- * причине текст — белый с альфой: серый `#A0A0A0` держится только на чистом
- * чёрном, а поверх стекла и градиента уходит в грязь.
- *
- * Акцент — ось лайм → мята → аква. Глиф на акцентной заливке чёрный
- * (`onAccent`): пастельный лайм под белым плюсом не читается.
- */
-const dark = (value: string): ColorPair => pair(value, value);
-
-const opalPalette = {
-  systemBackground: dark(localColors.black),
-  secondarySystemBackground: dark('rgba(255,255,255,0.04)'),
-  tertiarySystemBackground: dark('rgba(255,255,255,0.08)'),
-
-  systemGroupedBackground: dark(localColors.black),
-  secondarySystemGroupedBackground: dark('rgba(255,255,255,0.045)'),
-  tertiarySystemGroupedBackground: dark('rgba(255,255,255,0.08)'),
-
-  label: dark(localColors.white),
-  secondaryLabel: dark('rgba(255,255,255,0.66)'),
-  tertiaryLabel: dark('rgba(255,255,255,0.42)'),
-  quaternaryLabel: dark('rgba(255,255,255,0.22)'),
-  placeholderText: dark('rgba(255,255,255,0.42)'),
-
-  separator: dark('rgba(255,255,255,0.10)'),
-  opaqueSeparator: dark('rgba(255,255,255,0.18)'),
-
-  systemFill: dark('rgba(255,255,255,0.14)'),
-  secondarySystemFill: dark('rgba(255,255,255,0.10)'),
-  tertiarySystemFill: dark('rgba(255,255,255,0.07)'),
-  quaternarySystemFill: dark('rgba(255,255,255,0.04)'),
-
-  /** Главный акцент — лайм. Тратится скупо: создание, активная вкладка, ссылки. */
-  accent: dark(localColors.accent),
-  accentMint: dark('#D7FEC0'),
-  accentAqua: dark(localColors.accentAqua),
-  /** Глиф и подпись поверх акцентной заливки. */
-  onAccent: dark(localColors.black),
-  link: dark(localColors.accentAqua),
-
-  /**
-   * Плотная приподнятая поверхность — для того, что всплывает поверх
-   * содержимого без блюра (тосты): прозрачная подложка над списком дала бы
-   * текст поверх текста.
-   */
-  elevated: dark('#141416'),
-
-  /** Семантика эталона: разрушающее и «готово». */
-  systemRed: dark('#FC6578'),
-  systemGreen: dark('#05D6B4'),
-} as const;
-
-export const palette = { ...systemPalette, ...opalPalette } as const;
+/** Одна утверждённая схема Finch. Бумага и текст отделены от фона экрана. */
+const fixed = (value: string): ColorPair => pair(value, value);
+const finchPalette = {
+  systemBackground: fixed('transparent'),
+  systemGroupedBackground: fixed('transparent'),
+  secondarySystemBackground: fixed(localColors.white),
+  tertiarySystemBackground: fixed(localColors.soft),
+  secondarySystemGroupedBackground: fixed(localColors.white),
+  tertiarySystemGroupedBackground: fixed(localColors.soft),
+  label: fixed(localColors.ink),
+  secondaryLabel: fixed(localColors.muted),
+  tertiaryLabel: fixed(localColors.muted),
+  quaternaryLabel: fixed('rgba(26,26,26,0.22)'),
+  placeholderText: fixed(localColors.muted),
+  separator: fixed(localColors.soft),
+  opaqueSeparator: fixed(localColors.soft),
+  systemFill: fixed(localColors.soft),
+  secondarySystemFill: fixed(localColors.soft),
+  tertiarySystemFill: fixed(localColors.soft),
+  quaternarySystemFill: fixed(localColors.soft),
+  accent: fixed(localColors.accent),
+  accentMint: fixed(localColors.accent),
+  accentAqua: fixed(localColors.accent),
+  onAccent: fixed(localColors.ink),
+  link: fixed(localColors.ink),
+  elevated: fixed(localColors.white),
+  onBackdrop: fixed(localColors.white),
+  secondaryOnBackdrop: fixed('rgba(255,255,255,0.7)'),
+};
+export const palette = { ...systemPalette, ...finchPalette } as const;
 
 export type PaletteName = keyof typeof palette;
 

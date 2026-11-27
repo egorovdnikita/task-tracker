@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -67,6 +68,7 @@ export default function ReminderScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen
         options={{
           title: 'Напоминание',

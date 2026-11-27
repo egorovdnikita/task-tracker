@@ -191,7 +191,7 @@ export default function CreateScreen() {
           onPress={dismiss}
           style={StyleSheet.absoluteFill}
         >
-          <BlurView intensity={24} tint="dark" style={StyleSheet.absoluteFill} />
+          <BlurView intensity={24} tint="light" style={StyleSheet.absoluteFill} />
           <View style={[StyleSheet.absoluteFill, { backgroundColor: localColors.creationScrim }]} />
         </Pressable>
 

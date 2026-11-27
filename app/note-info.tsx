@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -38,6 +39,7 @@ export default function NoteInfoSheet() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen
         options={{
           unstable_headerLeftItems: headerItems(() => (
@@ -51,10 +53,10 @@ export default function NoteInfoSheet() {
         contentContainerStyle={{ paddingTop: theme.spacing.sm, paddingBottom: theme.spacing.xxxl }}
       >
         <View style={{ alignItems: 'center', gap: theme.spacing.xs, paddingHorizontal: theme.spacing.xl }}>
-          <Text variant="footnote" color="secondaryLabel">
+          <Text variant="footnote" color="secondaryOnBackdrop">
             Изменена {formatDateTime(note.updatedAt)}
           </Text>
-          <Text variant="title2" weight="bold" numberOfLines={2} style={{ textAlign: 'center' }}>
+          <Text variant="title2" weight="medium" color="onBackdrop" numberOfLines={2} style={{ textAlign: 'center' }}>
             {noteTitle(note)}
           </Text>
         </View>
@@ -64,6 +66,7 @@ export default function NoteInfoSheet() {
             flexDirection: 'row',
             justifyContent: 'space-evenly',
             marginVertical: theme.spacing.xl,
+            marginHorizontal: theme.spacing.lg, gap: theme.spacing.sm,
           }}
         >
           <StatRing value={String(stats.words)} label="Слов" />

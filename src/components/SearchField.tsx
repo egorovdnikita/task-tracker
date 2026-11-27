@@ -10,6 +10,7 @@ import { GlassSurface } from './GlassSurface';
 import { Symbol } from './Symbol';
 
 export type SearchFieldProps = {
+  autoFocus?: boolean;
   value: string;
   onChangeText: (value: string) => void;
   placeholder?: string;
@@ -43,6 +44,7 @@ export type SearchFieldProps = {
  * и поэтому две разные кнопки.
  */
 export const SearchField = ({
+  autoFocus = false,
   value,
   onChangeText,
   placeholder = 'Поиск',
@@ -91,23 +93,24 @@ export const SearchField = ({
 
   const body = (
     <>
-      <Symbol name="magnifyingglass" size={20} color={theme.colors.secondaryLabel} />
+      <Symbol name="magnifyingglass" size={20} color={theme.colors.secondaryOnBackdrop} />
 
       <TextInput
         ref={input}
+        autoFocus={autoFocus}
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         placeholder={placeholder}
-        placeholderTextColor={theme.colors.placeholderText}
+        placeholderTextColor={theme.colors.secondaryOnBackdrop}
         returnKeyType="search"
         autoCapitalize="none"
         autoCorrect={false}
         clearButtonMode="never"
         accessibilityLabel={placeholder}
-        style={[theme.text('body'), styles.input, { color: theme.colors.label }]}
+        style={[theme.text('body'), styles.input, { color: theme.colors.onBackdrop }]}
       />
 
       {value.length > 0 ? (
@@ -118,7 +121,7 @@ export const SearchField = ({
           onPress={() => onChangeText('')}
           style={({ pressed }) => ({ opacity: pressed ? 0.4 : 1 })}
         >
-          <Symbol name="xmark.circle.fill" size={18} color={theme.colors.tertiaryLabel} />
+          <Symbol name="xmark.circle.fill" size={18} color={theme.colors.secondaryOnBackdrop} />
         </Pressable>
       ) : null}
     </>
@@ -139,7 +142,7 @@ export const SearchField = ({
             чёрном оно светлеет до молочного. */}
         <GlassSurface
           stroke="glass"
-          tint={theme.tints.control}
+          tint={theme.tints.glass}
           radius={theme.radius.pill}
           liquid={false}
           pointerEventsNone
@@ -167,13 +170,13 @@ export const SearchField = ({
           >
             <GlassSurface
               stroke="glass"
-              tint={theme.tints.control}
+              tint={theme.tints.glass}
               radius={height / 2}
               liquid={false}
               pointerEventsNone
               style={StyleSheet.absoluteFill}
             />
-            <Symbol name="xmark" size={24} color={theme.colors.label} />
+            <Symbol name="xmark" size={24} color={theme.colors.onBackdrop} />
           </Pressable>
         </Animated.View>
       </Animated.View>

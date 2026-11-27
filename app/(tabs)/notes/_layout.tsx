@@ -34,10 +34,10 @@ export default function NotesLayout() {
         headerTransparent: true,
         headerShadowVisible: false,
         // Шапка монохромная: фирменный цвет остаётся главным действиям экрана.
-        headerTintColor: theme.hex.label,
+        headerTintColor: theme.hex.onBackdrop,
         // Заголовок белый, а не акцентный: без явного цвета нативная шапка
         // красит его в `headerTintColor`, и название экрана спорило с кнопками.
-        headerTitleStyle: { ...theme.headerText('headline', 'semibold'), color: theme.hex.label },
+        headerTitleStyle: { ...theme.headerText('headline', 'semibold'), color: theme.hex.onBackdrop },
         contentStyle: { backgroundColor: theme.hex.systemGroupedBackground },
       })}
     />

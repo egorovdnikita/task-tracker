@@ -56,6 +56,7 @@ export default function NotesScreen() {
   const restoreNotes = useNotesStore((s) => s.restoreNotes);
 
   const [query, setQuery] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
   const [tag, setTag] = useState('all');
   const selection = useSelection();
 
@@ -118,6 +119,7 @@ export default function NotesScreen() {
   const header = (
     <RootHeader
       title="Заметки"
+      count={activeNotes(notes).length}
       right={
         selection.active ? (
           <HeaderGlass>
@@ -131,18 +133,11 @@ export default function NotesScreen() {
         ) : (
           <>
             <HeaderGlass>
-              <HeaderCapsule>
-                <IconButton
-                  name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
-                  size={19}
-                  accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
-                  onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
-                />
-                <SortButton />
-              </HeaderCapsule>
+              <IconButton name="magnifyingglass" accessibilityLabel="Поиск по заметкам" onPress={() => setSearchOpen(open => !open)} />
             </HeaderGlass>
             <Fab
               compact
+              diameter={56}
               onPress={() => router.push('/create')}
               onLongPress={(anchor) => chooseNoteType(anchor)}
             />
@@ -189,7 +184,7 @@ export default function NotesScreen() {
 
               {/* Поиск сразу под заголовком: белой карточкой, в потоке
                   списка, а не плавающей капсулой у нижнего края. */}
-              <SearchField value={query} onChangeText={setQuery} placeholder="Поиск по заметкам" />
+              {searchOpen || searching ? <SearchField autoFocus value={query} onChangeText={setQuery} placeholder="Поиск по заметкам" /> : null}
 
               {/*
                 Срез — сегмент-контрол, а не ряд чипов.
@@ -200,12 +195,26 @@ export default function NotesScreen() {
                 с «Все» весь фильтр помещается в один системный контрол,
                 который сам знает про Dynamic Type и VoiceOver.
               */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
               <SegmentedControl
+                style={{ flex: 1 }}
                 accessibilityLabel="Фильтр по тегу"
                 segments={TAG_SEGMENTS}
                 selected={tag}
                 onChange={setTag}
               />
+            <HeaderGlass>
+              <HeaderCapsule>
+                <IconButton
+                  name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}
+                  size={19}
+                  accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}
+                  onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}
+                />
+                <SortButton />
+              </HeaderCapsule>
+            </HeaderGlass>
+              </View>
             </View>
           ) : (
             <View style={{ marginBottom: theme.spacing.md }}>{header}</View>

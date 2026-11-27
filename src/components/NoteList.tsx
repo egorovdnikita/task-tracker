@@ -141,8 +141,8 @@ export const NoteList = ({
               { gap: theme.spacing.sm, marginTop: theme.spacing.lg },
             ]}
           >
-            <Text variant="headline">{section.title}</Text>
-            <Text variant="headline" color="tertiaryLabel">
+            <Text variant="headline" color="onBackdrop">{section.title}</Text>
+            <Text variant="headline" color="secondaryOnBackdrop">
               {section.data.reduce((total, row) => total + row.length, 0)}
             </Text>
           </View>

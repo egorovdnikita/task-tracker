@@ -1,130 +1,26 @@
 import { localColors } from './localColors';
-/**
- * Визуальный слой Opal: меши, обводки, подложки стекла и подсветка экранов.
- *
- * Значения сняты со скриншотов эталона и подобраны по RMSE против них —
- * руками их не подкручивать: расхождение с эталоном видно сразу, а причину
- * найти трудно.
- */
-
-/** Эллипс меша. Координаты и радиусы — в долях от размера поверхности. */
-export type MeshBlob = {
-  x: number;
-  y: number;
-  rx: number;
-  ry: number;
-  color: string;
-  opacity?: number;
-};
-
-/**
- * Меши — набор мягких эллипсов вместо линейного градиента. У CTA источник
- * света снизу, заливка идёт оливковым → бирюзовым.
- */
-export const meshes = {
-  cta: [
-    { x: 0.368, y: 1.51, rx: 0.882, ry: 1.74, color: '#E0FEB5', opacity: 0.42 },
-    { x: 0.832, y: 1.54, rx: 1.062, ry: 1.54, color: '#8CFEFD', opacity: 0.28 },
-    { x: 0.572, y: 1.95, rx: 1.012, ry: 2.24, color: '#DFFFE5', opacity: 0.16 },
-  ],
-  fab: [
-    { x: 0.28, y: 0.1, rx: 1.15, ry: 1.15, color: localColors.accent, opacity: 1 },
-    { x: 0.88, y: 1.0, rx: 1.05, ry: 1.05, color: localColors.accentAqua, opacity: 1 },
-  ],
-  card: [
-    { x: 0.92, y: -0.18, rx: 0.7, ry: 1.0, color: localColors.accent, opacity: 0.035 },
-    { x: 0.05, y: 1.18, rx: 0.6, ry: 0.9, color: localColors.accentAqua, opacity: 0.025 },
-  ],
-  /** Разрушающая кнопка: тот же профиль света, что у CTA, но по красной оси. */
-  danger: [
-    { x: 0.3, y: 1.5, rx: 0.9, ry: 1.7, color: '#FF577A', opacity: 0.5 },
-    { x: 0.85, y: 1.5, rx: 1.0, ry: 1.5, color: '#FF8A5B', opacity: 0.3 },
-  ],
-} as const satisfies Record<string, readonly MeshBlob[]>;
-
+/** Совместимые имена материалов. С Finch меши карточек и кнопок сняты. */
+export type MeshBlob = { x: number; y: number; rx: number; ry: number; color: string; opacity?: number };
+const empty: readonly MeshBlob[] = [];
+export const meshes = { cta: empty, fab: empty, card: empty, danger: empty };
 export type MeshName = keyof typeof meshes;
-
-/**
- * Подсветка корня вкладки — приглушённая серо-зелёная заливка у верхней кромки.
- *
- * Замер по «Apps» Opal: по центру у кромки `rgb(50,66,56)`, на 50pt
- * `rgb(37,48,42)`, на 100pt `rgb(23,29,27)`, в углах `rgb(19,24,20)`, ниже —
- * чистый чёрный. Это не пятна лайма и аквы, а один ровный свет.
- *
- * Только корням трёх вкладок. Вложенные экраны и шиты у Opal стоят на чистом
- * чёрном — подсветка там была нашей отсебятиной.
- */
-export const backdrops = {
-  root: [{ x: 0.5, y: 0, rx: 0.77, ry: 0.21, color: '#344439', opacity: 1 }],
-} as const satisfies Record<string, readonly MeshBlob[]>;
-
+export const backdrops = { root: empty };
 export type BackdropName = keyof typeof backdrops;
-
-/** Обводка — вертикальный градиент, подхватывающий свет меша. */
-export const strokes = {
-  cta: { from: 'rgba(255,255,255,0.10)', to: 'rgba(255,255,255,0.42)' },
-  danger: { from: 'rgba(255,180,190,0.16)', to: 'rgba(255,180,190,0.46)' },
-  card: { from: 'rgba(255,255,255,0.13)', to: 'rgba(255,255,255,0.035)' },
-  glass: { from: 'rgba(255,255,255,0.15)', to: 'rgba(255,255,255,0.04)' },
-  /** Ровный ободок 1pt — кнопки шапки Opal (`#373737` на чёрном). */
-  rim: { from: 'rgba(255,255,255,0.2)', to: 'rgba(255,255,255,0.2)' },
-  subtle: { from: 'rgba(255,255,255,0.07)', to: 'rgba(255,255,255,0.02)' },
-} as const;
-
+const clear = { from: 'transparent', to: 'transparent' };
+const glass = { from: 'rgba(255,255,255,0.35)', to: 'rgba(255,255,255,0.25)' };
+export const strokes = { cta: clear, danger: clear, card: clear, glass, rim: glass, subtle: clear };
 export type StrokeName = keyof typeof strokes;
-
-/**
- * Подложки стеклянных поверхностей.
- *
- * Белой альфы — минимум: на чёрном каждые лишние 2% читаются как серая
- * заливка, и стекло становится похоже на матовый пластик. Плавающему стеклу
- * подмешан не белый, а тёмный тон — системное жидкое стекло на чёрном само
- * по себе светлеет, и тёмный тон возвращает ему прозрачность.
- */
 export const tints = {
-  cta: 'rgba(255,255,255,0.14)',
-  card: 'rgba(255,255,255,0.05)',
-  /**
-   * Поле поиска, кнопки шапки, трек сегмента — одной заливкой.
-   *
-   * Плотнее карточки намеренно: контрол на чёрном держит форму только
-   * заливкой, а на 5,5% поле и кнопки читались контуром без тела. Ориентир
-   * — серые контролы шапки Telegram на тёмной теме.
-   */
-  control: localColors.folderBorder,
-  /** Шиты и плавающие панели: прозрачнее карточек — под ними виден экран. */
-  glass: 'rgba(8,8,10,0.28)',
-  /** Кнопки шапки — замер «Назад» в Opal: `#121212` поверх чёрного. */
-  header: 'rgba(255,255,255,0.07)',
-} as const;
-
-/**
- * Сплошные поверхности Opal — замеры со скриншотов @3x.
- *
- * Группы строк у Opal не стеклянные: сплошная заливка без меша и канта.
- */
-export const surfaces = {
-  /** Группа строк на экране. */
-  group: '#0C0C0C',
-  /** Группа строк внутри шита — на ступень светлее шита. */
-  groupInSheet: '#2B2B2B',
-  /** Разделитель строк в группе: 1pt. */
-  separator: '#191919',
-  /** Разделитель в группе на шите. */
-  separatorInSheet: '#383838',
-  /** Белая главная кнопка подтверждения. */
-  white: localColors.white,
-  /** Опасное действие: почти чёрная пилюля с красным. */
-  danger: '#18080B',
-  dangerLabel: '#FD7490',
-  /** Недоступная главная кнопка — тёмная пилюля с ободком, а не прозрачность. */
-  disabled: '#111119',
-  disabledRim: '#302F34',
-  /** Включённый свитч — оливково-зелёный трек Opal. */
-  switchOn: '#579901',
-} as const;
-
+  cta: localColors.accent, card: localColors.white,
+  control: localColors.soft, glass: 'rgba(255,255,255,0.22)',
+  header: 'rgba(255,255,255,0.22)',
+};
 export type TintName = keyof typeof tints;
-
-/** Свечение заметки — цвет метки, едва проступающий в углу карточки. */
-export const NOTE_GLOW_OPACITY = 0.07;
+export const surfaces = {
+  group: localColors.white, groupInSheet: localColors.white,
+  separator: localColors.soft, separatorInSheet: localColors.soft,
+  white: localColors.accent, danger: '#FFF0F2', dangerLabel: '#D93650',
+  disabled: localColors.soft, disabledRim: localColors.soft,
+  switchOn: localColors.accent,
+};
+export const NOTE_GLOW_OPACITY = 0;

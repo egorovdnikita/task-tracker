@@ -1,5 +1,5 @@
 {
-  "files": 85,
+  "files": 87,
   "entries": [
     {
       "file": ".storybook/preview.tsx",
@@ -134,7 +134,7 @@
     {
       "file": "app/(tabs)/_layout.tsx",
       "key": "iconColor",
-      "value": "{{ default: localColors.white, selected: localColors.white }}"
+      "value": "{{ default: localColors.white, selected: localColors.ink }}"
     },
     {
       "file": "app/(tabs)/_layout.tsx",
@@ -154,7 +154,7 @@
     {
       "file": "app/(tabs)/_layout.tsx",
       "key": "color",
-      "value": "localColors.white"
+      "value": "localColors.ink"
     },
     {
       "file": "app/(tabs)/_layout.tsx",
@@ -184,12 +184,12 @@
     {
       "file": "app/(tabs)/folders/_layout.tsx",
       "key": "headerTintColor",
-      "value": "theme.hex.label"
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "app/(tabs)/folders/_layout.tsx",
       "key": "color",
-      "value": "theme.hex.label"
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "app/(tabs)/folders/_layout.tsx",
@@ -244,12 +244,12 @@
     {
       "file": "app/(tabs)/more/_layout.tsx",
       "key": "headerTintColor",
-      "value": "theme.hex.label"
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "app/(tabs)/more/_layout.tsx",
       "key": "color",
-      "value": "theme.hex.label"
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "app/(tabs)/more/_layout.tsx",
@@ -344,12 +344,22 @@
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "color",
-      "value": "\"secondaryLabel\""
+      "value": "\"secondaryOnBackdrop\""
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "color",
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
       "key": "marginVertical",
       "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/(tabs)/more/stats.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
     },
     {
       "file": "app/(tabs)/more/stats.tsx",
@@ -454,12 +464,12 @@
     {
       "file": "app/(tabs)/notes/_layout.tsx",
       "key": "headerTintColor",
-      "value": "theme.hex.label"
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "app/(tabs)/notes/_layout.tsx",
       "key": "color",
-      "value": "theme.hex.label"
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "app/(tabs)/notes/_layout.tsx",
@@ -469,12 +479,7 @@
     {
       "file": "app/(tabs)/notes/index.tsx",
       "key": "right",
-      "value": "{\n        selection.active ? (\n          <HeaderGlass>\n            <IconButton\n              name={allSelected ? 'checkmark.circle.fill' : 'checkmark.circle'}\n              size={19}\n              accessibilityLabel={allSelected ? 'Снять отметку со всех' : 'Выбрать все'}\n              onPress={() => selection.toggleAll(visible.map((n) => n.id))}\n            />\n          </HeaderGlass>\n        ) : (\n          <>\n            <HeaderGlass>\n              <HeaderCapsule>\n                <IconButton\n                  name={layout === 'list' ? 'square.grid.2x2' : 'list.bullet'}\n                  size={19}\n                  accessibilityLabel={layout === 'list' ? 'Показать сеткой' : 'Показать списком'}\n                  onPress={() => setLayout('root', layout === 'list' ? 'grid' : 'list')}\n                />\n                <SortButton />\n              </HeaderCapsule>\n            </HeaderGlass>\n            <Fab\n              compact\n              onPress={() => router.push('/create')}\n              onLongPress={(anchor) => chooseNoteType(anchor)}\n            />\n          </>\n        )\n      }"
-    },
-    {
-      "file": "app/(tabs)/notes/index.tsx",
-      "key": "size",
-      "value": "{19}"
+      "value": "{\n        selection.active ? (\n          <HeaderGlass>\n            <IconButton\n              name={allSelected ? 'checkmark.circle.fill' : 'checkmark.circle'}\n              size={19}\n              accessibilityLabel={allSelected ? 'Снять отметку со всех' : 'Выбрать все'}\n              onPress={() => selection.toggleAll(visible.map((n) => n.id))}\n            />\n          </HeaderGlass>\n        ) : (\n          <>\n            <HeaderGlass>\n              <IconButton name=\"magnifyingglass\" accessibilityLabel=\"Поиск по заметкам\" onPress={() => setSearchOpen(open => !open)} />\n            </HeaderGlass>\n            <Fab\n              compact\n              diameter={56}\n              onPress={() => router.push('/create')}\n              onLongPress={(anchor) => chooseNoteType(anchor)}\n            />\n          </>\n        )\n      }"
     },
     {
       "file": "app/(tabs)/notes/index.tsx",
@@ -493,23 +498,33 @@
     },
     {
       "file": "app/(tabs)/notes/index.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
+      "key": "size",
+      "value": "{19}"
+    },
+    {
+      "file": "app/(tabs)/notes/index.tsx",
       "key": "marginBottom",
       "value": "theme.spacing.md"
     },
     {
       "file": "app/_layout.tsx",
       "key": "backgroundColor",
-      "value": "localColors.sheet"
+      "value": "'transparent'"
     },
     {
       "file": "app/_layout.tsx",
       "key": "headerTintColor",
-      "value": "theme.hex.label"
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "app/_layout.tsx",
       "key": "color",
-      "value": "theme.hex.label"
+      "value": "theme.hex.onBackdrop"
     },
     {
       "file": "app/_layout.tsx",
@@ -520,21 +535,6 @@
       "file": "app/_layout.tsx",
       "key": "backgroundColor",
       "value": "'transparent'"
-    },
-    {
-      "file": "app/_layout.tsx",
-      "key": "backgroundColor",
-      "value": "localColors.black"
-    },
-    {
-      "file": "app/_layout.tsx",
-      "key": "backgroundColor",
-      "value": "localColors.black"
-    },
-    {
-      "file": "app/_layout.tsx",
-      "key": "backgroundColor",
-      "value": "localColors.black"
     },
     {
       "file": "app/capture/scan.tsx",
@@ -555,6 +555,21 @@
       "file": "app/capture/scan.tsx",
       "key": "gap",
       "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "margin",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
+    },
+    {
+      "file": "app/capture/scan.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.xl"
     },
     {
       "file": "app/capture/scan.tsx",
@@ -928,6 +943,21 @@
     },
     {
       "file": "app/capture/voice.tsx",
+      "key": "margin",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.xl"
+    },
+    {
+      "file": "app/capture/voice.tsx",
       "key": "color",
       "value": "\"secondaryLabel\""
     },
@@ -949,7 +979,12 @@
     {
       "file": "app/capture/voice.tsx",
       "key": "color",
-      "value": "\"secondaryLabel\""
+      "value": "theme.hex.onBackdrop"
+    },
+    {
+      "file": "app/capture/voice.tsx",
+      "key": "color",
+      "value": "\"secondaryOnBackdrop\""
     },
     {
       "file": "app/capture/voice.tsx",
@@ -1243,6 +1278,11 @@
     },
     {
       "file": "app/folder.tsx",
+      "key": "color",
+      "value": "\"onBackdrop\""
+    },
+    {
+      "file": "app/folder.tsx",
       "key": "marginHorizontal",
       "value": "theme.spacing.lg"
     },
@@ -1275,6 +1315,11 @@
       "file": "app/folder.tsx",
       "key": "gap",
       "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/folder.tsx",
+      "key": "color",
+      "value": "\"onBackdrop\""
     },
     {
       "file": "app/folder.tsx",
@@ -1439,12 +1484,27 @@
     {
       "file": "app/note-info.tsx",
       "key": "color",
-      "value": "\"secondaryLabel\""
+      "value": "\"secondaryOnBackdrop\""
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "color",
+      "value": "\"onBackdrop\""
     },
     {
       "file": "app/note-info.tsx",
       "key": "marginVertical",
       "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "marginHorizontal",
+      "value": "theme.spacing.lg"
+    },
+    {
+      "file": "app/note-info.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
     },
     {
       "file": "app/note-info.tsx",
@@ -1544,6 +1604,21 @@
     {
       "file": "app/note/[id].tsx",
       "key": "padding",
+      "value": "theme.spacing.xl"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.xl"
+    },
+    {
+      "file": "app/note/[id].tsx",
+      "key": "margin",
       "value": "theme.spacing.lg"
     },
     {
@@ -1720,11 +1795,6 @@
       "file": "src/components/BottomBar.tsx",
       "key": "right",
       "value": "theme.spacing.md"
-    },
-    {
-      "file": "src/components/Button.tsx",
-      "key": "stroke",
-      "value": "'danger'"
     },
     {
       "file": "src/components/Button.tsx",
@@ -2143,6 +2213,16 @@
     },
     {
       "file": "src/components/EmptyState.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "borderRadius",
+      "value": "theme.radius.xl"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
       "key": "padding",
       "value": "theme.spacing.xxxl"
     },
@@ -2153,13 +2233,33 @@
     },
     {
       "file": "src/components/EmptyState.tsx",
-      "key": "size",
-      "value": "{64}"
+      "key": "width",
+      "value": "72"
     },
     {
       "file": "src/components/EmptyState.tsx",
-      "key": "marginBottom",
-      "value": "theme.spacing.sm"
+      "key": "height",
+      "value": "72"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "borderRadius",
+      "value": "36"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.systemFill"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "size",
+      "value": "{34}"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "color",
+      "value": "{theme.colors.label}"
     },
     {
       "file": "src/components/EmptyState.tsx",
@@ -2170,6 +2270,11 @@
       "file": "src/components/EmptyState.tsx",
       "key": "marginTop",
       "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/EmptyState.tsx",
+      "key": "marginVertical",
+      "value": "32"
     },
     {
       "file": "src/components/EmptyState.tsx",
@@ -2255,6 +2360,46 @@
       "file": "src/components/Fab.tsx",
       "key": "elevation",
       "value": "8"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "padding",
+      "value": "16"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "paddingTop",
+      "value": "59"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "gap",
+      "value": "16"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "right",
+      "value": "{<><HeaderGlass><IconButton name=\"magnifyingglass\" accessibilityLabel=\"Поиск\" /></HeaderGlass><Fab compact onPress={() => {}} /></>}"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "color",
+      "value": "\"onBackdrop\""
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "color",
+      "value": "\"onBackdrop\""
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "padding",
+      "value": "16"
+    },
+    {
+      "file": "src/components/Finch.stories.tsx",
+      "key": "paddingTop",
+      "value": "100"
     },
     {
       "file": "src/components/Glass.tsx",
@@ -2434,7 +2579,7 @@
     {
       "file": "src/components/List.tsx",
       "key": "color",
-      "value": "\"label\""
+      "value": "\"onBackdrop\""
     },
     {
       "file": "src/components/List.tsx",
@@ -2554,7 +2699,7 @@
     {
       "file": "src/components/List.tsx",
       "key": "color",
-      "value": "{iconColor ?? theme.colors.secondaryLabel}"
+      "value": "{iconColor ?? theme.colors.label}"
     },
     {
       "file": "src/components/List.tsx",
@@ -2589,7 +2734,7 @@
     {
       "file": "src/components/List.tsx",
       "key": "color",
-      "value": "{theme.colors.accent}"
+      "value": "{theme.colors.label}"
     },
     {
       "file": "src/components/List.tsx",
@@ -3074,7 +3219,47 @@
     {
       "file": "src/components/NoteCard.tsx",
       "key": "padding",
-      "value": "theme.spacing.xl"
+      "value": "pill ? 6 : theme.spacing.xl"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "minHeight",
+      "value": "pill ? 72 : 172"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "shadowColor",
+      "value": "'#7A3C3C'"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "shadowOpacity",
+      "value": "0.1"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "shadowRadius",
+      "value": "16"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "shadowOffset",
+      "value": "{ width: 0, height: 12 }"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "width",
+      "value": "0"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "height",
+      "value": "12"
     },
     {
       "file": "src/components/NoteCard.tsx",
@@ -3084,7 +3269,7 @@
     {
       "file": "src/components/NoteCard.tsx",
       "key": "borderRadius",
-      "value": "theme.radius.lg"
+      "value": "pill ? 36 : theme.radius.lg"
     },
     {
       "file": "src/components/NoteCard.tsx",
@@ -3103,18 +3288,68 @@
     },
     {
       "file": "src/components/NoteCard.tsx",
+      "key": "gap",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "width",
+      "value": "60"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "height",
+      "value": "60"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "borderRadius",
+      "value": "30"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "backgroundColor",
+      "value": "theme.hex.systemFill"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "size",
+      "value": "{24}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
       "key": "color",
+      "value": "{theme.colors.label}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "gap",
+      "value": "4"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "paddingRight",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "color",
+      "value": "{note.remindAt && dueState(note.remindAt) === 'overdue' ? 'systemRed' : 'secondaryLabel'}"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "backgroundColor",
       "value": "accent"
     },
     {
       "file": "src/components/NoteCard.tsx",
-      "key": "opacity",
-      "value": "NOTE_GLOW_OPACITY"
+      "key": "marginRight",
+      "value": "16"
     },
     {
       "file": "src/components/NoteCard.tsx",
-      "key": "stroke",
-      "value": "\"card\""
+      "key": "borderRadius",
+      "value": "4"
     },
     {
       "file": "src/components/NoteCard.tsx",
@@ -3219,6 +3454,11 @@
     {
       "file": "src/components/NoteCard.tsx",
       "key": "color",
+      "value": "theme.hex.label"
+    },
+    {
+      "file": "src/components/NoteCard.tsx",
+      "key": "backgroundColor",
       "value": "theme.hex.accent"
     },
     {
@@ -3269,7 +3509,12 @@
     {
       "file": "src/components/NoteList.tsx",
       "key": "color",
-      "value": "\"tertiaryLabel\""
+      "value": "\"onBackdrop\""
+    },
+    {
+      "file": "src/components/NoteList.tsx",
+      "key": "color",
+      "value": "\"secondaryOnBackdrop\""
     },
     {
       "file": "src/components/NoteList.tsx",
@@ -3537,6 +3782,21 @@
       "value": "boxPrimitives.size['4']"
     },
     {
+      "file": "src/components/NumberText.tsx",
+      "key": "fontFamily",
+      "value": "loaded ? 'Handjet' : 'System'"
+    },
+    {
+      "file": "src/components/NumberText.tsx",
+      "key": "fontSize",
+      "value": "72"
+    },
+    {
+      "file": "src/components/NumberText.tsx",
+      "key": "lineHeight",
+      "value": "76"
+    },
+    {
       "file": "src/components/RootHeader.tsx",
       "key": "minHeight",
       "value": "boxPrimitives.size['52']"
@@ -3548,8 +3808,178 @@
     },
     {
       "file": "src/components/RootHeader.tsx",
+      "key": "color",
+      "value": "\"onBackdrop\""
+    },
+    {
+      "file": "src/components/RootHeader.tsx",
       "key": "gap",
       "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/RootHeader.tsx",
+      "key": "color",
+      "value": "localColors.white"
+    },
+    {
+      "file": "src/components/RootHeader.tsx",
+      "key": "color",
+      "value": "\"secondaryOnBackdrop\""
+    },
+    {
+      "file": "src/components/RootHeader.tsx",
+      "key": "gap",
+      "value": "theme.spacing.sm"
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "width",
+      "value": "\"100%\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "height",
+      "value": "\"100%\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#7A4588\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#B47AA6\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#E2A0B0\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#F8BA9C\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#FCB47E\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#4E348F\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\".6\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#4E348F\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\"0\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#7A2630\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\".85\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#8A3040\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\".35\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#8A3040\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\"0\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#FFF8F6\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\".85\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#FBE6E6\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\".4\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#FBE6E6\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\"0\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#FFE2CC\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\".22\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopColor",
+      "value": "\"#FFE2CC\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "stopOpacity",
+      "value": "\"0\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "width",
+      "value": "\"1\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "height",
+      "value": "\"1\""
+    },
+    {
+      "file": "src/components/ScreenBackdrop.tsx",
+      "key": "fill",
+      "value": "{`url(#${id}${layer})`}"
     },
     {
       "file": "src/components/SearchField.tsx",
@@ -3584,17 +4014,17 @@
     {
       "file": "src/components/SearchField.tsx",
       "key": "color",
-      "value": "{theme.colors.secondaryLabel}"
+      "value": "{theme.colors.secondaryOnBackdrop}"
     },
     {
       "file": "src/components/SearchField.tsx",
       "key": "placeholderTextColor",
-      "value": "{theme.colors.placeholderText}"
+      "value": "{theme.colors.secondaryOnBackdrop}"
     },
     {
       "file": "src/components/SearchField.tsx",
       "key": "color",
-      "value": "theme.colors.label"
+      "value": "theme.colors.onBackdrop"
     },
     {
       "file": "src/components/SearchField.tsx",
@@ -3609,7 +4039,7 @@
     {
       "file": "src/components/SearchField.tsx",
       "key": "color",
-      "value": "{theme.colors.tertiaryLabel}"
+      "value": "{theme.colors.secondaryOnBackdrop}"
     },
     {
       "file": "src/components/SearchField.tsx",
@@ -3649,7 +4079,7 @@
     {
       "file": "src/components/SearchField.tsx",
       "key": "color",
-      "value": "{theme.colors.label}"
+      "value": "{theme.colors.onBackdrop}"
     },
     {
       "file": "src/components/SearchField.tsx",
@@ -3728,78 +4158,43 @@
     },
     {
       "file": "src/components/StatRing.tsx",
+      "key": "minWidth",
+      "value": "0"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
+      "key": "padding",
+      "value": "16"
+    },
+    {
+      "file": "src/components/StatRing.tsx",
       "key": "gap",
-      "value": "theme.spacing.sm"
+      "value": "8"
     },
     {
       "file": "src/components/StatRing.tsx",
-      "key": "width",
-      "value": "SIZE"
+      "key": "borderRadius",
+      "value": "28"
     },
     {
       "file": "src/components/StatRing.tsx",
-      "key": "height",
-      "value": "SIZE"
+      "key": "backgroundColor",
+      "value": "theme.hex.secondarySystemBackground"
     },
     {
       "file": "src/components/StatRing.tsx",
-      "key": "width",
-      "value": "{SIZE}"
+      "key": "fontSize",
+      "value": "34"
     },
     {
       "file": "src/components/StatRing.tsx",
-      "key": "height",
-      "value": "{SIZE}"
+      "key": "lineHeight",
+      "value": "38"
     },
     {
       "file": "src/components/StatRing.tsx",
-      "key": "stopColor",
-      "value": "{localColors.accent}"
-    },
-    {
-      "file": "src/components/StatRing.tsx",
-      "key": "stopColor",
-      "value": "{localColors.accentAqua}"
-    },
-    {
-      "file": "src/components/StatRing.tsx",
-      "key": "stroke",
-      "value": "{localColors.chartTrack}"
-    },
-    {
-      "file": "src/components/StatRing.tsx",
-      "key": "strokeWidth",
-      "value": "{STROKE}"
-    },
-    {
-      "file": "src/components/StatRing.tsx",
-      "key": "fill",
-      "value": "\"none\""
-    },
-    {
-      "file": "src/components/StatRing.tsx",
-      "key": "stroke",
-      "value": "\"url(#ring)\""
-    },
-    {
-      "file": "src/components/StatRing.tsx",
-      "key": "strokeWidth",
-      "value": "{STROKE}"
-    },
-    {
-      "file": "src/components/StatRing.tsx",
-      "key": "fill",
-      "value": "\"none\""
-    },
-    {
-      "file": "src/components/StatRing.tsx",
-      "key": "transform",
-      "value": "{`rotate(-90 ${SIZE / 2} ${SIZE / 2})`}"
-    },
-    {
-      "file": "src/components/StatRing.tsx",
-      "key": "fontVariant",
-      "value": "['tabular-nums']"
+      "key": "color",
+      "value": "theme.hex.label"
     },
     {
       "file": "src/components/StatRing.tsx",
@@ -4704,7 +5099,7 @@
     {
       "file": "src/theme/ThemeProvider.tsx",
       "key": "value",
-      "value": "{DARK}"
+      "value": "{FINCH}"
     },
     {
       "file": "src/theme/colors.ts",
@@ -4889,127 +5284,127 @@
     {
       "file": "src/theme/colors.ts",
       "key": "systemBackground",
-      "value": "dark(localColors.black)"
-    },
-    {
-      "file": "src/theme/colors.ts",
-      "key": "secondarySystemBackground",
-      "value": "dark('rgba(255,255,255,0.04)')"
-    },
-    {
-      "file": "src/theme/colors.ts",
-      "key": "tertiarySystemBackground",
-      "value": "dark('rgba(255,255,255,0.08)')"
+      "value": "fixed('transparent')"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "systemGroupedBackground",
-      "value": "dark(localColors.black)"
+      "value": "fixed('transparent')"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "secondarySystemBackground",
+      "value": "fixed(localColors.white)"
+    },
+    {
+      "file": "src/theme/colors.ts",
+      "key": "tertiarySystemBackground",
+      "value": "fixed(localColors.soft)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "secondarySystemGroupedBackground",
-      "value": "dark('rgba(255,255,255,0.045)')"
+      "value": "fixed(localColors.white)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "tertiarySystemGroupedBackground",
-      "value": "dark('rgba(255,255,255,0.08)')"
+      "value": "fixed(localColors.soft)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "label",
-      "value": "dark(localColors.white)"
+      "value": "fixed(localColors.ink)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "secondaryLabel",
-      "value": "dark('rgba(255,255,255,0.66)')"
+      "value": "fixed(localColors.muted)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "tertiaryLabel",
-      "value": "dark('rgba(255,255,255,0.42)')"
+      "value": "fixed(localColors.muted)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "quaternaryLabel",
-      "value": "dark('rgba(255,255,255,0.22)')"
+      "value": "fixed('rgba(26,26,26,0.22)')"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "placeholderText",
-      "value": "dark('rgba(255,255,255,0.42)')"
+      "value": "fixed(localColors.muted)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "separator",
-      "value": "dark('rgba(255,255,255,0.10)')"
+      "value": "fixed(localColors.soft)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "opaqueSeparator",
-      "value": "dark('rgba(255,255,255,0.18)')"
+      "value": "fixed(localColors.soft)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "systemFill",
-      "value": "dark('rgba(255,255,255,0.14)')"
+      "value": "fixed(localColors.soft)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "secondarySystemFill",
-      "value": "dark('rgba(255,255,255,0.10)')"
+      "value": "fixed(localColors.soft)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "tertiarySystemFill",
-      "value": "dark('rgba(255,255,255,0.07)')"
+      "value": "fixed(localColors.soft)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "quaternarySystemFill",
-      "value": "dark('rgba(255,255,255,0.04)')"
+      "value": "fixed(localColors.soft)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "accent",
-      "value": "dark(localColors.accent)"
+      "value": "fixed(localColors.accent)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "accentMint",
-      "value": "dark('#D7FEC0')"
+      "value": "fixed(localColors.accent)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "accentAqua",
-      "value": "dark(localColors.accentAqua)"
+      "value": "fixed(localColors.accent)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "onAccent",
-      "value": "dark(localColors.black)"
+      "value": "fixed(localColors.ink)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "link",
-      "value": "dark(localColors.accentAqua)"
+      "value": "fixed(localColors.ink)"
     },
     {
       "file": "src/theme/colors.ts",
       "key": "elevated",
-      "value": "dark('#141416')"
+      "value": "fixed(localColors.white)"
     },
     {
       "file": "src/theme/colors.ts",
-      "key": "systemRed",
-      "value": "dark('#FC6578')"
+      "key": "onBackdrop",
+      "value": "fixed(localColors.white)"
     },
     {
       "file": "src/theme/colors.ts",
-      "key": "systemGreen",
-      "value": "dark('#05D6B4')"
+      "key": "secondaryOnBackdrop",
+      "value": "fixed('rgba(255,255,255,0.7)')"
     },
     {
       "file": "src/theme/colors.ts",
@@ -5133,6 +5528,21 @@
     },
     {
       "file": "src/theme/localColors.ts",
+      "key": "ink",
+      "value": "\"#1A1A1A\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "muted",
+      "value": "\"#A1A1A6\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
+      "key": "soft",
+      "value": "\"#F2F2F3\""
+    },
+    {
+      "file": "src/theme/localColors.ts",
       "key": "black",
       "value": "boxPrimitives.achromatic.black"
     },
@@ -5144,22 +5554,22 @@
     {
       "file": "src/theme/localColors.ts",
       "key": "accent",
-      "value": "\"#DCFEAA\""
+      "value": "\"#C4FB6F\""
     },
     {
       "file": "src/theme/localColors.ts",
       "key": "accentAqua",
-      "value": "\"#BBFBE7\""
+      "value": "\"#C4FB6F\""
     },
     {
       "file": "src/theme/localColors.ts",
       "key": "chartTrack",
-      "value": "\"#2B2F2C\""
+      "value": "\"#F2F2F3\""
     },
     {
       "file": "src/theme/localColors.ts",
       "key": "sheet",
-      "value": "\"#1F1F1F\""
+      "value": "\"#FFFFFF\""
     },
     {
       "file": "src/theme/localColors.ts",
@@ -5169,7 +5579,7 @@
     {
       "file": "src/theme/localColors.ts",
       "key": "folderBorder",
-      "value": "\"rgba(255,255,255,0.12)\""
+      "value": "\"rgba(26,26,26,0.12)\""
     },
     {
       "file": "src/theme/localColors.ts",
@@ -5364,12 +5774,12 @@
     {
       "file": "src/theme/metrics.ts",
       "key": "group",
-      "value": "26"
+      "value": "boxPrimitives.rounding['32']"
     },
     {
       "file": "src/theme/metrics.ts",
       "key": "lg",
-      "value": "boxPrimitives.rounding['28']"
+      "value": "boxPrimitives.rounding['32']"
     },
     {
       "file": "src/theme/metrics.ts",
@@ -5464,492 +5874,147 @@
     {
       "file": "src/theme/opal.ts",
       "key": "cta",
-      "value": "[\n    { x: 0.368, y: 1.51, rx: 0.882, ry: 1.74, color: '#E0FEB5', opacity: 0.42 },\n    { x: 0.832, y: 1.54, rx: 1.062, ry: 1.54, color: '#8CFEFD', opacity: 0.28 },\n    { x: 0.572, y: 1.95, rx: 1.012, ry: 2.24, color: '#DFFFE5', opacity: 0.16 },\n  ]"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.368"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "1.51"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "0.882"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "1.74"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "'#E0FEB5'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "0.42"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.832"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "1.54"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "1.062"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "1.54"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "'#8CFEFD'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "0.28"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.572"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "1.95"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "1.012"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "2.24"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "'#DFFFE5'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "0.16"
+      "value": "empty"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "fab",
-      "value": "[\n    { x: 0.28, y: 0.1, rx: 1.15, ry: 1.15, color: localColors.accent, opacity: 1 },\n    { x: 0.88, y: 1.0, rx: 1.05, ry: 1.05, color: localColors.accentAqua, opacity: 1 },\n  ]"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.28"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "0.1"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "1.15"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "1.15"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "localColors.accent"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "1"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.88"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "1.0"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "1.05"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "1.05"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "localColors.accentAqua"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "1"
+      "value": "empty"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "card",
-      "value": "[\n    { x: 0.92, y: -0.18, rx: 0.7, ry: 1.0, color: localColors.accent, opacity: 0.035 },\n    { x: 0.05, y: 1.18, rx: 0.6, ry: 0.9, color: localColors.accentAqua, opacity: 0.025 },\n  ]"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.92"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "-0.18"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "0.7"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "1.0"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "localColors.accent"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "0.035"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.05"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "1.18"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "0.6"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "0.9"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "localColors.accentAqua"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "0.025"
+      "value": "empty"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "danger",
-      "value": "[\n    { x: 0.3, y: 1.5, rx: 0.9, ry: 1.7, color: '#FF577A', opacity: 0.5 },\n    { x: 0.85, y: 1.5, rx: 1.0, ry: 1.5, color: '#FF8A5B', opacity: 0.3 },\n  ]"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.3"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "1.5"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "0.9"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "1.7"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "'#FF577A'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "0.5"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.85"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "1.5"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "1.0"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "1.5"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "'#FF8A5B'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "0.3"
+      "value": "empty"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "root",
-      "value": "[{ x: 0.5, y: 0, rx: 0.77, ry: 0.21, color: '#344439', opacity: 1 }]"
+      "value": "empty"
     },
     {
       "file": "src/theme/opal.ts",
-      "key": "x",
-      "value": "0.5"
+      "key": "from",
+      "value": "'transparent'"
     },
     {
       "file": "src/theme/opal.ts",
-      "key": "y",
-      "value": "0"
+      "key": "to",
+      "value": "'transparent'"
     },
     {
       "file": "src/theme/opal.ts",
-      "key": "rx",
-      "value": "0.77"
+      "key": "from",
+      "value": "'rgba(255,255,255,0.35)'"
     },
     {
       "file": "src/theme/opal.ts",
-      "key": "ry",
-      "value": "0.21"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "color",
-      "value": "'#344439'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "opacity",
-      "value": "1"
+      "key": "to",
+      "value": "'rgba(255,255,255,0.25)'"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "cta",
-      "value": "{ from: 'rgba(255,255,255,0.10)', to: 'rgba(255,255,255,0.42)' }"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "from",
-      "value": "'rgba(255,255,255,0.10)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "to",
-      "value": "'rgba(255,255,255,0.42)'"
+      "value": "clear"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "danger",
-      "value": "{ from: 'rgba(255,180,190,0.16)', to: 'rgba(255,180,190,0.46)' }"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "from",
-      "value": "'rgba(255,180,190,0.16)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "to",
-      "value": "'rgba(255,180,190,0.46)'"
+      "value": "clear"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "card",
-      "value": "{ from: 'rgba(255,255,255,0.13)', to: 'rgba(255,255,255,0.035)' }"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "from",
-      "value": "'rgba(255,255,255,0.13)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "to",
-      "value": "'rgba(255,255,255,0.035)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "glass",
-      "value": "{ from: 'rgba(255,255,255,0.15)', to: 'rgba(255,255,255,0.04)' }"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "from",
-      "value": "'rgba(255,255,255,0.15)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "to",
-      "value": "'rgba(255,255,255,0.04)'"
+      "value": "clear"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "rim",
-      "value": "{ from: 'rgba(255,255,255,0.2)', to: 'rgba(255,255,255,0.2)' }"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "from",
-      "value": "'rgba(255,255,255,0.2)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "to",
-      "value": "'rgba(255,255,255,0.2)'"
+      "value": "glass"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "subtle",
-      "value": "{ from: 'rgba(255,255,255,0.07)', to: 'rgba(255,255,255,0.02)' }"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "from",
-      "value": "'rgba(255,255,255,0.07)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "to",
-      "value": "'rgba(255,255,255,0.02)'"
+      "value": "clear"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "cta",
-      "value": "'rgba(255,255,255,0.14)'"
+      "value": "localColors.accent"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "card",
-      "value": "'rgba(255,255,255,0.05)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "control",
-      "value": "localColors.folderBorder"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "glass",
-      "value": "'rgba(8,8,10,0.28)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "header",
-      "value": "'rgba(255,255,255,0.07)'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "group",
-      "value": "'#0C0C0C'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "groupInSheet",
-      "value": "'#2B2B2B'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "separator",
-      "value": "'#191919'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "separatorInSheet",
-      "value": "'#383838'"
-    },
-    {
-      "file": "src/theme/opal.ts",
-      "key": "white",
       "value": "localColors.white"
     },
     {
       "file": "src/theme/opal.ts",
+      "key": "control",
+      "value": "localColors.soft"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "glass",
+      "value": "'rgba(255,255,255,0.22)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "header",
+      "value": "'rgba(255,255,255,0.22)'"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "group",
+      "value": "localColors.white"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "groupInSheet",
+      "value": "localColors.white"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "separator",
+      "value": "localColors.soft"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "separatorInSheet",
+      "value": "localColors.soft"
+    },
+    {
+      "file": "src/theme/opal.ts",
+      "key": "white",
+      "value": "localColors.accent"
+    },
+    {
+      "file": "src/theme/opal.ts",
       "key": "danger",
-      "value": "'#18080B'"
+      "value": "'#FFF0F2'"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "dangerLabel",
-      "value": "'#FD7490'"
+      "value": "'#D93650'"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "disabled",
-      "value": "'#111119'"
+      "value": "localColors.soft"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "disabledRim",
-      "value": "'#302F34'"
+      "value": "localColors.soft"
     },
     {
       "file": "src/theme/opal.ts",
       "key": "switchOn",
-      "value": "'#579901'"
+      "value": "localColors.accent"
     },
     {
       "file": "src/theme/typography.ts",

@@ -164,7 +164,7 @@ export const GlassSurface = ({
         isInteractive: interactive,
         // Схема прибита к тёмной: система иначе переключит материал вслед
         // за настройками телефона, а приложение dark-only.
-        colorScheme: 'dark' as const,
+        colorScheme: 'light' as const,
         ...(tint ? { tintColor: tint } : null),
       }
     : null;
@@ -197,7 +197,7 @@ export const GlassSurface = ({
     >
       {/* Матовое стекло и подложку рисуем сами только там, где системного нет. */}
       {!useNativeGlass && blurIntensity != null ? (
-        <BlurView intensity={blurIntensity} tint="dark" style={StyleSheet.absoluteFill} />
+        <BlurView intensity={blurIntensity} tint="light" style={StyleSheet.absoluteFill} />
       ) : null}
 
       {!useNativeGlass && tint ? (

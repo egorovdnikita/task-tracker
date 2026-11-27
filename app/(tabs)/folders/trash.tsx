@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../../../src/components/ScreenBackdrop';
 import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack, router } from 'expo-router';
@@ -41,6 +42,7 @@ export default function TrashScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen options={{ title: 'Корзина' }} />
 
       {trashed.length === 0 ? (

@@ -32,12 +32,12 @@ export default function TabsLayout() {
         серым.
       */
       tintColor={localColors.white}
-      iconColor={{ default: localColors.white, selected: localColors.white }}
+      iconColor={{ default: localColors.white, selected: localColors.ink }}
       // 12pt вместо системных 10: на чёрном стекле десятый кегль читался
       // мелкой сноской под иконкой.
       labelStyle={{
         default: { color: localColors.white, fontWeight: '600', fontSize: 12 },
-        selected: { color: localColors.white, fontWeight: '600', fontSize: 12 },
+        selected: { color: localColors.ink, fontWeight: '600', fontSize: 12 },
       }}
       // Подпись ниже обычного — зазор между глифом и словом.
       titlePositionAdjustment={{ vertical: 3 }}

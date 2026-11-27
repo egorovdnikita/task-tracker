@@ -95,7 +95,7 @@ export const ListSection = ({
             },
           ]}
         >
-          <Text variant="headline" weight="semibold" color="label" style={styles.grow}>
+          <Text variant="headline" weight="medium" color="onBackdrop" style={styles.grow}>
             {header}
           </Text>
 
@@ -296,7 +296,7 @@ export const ListRow = ({
           // Иконка строки — приглушённый белый: полный белый спорил с
           // названием строки за первое прочтение.
           <View style={styles.glyph}>
-            <Symbol name={icon} size={20} color={iconColor ?? theme.colors.secondaryLabel} />
+            <Symbol name={icon} size={20} color={iconColor ?? theme.colors.label} />
           </View>
         )
       ) : null}
@@ -304,7 +304,7 @@ export const ListRow = ({
       <View style={styles.labels}>
         {/* Заголовок строки — 17 regular, подпись — 15: замер Opal. Полужирный
             заголовок был нашим решением и делал список тяжелее эталона. */}
-        <Text variant="body" color={color}>
+        <Text variant="callout" color={color}>
           {title}
         </Text>
         {subtitle ? (
@@ -328,7 +328,7 @@ export const ListRow = ({
 
       {accessory.type === 'checkmark' && accessory.checked ? (
         // Галочка выбора — акцентом, как у Opal.
-        <Symbol name="checkmark" size={18} color={theme.colors.accent} />
+        <Symbol name="checkmark" size={18} color={theme.colors.label} />
       ) : null}
 
       {accessory.type === 'switch' ? (

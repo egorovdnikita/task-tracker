@@ -1,3 +1,5 @@
+import { NumberText } from '../../src/components/NumberText';
+import { ScreenBackdrop } from '../../src/components/ScreenBackdrop';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -153,8 +155,9 @@ export default function VoiceCaptureScreen() {
   if (denied) {
     return (
       <>
+        <ScreenBackdrop />
         <Stack.Screen options={{ title: 'Запись' }} />
-        <View style={[styles.center, { padding: theme.spacing.xxxl, gap: theme.spacing.md }]}>
+        <View style={[styles.center, { padding: theme.spacing.xxxl, gap: theme.spacing.md, margin: theme.spacing.lg, backgroundColor: theme.hex.secondarySystemBackground, borderRadius: theme.radius.xl }]}>
           <Text variant="title3" weight="semibold" style={styles.middle}>
             Нет доступа к микрофону
           </Text>
@@ -170,6 +173,7 @@ export default function VoiceCaptureScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen
         options={{
           title: 'Запись',
@@ -181,10 +185,10 @@ export default function VoiceCaptureScreen() {
 
       <View style={[styles.root, { padding: theme.spacing.xl, gap: theme.spacing.xxl }]}>
         <View style={{ gap: theme.spacing.sm, alignItems: 'center' }}>
-          <Text variant="largeTitle" weight="semibold">
+          <NumberText style={{ color: theme.hex.onBackdrop }}>
             {formatDuration(duration)}
-          </Text>
-          <Text variant="footnote" color="secondaryLabel">
+          </NumberText>
+          <Text variant="footnote" color="secondaryOnBackdrop">
             {!begun ? 'Готово к записи' : state.isRecording ? 'Идёт запись' : 'Пауза'}
           </Text>
         </View>

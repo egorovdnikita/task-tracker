@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../../src/components/ScreenBackdrop';
 import React, { useMemo, useRef, useState } from 'react';
 import { PanResponder, Pressable, StyleSheet, View, type LayoutChangeEvent } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -137,6 +138,7 @@ export default function SketchCaptureScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen
         options={{
           title: existing ? 'Дорисовать' : 'Рисунок',

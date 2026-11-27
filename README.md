@@ -26,7 +26,7 @@ npx expo start --tunnel --clear
 
 Камера, микрофон и локальные уведомления запрашиваются при использовании.
 Speech, Vision и PencilKit в Expo Go недоступны: расшифровки, OCR и нажима стилуса нет.
-Оформление только тёмное; нативные вкладки, шапки и системное стекло проверяются на iOS.
+Оформление — Finch, одна схема со светлыми системными элементами; нативные вкладки, шапки и системное стекло проверяются на iOS.
 
 ## Экраны
 
@@ -60,7 +60,7 @@ npm run storybook
 ## Структура
 
 - `app/` — маршруты Expo Router.
-- `src/components/`, `src/theme/` — компоненты и токены тёмной темы.
+- `src/components/`, `src/theme/` — компоненты и токены Finch.
 - `src/store/`, `src/features/`, `src/utils/` — хранение и логика заметок.
 - `src/docs/`, `.storybook/` — документация и витрина.
 - `docs/AUDIT_LOG.md` — журнал аудита; остальные аудиты сохраняют исторический контекст.
@@ -70,3 +70,5 @@ npm run storybook
 ## Лицензия
 
 MIT — [LICENSE](LICENSE).
+
+Текущий перенос макетов и проверенный объём: [docs/FINCH_IMPLEMENTATION.md](docs/FINCH_IMPLEMENTATION.md).

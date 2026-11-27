@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import React, { useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -30,6 +31,7 @@ export default function MoveScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen
         options={{
           title: targets.length > 1 ? `Переместить: ${targets.length}` : 'Переместить',

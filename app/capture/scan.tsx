@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../../src/components/ScreenBackdrop';
 import { localColors } from '../../src/theme/localColors';
 import { boxPrimitives } from '../../src/vendor/box-ui/primitives';
 import React, { useRef, useState } from 'react';
@@ -87,8 +88,9 @@ export default function ScanCaptureScreen() {
   if (!permission.granted) {
     return (
       <>
+        <ScreenBackdrop />
         <Stack.Screen options={{ title: 'Скан' }} />
-        <View style={[styles.center, { padding: theme.spacing.xxxl, gap: theme.spacing.md }]}>
+        <View style={[styles.center, { padding: theme.spacing.xxxl, gap: theme.spacing.md, margin: theme.spacing.lg, backgroundColor: theme.hex.secondarySystemBackground, borderRadius: theme.radius.xl }]}>
           <Symbol name="camera" size={52} color={theme.colors.quaternaryLabel} />
           <Text variant="title3" weight="semibold" style={styles.middle}>
             Нужен доступ к камере
@@ -108,6 +110,7 @@ export default function ScanCaptureScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen
         options={{
           title: pages.length > 0 ? `Страниц: ${pages.length}` : 'Скан',

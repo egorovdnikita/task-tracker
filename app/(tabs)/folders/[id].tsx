@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../../../src/components/ScreenBackdrop';
 import React, { useMemo, useState } from 'react';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 
@@ -123,6 +124,7 @@ export default function FolderScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen
         options={{
           title: scope.title,

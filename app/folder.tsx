@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../src/components/ScreenBackdrop';
 import { localColors } from '../src/theme/localColors';
 import { boxPrimitives } from '../src/vendor/box-ui/primitives';
 import React, { useState } from 'react';
@@ -67,6 +68,7 @@ export default function FolderSheet() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen
         options={{
           title,
@@ -136,7 +138,7 @@ export default function FolderSheet() {
         </View>
 
         <View style={{ gap: theme.spacing.md }}>
-          <Text variant="headline" weight="semibold" style={{ marginHorizontal: theme.spacing.lg }}>
+          <Text variant="headline" weight="medium" color="onBackdrop" style={{ marginHorizontal: theme.spacing.lg }}>
             Цвет
           </Text>
           {/* Круги 36 — как дни недели в правиле Opal: выбранный белый ободок. */}
@@ -168,7 +170,7 @@ export default function FolderSheet() {
 
         {/* Превью — строка, какой папка встанет в список «Папки». */}
         <View style={{ gap: theme.spacing.md }}>
-          <Text variant="headline" weight="semibold" style={{ marginHorizontal: theme.spacing.lg }}>
+          <Text variant="headline" weight="medium" color="onBackdrop" style={{ marginHorizontal: theme.spacing.lg }}>
             В списке
           </Text>
           <View

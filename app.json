@@ -6,7 +6,7 @@
     "scheme": "tasktracker",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -48,6 +48,6 @@
       "expo-asset",
       "expo-font"
     ],
-    "backgroundColor": "#000000"
+    "backgroundColor": "#7A4588"
   }
 }

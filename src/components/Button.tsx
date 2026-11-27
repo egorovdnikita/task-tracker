@@ -97,14 +97,14 @@ export const Button = ({
       : destructive && variant === 'tinted'
         ? theme.surfaces.dangerLabel
         : variant === 'filled' || variant === 'gray' || variant === 'glass'
-          ? theme.hex.label
+          ? (destructive ? theme.surfaces.dangerLabel : theme.hex.label)
           : variant === 'glassProminent'
             ? theme.hex.onAccent
-            : theme.hex[accent];
+            : theme.hex.label;
 
   const surface: Record<ButtonVariant, React.ComponentProps<typeof GlassSurface> | null> = {
     filled: destructive
-      ? { mesh: 'danger', stroke: 'danger', tint: localColors.dangerTint, liquid: false }
+      ? { tint: theme.surfaces.danger, liquid: false }
       : { mesh: 'cta', stroke: 'cta', tint: theme.tints.cta, liquid: false },
     /*
       Белая пилюля — второй вид главной кнопки Opal: подтверждение в шите
@@ -201,7 +201,7 @@ export const IconButton = ({
   name,
   accessibilityLabel,
   size = 22,
-  color = 'label',
+  color = 'onBackdrop',
   disabled,
   style,
   ...rest

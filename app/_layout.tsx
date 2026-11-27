@@ -44,7 +44,7 @@ export default function RootLayout() {
  * Подложка шитов — замер Opal: `#1F1F1F`–`#202020`. Шит на ступень светлее
  * экрана, а группы строк внутри — ещё на ступень (`ListSection tone="sheet"`).
  */
-const SHEET = { backgroundColor: localColors.sheet };
+const SHEET = { backgroundColor: 'transparent' };
 
 const RootStack = () => {
   const theme = useTheme();
@@ -53,10 +53,10 @@ const RootStack = () => {
     <Stack
       screenOptions={{
         // Шапка монохромная: фирменный цвет остаётся главным действиям экрана.
-        headerTintColor: theme.hex.label,
+        headerTintColor: theme.hex.onBackdrop,
         // Заголовок белый, а не акцентный: без явного цвета нативная шапка
         // красит его в `headerTintColor`, и название экрана спорило с кнопками.
-        headerTitleStyle: { ...theme.headerText('headline', 'semibold'), color: theme.hex.label },
+        headerTitleStyle: { ...theme.headerText('headline', 'semibold'), color: theme.hex.onBackdrop },
         /*
           Шапка прозрачная и без размытия.
 
@@ -163,15 +163,15 @@ const RootStack = () => {
       */}
       <Stack.Screen
         name="capture/voice"
-        options={{ presentation: 'modal', headerTransparent: false, headerStyle: { backgroundColor: localColors.black } }}
+        options={{ presentation: 'modal', headerTransparent: true }}
       />
       <Stack.Screen
         name="capture/scan"
-        options={{ presentation: 'fullScreenModal', headerTransparent: false, headerStyle: { backgroundColor: localColors.black } }}
+        options={{ presentation: 'fullScreenModal', headerTransparent: true }}
       />
       <Stack.Screen
         name="capture/sketch"
-        options={{ presentation: 'modal', headerTransparent: false, headerStyle: { backgroundColor: localColors.black } }}
+        options={{ presentation: 'modal', headerTransparent: true }}
       />
 
       <Stack.Screen

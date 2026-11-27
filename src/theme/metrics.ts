@@ -34,9 +34,9 @@ export const radius = {
   /** Медиа-блок. */
   md: boxPrimitives.rounding['24'],
   /** Группа строк — замер Opal, дуга окружности. */
-  group: 26,
+  group: boxPrimitives.rounding['32'],
   /** Карточка-контейнер: замер эталона дал 29–30pt. */
-  lg: boxPrimitives.rounding['28'],
+  lg: boxPrimitives.rounding['32'],
   /** Шит и крупная карточка. */
   xl: boxPrimitives.rounding['32'],
   /** Модальный лист, поднятый над экраном. */

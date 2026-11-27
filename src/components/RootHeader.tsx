@@ -1,3 +1,5 @@
+import { NumberText } from './NumberText';
+import { localColors } from '../theme/localColors';
 import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
@@ -9,6 +11,7 @@ export type RootHeaderProps = {
   title: string;
   /** Кнопки справа в строке заголовка: капсула управления, круг «+». */
   right?: React.ReactNode;
+  count?: number;
   style?: ViewStyle;
 };
 
@@ -22,14 +25,18 @@ export type RootHeaderProps = {
  * строкам. Шапка лежит первой строкой списка и уезжает вместе с ним; у
  * корней вкладок системная шапка скрыта.
  */
-export const RootHeader = ({ title, right, style }: RootHeaderProps) => {
+export const RootHeader = ({ title, right, count, style }: RootHeaderProps) => {
   const theme = useTheme();
 
   return (
     <View style={[styles.row, { minHeight: boxPrimitives.size['52'], gap: theme.spacing.sm }, style]}>
-      <Text variant="largeTitle" weight="bold" numberOfLines={1} style={styles.title} accessibilityRole="header">
-        {title}
-      </Text>
+      <View style={styles.title}>
+        <Text variant={count === undefined ? 'title1' : 'body'} weight="medium" color="onBackdrop" numberOfLines={1} accessibilityRole="header">{title}</Text>
+        {count === undefined ? null : <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: theme.spacing.sm }}>
+          <NumberText style={{ color: localColors.white }}>{String(count).padStart(2, '0')}</NumberText>
+          <Text variant="footnote" color="secondaryOnBackdrop">заметок</Text>
+        </View>}
+      </View>
       {right ? <View style={[styles.row, { gap: theme.spacing.sm }]}>{right}</View> : null}
     </View>
   );

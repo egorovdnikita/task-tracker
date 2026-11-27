@@ -2,11 +2,10 @@ import { boxPrimitives } from '../vendor/box-ui/primitives';
 import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { NOTE_GLOW_OPACITY, useTheme, type PaletteName } from '../theme';
+import { useTheme, type PaletteName } from '../theme';
 import type { LayoutMode, Note } from '../types';
 import { checklistProgress, noteSubtitle, noteTitle } from '../utils/blocks';
 import { dueState, formatRelativeDate, formatShortDate } from '../utils/date';
-import { GlassSurface } from './GlassSurface';
 import { Symbol } from './Symbol';
 import { Text } from './Text';
 
@@ -63,6 +62,7 @@ export const NoteCard = ({
   const progress = checklistProgress(note);
   const preview = noteSubtitle(note);
   const accent = note.accent ? theme.accent(note.accent) : null;
+  const pill = layout === 'list' && !note.pinned;
   const ref = useRef<React.ComponentRef<typeof View>>(null);
 
   return (
@@ -82,35 +82,32 @@ export const NoteCard = ({
       style={({ pressed }) => [
         styles.card,
         {
-          padding: theme.spacing.xl,
+          padding: pill ? 6 : theme.spacing.xl,
+          minHeight: pill ? 72 : 172,
+          backgroundColor: theme.hex.secondarySystemBackground,
+          shadowColor: '#7A3C3C', shadowOpacity: 0.1, shadowRadius: 16, shadowOffset: { width: 0, height: 12 },
           gap: theme.spacing.xs,
-          borderRadius: theme.radius.lg,
+          borderRadius: pill ? 36 : theme.radius.lg,
           opacity: pressed ? 0.85 : 1,
         },
         selected ? { borderWidth: 1.5, borderColor: theme.colors.accent } : null,
         style,
       ]}
     >
-      {/*
-        Карточка на стекле Opal: подложка с альфой, меш с лёгким свечением по
-        углам и градиентный кант. Цвет заметки — не полоска и не заливка, а
-        четвёртый эллипс в правом верхнем углу: в эталоне метка едва
-        проступает и не спорит с текстом.
-      */}
-      <GlassSurface
-        mesh={[
-          ...theme.meshes.card,
-          ...(accent
-            ? [{ x: 0.95, y: -0.15, rx: 0.5, ry: 0.85, color: accent, opacity: NOTE_GLOW_OPACITY }]
-            : []),
-        ]}
-        stroke="card"
-        tint={theme.tints.card}
-        radius={theme.radius.lg}
-        liquid={false}
-        pointerEventsNone
-        style={StyleSheet.absoluteFill}
-      />
+      {pill ? (
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.md, flex: 1 }}>
+          <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: theme.hex.systemFill, alignItems: 'center', justifyContent: 'center' }}>
+            <Symbol name={selectable ? (selected ? 'checkmark.circle.fill' : 'circle') : progress ? 'checklist' : 'note.text'} size={24} color={theme.colors.label} />
+          </View>
+          <View style={{ flex: 1, gap: 4, paddingRight: theme.spacing.md }}>
+            <Text variant="callout" weight="medium" numberOfLines={1}>{noteTitle(note)}</Text>
+            <Text variant="footnote" color={note.remindAt && dueState(note.remindAt) === 'overdue' ? 'systemRed' : 'secondaryLabel'} numberOfLines={1}>
+              {note.remindAt ? formatShortDate(note.remindAt) : progress ? `${progress.done} из ${progress.total}` : formatRelativeDate(note.updatedAt)}
+            </Text>
+          </View>
+          {accent ? <View style={[styles.dot, { backgroundColor: accent, marginRight: 16, borderRadius: 4 }]} /> : null}
+        </View>
+      ) : <>
       <View style={[styles.head, { gap: theme.spacing.sm }]}>
         {selectable ? (
           <Symbol
@@ -163,7 +160,7 @@ export const NoteCard = ({
         Одним серым здесь было хуже — срок и дата изменения выглядели одним и
         тем же фактом, хотя один из них про будущее, а другой про прошлое.
       */}
-      <View style={[styles.head, { gap: theme.spacing.md, marginTop: theme.spacing.xxs }]}>
+      <View style={[styles.head, { gap: theme.spacing.md, marginTop: theme.spacing.xxs, flexWrap: 'wrap' }]}>
         <Meta icon="clock" text={formatRelativeDate(note.updatedAt)} color="secondaryLabel" />
 
         {note.remindAt ? (
@@ -181,6 +178,7 @@ export const NoteCard = ({
           </Text>
         ))}
       </View>
+      </>}
     </Pressable>
   );
 };
@@ -258,7 +256,7 @@ const Highlighted = ({
     <Text variant="subheadline" color="secondaryLabel" numberOfLines={lines}>
       {head}
       {text.slice(from, at)}
-      <Text variant="subheadline" weight="semibold" style={{ color: theme.hex.accent }}>
+      <Text variant="subheadline" weight="semibold" style={{ color: theme.hex.label, backgroundColor: theme.hex.accent }}>
         {text.slice(at, at + needle.length)}
       </Text>
       {text.slice(at + needle.length)}

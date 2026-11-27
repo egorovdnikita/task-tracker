@@ -44,14 +44,14 @@ export const Chip = ({
   style,
 }: ChipProps) => {
   const theme = useTheme();
-  const accentHex = accent ? theme.accent(accent) : theme.hex.accent;
+  const accentHex = accent ? theme.accent(accent) : theme.hex.label;
 
   const background = outlined
     ? 'transparent'
     : selected
       ? accent
         ? withAlpha(accentHex, theme.scheme === 'dark' ? 0.28 : 0.16)
-        : theme.colors.systemFill
+        : theme.colors.accent
       : theme.colors.tertiarySystemFill;
 
   const body = (

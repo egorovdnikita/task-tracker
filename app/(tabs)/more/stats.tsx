@@ -1,3 +1,5 @@
+import { NumberText } from '../../../src/components/NumberText';
+import { ScreenBackdrop } from '../../../src/components/ScreenBackdrop';
 import { localColors } from '../../../src/theme/localColors';
 import { boxPrimitives } from '../../../src/vendor/box-ui/primitives';
 import React, { useMemo } from 'react';
@@ -31,6 +33,7 @@ export default function StatsScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen options={{ title: 'Статистика' }} />
 
       <ScrollView
@@ -39,13 +42,13 @@ export default function StatsScreen() {
       >
         {/* Главное число — как «Score 81» у Opal: подпись над ним, крупно. */}
         <View style={{ alignItems: 'center', gap: theme.spacing.xxs }}>
-          <Text variant="subheadline" weight="medium" color="secondaryLabel">
+          <Text variant="subheadline" weight="medium" color="secondaryOnBackdrop">
             Заметок
           </Text>
-          <Text style={styles.score}>{stats.notes}</Text>
+          <NumberText style={{ color: theme.hex.onBackdrop }}>{stats.notes}</NumberText>
         </View>
 
-        <View style={[styles.rings, { marginVertical: theme.spacing.xl }]}>
+        <View style={[styles.rings, { marginVertical: theme.spacing.xl, marginHorizontal: theme.spacing.lg }]}>
           <StatRing
             value={stats.itemsTotal > 0 ? `${Math.round((stats.itemsDone / stats.itemsTotal) * 100)}` : '—'}
             label="Выполнено, %"

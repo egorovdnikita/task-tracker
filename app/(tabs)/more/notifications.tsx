@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../../../src/components/ScreenBackdrop';
 import React, { useCallback, useMemo, useState } from 'react';
 import { AppState, Linking, ScrollView, View } from 'react-native';
 import { Stack, router, useFocusEffect } from 'expo-router';
@@ -53,6 +54,7 @@ export default function NotificationsScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen options={{ title: 'Уведомления' }} />
 
       <ScrollView

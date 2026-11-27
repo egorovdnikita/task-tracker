@@ -1,3 +1,4 @@
+import { ScreenBackdrop } from '../../src/components/ScreenBackdrop';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -236,6 +237,7 @@ export default function NoteScreen() {
 
   return (
     <>
+      <ScreenBackdrop />
       <Stack.Screen
         options={{
           // Статус сохранения в заголовок не ставится: заголовок прыгал при
@@ -330,7 +332,10 @@ export default function NoteScreen() {
         <ScrollView
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
-            padding: theme.spacing.lg,
+            padding: theme.spacing.xl,
+            backgroundColor: theme.hex.secondarySystemBackground,
+            borderRadius: theme.radius.xl,
+            margin: theme.spacing.lg,
             gap: theme.spacing.lg,
             paddingBottom: theme.spacing.xxxl,
           }}
@@ -344,7 +349,7 @@ export default function NoteScreen() {
             editable={!trashed}
             placeholder="Заголовок"
             placeholderTextColor={theme.colors.placeholderText}
-            style={[theme.text('title2', 'bold'), { color: theme.colors.label, padding: 0 }]}
+            style={[theme.text('title1', 'medium'), { color: theme.colors.label, padding: 0 }]}
           />
 
           {/* Метаданные: срок окрашен по смыслу, иконка того же цвета.

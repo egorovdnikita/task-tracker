@@ -22,6 +22,7 @@ export type FabProps = {
    * без свечения. Плавающей кнопки у Opal нет, создание живёт в шапке.
    */
   compact?: boolean;
+  diameter?: number;
   /** Глиф в круге: `plus` для создания, `checkmark` — подтверждение в шите. */
   icon?: 'plus' | 'checkmark';
   disabled?: boolean;
@@ -44,12 +45,13 @@ export const Fab = ({
   accessibilityLabel = 'Новая заметка',
   accessibilityHint = 'Долгое нажатие — выбрать тип заметки',
   compact = false,
+  diameter,
   icon = 'plus',
   disabled = false,
   style,
 }: FabProps) => {
   const theme = useTheme();
-  const size = compact ? theme.controlHeight.buttonCompact : theme.controlHeight.fab;
+  const size = diameter ?? (compact ? theme.controlHeight.buttonCompact : theme.controlHeight.fab);
   const ref = useRef<React.ComponentRef<typeof View>>(null);
 
   return (
@@ -70,14 +72,14 @@ export const Fab = ({
           : undefined
       }
       style={({ pressed }) => [
-        compact ? null : styles.glow,
+        null,
         { width: size, height: size, borderRadius: size / 2 },
         { transform: [{ scale: pressed ? 0.94 : 1 }], opacity: disabled ? 0.35 : 1 },
         style,
       ]}
     >
       <GlassSurface
-        mesh="fab"
+
         liquid={false}
         radius={size / 2}
         tint={theme.hex.accent}

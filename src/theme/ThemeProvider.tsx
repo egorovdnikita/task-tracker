@@ -56,38 +56,14 @@ const makeTheme = (scheme: ColorScheme): Theme => ({
   backdrops,
 });
 
-const ThemeContext = createContext<Theme>(makeTheme('dark'));
+const ThemeContext = createContext<Theme>(makeTheme('light'));
 
-export type ThemeProviderProps = {
-  children: React.ReactNode;
-  /**
-   * Принимается ради совместимости с сохранёнными настройками и витриной, но
-   * не влияет ни на что: система Opal dark-only.
-   */
-  preference?: AppearancePreference;
-};
-
-const DARK = makeTheme('dark');
-
-/**
- * Система dark-only, поэтому провайдер отдаёт одну константу.
- *
- * Схема всё равно прибивается к тёмной в `Appearance.setColorScheme`: на iOS
- * вызов ставит `overrideUserInterfaceStyle` на окно, и вместе с нашими
- * экранами тёмными становятся системные — панель вкладок, клавиатура,
- * алерты, меню и стекло. Без этого при светлой теме телефона панель вкладок
- * и клавиатура приезжали бы светлыми поверх чёрного экрана.
- *
- * Хук `useTheme()` и поле `scheme` сохранены: компоненты не должны зависеть
- * от того, появится ли когда-нибудь вторая схема.
- */
+export type ThemeProviderProps = { children: React.ReactNode; preference?: AppearancePreference };
+const FINCH = makeTheme('light');
+/** Finch имеет одну схему; клавиатура, алерты и системные листы светлые. */
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  useEffect(() => {
-    // В react-native-web метода нет: окна приложения там не существует.
-    Appearance.setColorScheme?.('dark');
-  }, []);
-
-  return <ThemeContext.Provider value={DARK}>{children}</ThemeContext.Provider>;
+  useEffect(() => { Appearance.setColorScheme?.('light'); }, []);
+  return <ThemeContext.Provider value={FINCH}>{children}</ThemeContext.Provider>;
 };
 
 export const useTheme = (): Theme => useContext(ThemeContext);

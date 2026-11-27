@@ -1,3 +1,4 @@
+import { Symbol } from './Symbol';
 import React from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
 import type { SFSymbol } from 'sf-symbols-typescript';
@@ -5,7 +6,7 @@ import type { SFSymbol } from 'sf-symbols-typescript';
 import { useTheme } from '../theme';
 import { Button } from './Button';
 import { Text } from './Text';
-import { ThinkingOrb, type OrbState } from './ThinkingOrb';
+import type { OrbState } from './ThinkingOrb';
 
 export type EmptyStateProps = {
   /**
@@ -34,14 +35,8 @@ export type EmptyStateProps = {
  * Стеклянный круг под ним спорил бы с самим орбом: два округлых силуэта один
  * в другом, и точки читались бы как шум внутри.
  */
-const orbFor = (icon?: SFSymbol): OrbState =>
-  icon === 'magnifyingglass' || icon === 'line.3.horizontal.decrease.circle'
-    ? 'searching'
-    : 'composing';
-
 export const EmptyState = ({
   icon,
-  orb,
   title,
   description,
   actionTitle,
@@ -51,13 +46,10 @@ export const EmptyState = ({
   const theme = useTheme();
 
   return (
-    <View style={[styles.root, { padding: theme.spacing.xxxl, gap: theme.spacing.md }, style]}>
-      <ThinkingOrb
-        state={orb ?? orbFor(icon)}
-        size={64}
-        accessibilityLabel={title}
-        style={{ marginBottom: theme.spacing.sm }}
-      />
+    <View style={[styles.root, { backgroundColor: theme.hex.secondarySystemBackground, borderRadius: theme.radius.xl, padding: theme.spacing.xxxl, gap: theme.spacing.md }, style]}>
+      <View style={{ width: 72, height: 72, borderRadius: 36, backgroundColor: theme.hex.systemFill, alignItems: 'center', justifyContent: 'center' }}>
+        <Symbol name={icon ?? 'note.text'} size={34} color={theme.colors.label} />
+      </View>
 
       <Text variant="title3" weight="medium" style={styles.center}>
         {title}
@@ -82,7 +74,7 @@ export const EmptyState = ({
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  root: { flexGrow: 0, alignItems: 'center', justifyContent: 'center', marginVertical: 32 },
   center: { textAlign: 'center' },
   measure: { maxWidth: 280 },
 });

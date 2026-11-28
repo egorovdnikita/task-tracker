@@ -332,6 +332,7 @@ export default function NoteScreen() {
             backgroundColor: theme.hex.secondarySystemBackground,
             borderRadius: theme.radius.xl,
             margin: theme.spacing.lg,
+            marginTop: theme.spacing.md,
             gap: theme.spacing.lg,
             paddingBottom: theme.spacing.xl,
             minHeight: note.blocks.some(block => block.type === 'checklist') ? 554 : 390,

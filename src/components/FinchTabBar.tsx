@@ -20,7 +20,7 @@ export const FinchTabBarPosition = ({ children }: { children: React.ReactNode })
 };
 const styles = StyleSheet.create({
   position: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
-  capsule: { width: 204, height: 52, borderRadius: 26, padding: 4, flexDirection: 'row', gap: 32, backgroundColor: 'rgba(255,255,255,0.22)' },
+  capsule: { width: 204, height: 52, borderRadius: 26, paddingVertical: 4, paddingLeft: 5, paddingRight: 3, flexDirection: 'row', gap: 32, backgroundColor: 'rgba(255,255,255,0.22)' },
   rim: { borderRadius: 26, borderWidth: 1, borderColor: 'rgba(255,255,255,0.4)' },
   tab: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
 });

@@ -1623,6 +1623,11 @@
     },
     {
       "file": "app/note/[id].tsx",
+      "key": "marginTop",
+      "value": "theme.spacing.md"
+    },
+    {
+      "file": "app/note/[id].tsx",
       "key": "gap",
       "value": "theme.spacing.lg"
     },
@@ -2688,8 +2693,18 @@
     },
     {
       "file": "src/components/FinchTabBar.tsx",
-      "key": "padding",
+      "key": "paddingVertical",
       "value": "4"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "paddingLeft",
+      "value": "5"
+    },
+    {
+      "file": "src/components/FinchTabBar.tsx",
+      "key": "paddingRight",
+      "value": "3"
     },
     {
       "file": "src/components/FinchTabBar.tsx",

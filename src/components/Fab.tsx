@@ -42,7 +42,7 @@ export type FabProps = {
 export const Fab = ({
   onPress,
   onLongPress,
-  accessibilityLabel = 'Новая заметка',
+  accessibilityLabel = 'Создать заметку',
   accessibilityHint = 'Долгое нажатие — выбрать тип заметки',
   compact = false,
   diameter,

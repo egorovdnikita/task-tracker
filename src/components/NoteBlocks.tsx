@@ -179,7 +179,7 @@ const ChecklistBlockEditor = ({
               styles.grow,
               {
                 color: item.done ? theme.colors.secondaryLabel : theme.colors.label,
-                textDecorationLine: 'none',
+                textDecorationLine: item.done ? 'line-through' : 'none',
               },
             ]}
           />

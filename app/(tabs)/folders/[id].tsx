@@ -154,7 +154,7 @@ export default function FolderScreen() {
               ))
             : headerItems(() => (
                 <HeaderGlass><MenuButton accessibilityLabel="Действия с папкой" items={() => [
-                  { title: 'Новая заметка', icon: 'plus', onPress: create },
+                  { title: 'Создать заметку', icon: 'plus', onPress: create },
                   { title: layout === 'list' ? 'Показать сеткой' : 'Показать списком', icon: layout === 'list' ? 'square.grid.2x2' : 'list.bullet', onPress: () => setLayout(id ?? 'root', layout === 'list' ? 'grid' : 'list') },
                   ...Object.entries(SORT_LABELS).map(([mode, title]) => ({ title, checked: settings.sort === mode, onPress: () => updateSettings({ sort: mode as typeof settings.sort }) })),
                   { title: 'Новый список', icon: 'checklist', onPress: () => router.push({ pathname: '/create', params: { ...createScope, kind: 'checklist' } }) },
@@ -211,7 +211,7 @@ export default function FolderScreen() {
                   ? 'Тег ставится чипом в самой заметке — и в шите создания, и в открытой.'
                   : 'Перенесите сюда заметки или создайте новую.'
               }
-              actionTitle="Новая заметка"
+              actionTitle="Создать заметку"
               onAction={create}
             />
           )

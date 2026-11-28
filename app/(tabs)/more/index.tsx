@@ -100,7 +100,7 @@ export default function MoreScreen() {
             </View>
           </MenuButton>
           <ListRow
-            title="Отмеченные вниз"
+            title="Выполненные внизу"
             icon="checklist"
             accessory={{
               type: 'switch',

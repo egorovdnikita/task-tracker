@@ -30,13 +30,13 @@ export const Главная: Story = { render: () => <View style={{ flex: 1 }}>
     <SegmentedControl segments={[{value:'all',label:'Все'},{value:'important',label:'Важное'},{value:'work',label:'Работа'},{value:'personal',label:'Личное'}]} selected="all" onChange={() => {}} />
     <Text color="onBackdrop" variant="headline">Закреплено</Text>
     <NoteCard note={{ ...mockNotes[0], pinned: true }} />
-    <Text color="onBackdrop" variant="headline">Ранее</Text>
+    <Text color="onBackdrop" variant="headline">Остальные заметки</Text>
     {mockNotes.slice(1, 4).map(note => <NoteCard key={note.id} note={{ ...note, pinned: false }} />)}
   </ScrollView>
   <FinchTabBarPosition><FinchTabBar tabs={[{ key:'notes', label:'Заметки', icon:'note.text' }, {key:'folders',label:'Папки',icon:'folder'}, {key:'more',label:'Настройки',icon:'gearshape'}]} selected="notes" onSelect={() => {}} /></FinchTabBarPosition>
 </View> };
 export const Пусто: Story = { render: () => <View style={{ flex: 1, padding: 16, justifyContent: 'center' }}>
-  <ScreenBackdrop /><EmptyState icon="note.text" title="Здесь пока пусто" description="Первая заметка обычно самая короткая — так и надо." actionTitle="Новая заметка" onAction={() => {}} />
+  <ScreenBackdrop /><EmptyState icon="note.text" title="Здесь пока пусто" description="Сохраните мысль, составьте список или запишите голосом." actionTitle="Создать заметку" onAction={() => {}} />
 </View> };
 export const Группа: Story = { render: () => <View style={{ flex: 1, paddingTop: 100 }}>
   <ScreenBackdrop /><ListSection header="Настройки"><ListRow title="Уведомления" icon="bell" accessory={{ type: 'disclosure' }} /><ListRow title="Статистика" icon="chart.bar" value="6" /></ListSection>
@@ -54,4 +54,4 @@ export const Сетка: Story = { render: () => <View style={{ flex: 1 }}>
   <ScreenBackdrop /><NoteList layout="grid" notes={mockNotes} ListHeaderComponent={<View style={{ gap: 12 }}><RootHeader title="Заметки" /><SearchField value="" onChangeText={() => {}} /></View>} />
 </View> };
 
-export const Переключатель: Story = { render: () => { const [value, setValue] = React.useState(true); return <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 16 }}><ScreenBackdrop /><ListSection><ListRow title="Отмеченные вниз" trailing={<FinchSwitch value={value} onValueChange={setValue} accessibilityLabel="Отмеченные вниз" />} /></ListSection></View>; } };
+export const Переключатель: Story = { render: () => { const [value, setValue] = React.useState(true); return <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 16 }}><ScreenBackdrop /><ListSection><ListRow title="Выполненные внизу" trailing={<FinchSwitch value={value} onValueChange={setValue} accessibilityLabel="Выполненные внизу" />} /></ListSection></View>; } };

@@ -239,10 +239,10 @@ export default function NotesScreen() {
             <EmptyState
               icon="note.text"
               title="Здесь пока пусто"
-              description="Первая заметка обычно самая короткая — так и надо."
+              description="Сохраните мысль, составьте список или запишите голосом."
               // Действие вместо слов «кнопка внизу справа»: инструкция о
               // положении кнопки врёт при любой другой раскладке.
-              actionTitle="Новая заметка"
+              actionTitle="Создать заметку"
               onAction={() => router.push('/create')}
             />
           )

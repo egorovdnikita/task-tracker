@@ -129,7 +129,7 @@ export const NoteList = ({
           <View
             style={[
               styles.sectionHeader,
-              { gap: theme.spacing.sm, marginTop: compact && section.title === 'Ранее' ? 8 : 0 },
+              { gap: theme.spacing.sm, marginTop: compact && section.title === 'Остальные заметки' ? 8 : 0 },
             ]}
           >
             <Text variant="headline" weight="regular" color="onBackdrop">{section.title}</Text>

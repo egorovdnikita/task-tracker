@@ -3919,7 +3919,7 @@
     {
       "file": "src/components/NoteList.tsx",
       "key": "marginTop",
-      "value": "compact && section.title === 'Ранее' ? 8 : 0"
+      "value": "compact && section.title === 'Остальные заметки' ? 8 : 0"
     },
     {
       "file": "src/components/NoteList.tsx",

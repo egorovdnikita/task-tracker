@@ -166,7 +166,7 @@ export default function FolderSheet() {
         {/* Превью — строка, какой папка встанет в список «Папки». */}
         <View style={{ gap: 10 }}>
           <Text variant="headline" weight="medium" color="label">
-            В списке
+            Предпросмотр
           </Text>
           <View
             style={[
@@ -193,7 +193,7 @@ export default function FolderSheet() {
 
           </View>
         </View>
-          <Button title="Готово" size="large" fullWidth disabled={!ready} onPress={save} />
+          <Button title={existing ? 'Сохранить изменения' : 'Создать папку'} size="large" fullWidth disabled={!ready} onPress={save} />
         </View>
       </ScrollView>
     </View>

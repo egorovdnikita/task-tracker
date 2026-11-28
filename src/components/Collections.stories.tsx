@@ -42,7 +42,7 @@ export const Список: Story = {
             onPress={() => {}}
           />
           <ListRow
-            title="Отмеченные вниз"
+            title="Выполненные внизу"
             subtitle="Выполненные пункты уезжают в конец списка"
             icon="checklist"
             accessory={{ type: 'switch', value: switched, onValueChange: setSwitched }}
@@ -116,7 +116,7 @@ export const Пусто: Story = {
       <EmptyState
         icon="note.text"
         title="Здесь пока пусто"
-        description="Первая заметка обычно самая короткая — так и надо."
+        description="Сохраните мысль, составьте список или запишите голосом."
         actionTitle="Создать заметку"
         onAction={() => {}}
       />

@@ -2,7 +2,7 @@ import { boxPrimitives } from '../vendor/box-ui/primitives';
 /** Локальные цвета утверждённого Finch/iOS; роли Box UI не подменяются. См. docs/TOKEN_SYNC.md. */
 export const localColors = {
   "ink": "#1A1A1A",
-  "muted": "#A1A1A6",
+  "muted": "#6B6B73",
   "soft": "#F2F2F3",
   "black": boxPrimitives.achromatic.black,
   "white": boxPrimitives.achromatic.white,
